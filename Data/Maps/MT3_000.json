@@ -652,7 +652,7 @@
     255
   ],
   "lights": [],
-  "bgm": "",
+  "bgm": "/Game/Assets/Musics/sound-1.mp3",
   "bgmFilter": {},
   "bgs": "",
   "bgsFilter": {},

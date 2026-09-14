@@ -972,7 +972,7 @@
     255
   ],
   "lights": [],
-  "bgm": "",
+  "bgm": "/Game/Assets/Musics/sound-2.mp3",
   "bgmFilter": {},
   "bgs": "",
   "bgsFilter": {},
