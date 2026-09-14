@@ -1,0 +1,96 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 144,
+    "height": 32
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Shop Cell",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        144,
+        32
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "Icon",
+        "controlId": "Engine.FunctionalImage",
+        "properties": {
+          "texture": "/Game/Assets/Icons/classic-items-0-0.png",
+          "textureRect": [0, 0, 32, 32]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "ValueText",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              1.0,
+              0.0
+            ],
+            "max": [
+              1.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": -2.0,
+            "top": 17.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {
+          "previewText": "999"
+        },
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "title": {
+    "type": "string",
+    "value": "LudorkSample"
+  },
+  "gameSize": {
+    "type": "int[2]",
+    "value": [
+      640,
+      480
+    ]
+  },
+  "fonts": {
+    "type": "file[]",
+    "base": "Fonts",
+    "ext": [
+      ".ttf",
+      ".otf"
+    ],
+    "value": [
+      "/Game/Assets/Fonts/HarmonyOS_SansSC_Medium.ttf"
+    ]
+  },
+  "fontSize": {
+    "type": "int",
+    "value": 22
+  },
+  "icon": {
+    "type": "file",
+    "base": "System",
+    "ext": ".png",
+    "value": "/Game/Assets/System/icon.png"
+  },
+  "cursor": {
+    "type": "file",
+    "base": "System",
+    "ext": ".png",
+    "value": "/Game/Assets/System/cursor.png"
+  },
+  "titleBackgroundFile": {
+    "type": "file",
+    "base": "System",
+    "ext": ".png",
+    "value": "/Game/Assets/System/GrassBackground.png"
+  },
+  "windowskinName": {
+    "type": "file",
+    "base": "System",
+    "ext": ".png",
+    "value": "/Game/Assets/System/WS-prefix100-original2.png"
+  },
+  "coverOpaqueAlpha": {
+    "type": "int",
+    "value": 128
+  },
+  "startMap": {
+    "type": "file",
+    "root": "Data",
+    "base": "Maps",
+    "ext": [
+      ".json"
+    ],
+    "value": "Map_01.json"
+  },
+  "startPlayerBlueprint": {
+    "type": "file",
+    "root": "Data",
+    "base": "Blueprints",
+    "ext": [
+      ".json"
+    ],
+    "value": "Actors/BP_Actor_Braver.json"
+  },
+  "startRegion": {
+    "type": "string",
+    "value": "Mota"
+  },
+  "startPos": {
+    "type": "int[2]",
+    "value": [
+      6,
+      12
+    ]
+  },
+  "type": "system"
+}

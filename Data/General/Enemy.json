@@ -1,0 +1,234 @@
+{
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this enemy.",
+      "defaultValue": "NEW ENEMY"
+    },
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this enemy.",
+      "defaultValue": "NEW ENEMY DESC"
+    },
+    "MAXHP": {
+      "type": "int",
+      "comment": "The enemy\u0027s maximum HP.",
+      "defaultValue": 0
+    },
+    "ATK": {
+      "type": "int",
+      "comment": "The enemy\u0027s attack value.",
+      "defaultValue": 0
+    },
+    "DEF": {
+      "type": "int",
+      "comment": "The enemy\u0027s defence value.",
+      "defaultValue": 0
+    },
+    "EXP": {
+      "type": "int",
+      "comment": "The experience granted when the enemy is defeated.",
+      "defaultValue": 0
+    },
+    "GOLD": {
+      "type": "int",
+      "comment": "The gold granted when the enemy is defeated.",
+      "defaultValue": 0
+    },
+    "drops": {
+      "type": "dict",
+      "comment": "Item Blueprint class paths mapped to map-cell offsets from the defeated enemy.",
+      "defaultValue": {},
+      "valueType": "sf.Vector2i"
+    },
+    "special": {
+      "type": "dict",
+      "comment": "Special member IDs mapped to integer parameters, boolean flags or the Reborn Blueprint class path.",
+      "defaultValue": {},
+      "valueType": "any",
+      "reference": {
+        "kind": "general",
+        "key": "Special"
+      }
+    },
+    "ANIMATION_KEY": {
+      "type": "string",
+      "comment": "The animation played when the enemy attacks.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
+    }
+  },
+  "members": {
+    "Skeleton": {
+      "name": "{SKELETON_SODIER}",
+      "desc": "{SKELETON_SODIER_DESC}",
+      "MAXHP": 100,
+      "ATK": 70,
+      "DEF": 0,
+      "EXP": 1,
+      "GOLD": 2,
+      "drops": {},
+      "special": {
+        "Poisoning": 1,
+        "First": ""
+      },
+      "ANIMATION_KEY": "attack"
+    },
+    "Slime": {
+      "name": "{SLIME}",
+      "desc": "{SLIME_DESC}",
+      "MAXHP": 60,
+      "ATK": 15,
+      "DEF": 2,
+      "EXP": 1000,
+      "GOLD": 1000,
+      "drops": {},
+      "special": {
+        "Weaken": 2
+      },
+      "ANIMATION_KEY": "attack"
+    },
+    "Rock": {
+      "name": "{ROCK}",
+      "desc": "{ROCK_DESC}",
+      "MAXHP": 10,
+      "ATK": 15,
+      "DEF": 10,
+      "EXP": 1,
+      "GOLD": 3,
+      "drops": {},
+      "special": {
+        "Hard": ""
+      },
+      "ANIMATION_KEY": "attack"
+    },
+    "Mage": {
+      "name": "{MAGE}",
+      "desc": "{MAGE_DESC}",
+      "MAXHP": 100,
+      "ATK": 10,
+      "DEF": 12,
+      "EXP": 3,
+      "GOLD": 3,
+      "drops": {},
+      "special": {
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "waterspread"
+    },
+    "Bat": {
+      "name": "{BAT}",
+      "desc": "{BAT_DESC}",
+      "MAXHP": 100,
+      "ATK": 20,
+      "DEF": 5,
+      "EXP": 4,
+      "GOLD": 4,
+      "drops": {},
+      "special": {
+        "Vampire": 0.1
+      },
+      "ANIMATION_KEY": "attack"
+    },
+    "Knight": {
+      "name": "{KNIGHT}",
+      "desc": "{KNIGHT_DESC}",
+      "MAXHP": 66,
+      "ATK": 13,
+      "DEF": 5,
+      "EXP": 3,
+      "GOLD": 6,
+      "drops": {},
+      "special": {
+        "Compete": ""
+      },
+      "ANIMATION_KEY": "attack"
+    },
+    "Wizard": {
+      "name": "{WIZARD}",
+      "desc": "{WIZARD_DESC}",
+      "MAXHP": 500,
+      "ATK": 60,
+      "DEF": 30,
+      "EXP": 5,
+      "GOLD": 8,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Domain": 2,
+        "FixDmg": 100
+      },
+      "ANIMATION_KEY": "waterspread"
+    },
+    "WhiteKing": {
+      "name": "{WHITE_KING}",
+      "desc": "{WHITE_KING_DESC}",
+      "MAXHP": 600,
+      "ATK": 120,
+      "DEF": 50,
+      "EXP": 20,
+      "GOLD": 60,
+      "drops": {},
+      "special": {
+        "Flank": "",
+        "FixDmg": "{mHP}*0.3"
+      },
+      "ANIMATION_KEY": "watershot"
+    },
+    "BigWizard": {
+      "name": "{BIG_WIZARD}",
+      "desc": "{BIG_WIZARD_DESC}",
+      "MAXHP": 700,
+      "ATK": 90,
+      "DEF": 30,
+      "EXP": 8,
+      "GOLD": 8,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Blockade": ""
+      },
+      "ANIMATION_KEY": "watershot"
+    },
+    "GreatIron": {
+      "name": "{GREATIRON}",
+      "desc": "{GREATIRON_DESC}",
+      "MAXHP": 1000,
+      "ATK": 20,
+      "DEF": 0,
+      "EXP": 3,
+      "GOLD": 6,
+      "drops": {
+        "Data.Blueprints.Items.BP_Item_Key_B3": [
+          0,
+          0
+        ],
+        "Data.Blueprints.Items.BP_Item_Key_R3": [
+          0,
+          0
+        ]
+      },
+      "special": {
+        "MultiHit": 8,
+        "Hard": ""
+      },
+      "ANIMATION_KEY": "attack"
+    },
+    "GhostSoldier": {
+      "name": "{GHOST_SOLDIER}",
+      "desc": "{GHOST_SOLDIER_DESC}",
+      "MAXHP": 75,
+      "ATK": 50,
+      "DEF": 10,
+      "EXP": 3,
+      "GOLD": 3,
+      "drops": {},
+      "special": {
+        "Reborn": "Data.Blueprints.Enemies.BP_Enemy_Skeleton_01"
+      },
+      "ANIMATION_KEY": "attack"
+    }
+  }
+}

@@ -1,0 +1,79 @@
+---@meta
+
+---
+--- Shows player inventory items in a grid with icons and counts.
+--- Uses WindowSelectable for keyboard/mouse navigation.
+---@class Source.Windows.WindowItem.Controller: Source.UIBase.UiController
+---@field host             Source.Windows.WindowItem
+---@field _onCloseCallback function | nil
+---@field _onUseCallback   function | nil
+---@field _player          Source.Player.Player
+---@field ui               Source.UI.WindowItem
+---@field _itemList        { [1]: string, [2]: integer } []
+---@field _lastDescIndex   integer | nil
+---@field _descMaxWidth    integer
+---@field _logicalSize     sf.Vector2u | nil
+---@field _rows            Source.UIBase.UiCollection<Source.Windows.WindowItem.ItemRow.Controller>
+local Controller = {}
+
+---@brief Construct the item window.
+---
+--- - @param player The player instance with inventory.
+--- - @param onClose Optional callback invoked when the window is closed.
+---@param player  Source.Player.Player
+---@param onClose function | nil
+function Controller:init(player, onClose) end
+
+---@brief Rebind the player whose inventory is displayed.
+---@param player Source.Player.Player
+function Controller:setPlayer(player) end
+
+---@brief Update item window and render item cells.
+---
+--- - @param deltaTime Elapsed time in seconds.
+---@param deltaTime number
+function Controller:onTick(deltaTime) end
+
+---@brief Open the item window, refreshing inventory and selecting its first item.
+function Controller:open() end
+
+---@brief Refresh the currently selected item's localised name and description.
+function Controller:refreshLocale() end
+
+---@brief Close the item window.
+---@param onHidden function | nil
+function Controller:close(onHidden) end
+
+---@brief Close the item window through its cancel path.
+function Controller:onReturn() end
+
+---@return Source.Player.Player
+function Controller:getPlayer() end
+
+---@param callback function | nil
+function Controller:setOnCloseCallback(callback) end
+
+---@param callback function | nil
+function Controller:setOnUseCallback(callback) end
+
+function Controller:onItemUsed() end
+
+function Controller:notifyClosed() end
+
+function Controller:refresh() end
+
+function Controller:refreshItems() end
+
+function Controller:tick() end
+
+---@param text string
+---@return string
+function Controller:wrapDescription(text) end
+
+function Controller:updateDescription() end
+
+function Controller:useSelectedItem() end
+
+function Controller:closeByCancel() end
+
+function Controller:ready() end

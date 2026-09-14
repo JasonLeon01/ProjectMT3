@@ -1,0 +1,601 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 320,
+    "height": 64
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Enemy Book Cell",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        320,
+        64
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "EnemyIcon",
+        "controlId": "Engine.CharacterView",
+        "properties": {
+          "size": [64, 64],
+          "texture": "/Game/Assets/Characters/enemies/classic-enemies-01-slime-single.png",
+          "textureRect": [0, 0, 32, 32],
+          "characterScale": [1.0, 1.0],
+          "animatable": true,
+          "switchInterval": 0.2,
+          "shader": "",
+          "hue": 0.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Name",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 16,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 64.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {
+          "previewText": "Slime"
+        },
+        "children": []
+      },
+      {
+        "name": "SpecialIcon1",
+        "controlId": "Engine.FunctionalImage",
+        "properties": {
+          "texture": "/Game/Assets/Icons/Specials/Poisoning.png"
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 300.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 2
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "SpecialText1",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 10,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 316.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 3
+        },
+        "editor": {
+          "previewText": "Poison"
+        },
+        "children": []
+      },
+      {
+        "name": "SpecialIcon2",
+        "controlId": "Engine.FunctionalImage",
+        "properties": {
+          "texture": "/Game/Assets/Icons/Specials/Hard.png"
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 280.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 4
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "SpecialText2",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 10,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 270.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 5
+        },
+        "editor": {
+          "previewText": "Hard"
+        },
+        "children": []
+      },
+      {
+        "name": "SpecialIcon3",
+        "controlId": "Engine.FunctionalImage",
+        "properties": {
+          "texture": "/Game/Assets/Icons/Specials/Magic.png"
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 260.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 6
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "SpecialText3",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 10,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 224.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 7
+        },
+        "editor": {
+          "previewText": "Magic"
+        },
+        "children": []
+      },
+      {
+        "name": "HPLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 64.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 8
+        },
+        "editor": {
+          "previewText": "HP"
+        },
+        "children": []
+      },
+      {
+        "name": "HPValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 138.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 9
+        },
+        "editor": {
+          "previewText": "999.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "ATKLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 144.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 10
+        },
+        "editor": {
+          "previewText": "ATK"
+        },
+        "children": []
+      },
+      {
+        "name": "ATKValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 218.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 11
+        },
+        "editor": {
+          "previewText": "99.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "DEFLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 224.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 12
+        },
+        "editor": {
+          "previewText": "DEF"
+        },
+        "children": []
+      },
+      {
+        "name": "DEFValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 314.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 13
+        },
+        "editor": {
+          "previewText": "99.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "EXPLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 64.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 14
+        },
+        "editor": {
+          "previewText": "EXP"
+        },
+        "children": []
+      },
+      {
+        "name": "EXPValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 138.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 15
+        },
+        "editor": {
+          "previewText": "120K"
+        },
+        "children": []
+      },
+      {
+        "name": "GOLDLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 144.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 16
+        },
+        "editor": {
+          "previewText": "GOLD"
+        },
+        "children": []
+      },
+      {
+        "name": "GOLDValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 218.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 17
+        },
+        "editor": {
+          "previewText": "30K"
+        },
+        "children": []
+      },
+      {
+        "name": "DamageLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 224.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": true,
+          "zOrder": 18
+        },
+        "editor": {
+          "previewText": "Damage"
+        },
+        "children": []
+      },
+      {
+        "name": "DamageValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [0, 0, 0, 255],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [0.0, 0.0]
+          },
+          "offsets": {
+            "left": 314.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [1.0, 0.0],
+          "autoSize": true,
+          "zOrder": 19
+        },
+        "editor": {
+          "previewText": "79.9K"
+        },
+        "children": []
+      }
+    ]
+  }
+}

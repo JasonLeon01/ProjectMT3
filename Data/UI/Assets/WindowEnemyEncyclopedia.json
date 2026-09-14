@@ -1,0 +1,357 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 640,
+    "height": 480
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Enemy Encyclopedia",
+    "category": "Windows"
+  },
+  "animations": [
+    {
+      "name": "FadeIn",
+      "target": null,
+      "duration": 0.2,
+      "pivot": [0.5, 0.5],
+      "tracks": {
+        "scale": [
+          { "time": 0.0, "value": [0.5, 0.5] },
+          { "time": 0.2, "value": [1.0, 1.0] }
+        ],
+        "colour": [
+          { "time": 0.0, "value": [255, 255, 255, 0] },
+          { "time": 0.2, "value": [255, 255, 255, 255] }
+        ]
+      }
+    },
+    {
+      "name": "FadeOut",
+      "target": null,
+      "duration": 0.2,
+      "pivot": [0.5, 0.5],
+      "tracks": {
+        "colour": [
+          { "time": 0.0, "value": [255, 255, 255, 255] },
+          { "time": 0.2, "value": [255, 255, 255, 0] }
+        ]
+      }
+    }
+  ],
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        640,
+        480
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "WindowFrame",
+        "controlId": "Engine.Window",
+        "properties": {
+          "size": [
+            640,
+            480
+          ],
+          "windowSkin": "",
+          "repeated": false
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [1.0, 1.0]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Content",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            608,
+            448
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [0.0, 0.0],
+            "max": [1.0, 1.0]
+          },
+          "offsets": {
+            "left": 16.0,
+            "top": 16.0,
+            "right": 16.0,
+            "bottom": 16.0
+          },
+          "alignment": [0.0, 0.0],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "Portrait",
+            "controlId": "Engine.CharacterView",
+            "properties": {
+              "size": [608, 32],
+              "texture": "/Game/Assets/Characters/enemies/classic-enemies-10-king-single.png",
+              "textureRect": [0, 0, 32, 32],
+              "characterScale": [1.0, 1.0],
+              "animatable": true,
+              "switchInterval": 0.2,
+              "shader": "",
+              "hue": 0.0
+            },
+            "slot": {
+              "anchors": {
+                "min": [0.0, 0.0],
+                "max": [0.0, 0.0]
+              },
+              "offsets": {
+                "left": 304.0,
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [0.5, 0.0],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "Name",
+            "controlId": "Engine.FunctionalPlainText",
+            "properties": {
+              "characterSize": 20,
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [0.5, 0.0],
+                "max": [0.5, 0.0]
+              },
+              "offsets": {
+                "left": 0.0,
+                "top": 40.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [0.5, 0.0],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {
+              "previewText": "Ancient Dragon"
+            },
+            "children": []
+          },
+          {
+            "name": "InfoLayer",
+            "controlId": "Engine.ListView",
+            "properties": {
+              "size": [608, 96],
+              "defaultItemHeight": 32,
+              "fixItemHeight": true,
+              "columns": 3
+            },
+            "slot": {
+              "anchors": {
+                "min": [0.0, 0.0],
+                "max": [0.0, 0.0]
+              },
+              "offsets": {
+                "left": 0.0,
+                "top": 68.0,
+                "right": 608.0,
+                "bottom": 96.0
+              },
+              "alignment": [0.0, 0.0],
+              "autoSize": false,
+              "zOrder": 2
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "InfoItem1",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem2",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem3",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem4",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem5",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem6",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem7",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "InfoItem8",
+                "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaInfoPair",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "Description",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "lineAlignment": "left",
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [0.0, 0.0],
+                "max": [0.0, 0.0]
+              },
+              "offsets": {
+                "left": 0.0,
+                "top": 172.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [0.0, 0.0],
+              "autoSize": true,
+              "zOrder": 3
+            },
+            "editor": {
+              "previewText": "A fearsome enemy from the deepest floor."
+            },
+            "children": []
+          },
+          {
+            "name": "SpecialScrollBox",
+            "controlId": "Engine.ScrollBox",
+            "properties": {
+              "size": [
+                608,
+                216
+              ],
+              "windowSkin": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [0.0, 0.0],
+                "max": [1.0, 1.0]
+              },
+              "offsets": {
+                "left": 0.0,
+                "top": 232.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [0.0, 0.0],
+              "autoSize": false,
+              "zOrder": 4
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "SpecialList",
+                "controlId": "Engine.ListView",
+                "properties": {
+                  "size": [608.0, 216.0],
+                  "defaultItemHeight": 32,
+                  "fixItemHeight": false,
+                  "columns": 1
+                },
+                "slot": {},
+                "editor": {},
+                "children": [
+                  {
+                    "name": "SpecialItem1",
+                    "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaSpecialRow",
+                    "properties": {},
+                    "slot": {},
+                    "editor": {},
+                    "children": []
+                  },
+                  {
+                    "name": "SpecialItem2",
+                    "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaSpecialRow",
+                    "properties": {},
+                    "slot": {},
+                    "editor": {},
+                    "children": []
+                  },
+                  {
+                    "name": "SpecialItem3",
+                    "controlId": "Project:Parts/WindowEnemyEncyclopedia/EnemyEncyclopediaSpecialRow",
+                    "properties": {},
+                    "slot": {},
+                    "editor": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,75 @@
+{
+    "params": {
+        "name": {
+            "type": "string",
+            "comment": "The display name of this state.",
+            "defaultValue": ""
+        },
+        "desc": {
+            "type": "string",
+            "comment": "The display description of this state.",
+            "defaultValue": ""
+        },
+        "icon": {
+            "type": "file",
+            "comment": "The icon asset logical path.",
+            "base": "Icons",
+            "defaultValue": ""
+        },
+        "stackable": {
+            "type": "bool",
+            "comment": "Whether adding this state again increases the existing state's stack count.",
+            "defaultValue": false
+        }
+    },
+    "members": {
+        "Poisoned": {
+            "name": "{POISONED}",
+            "desc": "{POISONED_DESC}",
+            "_graph": {
+                "nodeGraph": {
+                    "onWalk": {
+                        "nodes": [],
+                        "links": []
+                    },
+                    "onHookTriggered": {
+                        "nodes": [],
+                        "links": []
+                    }
+                },
+                "startNodes": {
+                    "onWalk": null,
+                    "onHookTriggered": null
+                }
+            },
+            "icon": "/Game/Assets/Icons/States/Poisoned.png",
+            "stackable": true
+        },
+        "Weak": {
+            "name": "{WEAK}",
+            "desc": "{WEAK_DESC}",
+            "icon": "/Game/Assets/Icons/States/Weak.png",
+            "_graph": {
+                "nodeGraph": {
+                    "onWalk": {
+                        "nodes": [],
+                        "links": []
+                    },
+                    "onHookTriggered": {
+                        "nodes": [],
+                        "links": []
+                    }
+                },
+                "startNodes": {
+                    "onWalk": null,
+                    "onHookTriggered": null
+                }
+            },
+            "stackable": true
+        }
+    },
+    "events": [
+        "onWalk",
+        "onHookTriggered"
+    ]
+}

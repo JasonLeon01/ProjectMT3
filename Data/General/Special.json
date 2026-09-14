@@ -1,0 +1,87 @@
+{
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this special.",
+      "defaultValue": ""
+    },
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this special.",
+      "defaultValue": ""
+    },
+    "icon": {
+      "type": "file",
+      "comment": "The icon asset logical path.",
+      "base": "Icons",
+      "defaultValue": ""
+    }
+  },
+  "members": {
+    "Poisoning": {
+      "name": "{S_POISONING}",
+      "desc": "{S_POISONING_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Poisoning.png"
+    },
+    "Weaken": {
+      "name": "{S_WEAKEN}",
+      "desc": "{S_WEAKEN_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Weaken.png"
+    },
+    "Hard": {
+      "name": "{S_HARD}",
+      "desc": "{S_HARD_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Hard.png"
+    },
+    "Magic": {
+      "name": "{S_MAGIC}",
+      "desc": "{S_MAGIC_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Magic.png"
+    },
+    "MultiHit": {
+      "name": "{S_MULTIHIT}",
+      "desc": "{S_MULTIHIT_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/MultiHit.png"
+    },
+    "Compete": {
+      "name": "{S_COMPETE}",
+      "desc": "{S_COMPETE_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Compete.png"
+    },
+    "Domain": {
+      "name": "{S_DOMAIN}",
+      "desc": "{S_DOMAIN_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Domain.png"
+    },
+    "Flank": {
+      "name": "{S_FLANK}",
+      "desc": "{S_FLANK_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Flank.png"
+    },
+    "Blockade": {
+      "name": "{S_BLOCKADE}",
+      "desc": "{S_BLOCKADE_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Blockade.png"
+    },
+    "Reborn": {
+      "name": "{S_REBORN}",
+      "desc": "{S_REBORN_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Reborn.png"
+    },
+    "Vampire": {
+      "name": "{S_VAMPIRE}",
+      "desc": "{S_VAMPIRE_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Vampire.png"
+    },
+    "First": {
+      "name": "{S_FIRST}",
+      "desc": "{S_FIRST_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/First.png"
+    },
+    "FixDmg": {
+      "name": "{S_FIXDMG}",
+      "desc": "{S_FIXDMG_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/FixDmg.png"
+    }
+  }
+}

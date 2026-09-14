@@ -1,0 +1,13 @@
+---@meta Mixins.Doors.ConditionDoor
+---@class (partial) Mixins.Doors.ConditionDoor: Source.DoorBase.DoorBase
+---@field openConditionName     string
+---@field openConditionVal      integer
+---@field _conditionDoorPending boolean
+local ConditionDoor = {}
+
+function ConditionDoor:onCreate() end
+
+---@param deltaTime number
+function ConditionDoor:onTick(deltaTime) end
+
+return ConditionDoor

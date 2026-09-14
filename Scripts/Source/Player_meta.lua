@@ -1,0 +1,298 @@
+local _METADATA = {
+    Player = {
+        moduleReturn = true,
+        attrs = {
+            "ID",
+            "tickable",
+            "collisionEnabled",
+            "animatable",
+            "speed"
+        },
+        bases = {
+            { "Engine", "Character" },
+            { "Source.Battler", "Battler" }
+        },
+        ID = {
+            type = "string",
+            default = "FILL_IT_BY_YOURSELF",
+            Meta = {
+                GeneralDataVars = "Player"
+            }
+        },
+        tickable = {
+            type = "bool",
+            default = true
+        },
+        collisionEnabled = {
+            type = "bool",
+            default = true
+        },
+        animatable = {
+            type = "bool",
+            default = true
+        },
+        speed = {
+            type = "float",
+            default = 96.0
+        },
+        onFixedTick = {
+            type = "event",
+            parameters = {
+                "fixedDelta",
+                fixedDelta = "float"
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            }
+        },
+        getDisplayName = {
+            type = "function",
+            parameters = {},
+            ["return"] = { "name", name = "string" },
+            Pure = true
+        },
+        setName = {
+            type = "function",
+            parameters = { "name", name = "string" },
+            ["return"] = { "success", success = "bool" },
+            ExecSplit = { "Success", "Invalid", Success = true, Invalid = false }
+        },
+        addItem = {
+            type = "function",
+            parameters = {
+                "itemID",
+                "count",
+                itemID = "string",
+                count = "int"
+            },
+            default = {
+                [2] = 1
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            },
+            Meta = {
+                GeneralDataVars = {
+                    { "itemID", "Item" }
+                }
+            }
+        },
+        removeItem = {
+            type = "function",
+            parameters = {
+                "itemID",
+                "count",
+                itemID = "string",
+                count = "int"
+            },
+            default = {
+                [2] = 1
+            },
+            ["return"] = {
+                "return",
+                ["return"] = "bool"
+            },
+            ExecSplit = {
+                "success",
+                "failed",
+                success = { true },
+                failed = { false }
+            },
+            Meta = {
+                GeneralDataVars = {
+                    { "itemID", "Item" }
+                }
+            }
+        },
+        getItemCount = {
+            type = "function",
+            parameters = {
+                "itemID",
+                itemID = "string"
+            },
+            ["return"] = {
+                "count",
+                count = "int"
+            },
+            Pure = true,
+            Meta = {
+                GeneralDataVars = {
+                    { "itemID", "Item" }
+                }
+            }
+        },
+        hasItem = {
+            type = "function",
+            parameters = {
+                "itemID",
+                itemID = "string"
+            },
+            ["return"] = {
+                "value",
+                value = "bool"
+            },
+            Pure = true,
+            Meta = {
+                GeneralDataVars = {
+                    { "itemID", "Item" }
+                }
+            }
+        },
+        addEquip = {
+            type = "function",
+            parameters = {
+                "equipID",
+                "count",
+                equipID = "string",
+                count = "int"
+            },
+            default = {
+                [2] = 1
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            },
+            Meta = {
+                GeneralDataVars = {
+                    { "equipID", "Equip" }
+                }
+            }
+        },
+        removeEquip = {
+            type = "function",
+            parameters = {
+                "equipID",
+                "count",
+                equipID = "string",
+                count = "int"
+            },
+            default = {
+                [2] = 1
+            },
+            ["return"] = {
+                "return",
+                ["return"] = "bool"
+            },
+            ExecSplit = {
+                "success",
+                "failed",
+                success = { true },
+                failed = { false }
+            },
+            Meta = {
+                GeneralDataVars = {
+                    { "equipID", "Equip" }
+                }
+            }
+        },
+        equip = {
+            type = "function",
+            parameters = {
+                "equipID",
+                equipID = "string"
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            },
+            Meta = {
+                GeneralDataVars = {
+                    { "equipID", "Equip" }
+                }
+            }
+        },
+        unequip = {
+            type = "function",
+            parameters = {
+                "slotID",
+                slotID = "string"
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            }
+        },
+        getEquipCount = {
+            type = "function",
+            parameters = {
+                "equipID",
+                equipID = "string"
+            },
+            ["return"] = {
+                "count",
+                count = "int"
+            },
+            Pure = true,
+            Meta = {
+                GeneralDataVars = {
+                    { "equipID", "Equip" }
+                }
+            }
+        },
+        hasEquip = {
+            type = "function",
+            parameters = {
+                "equipID",
+                equipID = "string"
+            },
+            ["return"] = {
+                "value",
+                value = "bool"
+            },
+            Pure = true,
+            Meta = {
+                GeneralDataVars = {
+                    { "equipID", "Equip" }
+                }
+            }
+        },
+        getEquipInfo = {
+            type = "function",
+            parameters = {
+                "slotID",
+                slotID = "string"
+            },
+            ["return"] = {
+                "value",
+                value = "string"
+            },
+            Pure = true
+        },
+        getForbiddenMoving = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "value",
+                value = "bool"
+            },
+            Pure = true
+        },
+        setForbiddenMoving = {
+            type = "function",
+            parameters = {
+                "value",
+                value = "bool"
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            }
+        },
+        Meta = {
+            GeneralDataVars = {
+                { "ID", "Player" }
+            }
+        }
+    }
+}
+
+return _METADATA

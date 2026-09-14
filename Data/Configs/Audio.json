@@ -1,0 +1,147 @@
+{
+    "cursorSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/cursor.ogg"
+    },
+    "decisionSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/decision1.ogg"
+    },
+    "cancelSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/cancel.ogg"
+    },
+    "buzzerSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/buzzer1.ogg"
+    },
+    "shopSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/shop.ogg"
+    },
+    "saveSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/save.ogg"
+    },
+    "loadSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/load.ogg"
+    },
+    "gateSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/open1.ogg"
+    },
+    "stairSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/move.ogg"
+    },
+    "getSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/item1.ogg"
+    },
+    "equipSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/equip.ogg"
+    },
+    "titleBGM": {
+        "type": "file",
+        "base": "Musics",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Musics/To Walk the Unseen Path.mp3"
+    },
+    "type": "system"
+}

@@ -1,0 +1,17 @@
+/Log/
+/.vs/
+/Main.sln
+/build/
+/.idea/
+/cmake-build-ludork-debug/
+/CMakeUserPresets.json
+/Intermediate/
+/Cache/
+/Binaries/
+/Scripts/Source/UI/
+/Scripts/stub/Source/UI/
+/Scripts/stub/Source/UIWindows/
+/Scripts/Source/Locale/*
+!/Scripts/Source/Locale/Core.lua
+/EditorCache/
+Save/

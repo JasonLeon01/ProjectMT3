@@ -1,0 +1,69 @@
+{
+  "type": "uiAsset",
+  "designSize": { "width": 416, "height": 240 },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Floor Teleporter",
+    "category": "Windows"
+  },
+  "animations": [
+    {
+      "name": "FadeIn",
+      "target": null,
+      "duration": 0.2,
+      "pivot": [0.5, 0.5],
+      "tracks": {
+        "scale": [
+          { "time": 0.0, "value": [0.5, 0.5] },
+          { "time": 0.2, "value": [1.0, 1.0] }
+        ],
+        "colour": [
+          { "time": 0.0, "value": [255, 255, 255, 0] },
+          { "time": 0.2, "value": [255, 255, 255, 255] }
+        ]
+      }
+    },
+    {
+      "name": "FadeOut",
+      "target": null,
+      "duration": 0.2,
+      "pivot": [0.5, 0.5],
+      "tracks": {
+        "colour": [
+          { "time": 0.0, "value": [255, 255, 255, 255] },
+          { "time": 0.2, "value": [255, 255, 255, 0] }
+        ]
+      }
+    }
+  ],
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": { "size": [416, 240] },
+    "editor": {},
+    "children": [
+      {
+        "name": "PreviewAsset",
+        "controlId": "Project:Parts/WindowFloorTeleporter/WindowFloorMapPreview",
+        "properties": {},
+        "slot": {
+          "anchors": { "min": [0.0, 0.0], "max": [1.0, 1.0] },
+          "offsets": { "left": 0.0, "top": 0.0, "right": 0.0, "bottom": 0.0 },
+          "alignment": [0.0, 0.0], "autoSize": false, "zOrder": 0
+        },
+        "editor": {}, "children": []
+      },
+      {
+        "name": "CommandAsset",
+        "controlId": "Project:Parts/WindowFloorTeleporter/WindowFloorMapCommand",
+        "properties": {},
+        "slot": {
+          "anchors": { "min": [0.0, 0.0], "max": [0.0, 1.0] },
+          "offsets": { "left": 0.0, "top": 0.0, "right": 176.0, "bottom": 0.0 },
+          "alignment": [0.0, 0.0], "autoSize": false, "zOrder": 1
+        },
+        "editor": {}, "children": []
+      }
+    ]
+  }
+}
