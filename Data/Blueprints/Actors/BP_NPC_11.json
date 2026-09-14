@@ -16,7 +16,7 @@
     "defaultRect": [
       [
         0,
-        64,
+        0,
         32,
         32
       ]
@@ -37,8 +37,8 @@
           {
             "nodeFunction": "NodeFunctions.Scene.ShowMessage",
             "params": [
-              "{DN_THIEF}",
-              "{DC_NPC06_1}",
+              "{DN_ELDER}",
+              "{DC_NPC11_1}",
               null
             ],
             "pos": [
@@ -49,64 +49,13 @@
           {
             "nodeFunction": "NodeFunctions.Scene.ShowMessage",
             "params": [
-              "{DN_PRINCESS}",
-              "{DC_NPC06_2}",
+              "{DN_ELDER}",
+              "{DC_NPC11_2}",
               null
             ],
             "pos": [
               720.0,
               314.0
-            ]
-          },
-          {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
-            "params": [
-              "{DN_THIEF}",
-              "{DC_NPC06_3}",
-              null
-            ],
-            "pos": [
-              1440.0,
-              314.0
-            ]
-          },
-          {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
-            "params": [
-              "{DN_THIEF}",
-              "{DC_NPC06_4}",
-              null
-            ],
-            "pos": [
-              2160.0,
-              314.0
-            ]
-          },
-          {
-            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
-            "params": [
-              "thief9",
-              true
-            ],
-            "pos": [
-              2880,
-              314
-            ]
-          },
-          {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
-            "params": [],
-            "pos": [
-              3600,
-              314
-            ]
-          },
-          {
-            "nodeFunction": "NodeFunctions.Player.GetPlayer",
-            "params": [],
-            "pos": [
-              0,
-              954
             ]
           }
         ],
@@ -120,14 +69,7 @@
           },
           {
             "left": 0,
-            "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 4,
+            "right": 2,
             "leftOutPin": 0,
             "rightInPin": 2,
             "linkType": "Params"
@@ -138,41 +80,6 @@
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"
-          },
-          {
-            "left": 2,
-            "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
-          },
-          {
-            "left": 3,
-            "right": 4,
-            "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
-          },
-          {
-            "left": 4,
-            "right": 5,
-            "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
-          },
-          {
-            "left": 5,
-            "right": 6,
-            "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
-          },
-          {
-            "left": 7,
-            "right": 2,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
           }
         ]
       },

@@ -601,7 +601,16 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_EnemyBook",
+        "tag": "Items_BP_Item_EnemyBook_default_7_3",
+        "position": [
+          7,
+          3
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_001.Upstair_default_5_0",

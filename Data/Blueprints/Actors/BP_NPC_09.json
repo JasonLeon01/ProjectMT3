@@ -93,6 +93,44 @@
               2880.0,
               314.0
             ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "params": [],
+            "pos": [
+              0,
+              954
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Player.AddItem",
+            "params": [
+              "SDoor",
+              3
+            ],
+            "pos": [
+              3600,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
+            "pos": [
+              5040,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
+            "params": [
+              "sdoor",
+              true
+            ],
+            "pos": [
+              4320,
+              314
+            ]
           }
         ],
         "links": [
@@ -105,21 +143,7 @@
           },
           {
             "left": 0,
-            "right": 2,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
             "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 4,
             "leftOutPin": 0,
             "rightInPin": 2,
             "linkType": "Params"
@@ -155,6 +179,41 @@
           {
             "left": 4,
             "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 6,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 6,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 5,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 7,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 9,
+            "right": 8,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"

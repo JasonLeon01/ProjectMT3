@@ -1,0 +1,522 @@
+{
+  "mapName": "{MT3_022}",
+  "width": 11,
+  "height": 11,
+  "layerOrder": [
+    "floor",
+    "default"
+  ],
+  "layers": {
+    "floor": {
+      "layerName": "floor",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      ],
+      "actors": []
+    },
+    "default": {
+      "layerName": "default",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          7,
+          null,
+          7,
+          7,
+          null,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          7,
+          7,
+          null,
+          7,
+          null,
+          7,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          null,
+          7,
+          null,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          null,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      ],
+      "actors": []
+    }
+  },
+  "actors": {
+    "floor": [],
+    "default": [
+      {
+        "tag": "MT3_022.Downstair_default_2_2",
+        "bp": "Data.Blueprints.Teleportations.Downstair",
+        "position": [
+          2,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_022.Upstair_default_8_8",
+        "bp": "Data.Blueprints.Teleportations.Upstair",
+        "position": [
+          8,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Door_Y_default_8_5",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "position": [
+          8,
+          5
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Door_Y_default_6_3",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "position": [
+          6,
+          3
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Door_B_default_6_5",
+        "bp": "Data.Blueprints.Doors.BP_Door_B",
+        "position": [
+          6,
+          5
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E31_huiqishi_default_8_6",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "position": [
+          8,
+          6
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E30_baiyiwei_default_2_4",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "position": [
+          2,
+          4
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E30_baiyiwei_default_4_4",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "position": [
+          4,
+          4
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E28_fengwushi_default_6_2",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "position": [
+          6,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E27_kulouxiaoduizhang_default_6_6",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "position": [
+          6,
+          6
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E26_shixuebianfu_default_6_8",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "position": [
+          6,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E24_gongbing_default_4_8",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "position": [
+          4,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E24_gongbing_default_8_4",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "position": [
+          8,
+          4
+        ]
+      },
+      {
+        "tag": "MT3_022.Gem_GOLD_default_7_6",
+        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
+        "position": [
+          7,
+          6
+        ]
+      },
+      {
+        "tag": "MT3_022.Bottle_150_default_5_8",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "position": [
+          5,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Door_Y_default_3_6",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "position": [
+          3,
+          6
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Enemy_E25_moyushilaimu_default_2_6",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
+        "position": [
+          2,
+          6
+        ]
+      },
+      {
+        "tag": "MT3_022.Bottle_150_default_2_8",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "position": [
+          2,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_022.Bottle_150_default_8_2",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "position": [
+          8,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_022.Gem_1_2_default_5_2",
+        "bp": "Data.Blueprints.Consumables.Gem_1_2",
+        "position": [
+          5,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Item_Key_Y_default_7_2",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          7,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Item_Key_Y_default_2_7",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          2,
+          7
+        ]
+      },
+      {
+        "tag": "MT3_022.BP_Barrier_50_default_3_3",
+        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "position": [
+          3,
+          3
+        ]
+      }
+    ]
+  },
+  "ambientLight": [
+    255,
+    255,
+    255
+  ],
+  "lights": [],
+  "bgm": "/Game/Assets/Musics/sound-2.mp3",
+  "bgmFilter": {},
+  "bgs": "",
+  "bgsFilter": {},
+  "fog": "",
+  "fogPower": 0,
+  "fogOx": 0,
+  "fogOy": 0,
+  "fogDistort": 0,
+  "panorama": "",
+  "BPClassVarChanged": {
+    "MT3_022.Gem_GOLD_default_7_6": {
+      "plus": 200
+    }
+  },
+  "type": "map"
+}

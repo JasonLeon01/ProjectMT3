@@ -1,8 +1,9 @@
 {
-  "parent": "Source.Item",
+  "parent": "Source.ConditionalActor.ConditionalActor",
   "attrs": {
+    "animatable": true,
     "material": {
-      "lightBlock": 0.24,
+      "lightBlock": 0.4,
       "mirror": false,
       "reflectionStrength": 0.5,
       "opacity": 1.0,
@@ -10,24 +11,37 @@
     },
     "collisionEnabled": true,
     "tickable": false,
-    "texturePath": "/Game/Assets/Characters/items/mting-1267.png",
+    "texturePath": "/Game/Assets/Characters/npcs/classic-npcs-50F-single.png",
+    "tag": "",
     "defaultRect": [
       [
-        1,
-        1,
+        0,
+        0,
         32,
         32
       ]
     ],
-    "ID": "EnemyBook",
-    "tag": "",
-    "conditionVariable": "mbook",
+    "conditionVariable": "sdoor",
     "conditionValue": true
   },
   "graph": {
     "nodeGraph": {
       "onCollision": {
-        "nodes": [],
+        "nodes": [
+          {
+            "nodeFunction": "NodeFunctions.Scene.OpenShop",
+            "params": [
+              [
+                "SDoor"
+              ],
+              false
+            ],
+            "pos": [
+              0,
+              314
+            ]
+          }
+        ],
         "links": []
       },
       "onCreate": {
@@ -53,21 +67,16 @@
       "onTick": {
         "nodes": [],
         "links": []
-      },
-      "onUse": {
-        "nodes": [],
-        "links": []
       }
     },
     "startNodes": {
-      "onCollision": null,
+      "onCollision": 0,
       "onCreate": null,
       "onDestroy": null,
       "onFixedTick": null,
       "onLateTick": null,
       "onOverlap": null,
-      "onTick": null,
-      "onUse": null
+      "onTick": null
     }
   },
   "type": "blueprint"

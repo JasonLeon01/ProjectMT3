@@ -601,7 +601,24 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Transfer_17",
+        "tag": "Teleportations_BP_Transfer_17_default_4_10",
+        "position": [
+          4,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_NPC_092",
+        "tag": "Actors_BP_NPC_092_default_7_1",
+        "position": [
+          7,
+          1
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_017.Downstair_default_8_0",

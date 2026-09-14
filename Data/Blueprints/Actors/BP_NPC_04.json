@@ -83,22 +83,30 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.AddItem",
-            "params": [
-              "Teleport",
-              1
-            ],
-            "pos": [
-              2880.0,
-              634.0
-            ]
-          },
-          {
             "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
-              3600.0,
-              634.0
+              3600,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
+            "params": [
+              "fly",
+              true
+            ],
+            "pos": [
+              2880,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "params": [],
+            "pos": [
+              0,
+              954
             ]
           }
         ],
@@ -112,21 +120,7 @@
           },
           {
             "left": 0,
-            "right": 2,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
             "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 4,
             "leftOutPin": 0,
             "rightInPin": 2,
             "linkType": "Params"
@@ -154,17 +148,31 @@
           },
           {
             "left": 4,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 6,
             "right": 5,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"
           },
           {
-            "left": 5,
-            "right": 6,
+            "left": 7,
+            "right": 2,
             "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 7,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
           }
         ]
       },

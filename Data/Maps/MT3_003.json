@@ -601,7 +601,16 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Teleport",
+        "tag": "Items_BP_Item_Teleport_default_0_7",
+        "position": [
+          0,
+          7
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_003.Downstair_default_0_5",

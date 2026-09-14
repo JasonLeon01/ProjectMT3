@@ -8,6 +8,10 @@ local _METADATA = {
             "DoorGate7",
             "MTExample",
             "ShopPrice",
+            "fly",
+            "mbook",
+            "net1",
+            "sdoor",
             "thief9",
             "thief9door",
         },
@@ -25,6 +29,18 @@ local _METADATA = {
         },
         ["ShopPrice"] = {
             type = "int",
+        },
+        ["fly"] = {
+            type = "bool",
+        },
+        ["mbook"] = {
+            type = "bool",
+        },
+        ["net1"] = {
+            type = "bool",
+        },
+        ["sdoor"] = {
+            type = "bool",
         },
         ["thief9"] = {
             type = "bool",

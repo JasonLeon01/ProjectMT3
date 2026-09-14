@@ -10,9 +10,11 @@
     },
     "collisionEnabled": true,
     "tickable": false,
-    "texturePath": "/Game/Assets/Characters/items/classic-items.png",
+    "texturePath": "/Game/Assets/Characters/items/mting-1279.png",
     "ID": "ReflectionNet",
-    "tag": ""
+    "tag": "",
+    "conditionVariable": "net1",
+    "conditionValue": true
   },
   "graph": {
     "nodeGraph": {

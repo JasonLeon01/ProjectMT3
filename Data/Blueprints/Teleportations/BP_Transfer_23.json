@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.Teleporter.Teleporter",
   "attrs": {
     "material": {
       "lightBlock": 0.16,
@@ -8,18 +8,18 @@
       "opacity": 1.0,
       "speedRate": 1.0
     },
-    "collisionEnabled": true,
-    "tickable": false,
-    "texturePath": "/Game/Assets/Characters/blocks/stairs.png",
+    "texturePath": "/Game/Assets/Characters/blocks/Other401.png",
     "defaultRect": [
       [
-        32,
         0,
+        96,
         32,
         32
       ]
     ],
-    "tag": ""
+    "tag": "",
+    "transitionName": "",
+    "animatable": true
   },
   "graph": {
     "nodeGraph": {
@@ -46,24 +46,13 @@
       "onOverlap": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Scene.TransferToMap",
-            "params": [
-              "MT3_017.json",
-              null
-            ],
-            "pos": [
-              0.0,
-              314.0
-            ]
-          },
-          {
             "nodeFunction": "NodeFunctions.Player.MeetPlayer",
             "params": [
               []
             ],
             "pos": [
-              -720.0,
-              564.0
+              -1440,
+              634
             ]
           },
           {
@@ -72,8 +61,8 @@
               false
             ],
             "pos": [
-              0.0,
-              0.0
+              0,
+              314
             ]
           },
           {
@@ -82,21 +71,44 @@
               null
             ],
             "pos": [
-              -360.0,
-              564.0
+              -720,
+              634
+            ]
+          },
+          {
+            "nodeFunction": "Teleporter.goToMap",
+            "params": [
+              "self",
+              "MT3_023_secret.json",
+              [
+                2,
+                8
+              ],
+              false
+            ],
+            "pos": [
+              720,
+              314
             ]
           }
         ],
         "links": [
           {
             "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 2,
             "right": 1,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Params"
           },
           {
-            "left": 3,
+            "left": 0,
             "right": 2,
             "leftOutPin": 0,
             "rightInPin": 0,
@@ -105,13 +117,6 @@
           {
             "left": 1,
             "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Params"
-          },
-          {
-            "left": 2,
-            "right": 0,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"
@@ -129,7 +134,7 @@
       "onDestroy": null,
       "onFixedTick": null,
       "onLateTick": null,
-      "onOverlap": 2,
+      "onOverlap": 1,
       "onTick": null
     }
   },

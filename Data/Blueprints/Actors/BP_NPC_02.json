@@ -131,22 +131,30 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.AddItem",
-            "params": [
-              "EnemyBook",
-              1
-            ],
-            "pos": [
-              5040.0,
-              634.0
-            ]
-          },
-          {
             "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
-              6480.0,
-              634.0
+              6480,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
+            "params": [
+              "mbook",
+              true
+            ],
+            "pos": [
+              5760,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "params": [],
+            "pos": [
+              0,
+              954
             ]
           }
         ],
@@ -160,21 +168,7 @@
           },
           {
             "left": 0,
-            "right": 2,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
             "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 4,
             "leftOutPin": 0,
             "rightInPin": 2,
             "linkType": "Params"
@@ -188,21 +182,7 @@
           },
           {
             "left": 0,
-            "right": 6,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
             "right": 7,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 8,
             "leftOutPin": 0,
             "rightInPin": 2,
             "linkType": "Params"
@@ -258,17 +238,45 @@
           },
           {
             "left": 8,
+            "right": 10,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 10,
             "right": 9,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"
           },
           {
-            "left": 9,
-            "right": 10,
+            "left": 11,
+            "right": 2,
             "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 11,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 11,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 11,
+            "right": 8,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
           }
         ]
       },

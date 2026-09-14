@@ -6,6 +6,10 @@ return {
     ["DoorGate7"] = 0,
     ["MTExample"] = 0,
     ["ShopPrice"] = 20,
+    ["fly"] = false,
+    ["mbook"] = false,
+    ["net1"] = false,
+    ["sdoor"] = false,
     ["thief9"] = false,
     ["thief9door"] = 0,
 }
