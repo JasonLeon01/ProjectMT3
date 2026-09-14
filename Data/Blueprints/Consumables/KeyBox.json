@@ -11,11 +11,11 @@
       "speedRate": 1.0
     },
     "collisionEnabled": true,
-    "texturePath": "/Game/Assets/Characters/items/classic-items.png",
+    "texturePath": "/Game/Assets/Characters/items/classic-keys.png",
     "defaultRect": [
       [
-        128,
         0,
+        32,
         32,
         32
       ]

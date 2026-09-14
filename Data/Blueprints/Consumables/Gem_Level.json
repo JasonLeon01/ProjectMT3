@@ -11,7 +11,7 @@
       "speedRate": 1.0
     },
     "collisionEnabled": true,
-    "texturePath": "/Game/Assets/Characters/items/classic-gems.png",
+    "texturePath": "/Game/Assets/Characters/items/classic-items.png",
     "lightComp": {
       "lightColour": [
         255,
@@ -26,7 +26,7 @@
     "plus": 1,
     "defaultRect": [
       [
-        96,
+        64,
         0,
         32,
         32
