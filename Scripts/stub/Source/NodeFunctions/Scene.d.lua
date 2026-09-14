@@ -271,4 +271,12 @@ function Scene.OpenAttrShop(actor, shopName, shopDescription, abilities, price, 
 ---@return function
 function Scene.OpenAttrShopByTag(actorTag, shopName, shopDescription, abilities, price, priceIncrement, moneyName) end
 
+---@brief Transfer the player to another map using floor-transfer flow.
+---
+--- - @param mapPath Target map path relative to Data/Maps, such as `MT3_017.json`.
+--- - @param position Optional anchor position used to pick the nearest teleporter on the target map.
+---@param mapPath  string
+---@param position sf.Vector2i | nil
+function Scene.TransferToMap(mapPath, position) end
+
 return Scene

@@ -64,6 +64,11 @@
       "comment": "The player\u0027s starting maximum breath.",
       "defaultValue": 0
     },
+    "magic": {
+      "type": "int",
+      "comment": "The player\u0027s starting magic value.",
+      "defaultValue": 0
+    },
     "ANIMATION_KEY": {
       "type": "string",
       "comment": "The animation played when the player attacks.",
@@ -87,6 +92,23 @@
       "LEVEL": 1,
       "breath": 0,
       "breathLimit": 300,
+      "magic": 0,
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "Princess": {
+      "name": "",
+      "desc": "",
+      "CLASS": "Princess",
+      "MAXHP": 3000,
+      "HP": 500,
+      "ATK": 6,
+      "DEF": 6,
+      "EXP": 0,
+      "GOLD": 0,
+      "LEVEL": 1,
+      "breath": 0,
+      "breathLimit": 300,
+      "magic": 0,
       "ANIMATION_KEY": "00_kongshou"
     }
   }

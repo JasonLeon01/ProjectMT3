@@ -11,6 +11,7 @@ local GeneralDataKey = {
 }
 
 local Class = {
+    Princess = "Princess",
     Warrior = "Warrior",
 }
 
@@ -147,6 +148,7 @@ local Item = {
 
 local Player = {
     Bravor = "Bravor",
+    Princess = "Princess",
 }
 
 local Special = {

@@ -1,0 +1,148 @@
+{
+  "parent": "Source.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "animatable": true,
+    "material": {
+      "lightBlock": 0.4,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/npcs/classic-npcs-50F-single.png",
+    "tag": "",
+    "defaultRect": [
+      [
+        96,
+        32,
+        32,
+        32
+      ]
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [
+          {
+            "nodeFunction": "NodeFunctions.Utils.SELF",
+            "params": [],
+            "pos": [
+              -720.0,
+              634.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_ELDER}",
+              "{DC_NPC07_1}",
+              null
+            ],
+            "pos": [
+              0.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_ELDER}",
+              "{DC_NPC07_2}",
+              null
+            ],
+            "pos": [
+              720.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_ELDER}",
+              "{DC_NPC07_3}",
+              null
+            ],
+            "pos": [
+              1440.0,
+              314.0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": 0,
+            "right": 1,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 1,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 2,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          }
+        ]
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": 1,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

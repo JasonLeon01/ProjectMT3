@@ -60,7 +60,7 @@
     "ext": [
       ".json"
     ],
-    "value": "Map_01.json"
+    "value": "MT3_000.json"
   },
   "startPlayerBlueprint": {
     "type": "file",
@@ -69,7 +69,7 @@
     "ext": [
       ".json"
     ],
-    "value": "Actors/BP_Actor_Braver.json"
+    "value": "Actors/BP_Actor_Princess.json"
   },
   "startRegion": {
     "type": "string",
@@ -78,8 +78,8 @@
   "startPos": {
     "type": "int[2]",
     "value": [
-      6,
-      12
+      5,
+      1
     ]
   },
   "type": "system"

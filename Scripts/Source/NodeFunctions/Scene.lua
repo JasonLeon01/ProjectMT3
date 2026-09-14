@@ -346,4 +346,23 @@ function Scene.OpenAttrShopByTag(actorTag, shopName, shopDescription, abilities,
     return Scene.OpenAttrShop(actor, shopName, shopDescription, abilities, price, priceIncrement, moneyName)
 end
 
+function Scene.TransferToMap(mapPath, position)
+    assert(Class.isInstance(mapPath, "string") and bool(mapPath), "TransferToMap requires a map path")
+    local scene = Context.RequireSceneMap()
+    local gameMap = scene:getGameMap()
+    local player = gameMap:getPlayer()
+    if player == nil then
+        return
+    end
+    local moveEnabled = player:getMoveEnabled()
+    local anchor = position
+    if anchor == nil then
+        anchor = player:getMapPosition()
+    end
+    player:setMoveEnabled(false)
+    if not scene:requestFloorTransfer(mapPath, anchor, moveEnabled) then
+        player:setMoveEnabled(moveEnabled)
+    end
+end
+
 return Scene

@@ -6,16 +6,26 @@ local Gem = {}
 
 Gem.ATTR_key = ""
 Gem.plus = 0
+Gem.ATTR_key2 = ""
+Gem.plus2 = 0
 Gem.getSE = ""
+
+local function applyGemModifier(player, attrKey, plus)
+    if not bool(attrKey) then
+        return
+    end
+    local schema = assert(
+        player.attributes:getAttributeSchema(attrKey), "Gem attribute is not in the player AttributeSet"
+    )
+    assert(schema.type == "int" or schema.type == "float", "Gem attribute must be numeric")
+    Effects.ApplyInstantModifier(player, "Consumable.Gem." .. attrKey, attrKey, "Add", plus)
+end
 
 function Gem:onCollision(other)
     local parentCollision = super().onCollision
     Pickup.HandleCollision(self, other, parentCollision, function (player)
-        local schema = assert(
-            player.attributes:getAttributeSchema(self.ATTR_key), "Gem attribute is not in the player AttributeSet"
-        )
-        assert(schema.type == "int" or schema.type == "float", "Gem attribute must be numeric")
-        Effects.ApplyInstantModifier(player, "Consumable.Gem." .. self.ATTR_key, self.ATTR_key, "Add", self.plus)
+        applyGemModifier(player, self.ATTR_key, self.plus)
+        applyGemModifier(player, self.ATTR_key2, self.plus2)
     end)
 end
 

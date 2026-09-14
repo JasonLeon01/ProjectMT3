@@ -1,0 +1,73 @@
+{
+  "parent": "Source.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "scriptMixin": true,
+    "scriptPath": "Consumables/Gem.lua",
+    "material": {
+      "lightBlock": 0.16,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "texturePath": "/Game/Assets/Characters/items/classic-gems.png",
+    "lightComp": {
+      "lightColour": [
+        255,
+        96,
+        96,
+        128
+      ],
+      "lightRadius": 16.0
+    },
+    "tag": "",
+    "ATTR_key": "breathLimit",
+    "plus": -1,
+    "defaultRect": [
+      [
+        0,
+        64,
+        32,
+        32
+      ]
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

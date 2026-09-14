@@ -694,6 +694,24 @@ local _METADATA = {
                     true
                 }
             }
+        },
+        TransferToMap = {
+            type = "function",
+            parameters = {
+                "mapPath",
+                "position",
+                mapPath = "string",
+                position = "sf.Vector2i"
+            },
+            default = {
+                [1] = "",
+                [2] = nil
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            }
         }
     }
 }

@@ -70,7 +70,7 @@ ItemAttributeSet = class(ItemAttributeSet, AttributeSet)
 
 local PlayerAttributeSet = {}
 PlayerAttributeSet.ATTRIBUTE_NAMES = {
-    "name", "desc", "CLASS", "MAXHP", "HP", "ATK", "DEF", "EXP", "GOLD", "LEVEL", "breath", "breathLimit", "ANIMATION_KEY"
+    "name", "desc", "CLASS", "MAXHP", "HP", "ATK", "DEF", "EXP", "GOLD", "LEVEL", "breath", "breathLimit", "magic", "ANIMATION_KEY"
 }
 PlayerAttributeSet.SCHEMA = {
     name = { type = "string", default = "" },
@@ -85,6 +85,7 @@ PlayerAttributeSet.SCHEMA = {
     LEVEL = { type = "int", default = 1 },
     breath = { type = "int", default = 0 },
     breathLimit = { type = "int", default = 0 },
+    magic = { type = "int", default = 0 },
     ANIMATION_KEY = { type = "string", default = "" }
 }
 PlayerAttributeSet.init = initAttributeSet

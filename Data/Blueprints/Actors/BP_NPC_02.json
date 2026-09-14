@@ -1,0 +1,311 @@
+{
+  "parent": "Source.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "animatable": true,
+    "material": {
+      "lightBlock": 0.4,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/npcs/classic-npcs-50F-single.png",
+    "tag": "",
+    "defaultRect": [
+      [
+        0,
+        0,
+        32,
+        32
+      ]
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [
+          {
+            "nodeFunction": "NodeFunctions.Utils.SELF",
+            "params": [],
+            "pos": [
+              -720.0,
+              634.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_HEART_ELDER}",
+              "{DC_NPC02_1}",
+              null
+            ],
+            "pos": [
+              0.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC02_2}",
+              null
+            ],
+            "pos": [
+              720.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_HEART_ELDER}",
+              "{DC_NPC02_3}",
+              null
+            ],
+            "pos": [
+              1440.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC02_4}",
+              null
+            ],
+            "pos": [
+              2160.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_HEART_ELDER}",
+              "{DC_NPC02_5}",
+              null
+            ],
+            "pos": [
+              2880.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC02_6}",
+              null
+            ],
+            "pos": [
+              3600.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_HEART_ELDER}",
+              "{DC_NPC02_7}",
+              null
+            ],
+            "pos": [
+              4320.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC02_8}",
+              null
+            ],
+            "pos": [
+              5040.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Player.AddItem",
+            "params": [
+              "EnemyBook",
+              1
+            ],
+            "pos": [
+              5040.0,
+              634.0
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
+            "pos": [
+              6480.0,
+              634.0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": 0,
+            "right": 1,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 8,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 1,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 2,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 3,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 4,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 6,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 7,
+            "right": 8,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 8,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 9,
+            "right": 10,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          }
+        ]
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": 1,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

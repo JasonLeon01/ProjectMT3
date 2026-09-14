@@ -16,6 +16,7 @@ local GeneralDataKey = {}
 
 --- @brief Class member keys.
 ---@class Source.Configs.GeneralEnum.Class
+---@field Princess string
 ---@field Warrior string
 ---@type Source.Configs.GeneralEnum.Class
 local Class = {}
@@ -160,6 +161,7 @@ local Item = {}
 --- @brief Player member keys.
 ---@class Source.Configs.GeneralEnum.Player
 ---@field Bravor string
+---@field Princess string
 ---@type Source.Configs.GeneralEnum.Player
 local Player = {}
 

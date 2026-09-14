@@ -26,6 +26,14 @@
         "shield": "",
         "accessory": ""
       }
+    },
+    "Princess": {
+      "name": "",
+      "desc": "",
+      "slot": {
+        "weapon": "",
+        "shield": ""
+      }
     }
   }
 }
