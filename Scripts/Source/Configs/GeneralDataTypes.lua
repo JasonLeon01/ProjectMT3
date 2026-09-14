@@ -25,7 +25,7 @@ ClassAttributeSet = class(ClassAttributeSet, AttributeSet)
 
 local EnemyAttributeSet = {}
 EnemyAttributeSet.ATTRIBUTE_NAMES = {
-    "name", "desc", "MAXHP", "ATK", "DEF", "EXP", "GOLD", "drops", "special", "ANIMATION_KEY"
+    "name", "desc", "MAXHP", "ATK", "DEF", "EXP", "GOLD", "breathLimit", "drops", "special", "ANIMATION_KEY"
 }
 EnemyAttributeSet.SCHEMA = {
     name = { type = "string", default = "NEW ENEMY" },
@@ -35,6 +35,7 @@ EnemyAttributeSet.SCHEMA = {
     DEF = { type = "int", default = 0 },
     EXP = { type = "int", default = 0 },
     GOLD = { type = "int", default = 0 },
+    breathLimit = { type = "int", default = 0 },
     drops = { type = {dict = "sf.Vector2i"}, default = {} },
     special = { type = {dict = "any"}, default = {} },
     ANIMATION_KEY = { type = "string", default = "" }
@@ -69,7 +70,7 @@ ItemAttributeSet = class(ItemAttributeSet, AttributeSet)
 
 local PlayerAttributeSet = {}
 PlayerAttributeSet.ATTRIBUTE_NAMES = {
-    "name", "desc", "CLASS", "MAXHP", "HP", "ATK", "DEF", "EXP", "GOLD", "LEVEL", "ANIMATION_KEY"
+    "name", "desc", "CLASS", "MAXHP", "HP", "ATK", "DEF", "EXP", "GOLD", "LEVEL", "breath", "breathLimit", "ANIMATION_KEY"
 }
 PlayerAttributeSet.SCHEMA = {
     name = { type = "string", default = "" },
@@ -82,6 +83,8 @@ PlayerAttributeSet.SCHEMA = {
     EXP = { type = "int", default = 0 },
     GOLD = { type = "int", default = 0 },
     LEVEL = { type = "int", default = 1 },
+    breath = { type = "int", default = 0 },
+    breathLimit = { type = "int", default = 0 },
     ANIMATION_KEY = { type = "string", default = "" }
 }
 PlayerAttributeSet.init = initAttributeSet

@@ -1,81 +1,93 @@
 {
-    "params": {
-        "name": {
-            "type": "string",
-            "comment": "The display name of this player preset.",
-            "defaultValue": ""
-        },
-        "desc": {
-            "type": "string",
-            "comment": "The display description of this player preset.",
-            "defaultValue": ""
-        },
-        "CLASS": {
-            "type": "string",
-            "comment": "The Class member ID that defines the player's equipment slots and initial equipment.",
-            "defaultValue": "",
-            "reference": {
-                "kind": "general",
-                "key": "Class"
-            }
-        },
-        "MAXHP": {
-            "type": "int",
-            "comment": "The player's starting maximum HP.",
-            "defaultValue": 1000
-        },
-        "HP": {
-            "type": "int",
-            "comment": "The player's starting current HP.",
-            "defaultValue": 1000
-        },
-        "ATK": {
-            "type": "int",
-            "comment": "The player's starting attack value.",
-            "defaultValue": 10
-        },
-        "DEF": {
-            "type": "int",
-            "comment": "The player's starting defence value.",
-            "defaultValue": 10
-        },
-        "EXP": {
-            "type": "int",
-            "comment": "The player's starting experience.",
-            "defaultValue": 0
-        },
-        "GOLD": {
-            "type": "int",
-            "comment": "The player's starting gold.",
-            "defaultValue": 0
-        },
-        "LEVEL": {
-            "type": "int",
-            "comment": "The player's starting level.",
-            "defaultValue": 1
-        },
-        "ANIMATION_KEY": {
-            "type": "string",
-            "comment": "The animation played when the player attacks.",
-            "defaultValue": "",
-            "reference": {
-                "kind": "animation"
-            }
-        }
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this player preset.",
+      "defaultValue": ""
     },
-    "members": {
-        "Bravor": {
-            "name": "{BRAVOR}",
-            "desc": "{BRAVOR_DESC}",
-            "CLASS": "Warrior",
-            "MAXHP": 2000,
-            "HP": 1000,
-            "ATK": 10,
-            "DEF": 10,
-            "EXP": 0,
-            "GOLD": 0,
-            "LEVEL": 1,
-            "ANIMATION_KEY": "attack"
-        }
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this player preset.",
+      "defaultValue": ""
+    },
+    "CLASS": {
+      "type": "string",
+      "comment": "The Class member ID that defines the player\u0027s equipment slots and initial equipment.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "general",
+        "key": "Class"
+      }
+    },
+    "MAXHP": {
+      "type": "int",
+      "comment": "The player\u0027s starting maximum HP.",
+      "defaultValue": 1000
+    },
+    "HP": {
+      "type": "int",
+      "comment": "The player\u0027s starting current HP.",
+      "defaultValue": 1000
+    },
+    "ATK": {
+      "type": "int",
+      "comment": "The player\u0027s starting attack value.",
+      "defaultValue": 10
+    },
+    "DEF": {
+      "type": "int",
+      "comment": "The player\u0027s starting defence value.",
+      "defaultValue": 10
+    },
+    "EXP": {
+      "type": "int",
+      "comment": "The player\u0027s starting experience.",
+      "defaultValue": 0
+    },
+    "GOLD": {
+      "type": "int",
+      "comment": "The player\u0027s starting gold.",
+      "defaultValue": 0
+    },
+    "LEVEL": {
+      "type": "int",
+      "comment": "The player\u0027s starting level.",
+      "defaultValue": 1
+    },
+    "breath": {
+      "type": "int",
+      "comment": "The player\u0027s starting current breath.",
+      "defaultValue": 0
+    },
+    "breathLimit": {
+      "type": "int",
+      "comment": "The player\u0027s starting maximum breath.",
+      "defaultValue": 0
+    },
+    "ANIMATION_KEY": {
+      "type": "string",
+      "comment": "The animation played when the player attacks.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
     }
+  },
+  "members": {
+    "Bravor": {
+      "name": "{BRAVOR}",
+      "desc": "{BRAVOR_DESC}",
+      "CLASS": "Warrior",
+      "MAXHP": 2000,
+      "HP": 1000,
+      "ATK": 10,
+      "DEF": 10,
+      "EXP": 0,
+      "GOLD": 0,
+      "LEVEL": 1,
+      "breath": 0,
+      "breathLimit": 300,
+      "ANIMATION_KEY": "00_kongshou"
+    }
+  }
 }

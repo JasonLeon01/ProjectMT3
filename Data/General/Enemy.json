@@ -12,17 +12,17 @@
     },
     "MAXHP": {
       "type": "int",
-      "comment": "The enemy\u0027s maximum HP.",
+      "comment": "The enemy's maximum HP.",
       "defaultValue": 0
     },
     "ATK": {
       "type": "int",
-      "comment": "The enemy\u0027s attack value.",
+      "comment": "The enemy's attack value.",
       "defaultValue": 0
     },
     "DEF": {
       "type": "int",
-      "comment": "The enemy\u0027s defence value.",
+      "comment": "The enemy's defence value.",
       "defaultValue": 0
     },
     "EXP": {
@@ -33,6 +33,11 @@
     "GOLD": {
       "type": "int",
       "comment": "The gold granted when the enemy is defeated.",
+      "defaultValue": 0
+    },
+    "breathLimit": {
+      "type": "int",
+      "comment": "The enemy's maximum breath.",
       "defaultValue": 0
     },
     "drops": {
@@ -69,6 +74,7 @@
       "DEF": 0,
       "EXP": 1,
       "GOLD": 2,
+      "breathLimit": 0,
       "drops": {},
       "special": {
         "Poisoning": 1,
@@ -84,6 +90,7 @@
       "DEF": 2,
       "EXP": 1000,
       "GOLD": 1000,
+      "breathLimit": 0,
       "drops": {},
       "special": {
         "Weaken": 2
@@ -102,7 +109,8 @@
       "special": {
         "Hard": ""
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "breathLimit": 0
     },
     "Mage": {
       "name": "{MAGE}",
@@ -116,7 +124,8 @@
       "special": {
         "Magic": ""
       },
-      "ANIMATION_KEY": "waterspread"
+      "ANIMATION_KEY": "waterspread",
+      "breathLimit": 0
     },
     "Bat": {
       "name": "{BAT}",
@@ -130,7 +139,8 @@
       "special": {
         "Vampire": 0.1
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "breathLimit": 0
     },
     "Knight": {
       "name": "{KNIGHT}",
@@ -144,7 +154,8 @@
       "special": {
         "Compete": ""
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "breathLimit": 0
     },
     "Wizard": {
       "name": "{WIZARD}",
@@ -160,7 +171,8 @@
         "Domain": 2,
         "FixDmg": 100
       },
-      "ANIMATION_KEY": "waterspread"
+      "ANIMATION_KEY": "waterspread",
+      "breathLimit": 0
     },
     "WhiteKing": {
       "name": "{WHITE_KING}",
@@ -175,7 +187,8 @@
         "Flank": "",
         "FixDmg": "{mHP}*0.3"
       },
-      "ANIMATION_KEY": "watershot"
+      "ANIMATION_KEY": "watershot",
+      "breathLimit": 0
     },
     "BigWizard": {
       "name": "{BIG_WIZARD}",
@@ -190,7 +203,8 @@
         "Magic": "",
         "Blockade": ""
       },
-      "ANIMATION_KEY": "watershot"
+      "ANIMATION_KEY": "watershot",
+      "breathLimit": 0
     },
     "GreatIron": {
       "name": "{GREATIRON}",
@@ -214,7 +228,8 @@
         "MultiHit": 8,
         "Hard": ""
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "breathLimit": 0
     },
     "GhostSoldier": {
       "name": "{GHOST_SOLDIER}",
@@ -228,7 +243,1420 @@
       "special": {
         "Reborn": "Data.Blueprints.Enemies.BP_Enemy_Skeleton_01"
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "breathLimit": 0
+    },
+    "E00_shilaimu": {
+      "name": "{E00_SHILAIMU}",
+      "desc": "{E00_SHILAIMU_DESC}",
+      "MAXHP": 40,
+      "ATK": 18,
+      "DEF": 2,
+      "EXP": 1,
+      "GOLD": 0,
+      "breathLimit": 25,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E01_hongseshilaimu": {
+      "name": "{E01_HONGSESHILAIMU}",
+      "desc": "{E01_HONGSESHILAIMU_DESC}",
+      "MAXHP": 50,
+      "ATK": 20,
+      "DEF": 1,
+      "EXP": 1,
+      "GOLD": 1,
+      "breathLimit": 25,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E02_bianfu": {
+      "name": "{E02_BIANFU}",
+      "desc": "{E02_BIANFU_DESC}",
+      "MAXHP": 40,
+      "ATK": 28,
+      "DEF": 3,
+      "EXP": 1,
+      "GOLD": 2,
+      "breathLimit": 27,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E03_shuishushi": {
+      "name": "{E03_SHUISHUSHI}",
+      "desc": "{E03_SHUISHUSHI_DESC}",
+      "MAXHP": 55,
+      "ATK": 15,
+      "DEF": 5,
+      "EXP": 1,
+      "GOLD": 3,
+      "breathLimit": 35,
+      "drops": {},
+      "special": {
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "06_shui"
+    },
+    "E04_shouwei": {
+      "name": "{E04_SHOUWEI}",
+      "desc": "{E04_SHOUWEI_DESC}",
+      "MAXHP": 30,
+      "ATK": 50,
+      "DEF": 50,
+      "EXP": 1,
+      "GOLD": 4,
+      "breathLimit": 33,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E05_leishushi": {
+      "name": "{E05_LEISHUSHI}",
+      "desc": "{E05_LEISHUSHI_DESC}",
+      "MAXHP": 110,
+      "ATK": 28,
+      "DEF": 32,
+      "EXP": 1,
+      "GOLD": 4,
+      "breathLimit": 60,
+      "drops": {},
+      "special": {
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "10_lei"
+    },
+    "E06_kulou": {
+      "name": "{E06_KULOU}",
+      "desc": "{E06_KULOU_DESC}",
+      "MAXHP": 75,
+      "ATK": 55,
+      "DEF": 0,
+      "EXP": 1,
+      "GOLD": 4,
+      "breathLimit": 40,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E07_heiseshilaimu": {
+      "name": "{E07_HEISESHILAIMU}",
+      "desc": "{E07_HEISESHILAIMU_DESC}",
+      "MAXHP": 75,
+      "ATK": 30,
+      "DEF": 10,
+      "EXP": 1,
+      "GOLD": 4,
+      "breathLimit": 29,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E08_shilaimuren": {
+      "name": "{E08_SHILAIMUREN}",
+      "desc": "{E08_SHILAIMUREN_DESC}",
+      "MAXHP": 120,
+      "ATK": 64,
+      "DEF": 40,
+      "EXP": 1,
+      "GOLD": 5,
+      "breathLimit": 31,
+      "drops": {},
+      "special": {
+        "MultiHit": 2,
+        "Mucus": 1
+      },
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E09_sangshi": {
+      "name": "{E09_SANGSHI}",
+      "desc": "{E09_SANGSHI_DESC}",
+      "MAXHP": 90,
+      "ATK": 55,
+      "DEF": 38,
+      "EXP": 2,
+      "GOLD": 5,
+      "breathLimit": 28,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "17_zhua"
+    },
+    "E10_dabianfu": {
+      "name": "{E10_DABIANFU}",
+      "desc": "{E10_DABIANFU_DESC}",
+      "MAXHP": 80,
+      "ATK": 68,
+      "DEF": 35,
+      "EXP": 2,
+      "GOLD": 6,
+      "breathLimit": 47,
+      "drops": {},
+      "special": {
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E11_shitouguai": {
+      "name": "{E11_SHITOUGUAI}",
+      "desc": "{E11_SHITOUGUAI_DESC}",
+      "MAXHP": 15,
+      "ATK": 65,
+      "DEF": 80,
+      "EXP": 1,
+      "GOLD": 5,
+      "breathLimit": 35,
+      "drops": {},
+      "special": {
+        "AntiMagic": ""
+      },
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E12_qishi": {
+      "name": "{E12_QISHI}",
+      "desc": "{E12_QISHI_DESC}",
+      "MAXHP": 200,
+      "ATK": 100,
+      "DEF": 45,
+      "EXP": 1,
+      "GOLD": 4,
+      "breathLimit": 31,
+      "drops": {},
+      "special": {
+        "SureKill": ""
+      },
+      "ANIMATION_KEY": "02_jian"
+    },
+    "E13_shuangshoujianshi": {
+      "name": "{E13_SHUANGSHOUJIANSHI}",
+      "desc": "{E13_SHUANGSHOUJIANSHI_DESC}",
+      "MAXHP": 155,
+      "ATK": 115,
+      "DEF": 70,
+      "EXP": 1,
+      "GOLD": 5,
+      "breathLimit": 42,
+      "drops": {},
+      "special": {
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "02_jian"
+    },
+    "E14_kuloushibing": {
+      "name": "{E14_KULOUSHIBING}",
+      "desc": "{E14_KULOUSHIBING_DESC}",
+      "MAXHP": 180,
+      "ATK": 175,
+      "DEF": 55,
+      "EXP": 2,
+      "GOLD": 7,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "First": ""
+      },
+      "ANIMATION_KEY": "02_jian"
+    },
+    "E15_kuloujiazhoushi": {
+      "name": "{E15_KULOUJIAZHOUSHI}",
+      "desc": "{E15_KULOUJIAZHOUSHI_DESC}",
+      "MAXHP": 200,
+      "ATK": 130,
+      "DEF": 100,
+      "EXP": 1,
+      "GOLD": 8,
+      "breathLimit": 33,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E16_zhongjishouwei": {
+      "name": "{E16_ZHONGJISHOUWEI}",
+      "desc": "{E16_ZHONGJISHOUWEI_DESC}",
+      "MAXHP": 240,
+      "ATK": 140,
+      "DEF": 120,
+      "EXP": 2,
+      "GOLD": 10,
+      "breathLimit": 36,
+      "drops": {},
+      "special": {
+        "AntiMagic": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E17_tieqishi": {
+      "name": "{E17_TIEQISHI}",
+      "desc": "{E17_TIEQISHI_DESC}",
+      "MAXHP": 215,
+      "ATK": 155,
+      "DEF": 90,
+      "EXP": 3,
+      "GOLD": 10,
+      "breathLimit": 27,
+      "drops": {},
+      "special": {
+        "SureKill": ""
+      },
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E18_hongbianfu": {
+      "name": "{E18_HONGBIANFU}",
+      "desc": "{E18_HONGBIANFU_DESC}",
+      "MAXHP": 240,
+      "ATK": 150,
+      "DEF": 85,
+      "EXP": 4,
+      "GOLD": 11,
+      "breathLimit": 60,
+      "drops": {},
+      "special": {
+        "MultiHit": 3
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E19_zhangyuzai": {
+      "name": "{E19_ZHANGYUZAI}",
+      "desc": "{E19_ZHANGYUZAI_DESC}",
+      "MAXHP": 300,
+      "ATK": 150,
+      "DEF": 110,
+      "EXP": 3,
+      "GOLD": 14,
+      "breathLimit": 37,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E20_shilaimukuangren": {
+      "name": "{E20_SHILAIMUKUANGREN}",
+      "desc": "{E20_SHILAIMUKUANGREN_DESC}",
+      "MAXHP": 320,
+      "ATK": 170,
+      "DEF": 115,
+      "EXP": 5,
+      "GOLD": 20,
+      "breathLimit": 52,
+      "drops": {},
+      "special": {
+        "MultiHit": 2,
+        "ManaDrain": 1
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E21_shilaimuwang": {
+      "name": "{E21_SHILAIMUWANG}",
+      "desc": "{E21_SHILAIMUWANG_DESC}",
+      "MAXHP": 280,
+      "ATK": 140,
+      "DEF": 105,
+      "EXP": 3,
+      "GOLD": 12,
+      "breathLimit": 25,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E22_yanshushi": {
+      "name": "{E22_YANSHUSHI}",
+      "desc": "{E22_YANSHUSHI_DESC}",
+      "MAXHP": 300,
+      "ATK": 100,
+      "DEF": 130,
+      "EXP": 5,
+      "GOLD": 17,
+      "breathLimit": 90,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "DeathCurse": ""
+      },
+      "ANIMATION_KEY": "21_huo"
+    },
+    "E23_sangshijianshi": {
+      "name": "{E23_SANGSHIJIANSHI}",
+      "desc": "{E23_SANGSHIJIANSHI_DESC}",
+      "MAXHP": 280,
+      "ATK": 210,
+      "DEF": 165,
+      "EXP": 4,
+      "GOLD": 15,
+      "breathLimit": 30,
+      "drops": {},
+      "special": {
+        "First": ""
+      },
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E24_gongbing": {
+      "name": "{E24_GONGBING}",
+      "desc": "{E24_GONGBING_DESC}",
+      "MAXHP": 200,
+      "ATK": 320,
+      "DEF": 160,
+      "EXP": 7,
+      "GOLD": 19,
+      "breathLimit": 60,
+      "drops": {},
+      "special": {
+        "Ambush": ""
+      },
+      "ANIMATION_KEY": "24_gongjian"
+    },
+    "E25_moyushilaimu": {
+      "name": "{E25_MOYUSHILAIMU}",
+      "desc": "{E25_MOYUSHILAIMU_DESC}",
+      "MAXHP": 500,
+      "ATK": 400,
+      "DEF": 185,
+      "EXP": 6,
+      "GOLD": 22,
+      "breathLimit": 45,
+      "drops": {},
+      "special": {
+        "First": "",
+        "Berserk": ""
+      },
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E26_shixuebianfu": {
+      "name": "{E26_SHIXUEBIANFU}",
+      "desc": "{E26_SHIXUEBIANFU_DESC}",
+      "MAXHP": 270,
+      "ATK": 240,
+      "DEF": 180,
+      "EXP": 5,
+      "GOLD": 18,
+      "breathLimit": 55,
+      "drops": {},
+      "special": {
+        "Vampire": 0.33,
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E27_kulouxiaoduizhang": {
+      "name": "{E27_KULOUXIAODUIZHANG}",
+      "desc": "{E27_KULOUXIAODUIZHANG_DESC}",
+      "MAXHP": 250,
+      "ATK": 300,
+      "DEF": 180,
+      "EXP": 4,
+      "GOLD": 12,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "First": ""
+      },
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E28_fengwushi": {
+      "name": "{E28_FENGWUSHI}",
+      "desc": "{E28_FENGWUSHI_DESC}",
+      "MAXHP": 320,
+      "ATK": 150,
+      "DEF": 220,
+      "EXP": 5,
+      "GOLD": 14,
+      "breathLimit": 90,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Domain": 1
+      },
+      "ANIMATION_KEY": "27_feng"
+    },
+    "E29_xieyanshilaimu": {
+      "name": "{E29_XIEYANSHILAIMU}",
+      "desc": "{E29_XIEYANSHILAIMU_DESC}",
+      "MAXHP": 350,
+      "ATK": 270,
+      "DEF": 220,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 70,
+      "drops": {},
+      "special": {
+        "EvilEye": ""
+      },
+      "ANIMATION_KEY": "29_xieyan"
+    },
+    "E30_baiyiwei": {
+      "name": "{E30_BAIYIWEI}",
+      "desc": "{E30_BAIYIWEI_DESC}",
+      "MAXHP": 340,
+      "ATK": 120,
+      "DEF": 210,
+      "EXP": 6,
+      "GOLD": 18,
+      "breathLimit": 130,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Flank": "",
+        "Frost": 1
+      },
+      "ANIMATION_KEY": "31_bing"
+    },
+    "E31_huiqishi": {
+      "name": "{E31_HUIQISHI}",
+      "desc": "{E31_HUIQISHI_DESC}",
+      "MAXHP": 380,
+      "ATK": 320,
+      "DEF": 200,
+      "EXP": 8,
+      "GOLD": 19,
+      "breathLimit": 35,
+      "drops": {},
+      "special": {
+        "SureKill": ""
+      },
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E32_youmingfashi": {
+      "name": "{E32_YOUMINGFASHI}",
+      "desc": "{E32_YOUMINGFASHI_DESC}",
+      "MAXHP": 800,
+      "ATK": 160,
+      "DEF": 260,
+      "EXP": 50,
+      "GOLD": 300,
+      "breathLimit": 70,
+      "drops": {},
+      "special": {
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "34_heimofa"
+    },
+    "E33_shilaimu": {
+      "name": "{E33_SHILAIMU}",
+      "desc": "{E33_SHILAIMU_DESC}",
+      "MAXHP": 120,
+      "ATK": 125,
+      "DEF": 80,
+      "EXP": 0,
+      "GOLD": 3,
+      "breathLimit": 33,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E34_dashilaimu": {
+      "name": "{E34_DASHILAIMU}",
+      "desc": "{E34_DASHILAIMU_DESC}",
+      "MAXHP": 150,
+      "ATK": 135,
+      "DEF": 85,
+      "EXP": 0,
+      "GOLD": 4,
+      "breathLimit": 37,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "00_kongshou"
+    },
+    "E35_bianfu": {
+      "name": "{E35_BIANFU}",
+      "desc": "{E35_BIANFU_DESC}",
+      "MAXHP": 135,
+      "ATK": 140,
+      "DEF": 80,
+      "EXP": 0,
+      "GOLD": 4,
+      "breathLimit": 28,
+      "drops": {},
+      "special": {
+        "Vampire": 0.25
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E36_fashi": {
+      "name": "{E36_FASHI}",
+      "desc": "{E36_FASHI_DESC}",
+      "MAXHP": 140,
+      "ATK": 40,
+      "DEF": 85,
+      "EXP": 0,
+      "GOLD": 5,
+      "breathLimit": 32,
+      "drops": {},
+      "special": {
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "36_mofa"
+    },
+    "E37_dusangshi": {
+      "name": "{E37_DUSANGSHI}",
+      "desc": "{E37_DUSANGSHI_DESC}",
+      "MAXHP": 350,
+      "ATK": 380,
+      "DEF": 300,
+      "EXP": 8,
+      "GOLD": 19,
+      "breathLimit": 70,
+      "drops": {},
+      "special": {
+        "Poisoning": 1
+      },
+      "ANIMATION_KEY": "17_zhua"
+    },
+    "E38_dubianfu": {
+      "name": "{E38_DUBIANFU}",
+      "desc": "{E38_DUBIANFU_DESC}",
+      "MAXHP": 300,
+      "ATK": 370,
+      "DEF": 280,
+      "EXP": 7,
+      "GOLD": 16,
+      "breathLimit": 80,
+      "drops": {},
+      "special": {
+        "Poisoning": 30,
+        "Vampire": 0.3,
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E39_kuloutoumu": {
+      "name": "{E39_KULOUTOUMU}",
+      "desc": "{E39_KULOUTOUMU_DESC}",
+      "MAXHP": 340,
+      "ATK": 400,
+      "DEF": 250,
+      "EXP": 7,
+      "GOLD": 18,
+      "breathLimit": 93,
+      "drops": {},
+      "special": {
+        "Weaken": 3
+      },
+      "ANIMATION_KEY": "38_3jian"
+    },
+    "E40_kulou": {
+      "name": "{E40_KULOU}",
+      "desc": "{E40_KULOU_DESC}",
+      "MAXHP": 150,
+      "ATK": 160,
+      "DEF": 70,
+      "EXP": 0,
+      "GOLD": 6,
+      "breathLimit": 24,
+      "drops": {},
+      "special": {
+        "First": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E41_jiantouguai": {
+      "name": "{E41_JIANTOUGUAI}",
+      "desc": "{E41_JIANTOUGUAI_DESC}",
+      "MAXHP": 40,
+      "ATK": 140,
+      "DEF": 110,
+      "EXP": 0,
+      "GOLD": 8,
+      "breathLimit": 40,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E42_shouren": {
+      "name": "{E42_SHOUREN}",
+      "desc": "{E42_SHOUREN_DESC}",
+      "MAXHP": 160,
+      "ATK": 150,
+      "DEF": 100,
+      "EXP": 0,
+      "GOLD": 7,
+      "breathLimit": 32,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "17_zhua"
+    },
+    "E43_xieshilaimu": {
+      "name": "{E43_XIESHILAIMU}",
+      "desc": "{E43_XIESHILAIMU_DESC}",
+      "MAXHP": 140,
+      "ATK": 120,
+      "DEF": 90,
+      "EXP": 0,
+      "GOLD": 12,
+      "breathLimit": 40,
+      "drops": {},
+      "special": {
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E44_gaojigongbing": {
+      "name": "{E44_GAOJIGONGBING}",
+      "desc": "{E44_GAOJIGONGBING_DESC}",
+      "MAXHP": 400,
+      "ATK": 800,
+      "DEF": 300,
+      "EXP": 10,
+      "GOLD": 24,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "Ambush": ""
+      },
+      "ANIMATION_KEY": "24_gongjian"
+    },
+    "E45_shuairuojinweibing": {
+      "name": "{E45_SHUAIRUOJINWEIBING}",
+      "desc": "{E45_SHUAIRUOJINWEIBING_DESC}",
+      "MAXHP": 400,
+      "ATK": 420,
+      "DEF": 300,
+      "EXP": 8,
+      "GOLD": 19,
+      "breathLimit": 76,
+      "drops": {},
+      "special": {
+        "Weaken": 2,
+        "Reborn": "Data.Blueprints.Enemies.BP_Enemy_E46_kuangbaojinweibing"
+      },
+      "ANIMATION_KEY": "41_daji"
+    },
+    "E46_kuangbaojinweibing": {
+      "name": "{E46_KUANGBAOJINWEIBING}",
+      "desc": "{E46_KUANGBAOJINWEIBING_DESC}",
+      "MAXHP": 300,
+      "ATK": 550,
+      "DEF": 240,
+      "EXP": 8,
+      "GOLD": 19,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "Vampire": 0.3,
+        "SureKill": ""
+      },
+      "ANIMATION_KEY": "41_daji"
+    },
+    "E47_kuairen": {
+      "name": "{E47_KUAIREN}",
+      "desc": "{E47_KUAIREN_DESC}",
+      "MAXHP": 375,
+      "ATK": 405,
+      "DEF": 290,
+      "EXP": 7,
+      "GOLD": 16,
+      "breathLimit": 72,
+      "drops": {},
+      "special": {
+        "MultiHit": 3,
+        "ManaDrain": 2
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E48_qingyiwei": {
+      "name": "{E48_QINGYIWEI}",
+      "desc": "{E48_QINGYIWEI_DESC}",
+      "MAXHP": 400,
+      "ATK": 150,
+      "DEF": 300,
+      "EXP": 9,
+      "GOLD": 16,
+      "breathLimit": 110,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Flank": "",
+        "Frost": 2
+      },
+      "ANIMATION_KEY": "43_lvyi1"
+    },
+    "E49_mowangshiwei": {
+      "name": "{E49_MOWANGSHIWEI}",
+      "desc": "{E49_MOWANGSHIWEI_DESC}",
+      "MAXHP": 600,
+      "ATK": 475,
+      "DEF": 330,
+      "EXP": 15,
+      "GOLD": 30,
+      "breathLimit": 119,
+      "drops": {},
+      "special": {
+        "First": "",
+        "Thunder": 1
+      },
+      "ANIMATION_KEY": "45_huangmowang"
+    },
+    "E50_xunjiequan": {
+      "name": "{E50_XUNJIEQUAN}",
+      "desc": "{E50_XUNJIEQUAN_DESC}",
+      "MAXHP": 180,
+      "ATK": 175,
+      "DEF": 120,
+      "EXP": 0,
+      "GOLD": 8,
+      "breathLimit": 29,
+      "drops": {},
+      "special": {
+        "First": ""
+      },
+      "ANIMATION_KEY": "17_zhua"
+    },
+    "E51_gangtieguai": {
+      "name": "{E51_GANGTIEGUAI}",
+      "desc": "{E51_GANGTIEGUAI_DESC}",
+      "MAXHP": 10,
+      "ATK": 165,
+      "DEF": 155,
+      "EXP": 0,
+      "GOLD": 7,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "Hard": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E52_gaojishouwei": {
+      "name": "{E52_GAOJISHOUWEI}",
+      "desc": "{E52_GAOJISHOUWEI_DESC}",
+      "MAXHP": 600,
+      "ATK": 520,
+      "DEF": 400,
+      "EXP": 7,
+      "GOLD": 14,
+      "breathLimit": 88,
+      "drops": {},
+      "special": {
+        "AntiMagic": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E53_tieguai": {
+      "name": "{E53_TIEGUAI}",
+      "desc": "{E53_TIEGUAI_DESC}",
+      "MAXHP": 30,
+      "ATK": 480,
+      "DEF": 500,
+      "EXP": 6,
+      "GOLD": 11,
+      "breathLimit": 30,
+      "drops": {},
+      "special": {
+        "Hard": "",
+        "AntiMagic": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E54_shuiyinren": {
+      "name": "{E54_SHUIYINREN}",
+      "desc": "{E54_SHUIYINREN_DESC}",
+      "MAXHP": 420,
+      "ATK": 485,
+      "DEF": 370,
+      "EXP": 8,
+      "GOLD": 15,
+      "breathLimit": 82,
+      "drops": {},
+      "special": {
+        "MultiHit": 2,
+        "Mucus": 2
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E55_zhongjiefashi": {
+      "name": "{E55_ZHONGJIEFASHI}",
+      "desc": "{E55_ZHONGJIEFASHI_DESC}",
+      "MAXHP": 180,
+      "ATK": 55,
+      "DEF": 130,
+      "EXP": 0,
+      "GOLD": 6,
+      "breathLimit": 39,
+      "drops": {},
+      "special": {
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "36_mofa"
+    },
+    "E56_buwendingjixie": {
+      "name": "{E56_BUWENDINGJIXIE}",
+      "desc": "{E56_BUWENDINGJIXIE_DESC}",
+      "MAXHP": 400,
+      "ATK": 195,
+      "DEF": 125,
+      "EXP": 0,
+      "GOLD": 7,
+      "breathLimit": 42,
+      "drops": {},
+      "special": {
+        "First": "",
+        "Berserk": ""
+      },
+      "ANIMATION_KEY": "41_daji"
+    },
+    "E57_zhuangjiakulou": {
+      "name": "{E57_ZHUANGJIAKULOU}",
+      "desc": "{E57_ZHUANGJIAKULOU_DESC}",
+      "MAXHP": 175,
+      "ATK": 200,
+      "DEF": 110,
+      "EXP": 0,
+      "GOLD": 8,
+      "breathLimit": 36,
+      "drops": {},
+      "special": {
+        "First": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E58_zhongxingbianfu": {
+      "name": "{E58_ZHONGXINGBIANFU}",
+      "desc": "{E58_ZHONGXINGBIANFU_DESC}",
+      "MAXHP": 200,
+      "ATK": 180,
+      "DEF": 130,
+      "EXP": 0,
+      "GOLD": 8,
+      "breathLimit": 40,
+      "drops": {},
+      "special": {
+        "Vampire": 0.3
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E59_hanbingshilaimu": {
+      "name": "{E59_HANBINGSHILAIMU}",
+      "desc": "{E59_HANBINGSHILAIMU_DESC}",
+      "MAXHP": 1000,
+      "ATK": 800,
+      "DEF": 600,
+      "EXP": 50,
+      "GOLD": 100,
+      "breathLimit": 100,
+      "drops": {},
+      "special": {
+        "First": "",
+        "Frost": 5
+      },
+      "ANIMATION_KEY": "47_bingshilaimu"
+    },
+    "E60_duzhangyu": {
+      "name": "{E60_DUZHANGYU}",
+      "desc": "{E60_DUZHANGYU_DESC}",
+      "MAXHP": 380,
+      "ATK": 465,
+      "DEF": 380,
+      "EXP": 8,
+      "GOLD": 28,
+      "breathLimit": 80,
+      "drops": {},
+      "special": {
+        "Poisoning": 1,
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E61_lieyansangshi": {
+      "name": "{E61_LIEYANSANGSHI}",
+      "desc": "{E61_LIEYANSANGSHI_DESC}",
+      "MAXHP": 440,
+      "ATK": 485,
+      "DEF": 430,
+      "EXP": 7,
+      "GOLD": 33,
+      "breathLimit": 100,
+      "drops": {},
+      "special": {
+        "Ember": ""
+      },
+      "ANIMATION_KEY": "17_zhua"
+    },
+    "E62_dongsigu": {
+      "name": "{E62_DONGSIGU}",
+      "desc": "{E62_DONGSIGU_DESC}",
+      "MAXHP": 460,
+      "ATK": 545,
+      "DEF": 390,
+      "EXP": 6,
+      "GOLD": 34,
+      "breathLimit": 110,
+      "drops": {},
+      "special": {
+        "First": "",
+        "Glacial": ""
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E63_zhengguijinweibing": {
+      "name": "{E63_ZHENGGUIJINWEIBING}",
+      "desc": "{E63_ZHENGGUIJINWEIBING_DESC}",
+      "MAXHP": 530,
+      "ATK": 480,
+      "DEF": 450,
+      "EXP": 6,
+      "GOLD": 32,
+      "breathLimit": 100,
+      "drops": {},
+      "special": {
+        "Weaken": 5,
+        "Reborn": "Data.Blueprints.Enemies.BP_Enemy_E64_tiejiajinweibing"
+      },
+      "ANIMATION_KEY": "41_daji"
+    },
+    "E64_tiejiajinweibing": {
+      "name": "{E64_TIEJIAJINWEIBING}",
+      "desc": "{E64_TIEJIAJINWEIBING_DESC}",
+      "MAXHP": 400,
+      "ATK": 600,
+      "DEF": 340,
+      "EXP": 5,
+      "GOLD": 30,
+      "breathLimit": 70,
+      "drops": {},
+      "special": {
+        "Vampire": 0.4,
+        "SureKill": ""
+      },
+      "ANIMATION_KEY": "41_daji"
+    },
+    "E65_jinweiqishi": {
+      "name": "{E65_JINWEIQISHI}",
+      "desc": "{E65_JINWEIQISHI_DESC}",
+      "MAXHP": 460,
+      "ATK": 510,
+      "DEF": 450,
+      "EXP": 6,
+      "GOLD": 36,
+      "breathLimit": 30,
+      "drops": {},
+      "special": {
+        "SureKill": "",
+        "ArmorBreak": ""
+      },
+      "ANIMATION_KEY": "38_3jian"
+    },
+    "E66_guihuo": {
+      "name": "{E66_GUIHUO}",
+      "desc": "{E66_GUIHUO_DESC}",
+      "MAXHP": 300,
+      "ATK": 1,
+      "DEF": 150,
+      "EXP": 0,
+      "GOLD": 6,
+      "breathLimit": 30,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Burn": ""
+      },
+      "ANIMATION_KEY": "21_huo"
+    },
+    "E67_shourenshibing": {
+      "name": "{E67_SHOURENSHIBING}",
+      "desc": "{E67_SHOURENSHIBING_DESC}",
+      "MAXHP": 180,
+      "ATK": 200,
+      "DEF": 155,
+      "EXP": 0,
+      "GOLD": 5,
+      "breathLimit": 32,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E68_yanwushi": {
+      "name": "{E68_YANWUSHI}",
+      "desc": "{E68_YANWUSHI_DESC}",
+      "MAXHP": 560,
+      "ATK": 200,
+      "DEF": 445,
+      "EXP": 7,
+      "GOLD": 45,
+      "breathLimit": 160,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Domain": 1,
+        "BurstFlame": ""
+      },
+      "ANIMATION_KEY": "50_huoyan"
+    },
+    "E69_hongyimowang": {
+      "name": "{E69_HONGYIMOWANG}",
+      "desc": "{E69_HONGYIMOWANG_DESC}",
+      "MAXHP": 800,
+      "ATK": 250,
+      "DEF": 550,
+      "EXP": 18,
+      "GOLD": 50,
+      "breathLimit": 100,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "AuraField": ""
+      },
+      "ANIMATION_KEY": "52_mowang"
+    },
+    "E70_xixueguibojue": {
+      "name": "{E70_XIXUEGUIBOJUE}",
+      "desc": "{E70_XIXUEGUIBOJUE_DESC}",
+      "MAXHP": 700,
+      "ATK": 800,
+      "DEF": 600,
+      "EXP": 16,
+      "GOLD": 40,
+      "breathLimit": 120,
+      "drops": {},
+      "special": {
+        "Vampire": 0.5,
+        "MultiHit": 0,
+        "BloodThrall": ""
+      },
+      "ANIMATION_KEY": "54_xixuegui"
+    },
+    "E71_zhongchuikulou": {
+      "name": "{E71_ZHONGCHUIKULOU}",
+      "desc": "{E71_ZHONGCHUIKULOU_DESC}",
+      "MAXHP": 300,
+      "ATK": 300,
+      "DEF": 120,
+      "EXP": 0,
+      "GOLD": 8,
+      "breathLimit": 30,
+      "drops": {},
+      "special": {
+        "Berserk": ""
+      },
+      "ANIMATION_KEY": "41_daji"
+    },
+    "E72_fengsugou": {
+      "name": "{E72_FENGSUGOU}",
+      "desc": "{E72_FENGSUGOU_DESC}",
+      "MAXHP": 400,
+      "ATK": 200,
+      "DEF": 140,
+      "EXP": 0,
+      "GOLD": 6,
+      "breathLimit": 40,
+      "drops": {},
+      "special": {
+        "Vampire": 0.2
+      },
+      "ANIMATION_KEY": "17_zhua"
+    },
+    "E73_daxingbianfu": {
+      "name": "{E73_DAXINGBIANFU}",
+      "desc": "{E73_DAXINGBIANFU_DESC}",
+      "MAXHP": 220,
+      "ATK": 210,
+      "DEF": 150,
+      "EXP": 0,
+      "GOLD": 10,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "Vampire": 0.5,
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E74_shuairuozhangyu": {
+      "name": "{E74_SHUAIRUOZHANGYU}",
+      "desc": "{E74_SHUAIRUOZHANGYU_DESC}",
+      "MAXHP": 500,
+      "ATK": 650,
+      "DEF": 500,
+      "EXP": 12,
+      "GOLD": 42,
+      "breathLimit": 91,
+      "drops": {},
+      "special": {
+        "Weaken": 5,
+        "MultiHit": 3
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E75_jihanwushi": {
+      "name": "{E75_JIHANWUSHI}",
+      "desc": "{E75_JIHANWUSHI_DESC}",
+      "MAXHP": 600,
+      "ATK": 180,
+      "DEF": 500,
+      "EXP": 10,
+      "GOLD": 50,
+      "breathLimit": 120,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Domain": 1,
+        "Snowland": ""
+      },
+      "ANIMATION_KEY": "47_bingshilaimu"
+    },
+    "E76_chushouzhiwu": {
+      "name": "{E76_CHUSHOUZHIWU}",
+      "desc": "{E76_CHUSHOUZHIWU_DESC}",
+      "MAXHP": 480,
+      "ATK": 650,
+      "DEF": 490,
+      "EXP": 14,
+      "GOLD": 48,
+      "breathLimit": 100,
+      "drops": {},
+      "special": {
+        "Weaken": 2,
+        "MultiHit": 6
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E77_gaojiefashi": {
+      "name": "{E77_GAOJIEFASHI}",
+      "desc": "{E77_GAOJIEFASHI_DESC}",
+      "MAXHP": 220,
+      "ATK": 50,
+      "DEF": 180,
+      "EXP": 0,
+      "GOLD": 10,
+      "breathLimit": 44,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "36_mofa"
+    },
+    "E78_kuloujianshi": {
+      "name": "{E78_KULOUJIANSHI}",
+      "desc": "{E78_KULOUJIANSHI_DESC}",
+      "MAXHP": 220,
+      "ATK": 260,
+      "DEF": 160,
+      "EXP": 0,
+      "GOLD": 10,
+      "breathLimit": 36,
+      "drops": {},
+      "special": {
+        "First": "",
+        "MultiHit": 2
+      },
+      "ANIMATION_KEY": "38_3jian"
+    },
+    "E79_judabazhaoyu": {
+      "name": "{E79_JUDABAZHAOYU}",
+      "desc": "{E79_JUDABAZHAOYU_DESC}",
+      "MAXHP": 500,
+      "ATK": 300,
+      "DEF": 200,
+      "EXP": 0,
+      "GOLD": 50,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "First": "",
+        "MultiHit": 3,
+        "Mucus": 1
+      },
+      "ANIMATION_KEY": "60_juzhua"
+    },
+    "E80_molong": {
+      "name": "{E80_MOLONG}",
+      "desc": "{E80_MOLONG_DESC}",
+      "MAXHP": 500,
+      "ATK": 300,
+      "DEF": 200,
+      "EXP": 0,
+      "GOLD": 60,
+      "breathLimit": 50,
+      "drops": {},
+      "special": {
+        "Vampire": 0.25
+      },
+      "ANIMATION_KEY": "60_juzhua"
+    },
+    "E81_silingqishi": {
+      "name": "{E81_SILINGQISHI}",
+      "desc": "{E81_SILINGQISHI_DESC}",
+      "MAXHP": 1000,
+      "ATK": 1000,
+      "DEF": 850,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 280,
+      "drops": {},
+      "special": {
+        "Vampire": 0.25,
+        "SureKill": ""
+      },
+      "ANIMATION_KEY": "38_3jian"
+    },
+    "E82_xuefashi": {
+      "name": "{E82_XUEFASHI}",
+      "desc": "{E82_XUEFASHI_DESC}",
+      "MAXHP": 800,
+      "ATK": 400,
+      "DEF": 750,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 290,
+      "drops": {},
+      "special": {
+        "Vampire": 0.5,
+        "Magic": ""
+      },
+      "ANIMATION_KEY": "54_xixuegui"
+    },
+    "E83_shilaimuxiuluo": {
+      "name": "{E83_SHILAIMUXIULUO}",
+      "desc": "{E83_SHILAIMUXIULUO_DESC}",
+      "MAXHP": 800,
+      "ATK": 950,
+      "DEF": 800,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 230,
+      "drops": {},
+      "special": {
+        "MultiHit": 4,
+        "Mucus": 3
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E84_fengkuangchushou": {
+      "name": "{E84_FENGKUANGCHUSHOU}",
+      "desc": "{E84_FENGKUANGCHUSHOU_DESC}",
+      "MAXHP": 1000,
+      "ATK": 930,
+      "DEF": 780,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 260,
+      "drops": {},
+      "special": {
+        "MultiHit": 6
+      },
+      "ANIMATION_KEY": "12_daji"
+    },
+    "E85_huangjiaqiangbing": {
+      "name": "{E85_HUANGJIAQIANGBING}",
+      "desc": "{E85_HUANGJIAQIANGBING_DESC}",
+      "MAXHP": 1200,
+      "ATK": 900,
+      "DEF": 800,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 270,
+      "drops": {},
+      "special": {
+        "Pierce": 10
+      },
+      "ANIMATION_KEY": "19_2jian"
+    },
+    "E86_longfu": {
+      "name": "{E86_LONGFU}",
+      "desc": "{E86_LONGFU_DESC}",
+      "MAXHP": 1200,
+      "ATK": 920,
+      "DEF": 800,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 290,
+      "drops": {},
+      "special": {
+        "MultiHit": 2,
+        "Venom": 10
+      },
+      "ANIMATION_KEY": "04_bianfu"
+    },
+    "E87_jianshenfabi": {
+      "name": "{E87_JIANSHENFABI}",
+      "desc": "{E87_JIANSHENFABI_DESC}",
+      "MAXHP": 1000,
+      "ATK": 2000,
+      "DEF": 900,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 250,
+      "drops": {},
+      "special": {
+        "Ambush": ""
+      },
+      "ANIMATION_KEY": "64_jianshen"
+    },
+    "E88_doushengaoba": {
+      "name": "{E88_DOUSHENGAOBA}",
+      "desc": "{E88_DOUSHENGAOBA_DESC}",
+      "MAXHP": 2000,
+      "ATK": 1200,
+      "DEF": 900,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 388,
+      "drops": {},
+      "special": {
+        "AntiMagic": ""
+      },
+      "ANIMATION_KEY": "68_doushen"
+    },
+    "E89_jianwang": {
+      "name": "{E89_JIANWANG}",
+      "desc": "{E89_JIANWANG_DESC}",
+      "MAXHP": 800,
+      "ATK": 1100,
+      "DEF": 750,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 288,
+      "drops": {},
+      "special": {
+        "MultiHit": 4,
+        "DoomBlade": ""
+      },
+      "ANIMATION_KEY": "62_jianwang"
+    },
+    "E90_jianshenshashi": {
+      "name": "{E90_JIANSHENSHASHI}",
+      "desc": "{E90_JIANSHENSHASHI_DESC}",
+      "MAXHP": 1800,
+      "ATK": 1150,
+      "DEF": 850,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 318,
+      "drops": {},
+      "special": {
+        "HolySword": ""
+      },
+      "ANIMATION_KEY": "66_jianshen"
+    },
+    "E91_moshenxieduo": {
+      "name": "{E91_MOSHENXIEDUO}",
+      "desc": "{E91_MOSHENXIEDUO_DESC}",
+      "MAXHP": 2500,
+      "ATK": 500,
+      "DEF": 900,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 348,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Trick": ""
+      },
+      "ANIMATION_KEY": "70_moshen"
+    },
+    "E92_yonghengzhiyao": {
+      "name": "{E92_YONGHENGZHIYAO}",
+      "desc": "{E92_YONGHENGZHIYAO_DESC}",
+      "MAXHP": 1000,
+      "ATK": 100,
+      "DEF": 400,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 400,
+      "drops": {},
+      "special": {
+        "Magic": "",
+        "Samsara": ""
+      },
+      "ANIMATION_KEY": "56_damofa"
     }
   }
 }

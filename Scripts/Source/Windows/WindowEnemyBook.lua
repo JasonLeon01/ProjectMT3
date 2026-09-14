@@ -132,6 +132,7 @@ function Controller:buildEntry(enemy, visual)
         DEF = battleData.playerAttack.defenderDEF,
         EXP = enemy.attributes.EXP,
         GOLD = enemy.attributes.GOLD,
+        breathLimit = enemy.attributes.breathLimit,
         damage = battleResult.code == MotaBattleAbility.BattleResult.CANNOT_DAMAGE and "???" or battleData.damage,
         critical = MotaBattleAbility.CalculateCriticalValue(enemy, self:getPlayer()),
         hitCount = abilitySystem:hasMatchingGameplayTag(GameplayConstants.SPECIAL_PREFIX .. Special.MultiHit)

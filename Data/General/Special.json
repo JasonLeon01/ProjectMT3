@@ -82,6 +82,126 @@
       "name": "{S_FIXDMG}",
       "desc": "{S_FIXDMG_DESC}",
       "icon": "/Game/Assets/Icons/Specials/FixDmg.png"
+    },
+    "Mucus": {
+      "name": "{S_MUCUS}",
+      "desc": "{S_MUCUS_DESC}",
+      "icon": ""
+    },
+    "SureKill": {
+      "name": "{S_SUREKILL}",
+      "desc": "{S_SUREKILL_DESC}",
+      "icon": ""
+    },
+    "AntiMagic": {
+      "name": "{S_ANTIMAGIC}",
+      "desc": "{S_ANTIMAGIC_DESC}",
+      "icon": ""
+    },
+    "ManaDrain": {
+      "name": "{S_MANADRAIN}",
+      "desc": "{S_MANADRAIN_DESC}",
+      "icon": ""
+    },
+    "DeathCurse": {
+      "name": "{S_DEATHCURSE}",
+      "desc": "{S_DEATHCURSE_DESC}",
+      "icon": ""
+    },
+    "Berserk": {
+      "name": "{S_BERSERK}",
+      "desc": "{S_BERSERK_DESC}",
+      "icon": ""
+    },
+    "Ambush": {
+      "name": "{S_AMBUSH}",
+      "desc": "{S_AMBUSH_DESC}",
+      "icon": ""
+    },
+    "EvilEye": {
+      "name": "{S_EVILEYE}",
+      "desc": "{S_EVILEYE_DESC}",
+      "icon": ""
+    },
+    "Frost": {
+      "name": "{S_FROST}",
+      "desc": "{S_FROST_DESC}",
+      "icon": ""
+    },
+    "Thunder": {
+      "name": "{S_THUNDER}",
+      "desc": "{S_THUNDER_DESC}",
+      "icon": ""
+    },
+    "Ember": {
+      "name": "{S_EMBER}",
+      "desc": "{S_EMBER_DESC}",
+      "icon": ""
+    },
+    "Glacial": {
+      "name": "{S_GLACIAL}",
+      "desc": "{S_GLACIAL_DESC}",
+      "icon": ""
+    },
+    "Burn": {
+      "name": "{S_BURN}",
+      "desc": "{S_BURN_DESC}",
+      "icon": ""
+    },
+    "BurstFlame": {
+      "name": "{S_BURSTFLAME}",
+      "desc": "{S_BURSTFLAME_DESC}",
+      "icon": ""
+    },
+    "AuraField": {
+      "name": "{S_AURAFIELD}",
+      "desc": "{S_AURAFIELD_DESC}",
+      "icon": ""
+    },
+    "BloodThrall": {
+      "name": "{S_BLOODTHRALL}",
+      "desc": "{S_BLOODTHRALL_DESC}",
+      "icon": ""
+    },
+    "ArmorBreak": {
+      "name": "{S_ARMORBREAK}",
+      "desc": "{S_ARMORBREAK_DESC}",
+      "icon": ""
+    },
+    "Snowland": {
+      "name": "{S_SNOWLAND}",
+      "desc": "{S_SNOWLAND_DESC}",
+      "icon": ""
+    },
+    "Pierce": {
+      "name": "{S_PIERCE}",
+      "desc": "{S_PIERCE_DESC}",
+      "icon": ""
+    },
+    "Venom": {
+      "name": "{S_VENOM}",
+      "desc": "{S_VENOM_DESC}",
+      "icon": ""
+    },
+    "DoomBlade": {
+      "name": "{S_DOOMBLADE}",
+      "desc": "{S_DOOMBLADE_DESC}",
+      "icon": ""
+    },
+    "HolySword": {
+      "name": "{S_HOLYSWORD}",
+      "desc": "{S_HOLYSWORD_DESC}",
+      "icon": ""
+    },
+    "Trick": {
+      "name": "{S_TRICK}",
+      "desc": "{S_TRICK_DESC}",
+      "icon": ""
+    },
+    "Samsara": {
+      "name": "{S_SAMSARA}",
+      "desc": "{S_SAMSARA_DESC}",
+      "icon": ""
     }
   }
 }

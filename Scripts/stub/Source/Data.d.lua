@@ -78,6 +78,7 @@
 ---@field DEF           integer
 ---@field EXP           integer
 ---@field GOLD          integer
+---@field breathLimit   integer
 ---@field drops         table<string, sf.Vector2i>
 ---@field special       Source.Data.EnemySpecialValues
 ---@field ANIMATION_KEY string

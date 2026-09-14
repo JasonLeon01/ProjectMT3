@@ -22,6 +22,7 @@ local ClassAttributeSet = {}
 ---@field DEF             integer
 ---@field EXP             integer
 ---@field GOLD            integer
+---@field breathLimit     integer
 ---@field drops           table<string, sf.Vector2i>
 ---@field special         table<string, any>
 ---@field ANIMATION_KEY   string
@@ -67,6 +68,8 @@ local ItemAttributeSet = {}
 ---@field EXP             integer
 ---@field GOLD            integer
 ---@field LEVEL           integer
+---@field breath          integer
+---@field breathLimit     integer
 ---@field ANIMATION_KEY   string
 ---@type Source.Configs.GeneralDataTypes.PlayerAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.PlayerAttributeSet>
 local PlayerAttributeSet = {}

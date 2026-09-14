@@ -141,6 +141,12 @@ function Controller:buildInfo(entry)
                 LOC("DMG"),
                 entry.damage or "???"
             }
+        },
+        {
+            {
+                LOC("BREATH_LIMIT"),
+                entry.breathLimit or 0
+            }
         }
     }
     for _, row in ipairs(rows) do
