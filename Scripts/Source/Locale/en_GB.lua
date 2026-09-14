@@ -95,6 +95,8 @@ return {
     ["POISONED_EASE_DESC"] = "It can reduce the accumulation of poison layers by 5 points.",
     ["POISONED_RELEASE"] = "Antitoxic",
     ["POISONED_RELEASE_DESC"] = "It can completely cure the poisoning state.",
+    ["PRINCESS"] = "Princess",
+    ["PRINCESS_DESC"] = "..",
     ["Palace"] = "The Palace",
     ["REFLECTION_NET"] = "Reflection Net",
     ["REFLECTION_NET_DESC"] = "Reduces map damage from monsters by half.",

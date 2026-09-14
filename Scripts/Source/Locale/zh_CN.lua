@@ -507,6 +507,8 @@ return {
     ["POISONED_EASE_DESC"] = "可以减少5点中毒层数累积。",
     ["POISONED_RELEASE"] = "解毒药水",
     ["POISONED_RELEASE_DESC"] = "可以完全解除中毒状态。",
+    ["PRINCESS"] = "公主",
+    ["PRINCESS_DESC"] = "..",
     ["Palace"] = "皇    宫",
     ["REFLECTION_NET"] = "反射网",
     ["REFLECTION_NET_DESC"] = "可将来自怪物的地图伤害降低一半。",

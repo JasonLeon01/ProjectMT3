@@ -93,11 +93,11 @@
       "breath": 0,
       "breathLimit": 300,
       "magic": 0,
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "02_jian"
     },
     "Princess": {
-      "name": "",
-      "desc": "",
+      "name": "{PRINCESS}",
+      "desc": "{PRINCESS_DESC}",
       "CLASS": "Princess",
       "MAXHP": 3000,
       "HP": 500,
@@ -109,7 +109,7 @@
       "breath": 0,
       "breathLimit": 300,
       "magic": 0,
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "02_jian"
     }
   }
 }

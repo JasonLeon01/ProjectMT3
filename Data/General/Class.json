@@ -28,8 +28,8 @@
       }
     },
     "Princess": {
-      "name": "",
-      "desc": "",
+      "name": "{PRINCESS}",
+      "desc": "{PRINCESS_DESC}",
       "slot": {
         "weapon": "",
         "shield": ""
