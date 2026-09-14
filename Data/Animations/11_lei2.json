@@ -1,0 +1,227 @@
+{
+  "name": "雷2",
+  "frameRate": 30,
+  "assets": [
+    "/Game/Assets/Animations/mting-577.png",
+    "/Game/Assets/Animations/mting-576.png",
+    "/Game/Assets/Animations/mting-578.png",
+    "/Game/Assets/Animations/mting-579.png",
+    "/Game/Assets/Animations/mting-580.png",
+    "/Game/Assets/Animations/mting-581.png",
+    "/Game/Assets/Sounds/mting-26.wav"
+  ],
+  "timeLines": [
+    {
+      "timeSegments": [
+        {
+          "type": "frame",
+          "asset": 0,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.03333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 1,
+          "startFrame": {
+            "time": 0.03333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.06666666666666667,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 2,
+          "startFrame": {
+            "time": 0.06666666666666667,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 3,
+          "startFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.13333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 4,
+          "startFrame": {
+            "time": 0.13333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.16666666666666666,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 5,
+          "startFrame": {
+            "time": 0.16666666666666666,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.2,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "timeSegments": [
+        {
+          "type": "sound",
+          "asset": 6,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 1.253877551020408,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "originalDuration": 1.253877551020408
+        }
+      ]
+    }
+  ],
+  "timeTags": [
+    {
+      "tag": "dmg",
+      "time": 0.0
+    }
+  ],
+  "type": "animation"
+}
