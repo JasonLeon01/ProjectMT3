@@ -1,7 +1,7 @@
 {
   "title": {
     "type": "string",
-    "value": "LudorkSample"
+    "value": "ProjectMT3"
   },
   "gameSize": {
     "type": "int[2]",
@@ -73,7 +73,7 @@
   },
   "startRegion": {
     "type": "string",
-    "value": "Mota"
+    "value": "Palace"
   },
   "startPos": {
     "type": "int[2]",

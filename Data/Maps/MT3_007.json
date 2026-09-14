@@ -772,14 +772,6 @@
         ]
       },
       {
-        "tag": "MT3_007.BP_Door_General_default_7_1",
-        "bp": "Data.Blueprints.Doors.BP_Door_General",
-        "position": [
-          7,
-          1
-        ]
-      },
-      {
         "tag": "MT3_007.BP_Enemy_E04_shouwei_default_4_0",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E04_shouwei",
         "position": [
@@ -900,14 +892,6 @@
         ]
       },
       {
-        "tag": "MT3_007.BP_Enemy_E11_shitouguai_default_8_2",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E11_shitouguai",
-        "position": [
-          8,
-          2
-        ]
-      },
-      {
         "tag": "MT3_007.Bottle_150_default_0_4",
         "bp": "Data.Blueprints.Consumables.Bottle_150",
         "position": [
@@ -962,6 +946,22 @@
           10,
           0
         ]
+      },
+      {
+        "tag": "Doors_ConditionDoors_BP_Door_Condition_default_7_1",
+        "bp": "Data.Blueprints.Doors.ConditionDoors.BP_Door_Condition",
+        "position": [
+          7,
+          1
+        ]
+      },
+      {
+        "tag": "Enemies_BP_Enemy_E11_shitouguai_default_8_2",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E11_shitouguai",
+        "position": [
+          8,
+          2
+        ]
       }
     ]
   },
@@ -985,6 +985,26 @@
   "BPClassVarChanged": {
     "MT3_007.Gem_GOLD_default_7_0": {
       "plus": 200
+    },
+    "Doors_ConditionDoors_BP_Door_Condition_default_7_1": {
+      "openConditionName": "DoorGate7",
+      "openConditionVal": 2
+    },
+    "MT3_007.BP_Enemy_E11_shitouguai_default_6_2": {
+      "afterBattleVarChanges": {
+        "DoorGate7": [
+          "\u002B",
+          1
+        ]
+      }
+    },
+    "Enemies_BP_Enemy_E11_shitouguai_default_8_2": {
+      "afterBattleVarChanges": {
+        "DoorGate7": [
+          "\u002B",
+          1
+        ]
+      }
     }
   },
   "type": "map"

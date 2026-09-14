@@ -8,11 +8,11 @@
       "opacity": 1.0,
       "speedRate": 1.5
     },
-    "texturePath": "/Game/Assets/Characters/enemies/classic-enemies-50F-single.png",
+    "texturePath": "/Game/Assets/Characters/enemies/classic-enemies-03-bat-single.png",
     "defaultRect": [
       [
         0,
-        64,
+        512,
         32,
         32
       ]

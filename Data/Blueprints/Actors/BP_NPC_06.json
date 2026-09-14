@@ -15,8 +15,8 @@
     "tag": "",
     "defaultRect": [
       [
+        0,
         64,
-        32,
         32,
         32
       ]
@@ -83,18 +83,22 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.OpenShop",
+            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
             "params": [
-              [
-                "KEY_Y",
-                "KEY_B",
-                "KEY_R"
-              ],
+              "thief9",
               true
             ],
             "pos": [
-              2880.0,
-              634.0
+              2880,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
+            "pos": [
+              3600,
+              314
             ]
           }
         ],
@@ -151,6 +155,13 @@
           {
             "left": 4,
             "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 6,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"

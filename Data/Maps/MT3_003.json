@@ -756,14 +756,6 @@
         ]
       },
       {
-        "tag": "MT3_003.BP_Enemy_E07_heiseshilaimu_default_10_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E07_heiseshilaimu",
-        "position": [
-          10,
-          6
-        ]
-      },
-      {
         "tag": "MT3_003.BP_Door_Condition_default_9_7",
         "bp": "Data.Blueprints.Doors.ConditionDoors.BP_Door_Condition",
         "position": [
@@ -954,6 +946,14 @@
           0,
           7
         ]
+      },
+      {
+        "tag": "Enemies_BP_Enemy_E07_heiseshilaimu_default_10_6",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E07_heiseshilaimu",
+        "position": [
+          10,
+          6
+        ]
       }
     ]
   },
@@ -981,6 +981,22 @@
     },
     "MT3_003.Gem_Level_default_9_9": {
       "plus": 1
+    },
+    "MT3_003.BP_Enemy_E07_heiseshilaimu_default_8_6": {
+      "afterBattleVarChanges": {
+        "DoorGate17": [
+          "\u002B",
+          1
+        ]
+      }
+    },
+    "Enemies_BP_Enemy_E07_heiseshilaimu_default_10_6": {
+      "afterBattleVarChanges": {
+        "DoorGate17": [
+          "\u002B",
+          1
+        ]
+      }
     }
   },
   "type": "map"

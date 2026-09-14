@@ -4,16 +4,28 @@ local _METADATA = {
     GameVariables = {
         attrs = {
             "DoorGate17",
+            "DoorGate7",
             "MTExample",
             "ShopPrice",
+            "thief9",
+            "thief9door",
         },
         ["DoorGate17"] = {
+            type = "int",
+        },
+        ["DoorGate7"] = {
             type = "int",
         },
         ["MTExample"] = {
             type = "int",
         },
         ["ShopPrice"] = {
+            type = "int",
+        },
+        ["thief9"] = {
+            type = "bool",
+        },
+        ["thief9door"] = {
             type = "int",
         },
     },

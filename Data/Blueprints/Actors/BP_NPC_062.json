@@ -1,14 +1,18 @@
 {
-  "parent": "Source.Enemy",
+  "parent": "Source.ConditionalActor.ConditionalActor",
   "attrs": {
+    "animatable": true,
     "material": {
       "lightBlock": 0.4,
       "mirror": false,
-      "reflectionStrength": 0.0,
+      "reflectionStrength": 0.5,
       "opacity": 1.0,
-      "speedRate": 1.5
+      "speedRate": 1.0
     },
-    "texturePath": "/Game/Assets/Characters/enemies/Monster401.png",
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/npcs/classic-npcs-50F-single.png",
+    "tag": "",
     "defaultRect": [
       [
         0,
@@ -17,13 +21,28 @@
         32
       ]
     ],
-    "ID": "E24_gongbing",
-    "tag": ""
+    "conditionVariable": "thief9",
+    "conditionValue": true
   },
   "graph": {
     "nodeGraph": {
       "onCollision": {
-        "nodes": [],
+        "nodes": [
+          {
+            "nodeFunction": "NodeFunctions.Scene.OpenShop",
+            "params": [
+              [
+                "KEY_Y",
+                "KEY_B"
+              ],
+              true
+            ],
+            "pos": [
+              0,
+              314
+            ]
+          }
+        ],
         "links": []
       },
       "onCreate": {
@@ -52,7 +71,7 @@
       }
     },
     "startNodes": {
-      "onCollision": null,
+      "onCollision": 0,
       "onCreate": null,
       "onDestroy": null,
       "onFixedTick": null,
