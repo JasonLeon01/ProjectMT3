@@ -360,7 +360,7 @@ function Scene.TransferToMap(mapPath, position)
         anchor = player:getMapPosition()
     end
     player:setMoveEnabled(false)
-    if not scene:requestFloorTransfer(mapPath, anchor, moveEnabled) then
+    if not scene:requestTeleporterTransfer(mapPath, anchor, moveEnabled, true, true) then
         player:setMoveEnabled(moveEnabled)
     end
 end

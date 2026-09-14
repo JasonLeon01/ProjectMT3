@@ -361,7 +361,7 @@
         ],
         [
           336,
-          null,
+          348,
           336,
           null,
           336,
@@ -389,10 +389,36 @@
           336,
           null,
           null,
+          339,
+          348,
           null,
           null,
+          339,
           null,
           null,
+          336
+        ],
+        [
+          336,
+          348,
+          null,
+          null,
+          339,
+          null,
+          350,
+          null,
+          348,
+          null,
+          336
+        ],
+        [
+          336,
+          null,
+          348,
+          null,
+          350,
+          null,
+          339,
           null,
           null,
           null,
@@ -406,33 +432,7 @@
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          336
-        ],
-        [
-          336,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          336
-        ],
-        [
-          336,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
+          348,
           null,
           null,
           336
@@ -604,14 +604,6 @@
     "floor": [],
     "default": [
       {
-        "tag": "MT3_000.Upstair_default_5_10",
-        "bp": "Data.Blueprints.Teleportations.Upstair",
-        "position": [
-          5,
-          10
-        ]
-      },
-      {
         "tag": "MT3_000.BP_NPC_00_default_6_1",
         "bp": "Data.Blueprints.Actors.BP_NPC_00",
         "position": [
@@ -641,6 +633,14 @@
         "position": [
           9,
           9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Transfer_0",
+        "tag": "Teleportations_BP_Transfer_0_default_5_10",
+        "position": [
+          5,
+          10
         ]
       }
     ]

@@ -51,6 +51,30 @@ local _METADATA = {
                 default = "nil"
             }
         },
+        goToMap = {
+            type = "function",
+            parameters = {
+                "mapPath",
+                "position",
+                "record",
+                mapPath = "string",
+                position = "sf.Vector2i",
+                record = "bool"
+            },
+            default = {
+                [3] = true
+            },
+            ["return"] = {},
+            ExecSplit = {
+                "default",
+                default = "nil"
+            },
+            Meta = {
+                Transfer = {
+                    { "position", "mapPath" }
+                }
+            }
+        },
         Meta = {
             PathVars = {
                 { "stairSE", "/Game/Assets/Sounds" },
