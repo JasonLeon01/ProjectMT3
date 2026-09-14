@@ -2,6 +2,7 @@
 
 return {
     ["DoorGate17"] = 0,
+    ["DoorGate18"] = 0,
     ["DoorGate7"] = 0,
     ["MTExample"] = 0,
     ["ShopPrice"] = 20,

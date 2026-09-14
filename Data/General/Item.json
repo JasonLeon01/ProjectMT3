@@ -1134,12 +1134,60 @@
       "_graph": {
         "nodeGraph": {
           "onUse": {
-            "nodes": [],
-            "links": []
+            "nodes": [
+              {
+                "nodeFunction": "NodeFunctions.Player.GetPlayerFrontPosition",
+                "params": [],
+                "pos": [
+                  -720,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "NodeFunctions.Scene.ConvertSWallToYellowDoor",
+                "params": [
+                  [
+                    0,
+                    0
+                  ]
+                ],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "NodeFunctions.Player.RemoveItem",
+                "params": [
+                  "SDoor",
+                  1
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 1,
+                "right": 2,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
           }
         },
         "startNodes": {
-          "onUse": null
+          "onUse": 1
         }
       }
     },

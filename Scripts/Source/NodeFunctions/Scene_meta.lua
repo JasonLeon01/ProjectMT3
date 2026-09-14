@@ -435,6 +435,27 @@ local _METADATA = {
                 }
             }
         },
+        ConvertSWallToYellowDoor = {
+            type = "function",
+            parameters = {
+                "position",
+                position = "sf.Vector2i"
+            },
+            ["return"] = {
+                "return",
+                ["return"] = "int"
+            },
+            ExecSplit = {
+                "Success",
+                "Failed",
+                Success = {
+                    0
+                },
+                Failed = {
+                    1
+                }
+            }
+        },
         DestroyTerrain = {
             type = "function",
             parameters = {

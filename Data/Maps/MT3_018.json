@@ -668,26 +668,10 @@
         ]
       },
       {
-        "tag": "MT3_019.BP_Door_General_default_6_5",
-        "bp": "Data.Blueprints.Doors.BP_Door_General",
-        "position": [
-          6,
-          5
-        ]
-      },
-      {
         "tag": "MT3_019.BP_Enemy_E28_fengwushi_default_5_6",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
         "position": [
           5,
-          6
-        ]
-      },
-      {
-        "tag": "MT3_019.BP_Enemy_E28_fengwushi_default_7_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
-        "position": [
-          7,
           6
         ]
       },
@@ -938,6 +922,22 @@
           7,
           4
         ]
+      },
+      {
+        "tag": "Enemies_BP_Enemy_E28_fengwushi_default_7_6",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "position": [
+          7,
+          6
+        ]
+      },
+      {
+        "tag": "Doors_ConditionDoors_BP_Door_Condition_default_6_5",
+        "bp": "Data.Blueprints.Doors.ConditionDoors.BP_Door_Condition",
+        "position": [
+          6,
+          5
+        ]
       }
     ]
   },
@@ -964,6 +964,26 @@
     },
     "MT3_019.Gem_GOLD_default_7_4": {
       "plus": 100
+    },
+    "MT3_019.BP_Enemy_E28_fengwushi_default_5_6": {
+      "afterBattleVarChanges": {
+        "DoorGate18": [
+          "\u002B",
+          1
+        ]
+      }
+    },
+    "Enemies_BP_Enemy_E28_fengwushi_default_7_6": {
+      "afterBattleVarChanges": {
+        "DoorGate18": [
+          "\u002B",
+          1
+        ]
+      }
+    },
+    "Doors_ConditionDoors_BP_Door_Condition_default_6_5": {
+      "openConditionName": "DoorGate18",
+      "openConditionVal": 2
     }
   },
   "type": "map"

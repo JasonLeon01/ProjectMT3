@@ -141,6 +141,18 @@ function Scene.CreateActorFromBPPath(bpPath, layerName, position, tag, emitCreat
 ---@return Engine.Actor | nil
 function Scene.CreateActorFromBPPathWithDefaults(bpPath, defaults, layerName, position, tag, emitCreateEvent) end
 
+---@brief Convert an SWall-derived actor at a tile into a yellow door and persist the change.
+---
+--- Looks up actors at `position`, keeps the first `Source.SWall` instance, records and
+--- destroys it, then spawns `Data.Blueprints.Doors.BP_Door_Y` on the same layer and
+--- records the new door. Failure is silent and returns 1 without consuming items.
+---
+--- - @param position The `sf.Vector2i` tile coordinate to convert.
+--- - @return 0 on success, 1 on failure.
+---@param position sf.Vector2i
+---@return integer
+function Scene.ConvertSWallToYellowDoor(position) end
+
 ---@brief Replace and persist one terrain tile on the current map.
 ---
 --- - @param layerName The tile layer to edit.

@@ -628,14 +628,6 @@
         ]
       },
       {
-        "tag": "MT3_017.BP_Door_General_default_4_10",
-        "bp": "Data.Blueprints.Doors.BP_Door_General",
-        "position": [
-          4,
-          10
-        ]
-      },
-      {
         "tag": "MT3_017.BP_Door_Y_default_1_2",
         "bp": "Data.Blueprints.Doors.BP_Door_Y",
         "position": [
@@ -936,6 +928,14 @@
         "bp": "Data.Blueprints.Items.BP_Item_Key_R",
         "position": [
           1,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "tag": "Actors_BP_SWall_default_4_10",
+        "position": [
+          4,
           10
         ]
       }

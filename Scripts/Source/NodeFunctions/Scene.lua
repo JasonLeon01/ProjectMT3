@@ -223,6 +223,58 @@ function Scene.CreateActorFromBPPathWithDefaults(bpPath, defaults, layerName, po
     return actor
 end
 
+local YELLOW_DOOR_BP = "Data.Blueprints.Doors.BP_Door_Y"
+
+---@param gameMap GameMap
+---@param baseTag string
+---@return string
+local function reserveDoorTag(gameMap, baseTag)
+    local mapTag = baseTag
+    local tagSuffix = 2
+    while gameMap:getActorByTag(mapTag) ~= nil do
+        mapTag = baseTag .. "_" .. tostring(tagSuffix)
+        tagSuffix = tagSuffix + 1
+    end
+    return mapTag
+end
+
+function Scene.ConvertSWallToYellowDoor(position)
+    if position == nil then
+        return 1
+    end
+    local scene = Context.RequireSceneMap()
+    local gameMap = scene:getGameMap()
+    if gameMap == nil then
+        return 1
+    end
+    local SWall = require("Source.SWall")
+
+    local wall = nil
+    for _, actor in ipairs(gameMap:getActorsByPosition(position)) do
+        if Class.isInstance(actor, SWall) then
+            wall = actor
+            break
+        end
+    end
+    if wall == nil then
+        return 1
+    end
+    local layerName = assert(gameMap:getActorLayer(wall), "SWall is not on a map layer")
+    local wallTag = wall:getMapTag()
+    assert(bool(wallTag), "SWall requires a non-empty map-placement tag")
+    ---@cast wallTag string
+    local doorPosition = copy(wall:getMapPosition())
+    scene:recordDestroyedActor(wall)
+    wall:destroy()
+    local doorTag = reserveDoorTag(gameMap, wallTag .. "_DoorY")
+    local door = assert(
+        Scene.CreateActorFromBPPath(YELLOW_DOOR_BP, layerName, doorPosition, doorTag, true),
+        "Failed to create yellow door from SWall"
+    )
+    scene:recordAddedActor(door)
+    return 0
+end
+
 function Scene.DestroyTerrain(layerName, position, tileID)
     local scene = Context.RequireSceneMap()
     local changedPositions = scene:getGameMap():setTerrainTiles(layerName, { position }, tileID)
