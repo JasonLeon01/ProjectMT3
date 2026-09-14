@@ -78,6 +78,7 @@
           {
             "nodeFunction": "Teleporter.goToMap",
             "params": [
+              "self",
               "MT3_001.json",
               [
                 5,

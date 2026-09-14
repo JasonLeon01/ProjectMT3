@@ -35,7 +35,13 @@ local _METADATA = {
         },
         goUpstairs = {
             type = "function",
-            parameters = {},
+            parameters = {
+                "self",
+                self = { "Source.Teleporter", "Teleporter" }
+            },
+            default = {
+                [1] = "self"
+            },
             ["return"] = {},
             ExecSplit = {
                 "default",
@@ -44,7 +50,13 @@ local _METADATA = {
         },
         goDownstairs = {
             type = "function",
-            parameters = {},
+            parameters = {
+                "self",
+                self = { "Source.Teleporter", "Teleporter" }
+            },
+            default = {
+                [1] = "self"
+            },
             ["return"] = {},
             ExecSplit = {
                 "default",
@@ -54,15 +66,18 @@ local _METADATA = {
         goToMap = {
             type = "function",
             parameters = {
+                "self",
                 "mapPath",
                 "position",
                 "record",
+                self = { "Source.Teleporter", "Teleporter" },
                 mapPath = "string",
                 position = "sf.Vector2i",
                 record = "bool"
             },
             default = {
-                [3] = true
+                [1] = "self",
+                [4] = true
             },
             ["return"] = {},
             ExecSplit = {
