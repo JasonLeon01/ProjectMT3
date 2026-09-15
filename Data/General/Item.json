@@ -1128,7 +1128,7 @@
       "name": "{SDOOR}",
       "desc": "{SDOOR_DESC}",
       "usable": true,
-      "price": 0,
+      "price": 30,
       "icon": "/Game/Assets/Icons/mting-1217.png",
       "cost": true,
       "_graph": {
