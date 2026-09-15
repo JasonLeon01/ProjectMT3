@@ -34,7 +34,7 @@ local function createState(actor, player)
         breathLimit = attributes.breathLimit,
         fatigue = 0,
         animationKey = attributes.ANIMATION_KEY,
-        critanimationkey = attributes.critanimationkey,
+        CritAnimationKey = attributes.CritAnimationKey,
         crit = (player and assert(Battle.players[actor.ID], "Missing player battle config: " .. actor.ID)
             or Battle.enemy).crit,
         isPlayer = player
@@ -72,15 +72,11 @@ end
 function Controller:setBattleText(name, text)
     local control = assert(self.ui.controls[name])
     ---@cast control Engine.PlainText
-    local centered = name:match("Name$") or name:match("Damage$")
     if name:match("Name$") then
         text = Engine.TextLayout.fitPlainText(text, 96, control)
     end
     self:setText(name, text)
-    if centered or name:match("^Player.*Value$") or name:match("^Player.*Label$") and name ~= "PlayerBREATHLabel" then
-        local width = Engine.TextLayout.measurePlainText(control, text)
-        control:setOrigin(sf.Vector2f.new(centered and width / 2 or width, 0))
-    end
+    self.view:reflow()
 end
 
 function Controller:refreshLocale()
@@ -144,8 +140,8 @@ function Controller:setPortrait(name, actor)
     local portrait = assert(self.ui.controls[name])
     ---@cast portrait Engine.CharacterView
     portrait:setCharacter(
-        visual.texture, frameRect, visual.scale, bool(visual.animatable),
-        visual.switchInterval or 0.2, visual.shaderPath or "", visual.hue or 0
+        visual.texture, frameRect, visual.scale, bool(visual.animatable), visual.switchInterval or 0.2,
+        visual.shaderPath or "", visual.hue or 0
     )
 end
 
@@ -246,7 +242,7 @@ end
 function Controller:performAttack(attacker, defender, critical)
     local damage, base = self:calculateDamage(attacker, defender, critical)
     local key = base == 0 and "09_datie"
-        or (damage == 0 and "08_miss" or (critical and attacker.critanimationkey or attacker.animationKey))
+        or (damage == 0 and "08_miss" or (critical and attacker.CritAnimationKey or attacker.animationKey))
     local side = defender.isPlayer and "Player" or "Enemy"
     local animation = Animation.new(Data.GetAnimation(key), false)
     local position = self.ui.controls[side .. "Portrait"]:getPosition() + sf.Vector2f.new(16, 16)

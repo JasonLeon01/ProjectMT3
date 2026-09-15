@@ -8,7 +8,7 @@
 ---@field breathLimit      integer
 ---@field fatigue          integer
 ---@field animationKey     string
----@field critanimationkey string
+---@field CritAnimationKey string
 ---@field isPlayer         boolean
 ---@field crit             fun(damage: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
 

@@ -173,14 +173,14 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                0.5,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
-              "previewText": "史莱姆"
+              "previewText": "\u53F2\u83B1\u59C6"
             },
             "children": []
           },
@@ -223,7 +223,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "体力:"
+              "previewText": "\u4F53\u529B:"
             },
             "children": []
           },
@@ -309,7 +309,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "攻击:"
+              "previewText": "\u653B\u51FB:"
             },
             "children": []
           },
@@ -395,7 +395,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "防御:"
+              "previewText": "\u9632\u5FA1:"
             },
             "children": []
           },
@@ -481,7 +481,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "疲劳:"
+              "previewText": "\u75B2\u52B3:"
             },
             "children": []
           },
@@ -554,8 +554,8 @@
                 ]
               },
               "offsets": {
-                "left": 0,
-                "top": 144,
+                "left": 24,
+                "top": 144.00000000000003,
                 "right": 64,
                 "bottom": 24
               },
@@ -567,7 +567,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "气息:"
+              "previewText": "\u6C14\u606F:"
             },
             "children": []
           },
@@ -585,7 +585,8 @@
               "scale": [
                 1,
                 1.5
-              ]
+              ],
+              "visible": true
             },
             "slot": {
               "anchors": {
@@ -599,7 +600,7 @@
                 ]
               },
               "offsets": {
-                "left": 40,
+                "left": 72,
                 "top": 152,
                 "right": 80,
                 "bottom": 4
@@ -627,8 +628,9 @@
               ],
               "scale": [
                 1,
-                1
-              ]
+                1.5
+              ],
+              "visible": true
             },
             "slot": {
               "anchors": {
@@ -642,7 +644,7 @@
                 ]
               },
               "offsets": {
-                "left": 40,
+                "left": 72,
                 "top": 152,
                 "right": 80,
                 "bottom": 4
@@ -651,7 +653,7 @@
                 0,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {},
@@ -689,10 +691,10 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                0.5,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -781,14 +783,14 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                0.5,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
-              "previewText": "勇士"
+              "previewText": "\u52C7\u58EB"
             },
             "children": []
           },
@@ -824,14 +826,14 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":体力"
+              "previewText": ":\u4F53\u529B"
             },
             "children": []
           },
@@ -867,10 +869,10 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -910,14 +912,14 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":攻击"
+              "previewText": ":\u653B\u51FB"
             },
             "children": []
           },
@@ -953,10 +955,10 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -996,14 +998,14 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":防御"
+              "previewText": ":\u9632\u5FA1"
             },
             "children": []
           },
@@ -1039,10 +1041,10 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -1082,14 +1084,14 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":疲劳"
+              "previewText": ":\u75B2\u52B3"
             },
             "children": []
           },
@@ -1125,10 +1127,10 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -1175,7 +1177,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "气息:"
+              "previewText": "\u6C14\u606F:"
             },
             "children": []
           },
@@ -1259,7 +1261,7 @@
                 0,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {},
@@ -1297,10 +1299,10 @@
                 "bottom": 24
               },
               "alignment": [
-                0,
+                0.5,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -2182,8 +2184,8 @@
                 ]
               },
               "offsets": {
-                "left": 360,
-                "top": 120,
+                "left": 256,
+                "top": 176,
                 "right": 28,
                 "bottom": 29
               },
@@ -2281,7 +2283,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "～撤退(Q)～"
+              "previewText": "\uFF5E\u64A4\u9000(Q)\uFF5E"
             },
             "children": []
           }
