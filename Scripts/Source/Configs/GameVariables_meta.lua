@@ -6,6 +6,7 @@ local _METADATA = {
             "DoorGate17",
             "DoorGate18",
             "DoorGate7",
+            "floor25Phase",
             "MTExample",
             "ShopPrice",
             "fly",
@@ -22,6 +23,9 @@ local _METADATA = {
             type = "int",
         },
         ["DoorGate7"] = {
+            type = "int",
+        },
+        ["floor25Phase"] = {
             type = "int",
         },
         ["MTExample"] = {

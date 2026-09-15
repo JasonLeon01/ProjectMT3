@@ -18,7 +18,13 @@
       ]
     ],
     "ID": "E32_youmingfashi",
-    "tag": ""
+    "tag": "",
+    "afterBattleVarChanges": {
+      "floor25Phase": [
+        "\u002B",
+        1
+      ]
+    }
   },
   "graph": {
     "nodeGraph": {

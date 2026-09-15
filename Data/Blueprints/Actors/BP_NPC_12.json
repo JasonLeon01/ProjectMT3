@@ -6,10 +6,10 @@
       "lightBlock": 0.4,
       "mirror": false,
       "reflectionStrength": 0.5,
-      "opacity": 1.0,
+      "opacity": 0.0,
       "speedRate": 1.0
     },
-    "collisionEnabled": true,
+    "collisionEnabled": false,
     "tickable": false,
     "texturePath": "/Game/Assets/Characters/blocks/stairs.png",
     "tag": "",
@@ -20,26 +20,17 @@
         32,
         32
       ]
-    ],
-    "scriptMixin": false
+    ]
   },
   "graph": {
     "nodeGraph": {
       "onOverlap": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Utils.SELF",
-            "params": [],
-            "pos": [
-              -720.0,
-              634.0
-            ]
-          },
-          {
             "nodeFunction": "NodeFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
-              "{DC_NPC01_1}",
+              "{DC_NPC12_1}",
               null
             ],
             "pos": [
@@ -50,8 +41,8 @@
           {
             "nodeFunction": "NodeFunctions.Scene.ShowMessage",
             "params": [
-              "{DN_PRINCESS}",
-              "{DC_NPC01_2}",
+              "{DN_NETHER_MAGE}",
+              "{DC_NPC12_2}",
               null
             ],
             "pos": [
@@ -63,7 +54,7 @@
             "nodeFunction": "NodeFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
-              "{DC_NPC01_3}",
+              "{DC_NPC12_3}",
               null
             ],
             "pos": [
@@ -72,23 +63,29 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
-            "params": [
-              "{DN_PRINCESS}",
-              "{DC_NPC01_4}",
-              null
-            ],
+            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
             "pos": [
               2160.0,
               314.0
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "NodeFunctions.Player.GetPlayer",
             "params": [],
             "pos": [
-              3600.0,
-              634.0
+              -720,
+              634
+            ]
+          },
+          {
+            "nodeFunction": "NodeFunctions.GameMap.GetActorByTag",
+            "params": [
+              "YMFS"
+            ],
+            "pos": [
+              0,
+              954
             ]
           }
         ],
@@ -97,29 +94,8 @@
             "left": 0,
             "right": 1,
             "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 2,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 3,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
-          },
-          {
-            "left": 0,
-            "right": 4,
-            "leftOutPin": 0,
-            "rightInPin": 2,
-            "linkType": "Params"
+            "rightInPin": 0,
+            "linkType": "Exec"
           },
           {
             "left": 1,
@@ -136,18 +112,25 @@
             "linkType": "Exec"
           },
           {
-            "left": 3,
-            "right": 4,
+            "left": 4,
+            "right": 0,
             "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
+            "rightInPin": 2,
+            "linkType": "Params"
           },
           {
             "left": 4,
-            "right": 5,
+            "right": 2,
             "leftOutPin": 0,
-            "rightInPin": 0,
-            "linkType": "Exec"
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 5,
+            "right": 1,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
           }
         ]
       },
@@ -182,7 +165,7 @@
       "onDestroy": null,
       "onFixedTick": null,
       "onLateTick": null,
-      "onOverlap": 1,
+      "onOverlap": 0,
       "onTick": null
     }
   },

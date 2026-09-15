@@ -253,7 +253,16 @@ function Scene:loadMap(mapPath, initialPosition)
     self._worldAmbientTransitionElapsed = 0
     if not gameMap:isWorldMap() then
         ---@cast mapData Source.SceneComponents.MapData
-        self._mapAudio:playMapAudio(mapData)
+        local audioMapData = mapData
+        if MapPath.BasenameWithoutExtension(mapFile) == "MT3_025" and self.inst:getVariable("floor25Phase") >= 2 then
+            audioMapData = {
+                bgm = "/Game/Assets/Musics/sound-3.mp3",
+                bgmFilter = mapData.bgmFilter,
+                bgs = mapData.bgs,
+                bgsFilter = mapData.bgsFilter
+            }
+        end
+        self._mapAudio:playMapAudio(audioMapData)
         GlobalSystem.clearFog()
         GlobalSystem.applyFogFromMapData(GlobalCore.MapFogSettings.new({
                 fog = mapData.fog,

@@ -79,7 +79,7 @@ return {
     ["MENU_SAVE"] = "Save File",
     ["MENU_SAVE_FILE"] = "Files",
     ["MORE_SPECIAL"] = "More...",
-    ["Mota"] = "MOTA",
+    ["Mota"] = "Main Tower",
     ["NORMAL"] = "Normal",
     ["NORMAL_SPECIAL"] = "Normal",
     ["PLAYER_NAME_CANCEL"] = "Cancel",

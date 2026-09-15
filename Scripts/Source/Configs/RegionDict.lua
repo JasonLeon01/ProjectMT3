@@ -2,6 +2,10 @@ return {
     Palace = {
         "MT3_000"
     },
+    SECRET = {
+        "MT3_017_secret",
+        "MT3_023_secret"
+    },
     Mota = {
         "MT3_001",
         "MT3_002",
@@ -26,6 +30,9 @@ return {
         "MT3_021",
         "MT3_022",
         "MT3_023",
+        "MT3_024"
+    },
+    Mota2 = {
         "MT3_025"
     }
 }

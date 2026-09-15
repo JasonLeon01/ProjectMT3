@@ -616,7 +616,7 @@
         "bp": "Data.Blueprints.Actors.BP_NPC_01",
         "position": [
           5,
-          6
+          5
         ]
       },
       {
@@ -646,9 +646,9 @@
     ]
   },
   "ambientLight": [
-    255,
-    255,
-    255,
+    72,
+    72,
+    72,
     255
   ],
   "lights": [],

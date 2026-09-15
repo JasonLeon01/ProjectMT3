@@ -1,9 +1,10 @@
 {
-  "mapName": "{MT3_001}",
+  "mapName": "{MT3_025}",
   "width": 11,
   "height": 11,
   "layerOrder": [
     "floor",
+    "lava",
     "default"
   ],
   "layers": {
@@ -155,7 +156,12 @@
           11
         ]
       ],
-      "autoTiles": [
+      "actors": []
+    },
+    "lava": {
+      "layerName": "lava",
+      "layerTileset": "Mota",
+      "tiles": [
         [
           null,
           null,
@@ -300,7 +306,151 @@
           null
         ]
       ],
-      "shaderPath": "",
+      "autoTiles": [
+        [
+          "lava",
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          null,
+          null,
+          null,
+          "lava",
+          "lava",
+          "lava",
+          "lava"
+        ],
+        [
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava",
+          "lava"
+        ]
+      ],
       "actors": []
     },
     "default": {
@@ -308,159 +458,14 @@
       "layerTileset": "Mota",
       "tiles": [
         [
-          13,
-          13,
-          13,
-          13,
-          7,
-          null,
-          7,
-          13,
-          13,
-          13,
-          13
-        ],
-        [
-          13,
-          7,
-          13,
-          13,
-          7,
-          null,
-          7,
-          13,
-          13,
-          13,
-          13
-        ],
-        [
-          13,
-          13,
-          13,
-          7,
-          7,
-          null,
-          null,
-          7,
-          13,
-          13,
-          13
-        ],
-        [
-          13,
-          7,
-          7,
-          7,
-          null,
           null,
           null,
           null,
           7,
-          13,
-          13
-        ],
-        [
-          13,
-          13,
-          7,
-          13,
-          7,
           null,
-          null,
-          7,
-          13,
-          13,
-          null
-        ],
-        [
-          13,
-          13,
-          7,
-          13,
           7,
           null,
           7,
-          7,
-          13,
-          7,
-          13
-        ],
-        [
-          13,
-          13,
-          7,
-          13,
-          7,
-          null,
-          null,
-          7,
-          13,
-          13,
-          13
-        ],
-        [
-          13,
-          13,
-          13,
-          7,
-          7,
-          null,
-          7,
-          7,
-          13,
-          13,
-          7
-        ],
-        [
-          13,
-          7,
-          13,
-          7,
-          null,
-          null,
-          null,
-          7,
-          13,
-          13,
-          13
-        ],
-        [
-          13,
-          13,
-          13,
-          13,
-          7,
-          null,
-          7,
-          7,
-          13,
-          13,
-          13
-        ],
-        [
-          13,
-          13,
-          13,
-          13,
-          7,
-          null,
-          7,
-          13,
-          13,
-          13,
-          13
-        ]
-      ],
-      "autoTiles": [
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           null,
           null,
           null
@@ -469,24 +474,11 @@
           null,
           null,
           null,
+          7,
           null,
+          7,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
+          7,
           null,
           null,
           null
@@ -495,12 +487,90 @@
           null,
           null,
           null,
+          7,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          7,
+          7,
+          null,
+          7,
+          7,
+          7,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
           null,
           null,
           null,
           null,
           null,
+          7,
           null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          7,
+          7,
+          null,
+          7,
+          7,
+          7,
           null,
           null
         ],
@@ -509,74 +579,9 @@
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
+          7,
+          7,
+          7,
           null,
           null,
           null,
@@ -596,60 +601,43 @@
           null
         ]
       ],
-      "shaderPath": "",
       "actors": []
     }
   },
   "actors": {
-    "floor": [
-      {
-        "bp": "Data.Blueprints.Items.BP_Item_EnemyBook",
-        "tag": "Items_BP_Item_EnemyBook_default_7_3",
-        "position": [
-          7,
-          3
-        ]
-      }
-    ],
+    "floor": [],
+    "lava": [],
     "default": [
       {
-        "tag": "MT3_001.Upstair_default_5_0",
-        "bp": "Data.Blueprints.Teleportations.Upstair",
+        "tag": "YMFS",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E32_youmingfashi",
         "position": [
           5,
-          0
+          4
         ]
       },
       {
-        "tag": "MT3_001.Gem_1_2_default_6_8",
-        "bp": "Data.Blueprints.Consumables.Gem_1_2",
-        "position": [
-          6,
-          8
-        ]
-      },
-      {
-        "tag": "MT3_001.Gem_2_2_default_6_6",
-        "bp": "Data.Blueprints.Consumables.Gem_2_2",
-        "position": [
-          6,
-          6
-        ]
-      },
-      {
-        "tag": "MT3_001.BP_Door_General_default_5_5",
-        "bp": "Data.Blueprints.Doors.BP_Door_General",
+        "tag": "MT3_025.BP_NPC_12_default_5_7",
+        "bp": "Data.Blueprints.Actors.BP_NPC_12",
         "position": [
           5,
-          5
+          7
         ]
       },
       {
-        "tag": "MT3_001.BP_NPC_02_default_7_3",
-        "bp": "Data.Blueprints.Actors.BP_NPC_02",
+        "tag": "MT3_025.BP_NPC_092_default_4_7",
+        "bp": "Data.Blueprints.Actors.BP_NPC_092",
         "position": [
-          7,
-          3
+          4,
+          7
+        ]
+      },
+      {
+        "tag": "MT3_025.BP_NPC_062_default_6_7",
+        "bp": "Data.Blueprints.Actors.BP_NPC_062",
+        "position": [
+          6,
+          7
         ]
       }
     ]
@@ -671,6 +659,25 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {},
+  "BPClassVarChanged": {
+    "MT3_025.BP_NPC_092_default_4_7": {
+      "conditionVariable": "floor25Phase",
+      "conditionValue": 2,
+      "conditionOperator": "\u003E="
+    },
+    "MT3_025.BP_NPC_062_default_6_7": {
+      "conditionVariable": "floor25Phase",
+      "conditionValue": 2,
+      "conditionOperator": "\u003E="
+    },
+    "YMFS": {
+      "afterBattleVarChanges": {
+        "floor25Phase": [
+          "=",
+          1
+        ]
+      }
+    }
+  },
   "type": "map"
 }
