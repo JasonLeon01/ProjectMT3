@@ -6,6 +6,7 @@
 ---@field AtkLabel   Engine.PlainText
 ---@field AtkValue   Engine.PlainText
 ---@field Avatar     Engine.Button
+---@field Background Engine.Image
 ---@field DefDebuff  Engine.PlainText
 ---@field DefLabel   Engine.PlainText
 ---@field DefValue   Engine.PlainText

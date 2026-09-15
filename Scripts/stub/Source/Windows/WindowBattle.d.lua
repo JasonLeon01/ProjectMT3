@@ -101,6 +101,9 @@ function Controller:addBreath(state, amount) end
 ---@param side  "Player" | "Enemy"
 ---@param state Source.Windows.WindowBattle.BattlerState
 function Controller:refreshBreath(side, state) end
+---@param kind "Lit" | "Dim"
+---@return Engine.WrapBox
+function Controller:getBreathBox(kind) end
 ---@param kind  "Lit" | "Dim"
 ---@param index integer
 ---@return Engine.Canvas

@@ -2,30 +2,8 @@
 ---@meta Source.UI.WindowBattle
 
 ---@class Source.UIBase.GeneratedControls.WindowBattle
----@field BreathDim1         Engine.Canvas
----@field BreathDim1Preview  Engine.Image
----@field BreathDim2         Engine.Canvas
----@field BreathDim2Preview  Engine.Image
----@field BreathDim3         Engine.Canvas
----@field BreathDim3Preview  Engine.Image
----@field BreathDim4         Engine.Canvas
----@field BreathDim4Preview  Engine.Image
----@field BreathDim5         Engine.Canvas
----@field BreathDim5Preview  Engine.Image
----@field BreathDim6         Engine.Canvas
----@field BreathDim6Preview  Engine.Image
----@field BreathLit1         Engine.Canvas
----@field BreathLit1Preview  Engine.Image
----@field BreathLit2         Engine.Canvas
----@field BreathLit2Preview  Engine.Image
----@field BreathLit3         Engine.Canvas
----@field BreathLit3Preview  Engine.Image
----@field BreathLit4         Engine.Canvas
----@field BreathLit4Preview  Engine.Image
----@field BreathLit5         Engine.Canvas
----@field BreathLit5Preview  Engine.Image
----@field BreathLit6         Engine.Canvas
----@field BreathLit6Preview  Engine.Image
+---@field BreathDim          Engine.WrapBox
+---@field BreathLit          Engine.WrapBox
 ---@field Content            Engine.Canvas
 ---@field CriticalButton     Engine.Button
 ---@field EnemyATKLabel      Engine.PlainText

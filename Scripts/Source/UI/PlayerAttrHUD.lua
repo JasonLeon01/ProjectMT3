@@ -6,7 +6,7 @@ local ChildView1 = require("Source.UI.Parts.PlayerAttrHUD.PlayerStateRow")
 local View = {}
 
 View.assetKey = "PlayerAttrHUD"
-View.designSize = sf.Vector2f.new(144, 388)
+View.designSize = sf.Vector2f.new(640, 480)
 
 function View:init(instance)
     UiView.init(self, instance)
@@ -15,6 +15,7 @@ function View:init(instance)
         AtkLabel = assert(self.instance:requireControl("AtkLabel")),
         AtkValue = assert(self.instance:requireControl("AtkValue")),
         Avatar = assert(self.instance:requireControl("Avatar")),
+        Background = assert(self.instance:requireControl("Background")),
         DefDebuff = assert(self.instance:requireControl("DefDebuff")),
         DefLabel = assert(self.instance:requireControl("DefLabel")),
         DefValue = assert(self.instance:requireControl("DefValue")),

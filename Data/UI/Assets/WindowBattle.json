@@ -180,7 +180,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u53F2\u83B1\u59C6"
+              "previewText": "史莱姆"
             },
             "children": []
           },
@@ -223,7 +223,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u4F53\u529B:"
+              "previewText": "体力:"
             },
             "children": []
           },
@@ -309,7 +309,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u653B\u51FB:"
+              "previewText": "攻击:"
             },
             "children": []
           },
@@ -395,7 +395,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u9632\u5FA1:"
+              "previewText": "防御:"
             },
             "children": []
           },
@@ -481,7 +481,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u75B2\u52B3:"
+              "previewText": "疲劳:"
             },
             "children": []
           },
@@ -567,7 +567,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u6C14\u606F:"
+              "previewText": "气息:"
             },
             "children": []
           },
@@ -726,7 +726,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u52C7\u58EB"
+              "previewText": "勇士"
             },
             "children": []
           },
@@ -769,7 +769,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":\u4F53\u529B"
+              "previewText": ":体力"
             },
             "children": []
           },
@@ -855,7 +855,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":\u653B\u51FB"
+              "previewText": ":攻击"
             },
             "children": []
           },
@@ -941,7 +941,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":\u9632\u5FA1"
+              "previewText": ":防御"
             },
             "children": []
           },
@@ -1027,7 +1027,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": ":\u75B2\u52B3"
+              "previewText": ":疲劳"
             },
             "children": []
           },
@@ -1113,7 +1113,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\u6C14\u606F:"
+              "previewText": "气息:"
             },
             "children": []
           },
@@ -1185,14 +1185,18 @@
             "children": []
           },
           {
-            "name": "BreathLit1",
-            "controlId": "Engine.Canvas",
+            "name": "BreathLit",
+            "controlId": "Engine.WrapBox",
             "properties": {
               "size": [
-                18,
+                74,
                 20
               ],
-              "visible": false
+              "count": 5,
+              "spacing": [
+                -4,
+                0
+              ]
             },
             "slot": {
               "anchors": {
@@ -1208,7 +1212,7 @@
               "offsets": {
                 "left": 296,
                 "top": 136,
-                "right": 18,
+                "right": 74,
                 "bottom": 20
               },
               "alignment": [
@@ -1221,49 +1225,68 @@
             "editor": {},
             "children": [
               {
-                "name": "BreathLit1Preview",
-                "controlId": "Engine.Image",
+                "name": "BreathLitFlame",
+                "controlId": "Engine.Canvas",
                 "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
+                  "size": [
+                    18,
+                    20
                   ],
-                  "autoSize": false,
-                  "zOrder": 0
+                  "visible": false
                 },
+                "slot": {},
                 "editor": {},
-                "children": []
+                "children": [
+                  {
+                    "name": "BreathLitPreview",
+                    "controlId": "Engine.Image",
+                    "properties": {
+                      "texture": "/Game/Assets/Animations/mting-1211.png"
+                    },
+                    "slot": {
+                      "anchors": {
+                        "min": [
+                          0,
+                          0
+                        ],
+                        "max": [
+                          0,
+                          0
+                        ]
+                      },
+                      "offsets": {
+                        "left": 0,
+                        "top": 1,
+                        "right": 16,
+                        "bottom": 16
+                      },
+                      "alignment": [
+                        0,
+                        0
+                      ],
+                      "autoSize": false,
+                      "zOrder": 0
+                    },
+                    "editor": {},
+                    "children": []
+                  }
+                ]
               }
             ]
           },
           {
-            "name": "BreathDim1",
-            "controlId": "Engine.Canvas",
+            "name": "BreathDim",
+            "controlId": "Engine.WrapBox",
             "properties": {
               "size": [
-                18,
+                74,
                 20
               ],
-              "visible": true
+              "count": 5,
+              "spacing": [
+                -4,
+                0
+              ]
             },
             "slot": {
               "anchors": {
@@ -1279,7 +1302,7 @@
               "offsets": {
                 "left": 296,
                 "top": 136,
-                "right": 18,
+                "right": 74,
                 "bottom": 20
               },
               "alignment": [
@@ -1292,747 +1315,52 @@
             "editor": {},
             "children": [
               {
-                "name": "BreathDim1Preview",
-                "controlId": "Engine.Image",
+                "name": "BreathDimFlame",
+                "controlId": "Engine.Canvas",
                 "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211_g.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
+                  "size": [
+                    18,
+                    20
                   ],
-                  "autoSize": false,
-                  "zOrder": 0
+                  "visible": true
                 },
+                "slot": {},
                 "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathLit2",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": false
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
+                "children": [
+                  {
+                    "name": "BreathDimPreview",
+                    "controlId": "Engine.Image",
+                    "properties": {
+                      "texture": "/Game/Assets/Animations/mting-1211_g.png"
+                    },
+                    "slot": {
+                      "anchors": {
+                        "min": [
+                          0,
+                          0
+                        ],
+                        "max": [
+                          0,
+                          0
+                        ]
+                      },
+                      "offsets": {
+                        "left": 0,
+                        "top": 1,
+                        "right": 16,
+                        "bottom": 16
+                      },
+                      "alignment": [
+                        0,
+                        0
+                      ],
+                      "autoSize": false,
+                      "zOrder": 0
+                    },
+                    "editor": {},
+                    "children": []
+                  }
                 ]
-              },
-              "offsets": {
-                "left": 310,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathLit2Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathDim2",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": true
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 310,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathDim2Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211_g.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathLit3",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": false
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 324,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathLit3Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathDim3",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": true
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 324,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathDim3Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211_g.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathLit4",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": false
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 338,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathLit4Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathDim4",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": true
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 338,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathDim4Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211_g.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathLit5",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": false
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 352,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathLit5Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathDim5",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": true
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 352,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathDim5Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211_g.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathLit6",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": false
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 366,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathLit6Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
-              }
-            ]
-          },
-          {
-            "name": "BreathDim6",
-            "controlId": "Engine.Canvas",
-            "properties": {
-              "size": [
-                18,
-                20
-              ],
-              "visible": true
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 366,
-                "top": 136,
-                "right": 18,
-                "bottom": 20
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": [
-              {
-                "name": "BreathDim6Preview",
-                "controlId": "Engine.Image",
-                "properties": {
-                  "texture": "/Game/Assets/Animations/mting-1211_g.png"
-                },
-                "slot": {
-                  "anchors": {
-                    "min": [
-                      0,
-                      0
-                    ],
-                    "max": [
-                      0,
-                      0
-                    ]
-                  },
-                  "offsets": {
-                    "left": 0,
-                    "top": 1,
-                    "right": 16,
-                    "bottom": 16
-                  },
-                  "alignment": [
-                    0,
-                    0
-                  ],
-                  "autoSize": false,
-                  "zOrder": 0
-                },
-                "editor": {},
-                "children": []
               }
             ]
           },
@@ -2118,7 +1446,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "~\u64A4\u9000~"
+              "previewText": "~撤退~"
             },
             "children": []
           }

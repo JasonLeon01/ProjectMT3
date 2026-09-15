@@ -306,16 +306,13 @@ function Controller:performAttack(attacker, defender, critical)
     else
         self:schedule(hitTime, hit)
     end
-    self:schedule(
-        math.max(hitTime, animation:getVisualDuration()) + Battle.attackInterval + Battle.attackExtraDelay,
-        function ()
-            if defender.HP <= 0 then
-                self:finish(defender.isPlayer and "lose" or "win")
-            else
-                self:beginTurn(not attacker.isPlayer)
-            end
+    self:schedule(math.max(hitTime, animation:getVisualDuration()) + Battle.attackInterval + Battle.attackExtraDelay, function ()
+        if defender.HP <= 0 then
+            self:finish(defender.isPlayer and "lose" or "win")
+        else
+            self:beginTurn(not attacker.isPlayer)
         end
-    )
+    end)
 end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action mutation.
@@ -377,9 +374,9 @@ function Controller:refreshBreath(side, state)
     ---@cast bar Engine.ProgressBar
     bar:setProgress(fraction)
     if state.isPlayer then
-        for index = 1, 6 do
-            local lit = unit > 0 and state.breath >= unit * index
-            for _, kind in ipairs({ "Lit", "Dim" }) do
+        for _, kind in ipairs({ "Lit", "Dim" }) do
+            for index = 1, self:getBreathBox(kind):getCount() do
+                local lit = unit > 0 and state.breath >= unit * index
                 local canvas = self:getBreathCanvas(kind, index)
                 canvas:setVisible(true)
                 canvas:setColour((lit == (kind == "Lit")) and sf.Color.White or sf.Color.Transparent)
@@ -388,8 +385,16 @@ function Controller:refreshBreath(side, state)
     end
 end
 
+function Controller:getBreathBox(kind)
+    local box = assert(self.ui.controls["Breath" .. kind])
+    assert(Class.isInstance(box, Engine.WrapBox), "Breath group must be an Engine.WrapBox")
+    ---@cast box Engine.WrapBox
+    return box
+end
+
 function Controller:getBreathCanvas(kind, index)
-    local canvas = assert(self.ui.controls["Breath" .. kind .. index])
+    local canvas = self:getBreathBox(kind):get(index)
+    assert(Class.isInstance(canvas, Engine.Canvas), "Breath template must be an Engine.Canvas")
     ---@cast canvas Engine.Canvas
     return canvas
 end
@@ -397,14 +402,13 @@ end
 function Controller:playBreathAnimation()
     for _, kind in ipairs({ "Lit", "Dim" }) do
         local data = Data.GetAnimation("BattleBreath" .. kind)
-        for index = 1, 6 do
+        for index = 1, self:getBreathBox(kind):getCount() do
             local canvas = self:getBreathCanvas(kind, index)
             canvas:clearAnims()
             local animation = Animation.new(data, false)
             animation:setPosition(sf.Vector2f.new(8, 10))
             canvas:addAnim(animation)
-            local preview = assert(self.ui.controls["Breath" .. kind .. index .. "Preview"])
-            ---@cast preview Engine.Image
+            local preview = assert(canvas:getChildren()[1])
             preview:setVisible(false)
         end
     end
@@ -431,7 +435,7 @@ function Controller:cancel()
     self.ui.controls["Content"]:clearAnims()
     self._particles:clear()
     for _, kind in ipairs({ "Lit", "Dim" }) do
-        for index = 1, 6 do
+        for index = 1, self:getBreathBox(kind):getCount() do
             self:getBreathCanvas(kind, index):clearAnims()
         end
     end

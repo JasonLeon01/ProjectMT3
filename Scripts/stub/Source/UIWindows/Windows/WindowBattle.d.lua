@@ -55,6 +55,10 @@ function Window:dispose() end
 ---@param result Source.Windows.WindowBattle.Result
 function Window:finish(result) end
 
+---@param kind "Lit" | "Dim"
+---@return Engine.WrapBox
+function Window:getBreathBox(kind) end
+
 ---@param kind  "Lit" | "Dim"
 ---@param index integer
 ---@return Engine.Canvas

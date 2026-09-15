@@ -5080,7 +5080,32 @@ local _METADATA = {
     },
     Image = {
         bases = { { "Engine", "SpriteBase" } },
-        attrs = {},
+        attrs = { "drawAs" },
+        drawAs = {
+            type = "int",
+        },
+        getDrawAs = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Image" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setDrawAs = {
+            type = "function",
+            parameters = { "self", "drawAs", self = { "Engine", "Image" }, drawAs = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "Image" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
     },
     ListView = {
         bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
@@ -6687,9 +6712,9 @@ local _METADATA = {
             parameters = { "self", "localName", "propertyId", "value", self = { "Engine", "AssetInstance" }, localName = "string", propertyId = "string", value = {
                 union = {
                     "nil",
+                    "int",
                     "bool",
                     "float",
-                    "int",
                     "string",
                     "sf.Vector2f",
                     "sf.Vector2u",
@@ -6779,6 +6804,140 @@ local _METADATA = {
         setWindowSkin = {
             type = "function",
             parameters = { "self", "windowSkin", "repeated", self = { "Engine", "Window" }, windowSkin = "sf.Image", repeated = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    WrapBox = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setSize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "WrapBox" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCount = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setCount = {
+            type = "function",
+            parameters = { "self", "count", self = { "Engine", "WrapBox" }, count = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSpacing = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setSpacing = {
+            type = "function",
+            parameters = { "self", "spacing", self = { "Engine", "WrapBox" }, spacing = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        get = {
+            type = "function",
+            parameters = { "self", "index", self = { "Engine", "WrapBox" }, index = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ControlBase" },
+            },
+            Pure = true,
+        },
+        getChildren = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "ControlBase" },
+            },
+            },
+            Pure = true,
+        },
+        getContentBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getOrigin = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setOrigin = {
+            type = "function",
+            parameters = { "self", "origin", self = { "Engine", "WrapBox" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getRenderStates = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.RenderStates",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "WrapBox" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        lateUpdate = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "WrapBox" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        fixedUpdate = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "WrapBox" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        dispose = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "WrapBox" } },
             default = { [1] = "self" },
             ["return"] = {},
         },
