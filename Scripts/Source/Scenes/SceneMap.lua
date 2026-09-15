@@ -236,7 +236,7 @@ function Scene:requestBattle(player, enemy)
         if result == "win" then
             enemy:completeBattle(player, self, hp, breath, addedStates)
         elseif result == "lose" then
-            player:getAbilitySystemComponent():setNumericAttributeBase("HP", 0)
+            player:setAttr("HP", 0)
             self:requestGameOver(player, 0)
         end
     end)

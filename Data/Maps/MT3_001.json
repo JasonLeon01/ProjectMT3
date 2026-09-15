@@ -671,6 +671,17 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {},
+  "BPClassVarChanged": {
+    "MT3_001.BP_Door_General_default_5_5": {
+      "defaultRect": [
+        [
+          0,
+          192,
+          32,
+          32
+        ]
+      ]
+    }
+  },
   "type": "map"
 }

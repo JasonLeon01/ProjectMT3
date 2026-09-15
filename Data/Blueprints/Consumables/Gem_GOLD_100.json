@@ -11,7 +11,7 @@
       "speedRate": 1.0
     },
     "collisionEnabled": true,
-    "texturePath": "/Game/Assets/Characters/items/classic-gems.png",
+    "texturePath": "/Game/Assets/Characters/items/classic-items.png",
     "lightComp": {
       "lightColour": [
         255,
@@ -22,14 +22,12 @@
       "lightRadius": 16.0
     },
     "tag": "",
-    "ATTR_key": "ATK",
-    "plus": 1,
-    "ATTR_key2": "magic",
-    "plus2": 1,
+    "ATTR_key": "GOLD",
+    "plus": 100,
     "defaultRect": [
       [
-        0,
-        32,
+        192,
+        128,
         32,
         32
       ]

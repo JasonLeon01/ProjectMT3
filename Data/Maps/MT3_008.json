@@ -876,14 +876,6 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_Armor_default_10_6",
-        "bp": "Data.Blueprints.Consumables.Gem_Armor",
-        "position": [
-          10,
-          6
-        ]
-      },
-      {
         "tag": "MT3_008.BP_Enemy_E12_qishi_default_2_0",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E12_qishi",
         "position": [
@@ -1002,6 +994,14 @@
           1,
           7
         ]
+      },
+      {
+        "tag": "Consumables_Gem_GOLD_default_10_6",
+        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
+        "position": [
+          10,
+          6
+        ]
       }
     ]
   },
@@ -1035,9 +1035,8 @@
     "MT3_008.Gem_Breath_default_0_6": {
       "plus": -12
     },
-    "MT3_008.Gem_Armor_default_10_6": {
-      "plus": 5,
-      "plus2": 1
+    "Consumables_Gem_GOLD_default_10_6": {
+      "plus": 200
     }
   },
   "type": "map"

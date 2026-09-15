@@ -3,8 +3,6 @@ local _METADATA = {
         attrs = {
             "ATTR_key",
             "plus",
-            "ATTR_key2",
-            "plus2",
             "getSE"
         },
         ATTR_key = {
@@ -12,14 +10,6 @@ local _METADATA = {
             default = ""
         },
         plus = {
-            type = "int",
-            default = 0
-        },
-        ATTR_key2 = {
-            type = "string",
-            default = ""
-        },
-        plus2 = {
             type = "int",
             default = 0
         },

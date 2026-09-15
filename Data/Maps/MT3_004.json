@@ -932,14 +932,6 @@
         ]
       },
       {
-        "tag": "MT3_004.Gem_Sword_default_9_1",
-        "bp": "Data.Blueprints.Consumables.Gem_Sword",
-        "position": [
-          9,
-          1
-        ]
-      },
-      {
         "tag": "MT3_004.BP_NPC_05_default_0_10",
         "bp": "Data.Blueprints.Actors.BP_NPC_05",
         "position": [
@@ -961,6 +953,14 @@
         "position": [
           5,
           4
+        ]
+      },
+      {
+        "tag": "Consumables_Gem_Level_default_9_1",
+        "bp": "Data.Blueprints.Consumables.Gem_Level",
+        "position": [
+          9,
+          1
         ]
       }
     ]
@@ -986,9 +986,8 @@
     "MT3_004.KeyBox_default_0_6": {
       "plus": 1
     },
-    "MT3_004.Gem_Sword_default_9_1": {
-      "plus": 6,
-      "plus2": 1
+    "Consumables_Gem_Level_default_9_1": {
+      "plus": 1
     }
   },
   "type": "map"

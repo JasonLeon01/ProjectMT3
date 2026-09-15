@@ -2612,7 +2612,7 @@ Engine.ParticleSystem = ParticleSystem
 ---@class Engine.TextParticle : Engine.ParticleBase, sf.Drawable, sf.Transformable
 local TextParticle = {}
 ---@param parent Engine.ParticleSystem|nil
----@param moveFunction fun(arg1: number, arg2: number, arg3: Engine.ParticleBase): nil
+---@param moveFunction fun(arg1: number, arg2: number, arg3: Engine.TextParticle): nil
 ---@param countTime number
 ---@param text string
 ---@param config Engine.PlainTextConfig|nil
@@ -2621,7 +2621,7 @@ local TextParticle = {}
 function TextParticle.new(parent, moveFunction, countTime, text, config, logicalCoordinates) end
 ---@param self Engine.TextParticle
 ---@param parent Engine.ParticleSystem|nil
----@param moveFunction fun(arg1: number, arg2: number, arg3: Engine.ParticleBase): nil
+---@param moveFunction fun(arg1: number, arg2: number, arg3: Engine.TextParticle): nil
 ---@param countTime number
 ---@param text string
 ---@param config Engine.PlainTextConfig|nil

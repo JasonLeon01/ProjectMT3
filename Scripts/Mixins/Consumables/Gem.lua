@@ -6,8 +6,6 @@ local Gem = {}
 
 Gem.ATTR_key = ""
 Gem.plus = 0
-Gem.ATTR_key2 = ""
-Gem.plus2 = 0
 Gem.getSE = ""
 
 local function applyGemModifier(player, attrKey, plus)

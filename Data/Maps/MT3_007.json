@@ -764,14 +764,6 @@
         ]
       },
       {
-        "tag": "MT3_007.Gem_GOLD_default_7_0",
-        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
-        "position": [
-          7,
-          0
-        ]
-      },
-      {
         "tag": "MT3_007.BP_Enemy_E04_shouwei_default_4_0",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E04_shouwei",
         "position": [
@@ -962,6 +954,14 @@
           8,
           2
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_GOLD_100",
+        "tag": "Consumables_Gem_GOLD_100_default_7_0",
+        "position": [
+          7,
+          0
+        ]
       }
     ]
   },
@@ -983,9 +983,6 @@
   "fogDistort": 0,
   "panorama": "",
   "BPClassVarChanged": {
-    "MT3_007.Gem_GOLD_default_7_0": {
-      "plus": 200
-    },
     "Doors_ConditionDoors_BP_Door_Condition_default_7_1": {
       "openConditionName": "DoorGate7",
       "openConditionVal": 2
