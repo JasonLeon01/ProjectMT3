@@ -18,6 +18,10 @@ function Window.FromView(ui, scene) end
 ---@param amount integer
 function Window:addBreath(state, amount) end
 
+---@param attacker Source.Windows.WindowBattle.BattlerState
+---@param defender Source.Windows.WindowBattle.BattlerState
+function Window:applyAttackStates(attacker, defender) end
+
 ---@param playerTurn boolean
 function Window:beginTurn(playerTurn) end
 
@@ -36,6 +40,11 @@ function Window:calculateDamage(attacker, defender, critical) end
 function Window:canCritical(attacker, defender) end
 
 function Window:cancel() end
+
+---@param state Source.Windows.WindowBattle.BattlerState
+---@param delta integer
+---@return integer
+function Window:changeHP(state, delta) end
 
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
@@ -58,6 +67,10 @@ function Window:normalAttack(attacker, defender) end
 ---@param state Source.Windows.WindowBattle.BattlerState
 ---@param side  "Player" | "Enemy"
 function Window:observeState(state, side) end
+
+---@param side  "Player" | "Enemy"
+---@param delta integer
+function Window:onHPChanged(side, delta) end
 
 ---@param kwargs Engine.UiInputEventArguments
 function Window:onKeyDown(kwargs) end

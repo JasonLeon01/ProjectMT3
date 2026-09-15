@@ -35,7 +35,6 @@
 ---@field EnemyBreathFill    Engine.Image
 ---@field EnemyDEFLabel      Engine.PlainText
 ---@field EnemyDEFValue      Engine.PlainText
----@field EnemyDamage        Engine.PlainText
 ---@field EnemyFATIGUELabel  Engine.PlainText
 ---@field EnemyFATIGUEValue  Engine.PlainText
 ---@field EnemyHPLabel       Engine.PlainText
@@ -49,7 +48,6 @@
 ---@field PlayerBreathFill   Engine.Image
 ---@field PlayerDEFLabel     Engine.PlainText
 ---@field PlayerDEFValue     Engine.PlainText
----@field PlayerDamage       Engine.PlainText
 ---@field PlayerFATIGUELabel Engine.PlainText
 ---@field PlayerFATIGUEValue Engine.PlainText
 ---@field PlayerHPLabel      Engine.PlainText

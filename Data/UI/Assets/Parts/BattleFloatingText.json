@@ -1,0 +1,151 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 384,
+    "height": 224
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        384,
+        224
+      ]
+    },
+    "children": [
+      {
+        "name": "Damage",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "textConfig": "Global/DamageText",
+          "text": "",
+          "visible": false
+        },
+        "children": [],
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {}
+      },
+      {
+        "name": "Healing",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "textConfig": "Global/HealingText",
+          "text": "",
+          "visible": false
+        },
+        "children": [],
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {}
+      }
+    ],
+    "editor": {}
+  },
+  "animations": [
+    {
+      "name": "Damage",
+      "target": "Damage",
+      "duration": 0.25,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "tracks": {
+        "scale": [
+          {
+            "time": 0,
+            "value": [
+              2,
+              2
+            ]
+          },
+          {
+            "time": 0.25,
+            "value": [
+              1,
+              1
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Healing",
+      "target": "Healing",
+      "duration": 0.25,
+      "pivot": [
+        0.5,
+        0.5
+      ],
+      "tracks": {
+        "translation": [
+          {
+            "time": 0,
+            "value": [
+              0,
+              0
+            ]
+          },
+          {
+            "time": 0.25,
+            "value": [
+              0,
+              -16
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "palette": {
+    "exposed": false,
+    "displayName": "Battle Floating Text",
+    "category": "Battle"
+  }
+}

@@ -229,12 +229,12 @@ function Scene:requestBattle(player, enemy)
     self._battleActive = true
     self._battleMoveEnabled = player:getMoveEnabled()
     player:setMoveEnabled(false)
-    self._windowBattle:get():open(player, enemy, function (result, hp, breath)
+    self._windowBattle:get():open(player, enemy, function (result, hp, breath, addedStates)
         self._battleActive = false
         player:setMoveEnabled(self._battleMoveEnabled)
         self._mapInputBlockFrames = math.max(self._mapInputBlockFrames, 2)
         if result == "win" then
-            enemy:completeBattle(player, self, hp, breath)
+            enemy:completeBattle(player, self, hp, breath, addedStates)
         elseif result == "lose" then
             player:getAbilitySystemComponent():setNumericAttributeBase("HP", 0)
             self:requestGameOver(player, 0)

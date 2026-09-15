@@ -7,6 +7,12 @@ local Locale = require("Source.Locale.Core")
 local WindowBase = require("Source.Windows.Base.WindowBase")
 local Ui = require("Source.UIBase.Ui")
 local View = require("Source.UI.WindowBattle")
+local FloatingText = require("Source.Windows.WindowBattle.BattleFloatingText.Controller")
+local Effects = require("Source.Gameplay.Effects")
+local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
+local PoisonedAbility = require("Source.Gameplay.SpecialAbilities.PoisonedAbility")
+local VampireAbility = require("Source.Gameplay.SpecialAbilities.VampireAbility")
+local Special = require("Source.Configs.GeneralEnum").Special
 
 ---@type fun(value: string): string
 local LOC = Locale.ApplyStringLocaleFormat
@@ -17,17 +23,18 @@ local Animation = GlobalCore.Animation
 local Controller = {}
 Controller.windowOptions = { hidden = true, focusable = true }
 
-local function round(value)
-    return math.floor(value + 0.5)
-end
-
 ---@param actor  Source.Player.Player | Source.Enemy
 ---@param player boolean
 ---@return Source.Windows.WindowBattle.BattlerState
 local function createState(actor, player)
     local attributes = actor.attributes
+    local states = Effects.GetStateStacks(actor)
+    local abilitySystem = actor:getAbilitySystemComponent()
+    ---@type Source.Configs.Battle.Rule
+    local rule = player and assert(Battle.players[actor.ID], "Missing player battle config: " .. actor.ID) or Battle.enemy
     return {
         HP = player and attributes.HP or attributes.MAXHP,
+        MAXHP = attributes.MAXHP,
         ATK = attributes.ATK,
         DEF = attributes.DEF,
         breath = player and attributes.breath or 0,
@@ -35,9 +42,14 @@ local function createState(actor, player)
         fatigue = 0,
         animationKey = attributes.ANIMATION_KEY,
         CritAnimationKey = attributes.CritAnimationKey,
-        crit = (player and assert(Battle.players[actor.ID], "Missing player battle config: " .. actor.ID)
-            or Battle.enemy).crit,
-        isPlayer = player
+        crit = rule.crit,
+        isPlayer = player,
+        poisoned = states.Poisoned or 0,
+        weak = states.Weak or 0,
+        addedStates = { Poisoned = 0, Weak = 0 },
+        poisoning = SpecialAbilities.GetMagnitude(abilitySystem, Special.Poisoning) or 0,
+        weaken = SpecialAbilities.GetMagnitude(abilitySystem, Special.Weaken) or 0,
+        vampire = SpecialAbilities.GetMagnitude(abilitySystem, Special.Vampire) or 0
     }
 end
 
@@ -48,6 +60,7 @@ function Controller:init(scene)
     self._criticalSelected = false
     self._retreatRequested = false
     self._watchStops = {}
+    self._floatingTexts = {}
 end
 
 function Controller:bind()
@@ -111,10 +124,12 @@ function Controller:open(player, enemy, onFinished)
     self:refreshLocale()
     local rect = self._scene:getGameMap():getMapViewRect()
     local size = self.host:getSize()
+    local bounds = Engine.ToFloatRect(rect.position.x, rect.position.y, rect.size.x, rect.size.y)
+    local position = bounds:getCenter() - sf.Vector2f.new(size.x, size.y) / 2
     self.host:setPosition(
         sf.Vector2f.new(
-            math.floor(rect.position.x + (rect.size.x - size.x) / 2),
-            math.floor(rect.position.y + (rect.size.y - size.y) / 2)
+            math.floor(position.x),
+            math.floor(position.y)
         )
     )
     self.host:showWithAnimation(
@@ -146,6 +161,16 @@ function Controller:setPortrait(name, actor)
 end
 
 function Controller:observeState(state, side)
+    ---@param controller Source.Windows.WindowBattle.Controller
+    ---@param value integer | nil
+    ---@param oldValue integer | Class.MissingValue | nil
+    local function onHPChanged(controller, value, oldValue)
+        -- HP exists before binding; immediate=false excludes the initial notification.
+        ---@cast value integer
+        ---@cast oldValue integer
+        controller:onHPChanged(side, value - oldValue)
+    end
+    self._watchStops[#self._watchStops + 1] = self:watch(state, "HP", onHPChanged, false)
     for _, field in ipairs({ "HP", "ATK", "DEF", "fatigue" }) do
         self._watchStops[#self._watchStops + 1] = self:watch(state, field, function (controller, value)
             controller:setBattleText(side .. (field == "fatigue" and "FATIGUE" or field) .. "Value", tostring(value))
@@ -158,6 +183,35 @@ function Controller:observeState(state, side)
             controller:refreshCritical()
         end)
     end
+end
+
+function Controller:onHPChanged(side, delta)
+    if delta == 0 or not self._running then return end
+    local portrait = assert(self.ui.controls[side .. "Portrait"])
+    ---@cast portrait Engine.CharacterView
+    -- Ludork globalBounds is in the control's parent coordinates. Attach the
+    -- overlay to that same parent so window offsets and scale apply only once.
+    local bounds = portrait:getGlobalBounds()
+    local parent = assert(portrait:getParent())
+    ---@cast parent Engine.Canvas
+    local point = sf.Vector2f.new(
+        math.lerp(bounds.position.x, bounds.position.x + bounds.size.x, math.random()),
+        math.lerp(bounds.position.y, bounds.position.y + bounds.size.y, math.random())
+    )
+    local text = FloatingText.new()
+    self._floatingTexts[text] = true
+    text:show(parent, point, delta)
+    self:schedule(0.25, function ()
+        self._floatingTexts[text] = nil
+        text:dispose()
+    end)
+end
+
+---@diagnostic disable-next-line: unused, Shared Controller action mutation.
+function Controller:changeHP(state, delta)
+    local before = state.HP
+    state.HP = math.trunc(math.clamp(before + delta, 0, state.MAXHP))
+    return state.HP - before
 end
 
 function Controller:schedule(delay, action)
@@ -180,11 +234,11 @@ function Controller:calculateDamage(attacker, defender, critical)
     if critical and base > 0 then
         damage = attacker.crit(base, attacker, defender)
         assert(
-            type(damage) == "number" and damage >= 0 and damage < math.huge,
+            math.isFinite(damage) and damage >= 0,
             "Battle crit must return finite non-negative damage"
         )
     end
-    return math.max(0, round(damage * math.max(0, 1 - attacker.fatigue / 100))), base
+    return math.max(0, math.round(damage * math.max(0, 1 - attacker.fatigue / 100))), base
 end
 
 function Controller:canCritical(attacker, defender)
@@ -245,7 +299,9 @@ function Controller:performAttack(attacker, defender, critical)
         or (damage == 0 and "08_miss" or (critical and attacker.CritAnimationKey or attacker.animationKey))
     local side = defender.isPlayer and "Player" or "Enemy"
     local animation = Animation.new(Data.GetAnimation(key), false)
-    local position = self.ui.controls[side .. "Portrait"]:getPosition() + sf.Vector2f.new(16, 16)
+    local portrait = assert(self.ui.controls[side .. "Portrait"])
+    ---@cast portrait Engine.CharacterView
+    local position = portrait:getGlobalBounds():getCenter()
     animation:setPosition(position)
     self.ui.controls["Content"]:addAnim(animation)
     ---@type number
@@ -258,8 +314,6 @@ function Controller:performAttack(attacker, defender, critical)
     end
     local function hit()
         self:receiveAttack(attacker, defender, damage, critical)
-        self:setBattleText(side .. "Damage", tostring(damage))
-        self:playAnimation("Damage", side .. "Damage")
     end
     if hitTime <= 0 then
         hit()
@@ -289,12 +343,29 @@ function Controller:receiveAttack(attacker, defender, damage, critical)
         else
             local player = assert(self._player)
             local defense = attacker.isPlayer and defender.DEF or player.DEF
-            local gain = player.ATK > 0 and round(defense / player.ATK * 6) or 0
+            local gain = player.ATK > 0 and math.round(defense / player.ATK * 6) or 0
             self:addBreath(attacker, gain)
         end
-        self:addBreath(defender, round(damage / (defender.isPlayer and 10 or 3)))
+        self:addBreath(defender, math.round(damage / (defender.isPlayer and 10 or 3)))
     end
-    defender.HP = math.max(0, defender.HP - damage)
+    if damage <= 0 then return end
+    local lostHP = -self:changeHP(defender, -damage)
+    if defender.HP > 0 then
+        self:changeHP(defender, -PoisonedAbility.CalculateDamage(damage, defender.poisoned))
+    end
+    self:changeHP(attacker, VampireAbility.CalculateHealing(lostHP, attacker.vampire))
+    self:applyAttackStates(attacker, defender)
+end
+
+---@diagnostic disable-next-line: unused, Shared Controller action mutation.
+function Controller:applyAttackStates(attacker, defender)
+    defender.poisoned = defender.poisoned + attacker.poisoning
+    defender.weak = defender.weak + attacker.weaken
+    defender.addedStates.Poisoned = defender.addedStates.Poisoned + attacker.poisoning
+    defender.addedStates.Weak = defender.addedStates.Weak + attacker.weaken
+    -- The snapshot already includes pre-existing Weak modifiers.
+    defender.ATK = math.max(0, defender.ATK - attacker.weaken)
+    defender.DEF = math.max(0, defender.DEF - attacker.weaken)
 end
 
 function Controller:refreshCritical()
@@ -305,8 +376,7 @@ function Controller:refreshCritical()
     button:setColour((enabled or self._criticalSelected) and sf.Color.White or sf.Color.new(128, 128, 128, 255))
     local file = self._criticalSelected and "mting-1227.png" or "mting-528.png"
     button:setTexture(assert(GlobalCore.TextureManager.load("/Game/Assets/Icons/" .. file)), true)
-    local size = button:getTexture():getSize()
-    button:setOrigin(sf.Vector2f.new(size.x / 2, size.y / 2))
+    button:setOrigin(button:getLocalBounds():getCenter())
     self.ui.controls["RetreatButton"]:setActive(self._running and not self._retreatRequested)
 end
 
@@ -353,9 +423,9 @@ end
 function Controller:finish(result)
     local callback = self._onFinished
     local player = assert(self._player)
-    local hp, breath = player.HP, player.breath
+    local hp, breath, addedStates = player.HP, player.breath, player.addedStates
     self:cancel()
-    if callback ~= nil then callback(result, hp, breath) end
+    if callback ~= nil then callback(result, hp, breath, addedStates) end
 end
 
 function Controller:cancel()
@@ -367,10 +437,10 @@ function Controller:cancel()
     end
     self._watchStops = {}
     self.ui.controls["Content"]:clearAnims()
-    for _, side in ipairs({ "Player", "Enemy" }) do
-        self:stopAnimation("Damage", side .. "Damage")
-        self:setText(side .. "Damage", "")
+    for text in pairs(self._floatingTexts) do
+        text:dispose()
     end
+    self._floatingTexts = {}
     for _, kind in ipairs({ "Lit", "Dim" }) do
         for index = 1, 6 do
             self:getBreathCanvas(kind, index):clearAnims()

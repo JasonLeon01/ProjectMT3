@@ -9,6 +9,13 @@ local Special = GeneralEnum.Special
 ---@class (partial) Source.Gameplay.SpecialAbilities.VampireAbility
 local VampireAbility = {}
 
+---@param damage number
+---@param magnitude number
+---@return integer
+function VampireAbility.CalculateHealing(damage, magnitude)
+    return math.floor(damage * magnitude)
+end
+
 ---@param magnitude number
 function VampireAbility:init(magnitude)
     GameplayAbility.init(self, {})
@@ -18,7 +25,7 @@ function VampireAbility:init(magnitude)
 end
 
 function VampireAbility:activate(_abilitySystem, eventData)
-    eventData.payload.vampireHealing = math.floor(eventData.payload.counterDamage * self._magnitude)
+    eventData.payload.vampireHealing = VampireAbility.CalculateHealing(eventData.payload.counterDamage, self._magnitude)
     return assert(GameplayAbilityResult.Success("BattleRulesResolved", eventData.payload))
 end
 

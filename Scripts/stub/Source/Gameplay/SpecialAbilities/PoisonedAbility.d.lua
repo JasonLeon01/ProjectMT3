@@ -4,6 +4,11 @@
 ---@field new fun(): Source.Gameplay.SpecialAbilities.PoisonedAbility
 local PoisonedAbility = {}
 
+---@param damage number
+---@param stacks integer
+---@return integer
+function PoisonedAbility.CalculateDamage(damage, stacks) end
+
 function PoisonedAbility:init() end
 
 ---@param abilitySystem GlobalCore.AbilitySystemComponent

@@ -1,0 +1,47 @@
+{
+  "type": "plainTextConfig",
+  "name": "HealingText",
+  "font": "",
+  "characterSize": 22,
+  "style": {
+    "bold": true,
+    "italic": false,
+    "underlined": false,
+    "strikeThrough": false
+  },
+  "slantAngle": 15,
+  "fillColor": [
+    255,
+    255,
+    255,
+    255
+  ],
+  "letterSpacing": 1,
+  "lineSpacing": 1.0,
+  "lineAlignment": "default",
+  "outline": {
+    "color": [
+      0,
+      90,
+      0,
+      255
+    ],
+    "thickness": 1.5
+  },
+  "glow": {
+    "enabled": true,
+    "color": [
+      32,
+      255,
+      32,
+      128
+    ],
+    "radius": 2.0,
+    "intensity": 0.5
+  },
+  "gradient": {
+    "enabled": true,
+    "direction": "vertical",
+    "curve": "Global/HealingTextGradient"
+  }
+}

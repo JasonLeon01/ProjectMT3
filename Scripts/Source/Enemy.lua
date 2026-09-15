@@ -173,7 +173,7 @@ function Enemy:onCollision(other)
     scene:requestBattle(player, self)
 end
 
-function Enemy:completeBattle(player, scene, hp, breath)
+function Enemy:completeBattle(player, scene, hp, breath, addedStates)
     if self._defeatFinalising or self._defeatFinalised then return end
     local prepared = self:_preparePostBattle(player, scene)
     local abilitySystem = player:getAbilitySystemComponent()
@@ -182,6 +182,12 @@ function Enemy:completeBattle(player, scene, hp, breath)
         Effects.CreateInstantModifierSpec("Combat.HP", "HP", "Override", hp, eventData),
         Effects.CreateInstantModifierSpec("Combat.Breath", "breath", "Override", breath, eventData)
     }
+    for _, stateID in ipairs({ "Poisoned", "Weak" }) do
+        local stacks = addedStates[stateID]
+        if stacks > 0 then
+            specs[#specs + 1] = Effects.CreateStateSpec(stateID, stacks, eventData)
+        end
+    end
     for _, spec in ipairs(specs) do
         abilitySystem:validateGameplayEffectSpec(spec)
     end

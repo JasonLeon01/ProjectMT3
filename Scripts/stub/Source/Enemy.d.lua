@@ -25,6 +25,7 @@ function Enemy:onDefeat() end
 ---@param scene Source.Gameplay.GameplayScene
 ---@param hp integer
 ---@param breath integer
-function Enemy:completeBattle(player, scene, hp, breath) end
+---@param addedStates table<string, integer>
+function Enemy:completeBattle(player, scene, hp, breath, addedStates) end
 
 return Enemy
