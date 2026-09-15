@@ -3,6 +3,9 @@ local Battle = {}
 ---@class Source.Configs.Battle.Rule
 ---@field crit fun(damage: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
 
+Battle.princessCritDirectCap = 100
+Battle.princessCritMagicScale = 100
+
 ---@type table<string, Source.Configs.Battle.Rule | nil>
 Battle.players = {
     Bravor = {
@@ -11,8 +14,10 @@ Battle.players = {
         end
     },
     Princess = {
-        crit = function (damage, _attacker, _defender)
-            return damage * 2
+        crit = function (damage, attacker, defender)
+            local magic = math.max(0, attacker.magic)
+            local extra = defender.DEF * magic / (Battle.princessCritMagicScale + magic)
+            return damage + math.min(damage, Battle.princessCritDirectCap) + extra
         end
     }
 }

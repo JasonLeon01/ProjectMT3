@@ -38,6 +38,7 @@ local function createState(actor, player)
         MAXHP = attributes.MAXHP,
         ATK = attributes.ATK,
         DEF = attributes.DEF,
+        magic = player and attributes.magic or 0,
         breath = player and attributes.breath or 0,
         breathLimit = attributes.breathLimit,
         fatigue = 0,

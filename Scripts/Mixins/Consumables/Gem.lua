@@ -23,7 +23,6 @@ function Gem:onCollision(other)
     local parentCollision = super().onCollision
     Pickup.HandleCollision(self, other, parentCollision, function (player)
         applyGemModifier(player, self.ATTR_key, self.plus)
-        applyGemModifier(player, self.ATTR_key2, self.plus2)
     end)
 end
 

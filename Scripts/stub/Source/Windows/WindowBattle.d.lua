@@ -11,6 +11,7 @@
 ---@field vampire          number
 ---@field ATK              integer
 ---@field DEF              integer
+---@field magic            integer
 ---@field breath           integer
 ---@field breathLimit      integer
 ---@field fatigue          integer
