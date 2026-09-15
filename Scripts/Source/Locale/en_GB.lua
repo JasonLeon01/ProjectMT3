@@ -5,6 +5,8 @@ return {
     ["ADVANCED_HERB_ESSENCE_DESC"] = "It cures weakness and restores 180 HP.",
     ["ATK"] = "ATK",
     ["BAT"] = "Bat",
+    ["BATTLE_FATIGUE"] = "Fatigue",
+    ["BATTLE_RETREAT"] = "Retreat (Q)",
     ["BAT_DESC"] = "This is a bat.",
     ["BIG_WIZARD"] = "Big Wizard",
     ["BIG_WIZARD_DESC"] = "This is a big wizard.",

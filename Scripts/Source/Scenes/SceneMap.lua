@@ -43,6 +43,7 @@ function Scene:onEnter()
 end
 
 function Scene:setInst(inst)
+    self:cancelBattle()
     self._gameOverRequest = nil
     self.inst = inst
 end
@@ -95,6 +96,7 @@ function Scene:onCreate()
 end
 
 function Scene:onQuit()
+    self:cancelBattle()
     ManagerFunctions.stopVoice()
     self._mapAudio:stopMapAudio()
     GlobalSystem.clearWeather()
@@ -103,6 +105,7 @@ function Scene:onQuit()
 end
 
 function Scene:onDestroy()
+    self:cancelBattle()
     LiveDebug.UnbindScene(self)
     self._gameplayRequestsActive = false
     self._gameOverRequest = nil
@@ -140,8 +143,8 @@ function Scene:refreshLocale()
         menu:refreshRows()
     end
     local windows = {
-        self._windowItem, self._windowEquip, self._windowShop, self._windowAttrShop, self._windowEnemyBook,
-        self._windowEnemyEncyclopedia, self._windowFloorTeleporter, self._windowPlayerName
+        self._windowBattle, self._windowItem, self._windowEquip, self._windowShop, self._windowAttrShop,
+        self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowFloorTeleporter, self._windowPlayerName
     }
     for _, lazyWindow in ipairs(windows) do
         local window = lazyWindow:peek()
@@ -217,7 +220,39 @@ function Scene:onLateTick(deltaTime)
     return super(Scene, self).onLateTick(deltaTime)
 end
 
+function Scene:requestBattle(player, enemy)
+    if self._battleActive or self:isInputBlocked() or self:_isMapClickMoveBlocked() or player ~= self.player
+        or self._gameOverRequest ~= nil then
+        return false
+    end
+    require("Source.SceneComponents.MapClickAutoPath").CancelForMap(self:getGameMap())
+    self._battleActive = true
+    self._battleMoveEnabled = player:getMoveEnabled()
+    player:setMoveEnabled(false)
+    self._windowBattle:get():open(player, enemy, function (result, hp, breath)
+        self._battleActive = false
+        player:setMoveEnabled(self._battleMoveEnabled)
+        self._mapInputBlockFrames = math.max(self._mapInputBlockFrames, 2)
+        if result == "win" then
+            enemy:completeBattle(player, self, hp, breath)
+        elseif result == "lose" then
+            player:getAbilitySystemComponent():setNumericAttributeBase("HP", 0)
+            self:requestGameOver(player, 0)
+        end
+    end)
+    return true
+end
+
+function Scene:cancelBattle()
+    if not self._battleActive then return end
+    self._battleActive = false
+    local window = self._windowBattle:peek()
+    if window ~= nil then window:cancel() end
+    self.player:setMoveEnabled(self._battleMoveEnabled)
+end
+
 function Scene:loadMap(mapPath, initialPosition)
+    self:cancelBattle()
     Logging.info("Loading map: %s", mapPath)
     local startTime = perfCounter()
     local mapFile, mapData = self._mapBuilder:loadMapData(mapPath, self:_getCurrentRegionMap())

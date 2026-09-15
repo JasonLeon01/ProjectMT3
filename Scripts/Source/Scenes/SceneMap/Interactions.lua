@@ -147,6 +147,7 @@ end
 
 ---@param self Source.Scenes.SceneMap.SceneMap
 function Scene.ApplyLoadedGame(self, inst)
+    self:cancelBattle()
     self._gameOverRequest = nil
     self.inst = inst
     self.player = inst:getPlayer()

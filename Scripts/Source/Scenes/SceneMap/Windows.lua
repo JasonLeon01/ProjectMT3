@@ -69,6 +69,13 @@ function Windows.Create(self)
     self._attrShopMoveEnabledBeforeOpen = true
     self._enemyBookMoveEnabledBeforeOpen = true
     self._floorTeleporterMoveEnabledBeforeOpen = true
+    self._windowBattle = LazyWindow.new(function ()
+        local WindowBattle = require("Source.Windows.WindowBattle")
+        local window = WindowBattle.new(self)
+        window:setZOrder(MENU_Z_ORDER + 1)
+        window:mount(manager)
+        return window
+    end)
     self._messageWindow = LazyWindow.new(function ()
         local WindowMessage = require("Source.Windows.WindowMessage")
 
@@ -242,16 +249,16 @@ function Windows.Create(self)
         return window
     end)
     self._blockingWindows = {
-        self._windowShop, self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia,
+        self._windowBattle, self._windowShop, self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia,
         self._windowFloorTeleporter, self._windowPlayerName
     }
 end
 
 function Windows.Dispose(self)
     local windows = {
-        self._messageWindow, self._windowMenu, self._windowItem, self._windowEquip, self._windowAttrShop,
-        self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowSaveLoad, self._windowShop,
-        self._windowFloorTeleporter, self._configWindow, self._windowPlayerName
+        self._windowBattle, self._messageWindow, self._windowMenu, self._windowItem, self._windowEquip,
+        self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowSaveLoad,
+        self._windowShop, self._windowFloorTeleporter, self._configWindow, self._windowPlayerName
     }
     for _, window in ipairs(windows) do
         window:dispose()

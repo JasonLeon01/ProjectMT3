@@ -9,7 +9,7 @@
       "opacity": 1.0,
       "speedRate": 1.0
     },
-    "collisionEnabled": true,
+    "collisionEnabled": false,
     "tickable": false,
     "texturePath": "/Game/Assets/Characters/blocks/stairs.png",
     "tag": "",

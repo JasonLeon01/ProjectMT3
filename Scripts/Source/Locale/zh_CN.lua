@@ -5,6 +5,8 @@ return {
     ["ADVANCED_HERB_ESSENCE_DESC"] = "解除衰弱状态，并恢复180体力。",
     ["ATK"] = "攻击",
     ["BAT"] = "大蝙蝠",
+    ["BATTLE_FATIGUE"] = "疲劳",
+    ["BATTLE_RETREAT"] = "～撤退(Q)～",
     ["BAT_DESC"] = "这是一个大蝙蝠。",
     ["BIG_WIZARD"] = "大法师",
     ["BIG_WIZARD_DESC"] = "这是一个大法师。",

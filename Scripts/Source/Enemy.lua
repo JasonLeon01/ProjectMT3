@@ -4,8 +4,6 @@ local GlobalFunctions = require("GlobalFunctions")
 local ConditionalActor = require("Source.ConditionalActor")
 local Data = require("Source.Data")
 local ChildActorComponent = require("Source.Components.ChildActorComponent")
----@type { Special: Source.Configs.GeneralEnum.Special, State: Source.Configs.GeneralEnum.State }
-local GeneralEnum = require("Source.Configs.GeneralEnum")
 local Battler = require("Source.Battler")
 local DefeatSpawns = require("Source.Enemy.DefeatSpawns")
 local Effects = require("Source.Gameplay.Effects")
@@ -20,8 +18,6 @@ local GameplayEffectSpec = GlobalCore.GameplayEffectSpec
 local GameplayEventData = GlobalCore.GameplayEventData
 local ComponentsFunctions = GlobalFunctions.Components
 local Actor = Engine.Actor
-local Special = GeneralEnum.Special
-local State = GeneralEnum.State
 
 local componentTypes = {}
 for name, componentType in pairs(ComponentsFunctions.getComponentTypes(Actor)) do
@@ -39,11 +35,6 @@ local operationExpressions = {
     ["%"] = "current % value",
     ["**"] = "current ^ value"
 }
-
----@return GlobalCore.GameplayEventData
-local function createCombatEvent(player, enemy, eventTag, payload)
-    return GameplayEventData.new(player, enemy, eventTag, payload or {})
-end
 
 ---@class Source.Enemy
 local Enemy = {}
@@ -65,7 +56,6 @@ function Enemy:init(texture, rect, tag)
     self:_normaliseChildActorComp()
     local attributes = Data.CreateGeneralAttributeSet("Enemy", self.ID)
     Battler.init(self, attributes)
-    self._battleCondition = nil
     self._defeatFinalising = false
     self._defeatFinalised = false
     local abilitySystem = self:getAbilitySystemComponent()
@@ -121,18 +111,6 @@ function Enemy:_preparePostBattle(player, scene)
         Effects.CreateInstantModifierSpec("Combat.Reward.Gold", "GOLD", "Add", self.attributes.GOLD, eventData),
         Effects.CreateInstantModifierSpec("Combat.Reward.Exp", "EXP", "Add", self.attributes.EXP, eventData)
     }
-    local stateSpecials = { { Special.Poisoning, State.Poisoned }, { Special.Weaken, State.Weak } }
-    for _, stateSpecial in ipairs(stateSpecials) do
-        local specialID = stateSpecial[1]
-        local stateID = stateSpecial[2]
-        local magnitude = SpecialAbilities.GetMagnitude(self:getAbilitySystemComponent(), specialID)
-        if magnitude ~= nil then
-            assert(math.type(magnitude) == "integer", specialID .. " special magnitude must be an integer")
-            if magnitude > 0 then
-                effectSpecs[#effectSpecs + 1] = Effects.CreateStateSpec(stateID, magnitude, eventData)
-            end
-        end
-    end
     local playerAbilitySystem = player:getAbilitySystemComponent()
     for _, effectSpec in ipairs(effectSpecs) do
         playerAbilitySystem:validateGameplayEffectSpec(effectSpec)
@@ -185,53 +163,34 @@ function Enemy:onCollision(other)
     local gameMap = self:getMap()
     ---@cast gameMap GameMap | nil
     local player = Player.MeetPlayer(other, gameMap ~= nil and gameMap:getPlayer() or nil)
-    if player == nil or self._defeatFinalising or (self._battleCondition ~= nil and not self._battleCondition()) then
+    if player == nil or self._defeatFinalising or self._defeatFinalised then
         return
     end
     assert(gameMap ~= nil, "Enemy combat requires an owning map")
     local scene = gameMap:getScene()
-    assert(Class.isInstance(scene, GameplayScene), "Enemy combat requires a GameplayScene on its owning map")
+    assert(Class.isInstance(scene, GameplayScene), "Enemy combat requires a GameplayScene")
     ---@cast scene Source.Gameplay.GameplayScene
-    self._battleCondition = nil
-    local battleEvent = createCombatEvent(player, self, "Event.Combat.MotaBattle", { commit = false })
-    battleEvent.target = player
-    local result = assert(self:getAbilitySystemComponent():tryActivateAbility(MotaBattleAbility.id, battleEvent))
-    local won = result.code == MotaBattleAbility.BattleResult.WIN
-    local prepared = won and self:_preparePostBattle(player, scene) or nil
-    MotaBattleAbility.CommitResult(result)
-    local playerAnimation = player:playAttackAnimationAt(scene, self:getPosition())
-    local enemyAnimation = self:playAttackAnimationAt(scene, player:getPosition())
-    if result.data.damage > 0 then
-        ---@type number | nil
-        local damageTime = nil
-        if enemyAnimation ~= nil then
-            for _, timeTag in ipairs(enemyAnimation:getAllTimeTags()) do
-                if timeTag.tag == "dmg" then
-                    damageTime = timeTag.time
-                    break
-                end
-            end
-        end
-        damageTime = damageTime or 0
-        scene:addTimer(damageTime, function ()
-            scene:getGameMap():addDamageText(tostring(result.data.damage), player:getPosition())
-        end)
+    scene:requestBattle(player, self)
+end
+
+function Enemy:completeBattle(player, scene, hp, breath)
+    if self._defeatFinalising or self._defeatFinalised then return end
+    local prepared = self:_preparePostBattle(player, scene)
+    local abilitySystem = player:getAbilitySystemComponent()
+    local eventData = GameplayEventData.new(self, player, "Event.Combat.Complete")
+    local specs = {
+        Effects.CreateInstantModifierSpec("Combat.HP", "HP", "Override", hp, eventData),
+        Effects.CreateInstantModifierSpec("Combat.Breath", "breath", "Override", breath, eventData)
+    }
+    for _, spec in ipairs(specs) do
+        abilitySystem:validateGameplayEffectSpec(spec)
     end
-    local animationLength = math.max(
-        playerAnimation ~= nil and playerAnimation:getVisualDuration() or 0.0,
-        enemyAnimation ~= nil and enemyAnimation:getVisualDuration() or 0.0
-    )
-    self._battleCondition = scene:addTimer(animationLength, function ()
-        self._battleCondition = nil
-        if won then
-            self._defeatFinalising = true
-            Actor.BlueprintEvent(self, Actor, "onDefeat", {}, function ()
-                self:_finaliseDefeat(scene, prepared)
-            end)
-        else
-            player:getAbilitySystemComponent():applyGameplayEffectSpec(result.data.gameOverEffectSpec)
-            scene:requestGameOver(player, 0)
-        end
+    self._defeatFinalising = true
+    for _, spec in ipairs(specs) do
+        abilitySystem:applyGameplayEffectSpec(spec)
+    end
+    Actor.BlueprintEvent(self, Actor, "onDefeat", {}, function ()
+        self:_finaliseDefeat(scene, prepared)
     end)
 end
 

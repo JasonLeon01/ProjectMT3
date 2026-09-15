@@ -42,4 +42,9 @@ function GameplayScene:requestMapTransfer(teleporter, mapPath, position, record)
 ---@param delay  number
 function GameplayScene:requestGameOver(player, delay) end
 
+---@param player Source.Player.Player
+---@param enemy Source.Enemy
+---@return boolean
+function GameplayScene:requestBattle(player, enemy) end
+
 return GameplayScene

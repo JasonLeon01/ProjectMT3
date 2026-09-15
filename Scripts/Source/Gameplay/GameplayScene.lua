@@ -44,4 +44,9 @@ function GameplayScene:requestGameOver(player, delay)
     error("GameplayScene.requestGameOver must be implemented")
 end
 
+---@diagnostic disable-next-line: unused
+function GameplayScene:requestBattle(player, enemy)
+    error("GameplayScene.requestBattle must be implemented")
+end
+
 return class(GameplayScene, SceneBase)

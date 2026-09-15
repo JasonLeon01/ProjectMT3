@@ -63,6 +63,14 @@
       "reference": {
         "kind": "animation"
       }
+    },
+    "critanimationkey": {
+      "type": "string",
+      "comment": "The animation played on a critical attack.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
     }
   },
   "members": {
@@ -80,7 +88,8 @@
         "Poisoning": 1,
         "First": ""
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "critanimationkey": "attack"
     },
     "Slime": {
       "name": "{SLIME}",
@@ -95,7 +104,8 @@
       "special": {
         "Weaken": 2
       },
-      "ANIMATION_KEY": "attack"
+      "ANIMATION_KEY": "attack",
+      "critanimationkey": "attack"
     },
     "Rock": {
       "name": "{ROCK}",
@@ -110,7 +120,8 @@
         "Hard": ""
       },
       "ANIMATION_KEY": "attack",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "attack"
     },
     "Mage": {
       "name": "{MAGE}",
@@ -125,7 +136,8 @@
         "Magic": ""
       },
       "ANIMATION_KEY": "waterspread",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "waterspread"
     },
     "Bat": {
       "name": "{BAT}",
@@ -140,7 +152,8 @@
         "Vampire": 0.1
       },
       "ANIMATION_KEY": "attack",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "attack"
     },
     "Knight": {
       "name": "{KNIGHT}",
@@ -155,7 +168,8 @@
         "Compete": ""
       },
       "ANIMATION_KEY": "attack",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "attack"
     },
     "Wizard": {
       "name": "{WIZARD}",
@@ -172,7 +186,8 @@
         "FixDmg": 100
       },
       "ANIMATION_KEY": "waterspread",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "waterspread"
     },
     "WhiteKing": {
       "name": "{WHITE_KING}",
@@ -188,7 +203,8 @@
         "FixDmg": "{mHP}*0.3"
       },
       "ANIMATION_KEY": "watershot",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "watershot"
     },
     "BigWizard": {
       "name": "{BIG_WIZARD}",
@@ -204,7 +220,8 @@
         "Blockade": ""
       },
       "ANIMATION_KEY": "watershot",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "watershot"
     },
     "GreatIron": {
       "name": "{GREATIRON}",
@@ -229,7 +246,8 @@
         "Hard": ""
       },
       "ANIMATION_KEY": "attack",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "attack"
     },
     "GhostSoldier": {
       "name": "{GHOST_SOLDIER}",
@@ -244,7 +262,8 @@
         "Reborn": "Data.Blueprints.Enemies.BP_Enemy_Skeleton_01"
       },
       "ANIMATION_KEY": "attack",
-      "breathLimit": 0
+      "breathLimit": 0,
+      "critanimationkey": "attack"
     },
     "E00_shilaimu": {
       "name": "{E00_SHILAIMU}",
@@ -257,7 +276,8 @@
       "breathLimit": 25,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E01_hongseshilaimu": {
       "name": "{E01_HONGSESHILAIMU}",
@@ -270,7 +290,8 @@
       "breathLimit": 25,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E02_bianfu": {
       "name": "{E02_BIANFU}",
@@ -283,7 +304,8 @@
       "breathLimit": 27,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E03_shuishushi": {
       "name": "{E03_SHUISHUSHI}",
@@ -298,7 +320,8 @@
       "special": {
         "Magic": ""
       },
-      "ANIMATION_KEY": "06_shui"
+      "ANIMATION_KEY": "06_shui",
+      "critanimationkey": "07_shui2"
     },
     "E04_shouwei": {
       "name": "{E04_SHOUWEI}",
@@ -311,7 +334,8 @@
       "breathLimit": 33,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E05_leishushi": {
       "name": "{E05_LEISHUSHI}",
@@ -326,7 +350,8 @@
       "special": {
         "Magic": ""
       },
-      "ANIMATION_KEY": "10_lei"
+      "ANIMATION_KEY": "10_lei",
+      "critanimationkey": "11_lei2"
     },
     "E06_kulou": {
       "name": "{E06_KULOU}",
@@ -339,7 +364,8 @@
       "breathLimit": 40,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E07_heiseshilaimu": {
       "name": "{E07_HEISESHILAIMU}",
@@ -352,7 +378,8 @@
       "breathLimit": 29,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E08_shilaimuren": {
       "name": "{E08_SHILAIMUREN}",
@@ -368,7 +395,8 @@
         "MultiHit": 2,
         "Mucus": 1
       },
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E09_sangshi": {
       "name": "{E09_SANGSHI}",
@@ -381,7 +409,8 @@
       "breathLimit": 28,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "17_zhua"
+      "ANIMATION_KEY": "17_zhua",
+      "critanimationkey": "18_zhua2"
     },
     "E10_dabianfu": {
       "name": "{E10_DABIANFU}",
@@ -396,7 +425,8 @@
       "special": {
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E11_shitouguai": {
       "name": "{E11_SHITOUGUAI}",
@@ -411,7 +441,8 @@
       "special": {
         "AntiMagic": ""
       },
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E12_qishi": {
       "name": "{E12_QISHI}",
@@ -426,7 +457,8 @@
       "special": {
         "SureKill": ""
       },
-      "ANIMATION_KEY": "02_jian"
+      "ANIMATION_KEY": "02_jian",
+      "critanimationkey": "03_jian2"
     },
     "E13_shuangshoujianshi": {
       "name": "{E13_SHUANGSHOUJIANSHI}",
@@ -441,7 +473,8 @@
       "special": {
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "02_jian"
+      "ANIMATION_KEY": "02_jian",
+      "critanimationkey": "03_jian2"
     },
     "E14_kuloushibing": {
       "name": "{E14_KULOUSHIBING}",
@@ -456,7 +489,8 @@
       "special": {
         "First": ""
       },
-      "ANIMATION_KEY": "02_jian"
+      "ANIMATION_KEY": "02_jian",
+      "critanimationkey": "03_jian2"
     },
     "E15_kuloujiazhoushi": {
       "name": "{E15_KULOUJIAZHOUSHI}",
@@ -469,7 +503,8 @@
       "breathLimit": 33,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E16_zhongjishouwei": {
       "name": "{E16_ZHONGJISHOUWEI}",
@@ -484,7 +519,8 @@
       "special": {
         "AntiMagic": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E17_tieqishi": {
       "name": "{E17_TIEQISHI}",
@@ -499,7 +535,8 @@
       "special": {
         "SureKill": ""
       },
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E18_hongbianfu": {
       "name": "{E18_HONGBIANFU}",
@@ -514,7 +551,8 @@
       "special": {
         "MultiHit": 3
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E19_zhangyuzai": {
       "name": "{E19_ZHANGYUZAI}",
@@ -527,7 +565,8 @@
       "breathLimit": 37,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E20_shilaimukuangren": {
       "name": "{E20_SHILAIMUKUANGREN}",
@@ -543,7 +582,8 @@
         "MultiHit": 2,
         "ManaDrain": 1
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E21_shilaimuwang": {
       "name": "{E21_SHILAIMUWANG}",
@@ -556,7 +596,8 @@
       "breathLimit": 25,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E22_yanshushi": {
       "name": "{E22_YANSHUSHI}",
@@ -572,7 +613,8 @@
         "Magic": "",
         "DeathCurse": ""
       },
-      "ANIMATION_KEY": "21_huo"
+      "ANIMATION_KEY": "21_huo",
+      "critanimationkey": "22_huo2"
     },
     "E23_sangshijianshi": {
       "name": "{E23_SANGSHIJIANSHI}",
@@ -587,7 +629,8 @@
       "special": {
         "First": ""
       },
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E24_gongbing": {
       "name": "{E24_GONGBING}",
@@ -602,7 +645,8 @@
       "special": {
         "Ambush": ""
       },
-      "ANIMATION_KEY": "24_gongjian"
+      "ANIMATION_KEY": "24_gongjian",
+      "critanimationkey": "25_gongjian2"
     },
     "E25_moyushilaimu": {
       "name": "{E25_MOYUSHILAIMU}",
@@ -618,7 +662,8 @@
         "First": "",
         "Berserk": ""
       },
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E26_shixuebianfu": {
       "name": "{E26_SHIXUEBIANFU}",
@@ -634,7 +679,8 @@
         "Vampire": 0.33,
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E27_kulouxiaoduizhang": {
       "name": "{E27_KULOUXIAODUIZHANG}",
@@ -649,7 +695,8 @@
       "special": {
         "First": ""
       },
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E28_fengwushi": {
       "name": "{E28_FENGWUSHI}",
@@ -665,7 +712,8 @@
         "Magic": "",
         "Domain": 1
       },
-      "ANIMATION_KEY": "27_feng"
+      "ANIMATION_KEY": "27_feng",
+      "critanimationkey": "28_feng2"
     },
     "E29_xieyanshilaimu": {
       "name": "{E29_XIEYANSHILAIMU}",
@@ -680,7 +728,8 @@
       "special": {
         "EvilEye": ""
       },
-      "ANIMATION_KEY": "29_xieyan"
+      "ANIMATION_KEY": "29_xieyan",
+      "critanimationkey": "30_xieyan2"
     },
     "E30_baiyiwei": {
       "name": "{E30_BAIYIWEI}",
@@ -697,7 +746,8 @@
         "Flank": "",
         "Frost": 1
       },
-      "ANIMATION_KEY": "31_bing"
+      "ANIMATION_KEY": "31_bing",
+      "critanimationkey": "32_bing2"
     },
     "E31_huiqishi": {
       "name": "{E31_HUIQISHI}",
@@ -712,7 +762,8 @@
       "special": {
         "SureKill": ""
       },
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E32_youmingfashi": {
       "name": "{E32_YOUMINGFASHI}",
@@ -727,7 +778,8 @@
       "special": {
         "Magic": ""
       },
-      "ANIMATION_KEY": "34_heimofa"
+      "ANIMATION_KEY": "34_heimofa",
+      "critanimationkey": "35_heimofa2"
     },
     "E33_shilaimu": {
       "name": "{E33_SHILAIMU}",
@@ -740,7 +792,8 @@
       "breathLimit": 33,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E34_dashilaimu": {
       "name": "{E34_DASHILAIMU}",
@@ -753,7 +806,8 @@
       "breathLimit": 37,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "00_kongshou"
+      "ANIMATION_KEY": "00_kongshou",
+      "critanimationkey": "01_kongshou2"
     },
     "E35_bianfu": {
       "name": "{E35_BIANFU}",
@@ -768,7 +822,8 @@
       "special": {
         "Vampire": 0.25
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E36_fashi": {
       "name": "{E36_FASHI}",
@@ -783,7 +838,8 @@
       "special": {
         "Magic": ""
       },
-      "ANIMATION_KEY": "36_mofa"
+      "ANIMATION_KEY": "36_mofa",
+      "critanimationkey": "37_mofa2"
     },
     "E37_dusangshi": {
       "name": "{E37_DUSANGSHI}",
@@ -798,7 +854,8 @@
       "special": {
         "Poisoning": 1
       },
-      "ANIMATION_KEY": "17_zhua"
+      "ANIMATION_KEY": "17_zhua",
+      "critanimationkey": "18_zhua2"
     },
     "E38_dubianfu": {
       "name": "{E38_DUBIANFU}",
@@ -815,7 +872,8 @@
         "Vampire": 0.3,
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E39_kuloutoumu": {
       "name": "{E39_KULOUTOUMU}",
@@ -830,7 +888,8 @@
       "special": {
         "Weaken": 3
       },
-      "ANIMATION_KEY": "38_3jian"
+      "ANIMATION_KEY": "38_3jian",
+      "critanimationkey": "39_3jian2"
     },
     "E40_kulou": {
       "name": "{E40_KULOU}",
@@ -845,7 +904,8 @@
       "special": {
         "First": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E41_jiantouguai": {
       "name": "{E41_JIANTOUGUAI}",
@@ -858,7 +918,8 @@
       "breathLimit": 40,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E42_shouren": {
       "name": "{E42_SHOUREN}",
@@ -871,7 +932,8 @@
       "breathLimit": 32,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "17_zhua"
+      "ANIMATION_KEY": "17_zhua",
+      "critanimationkey": "18_zhua2"
     },
     "E43_xieshilaimu": {
       "name": "{E43_XIESHILAIMU}",
@@ -886,7 +948,8 @@
       "special": {
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E44_gaojigongbing": {
       "name": "{E44_GAOJIGONGBING}",
@@ -901,7 +964,8 @@
       "special": {
         "Ambush": ""
       },
-      "ANIMATION_KEY": "24_gongjian"
+      "ANIMATION_KEY": "24_gongjian",
+      "critanimationkey": "25_gongjian2"
     },
     "E45_shuairuojinweibing": {
       "name": "{E45_SHUAIRUOJINWEIBING}",
@@ -917,7 +981,8 @@
         "Weaken": 2,
         "Reborn": "Data.Blueprints.Enemies.BP_Enemy_E46_kuangbaojinweibing"
       },
-      "ANIMATION_KEY": "41_daji"
+      "ANIMATION_KEY": "41_daji",
+      "critanimationkey": "42_daji2"
     },
     "E46_kuangbaojinweibing": {
       "name": "{E46_KUANGBAOJINWEIBING}",
@@ -933,7 +998,8 @@
         "Vampire": 0.3,
         "SureKill": ""
       },
-      "ANIMATION_KEY": "41_daji"
+      "ANIMATION_KEY": "41_daji",
+      "critanimationkey": "42_daji2"
     },
     "E47_kuairen": {
       "name": "{E47_KUAIREN}",
@@ -949,7 +1015,8 @@
         "MultiHit": 3,
         "ManaDrain": 2
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E48_qingyiwei": {
       "name": "{E48_QINGYIWEI}",
@@ -966,7 +1033,8 @@
         "Flank": "",
         "Frost": 2
       },
-      "ANIMATION_KEY": "43_lvyi1"
+      "ANIMATION_KEY": "43_lvyi1",
+      "critanimationkey": "44_lvyi2"
     },
     "E49_mowangshiwei": {
       "name": "{E49_MOWANGSHIWEI}",
@@ -982,7 +1050,8 @@
         "First": "",
         "Thunder": 1
       },
-      "ANIMATION_KEY": "45_huangmowang"
+      "ANIMATION_KEY": "45_huangmowang",
+      "critanimationkey": "46_huangmowang2"
     },
     "E50_xunjiequan": {
       "name": "{E50_XUNJIEQUAN}",
@@ -997,7 +1066,8 @@
       "special": {
         "First": ""
       },
-      "ANIMATION_KEY": "17_zhua"
+      "ANIMATION_KEY": "17_zhua",
+      "critanimationkey": "18_zhua2"
     },
     "E51_gangtieguai": {
       "name": "{E51_GANGTIEGUAI}",
@@ -1012,7 +1082,8 @@
       "special": {
         "Hard": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E52_gaojishouwei": {
       "name": "{E52_GAOJISHOUWEI}",
@@ -1027,7 +1098,8 @@
       "special": {
         "AntiMagic": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E53_tieguai": {
       "name": "{E53_TIEGUAI}",
@@ -1043,7 +1115,8 @@
         "Hard": "",
         "AntiMagic": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E54_shuiyinren": {
       "name": "{E54_SHUIYINREN}",
@@ -1059,7 +1132,8 @@
         "MultiHit": 2,
         "Mucus": 2
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E55_zhongjiefashi": {
       "name": "{E55_ZHONGJIEFASHI}",
@@ -1074,7 +1148,8 @@
       "special": {
         "Magic": ""
       },
-      "ANIMATION_KEY": "36_mofa"
+      "ANIMATION_KEY": "36_mofa",
+      "critanimationkey": "37_mofa2"
     },
     "E56_buwendingjixie": {
       "name": "{E56_BUWENDINGJIXIE}",
@@ -1090,7 +1165,8 @@
         "First": "",
         "Berserk": ""
       },
-      "ANIMATION_KEY": "41_daji"
+      "ANIMATION_KEY": "41_daji",
+      "critanimationkey": "42_daji2"
     },
     "E57_zhuangjiakulou": {
       "name": "{E57_ZHUANGJIAKULOU}",
@@ -1105,7 +1181,8 @@
       "special": {
         "First": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E58_zhongxingbianfu": {
       "name": "{E58_ZHONGXINGBIANFU}",
@@ -1120,7 +1197,8 @@
       "special": {
         "Vampire": 0.3
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E59_hanbingshilaimu": {
       "name": "{E59_HANBINGSHILAIMU}",
@@ -1136,7 +1214,8 @@
         "First": "",
         "Frost": 5
       },
-      "ANIMATION_KEY": "47_bingshilaimu"
+      "ANIMATION_KEY": "47_bingshilaimu",
+      "critanimationkey": "48_bingshilaimu2"
     },
     "E60_duzhangyu": {
       "name": "{E60_DUZHANGYU}",
@@ -1152,7 +1231,8 @@
         "Poisoning": 1,
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E61_lieyansangshi": {
       "name": "{E61_LIEYANSANGSHI}",
@@ -1167,7 +1247,8 @@
       "special": {
         "Ember": ""
       },
-      "ANIMATION_KEY": "17_zhua"
+      "ANIMATION_KEY": "17_zhua",
+      "critanimationkey": "18_zhua2"
     },
     "E62_dongsigu": {
       "name": "{E62_DONGSIGU}",
@@ -1183,7 +1264,8 @@
         "First": "",
         "Glacial": ""
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E63_zhengguijinweibing": {
       "name": "{E63_ZHENGGUIJINWEIBING}",
@@ -1199,7 +1281,8 @@
         "Weaken": 5,
         "Reborn": "Data.Blueprints.Enemies.BP_Enemy_E64_tiejiajinweibing"
       },
-      "ANIMATION_KEY": "41_daji"
+      "ANIMATION_KEY": "41_daji",
+      "critanimationkey": "42_daji2"
     },
     "E64_tiejiajinweibing": {
       "name": "{E64_TIEJIAJINWEIBING}",
@@ -1215,7 +1298,8 @@
         "Vampire": 0.4,
         "SureKill": ""
       },
-      "ANIMATION_KEY": "41_daji"
+      "ANIMATION_KEY": "41_daji",
+      "critanimationkey": "42_daji2"
     },
     "E65_jinweiqishi": {
       "name": "{E65_JINWEIQISHI}",
@@ -1231,7 +1315,8 @@
         "SureKill": "",
         "ArmorBreak": ""
       },
-      "ANIMATION_KEY": "38_3jian"
+      "ANIMATION_KEY": "38_3jian",
+      "critanimationkey": "39_3jian2"
     },
     "E66_guihuo": {
       "name": "{E66_GUIHUO}",
@@ -1247,7 +1332,8 @@
         "Magic": "",
         "Burn": ""
       },
-      "ANIMATION_KEY": "21_huo"
+      "ANIMATION_KEY": "21_huo",
+      "critanimationkey": "22_huo2"
     },
     "E67_shourenshibing": {
       "name": "{E67_SHOURENSHIBING}",
@@ -1260,7 +1346,8 @@
       "breathLimit": 32,
       "drops": {},
       "special": {},
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E68_yanwushi": {
       "name": "{E68_YANWUSHI}",
@@ -1277,7 +1364,8 @@
         "Domain": 1,
         "BurstFlame": ""
       },
-      "ANIMATION_KEY": "50_huoyan"
+      "ANIMATION_KEY": "50_huoyan",
+      "critanimationkey": "51_huoyan2"
     },
     "E69_hongyimowang": {
       "name": "{E69_HONGYIMOWANG}",
@@ -1293,7 +1381,8 @@
         "Magic": "",
         "AuraField": ""
       },
-      "ANIMATION_KEY": "52_mowang"
+      "ANIMATION_KEY": "52_mowang",
+      "critanimationkey": "53_mowang2"
     },
     "E70_xixueguibojue": {
       "name": "{E70_XIXUEGUIBOJUE}",
@@ -1310,7 +1399,8 @@
         "MultiHit": 0,
         "BloodThrall": ""
       },
-      "ANIMATION_KEY": "54_xixuegui"
+      "ANIMATION_KEY": "54_xixuegui",
+      "critanimationkey": "55_xixuegui2"
     },
     "E71_zhongchuikulou": {
       "name": "{E71_ZHONGCHUIKULOU}",
@@ -1325,7 +1415,8 @@
       "special": {
         "Berserk": ""
       },
-      "ANIMATION_KEY": "41_daji"
+      "ANIMATION_KEY": "41_daji",
+      "critanimationkey": "42_daji2"
     },
     "E72_fengsugou": {
       "name": "{E72_FENGSUGOU}",
@@ -1340,7 +1431,8 @@
       "special": {
         "Vampire": 0.2
       },
-      "ANIMATION_KEY": "17_zhua"
+      "ANIMATION_KEY": "17_zhua",
+      "critanimationkey": "18_zhua2"
     },
     "E73_daxingbianfu": {
       "name": "{E73_DAXINGBIANFU}",
@@ -1356,7 +1448,8 @@
         "Vampire": 0.5,
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E74_shuairuozhangyu": {
       "name": "{E74_SHUAIRUOZHANGYU}",
@@ -1372,7 +1465,8 @@
         "Weaken": 5,
         "MultiHit": 3
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E75_jihanwushi": {
       "name": "{E75_JIHANWUSHI}",
@@ -1389,7 +1483,8 @@
         "Domain": 1,
         "Snowland": ""
       },
-      "ANIMATION_KEY": "47_bingshilaimu"
+      "ANIMATION_KEY": "47_bingshilaimu",
+      "critanimationkey": "48_bingshilaimu2"
     },
     "E76_chushouzhiwu": {
       "name": "{E76_CHUSHOUZHIWU}",
@@ -1405,7 +1500,8 @@
         "Weaken": 2,
         "MultiHit": 6
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E77_gaojiefashi": {
       "name": "{E77_GAOJIEFASHI}",
@@ -1421,7 +1517,8 @@
         "Magic": "",
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "36_mofa"
+      "ANIMATION_KEY": "36_mofa",
+      "critanimationkey": "37_mofa2"
     },
     "E78_kuloujianshi": {
       "name": "{E78_KULOUJIANSHI}",
@@ -1437,7 +1534,8 @@
         "First": "",
         "MultiHit": 2
       },
-      "ANIMATION_KEY": "38_3jian"
+      "ANIMATION_KEY": "38_3jian",
+      "critanimationkey": "39_3jian2"
     },
     "E79_judabazhaoyu": {
       "name": "{E79_JUDABAZHAOYU}",
@@ -1454,7 +1552,8 @@
         "MultiHit": 3,
         "Mucus": 1
       },
-      "ANIMATION_KEY": "60_juzhua"
+      "ANIMATION_KEY": "60_juzhua",
+      "critanimationkey": "61_juzhua2"
     },
     "E80_molong": {
       "name": "{E80_MOLONG}",
@@ -1469,7 +1568,8 @@
       "special": {
         "Vampire": 0.25
       },
-      "ANIMATION_KEY": "60_juzhua"
+      "ANIMATION_KEY": "60_juzhua",
+      "critanimationkey": "61_juzhua2"
     },
     "E81_silingqishi": {
       "name": "{E81_SILINGQISHI}",
@@ -1485,7 +1585,8 @@
         "Vampire": 0.25,
         "SureKill": ""
       },
-      "ANIMATION_KEY": "38_3jian"
+      "ANIMATION_KEY": "38_3jian",
+      "critanimationkey": "39_3jian2"
     },
     "E82_xuefashi": {
       "name": "{E82_XUEFASHI}",
@@ -1501,7 +1602,8 @@
         "Vampire": 0.5,
         "Magic": ""
       },
-      "ANIMATION_KEY": "54_xixuegui"
+      "ANIMATION_KEY": "54_xixuegui",
+      "critanimationkey": "55_xixuegui2"
     },
     "E83_shilaimuxiuluo": {
       "name": "{E83_SHILAIMUXIULUO}",
@@ -1517,7 +1619,8 @@
         "MultiHit": 4,
         "Mucus": 3
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E84_fengkuangchushou": {
       "name": "{E84_FENGKUANGCHUSHOU}",
@@ -1532,7 +1635,8 @@
       "special": {
         "MultiHit": 6
       },
-      "ANIMATION_KEY": "12_daji"
+      "ANIMATION_KEY": "12_daji",
+      "critanimationkey": "13_daji2"
     },
     "E85_huangjiaqiangbing": {
       "name": "{E85_HUANGJIAQIANGBING}",
@@ -1547,7 +1651,8 @@
       "special": {
         "Pierce": 10
       },
-      "ANIMATION_KEY": "19_2jian"
+      "ANIMATION_KEY": "19_2jian",
+      "critanimationkey": "20_2jian2"
     },
     "E86_longfu": {
       "name": "{E86_LONGFU}",
@@ -1563,7 +1668,8 @@
         "MultiHit": 2,
         "Venom": 10
       },
-      "ANIMATION_KEY": "04_bianfu"
+      "ANIMATION_KEY": "04_bianfu",
+      "critanimationkey": "05_bianfu2"
     },
     "E87_jianshenfabi": {
       "name": "{E87_JIANSHENFABI}",
@@ -1578,7 +1684,8 @@
       "special": {
         "Ambush": ""
       },
-      "ANIMATION_KEY": "64_jianshen"
+      "ANIMATION_KEY": "64_jianshen",
+      "critanimationkey": "65_jianshen2"
     },
     "E88_doushengaoba": {
       "name": "{E88_DOUSHENGAOBA}",
@@ -1593,7 +1700,8 @@
       "special": {
         "AntiMagic": ""
       },
-      "ANIMATION_KEY": "68_doushen"
+      "ANIMATION_KEY": "68_doushen",
+      "critanimationkey": "69_doushen2"
     },
     "E89_jianwang": {
       "name": "{E89_JIANWANG}",
@@ -1609,7 +1717,8 @@
         "MultiHit": 4,
         "DoomBlade": ""
       },
-      "ANIMATION_KEY": "62_jianwang"
+      "ANIMATION_KEY": "62_jianwang",
+      "critanimationkey": "63_jianwang2"
     },
     "E90_jianshenshashi": {
       "name": "{E90_JIANSHENSHASHI}",
@@ -1624,7 +1733,8 @@
       "special": {
         "HolySword": ""
       },
-      "ANIMATION_KEY": "66_jianshen"
+      "ANIMATION_KEY": "66_jianshen",
+      "critanimationkey": "67_jianshen2"
     },
     "E91_moshenxieduo": {
       "name": "{E91_MOSHENXIEDUO}",
@@ -1640,7 +1750,8 @@
         "Magic": "",
         "Trick": ""
       },
-      "ANIMATION_KEY": "70_moshen"
+      "ANIMATION_KEY": "70_moshen",
+      "critanimationkey": "71_moshen2"
     },
     "E92_yonghengzhiyao": {
       "name": "{E92_YONGHENGZHIYAO}",
@@ -1656,7 +1767,8 @@
         "Magic": "",
         "Samsara": ""
       },
-      "ANIMATION_KEY": "56_damofa"
+      "ANIMATION_KEY": "56_damofa",
+      "critanimationkey": "57_damofa2"
     }
   }
 }

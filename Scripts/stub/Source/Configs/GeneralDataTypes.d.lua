@@ -12,20 +12,21 @@
 local ClassAttributeSet = {}
 
 ---@class Source.Configs.GeneralDataTypes.EnemyAttributeSet: GlobalCore.AttributeSet
----@field ID              string
----@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
----@field name            string
----@field desc            string
----@field MAXHP           integer
----@field ATK             integer
----@field DEF             integer
----@field EXP             integer
----@field GOLD            integer
----@field breathLimit     integer
----@field drops           table<string, sf.Vector2i>
----@field special         table<string, any>
----@field ANIMATION_KEY   string
+---@field ID               string
+---@field ATTRIBUTE_NAMES  string[]
+---@field SCHEMA           table<string, { type: string|table, default: any }>
+---@field name             string
+---@field desc             string
+---@field MAXHP            integer
+---@field ATK              integer
+---@field DEF              integer
+---@field EXP              integer
+---@field GOLD             integer
+---@field breathLimit      integer
+---@field drops            table<string, sf.Vector2i>
+---@field special          table<string, any>
+---@field ANIMATION_KEY    string
+---@field critanimationkey string
 ---@type Source.Configs.GeneralDataTypes.EnemyAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.EnemyAttributeSet>
 local EnemyAttributeSet = {}
 
@@ -55,23 +56,24 @@ local EquipAttributeSet = {}
 local ItemAttributeSet = {}
 
 ---@class Source.Configs.GeneralDataTypes.PlayerAttributeSet: GlobalCore.AttributeSet
----@field ID              string
----@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
----@field name            string
----@field desc            string
----@field CLASS           string
----@field MAXHP           integer
----@field HP              integer
----@field ATK             integer
----@field DEF             integer
----@field EXP             integer
----@field GOLD            integer
----@field LEVEL           integer
----@field breath          integer
----@field breathLimit     integer
----@field magic           integer
----@field ANIMATION_KEY   string
+---@field ID               string
+---@field ATTRIBUTE_NAMES  string[]
+---@field SCHEMA           table<string, { type: string|table, default: any }>
+---@field name             string
+---@field desc             string
+---@field CLASS            string
+---@field MAXHP            integer
+---@field HP               integer
+---@field ATK              integer
+---@field DEF              integer
+---@field EXP              integer
+---@field GOLD             integer
+---@field LEVEL            integer
+---@field breath           integer
+---@field breathLimit      integer
+---@field magic            integer
+---@field ANIMATION_KEY    string
+---@field critanimationkey string
 ---@type Source.Configs.GeneralDataTypes.PlayerAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.PlayerAttributeSet>
 local PlayerAttributeSet = {}
 

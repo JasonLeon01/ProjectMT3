@@ -27,12 +27,15 @@
 ---@field context Source.Scenes.SceneMap.DialogueLocaleContext
 ---@field content string[]
 
----@alias Source.Scenes.SceneMap.BlockingWindow Source.Windows.WindowShop | Source.Windows.WindowAttrShop | Source.Windows.WindowEnemyBook | Source.Windows.WindowEnemyEncyclopedia | Source.Windows.WindowFloorTeleporter | Source.Windows.WindowPlayerName
+---@alias Source.Scenes.SceneMap.BlockingWindow Source.Windows.WindowShop | Source.Windows.WindowAttrShop | Source.Windows.WindowEnemyBook | Source.Windows.WindowEnemyEncyclopedia | Source.Windows.WindowFloorTeleporter | Source.Windows.WindowPlayerName | Source.Windows.WindowBattle
 
 ---@class Source.Scenes.SceneMap.SceneMap: Source.Gameplay.GameplayScene
 ---@field new                                   fun(): Source.Scenes.SceneMap.SceneMap
 ---@field inst                                  Source.GameInstance.GameInstance
 ---@field player                                Source.Player.Player
+---@field _windowBattle                         Source.UIBase.LazyWindow<Source.Windows.WindowBattle>
+---@field _battleActive                         boolean | nil
+---@field _battleMoveEnabled                    boolean
 ---@field _gameplayRequestsActive               boolean
 ---@field _gameOverRequest                      { player: Source.Player.Player, gameMap: GameMap } | nil
 ---@field _mapBuilder                           Source.SceneComponents.SceneMapBuilder
@@ -74,6 +77,13 @@
 ---@field _enemyBookMoveEnabledBeforeOpen       boolean
 ---@field _floorTeleporterMoveEnabledBeforeOpen boolean
 local Scene = {}
+
+---@param player Source.Player.Player
+---@param enemy  Source.Enemy
+---@return boolean
+function Scene:requestBattle(player, enemy) end
+
+function Scene:cancelBattle() end
 
 ---@return boolean
 function Scene:_isInDialogue() end

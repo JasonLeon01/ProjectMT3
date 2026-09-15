@@ -12,7 +12,7 @@
     },
     "CLASS": {
       "type": "string",
-      "comment": "The Class member ID that defines the player\u0027s equipment slots and initial equipment.",
+      "comment": "The Class member ID that defines the player's equipment slots and initial equipment.",
       "defaultValue": "",
       "reference": {
         "kind": "general",
@@ -21,57 +21,65 @@
     },
     "MAXHP": {
       "type": "int",
-      "comment": "The player\u0027s starting maximum HP.",
+      "comment": "The player's starting maximum HP.",
       "defaultValue": 1000
     },
     "HP": {
       "type": "int",
-      "comment": "The player\u0027s starting current HP.",
+      "comment": "The player's starting current HP.",
       "defaultValue": 1000
     },
     "ATK": {
       "type": "int",
-      "comment": "The player\u0027s starting attack value.",
+      "comment": "The player's starting attack value.",
       "defaultValue": 10
     },
     "DEF": {
       "type": "int",
-      "comment": "The player\u0027s starting defence value.",
+      "comment": "The player's starting defence value.",
       "defaultValue": 10
     },
     "EXP": {
       "type": "int",
-      "comment": "The player\u0027s starting experience.",
+      "comment": "The player's starting experience.",
       "defaultValue": 0
     },
     "GOLD": {
       "type": "int",
-      "comment": "The player\u0027s starting gold.",
+      "comment": "The player's starting gold.",
       "defaultValue": 0
     },
     "LEVEL": {
       "type": "int",
-      "comment": "The player\u0027s starting level.",
+      "comment": "The player's starting level.",
       "defaultValue": 1
     },
     "breath": {
       "type": "int",
-      "comment": "The player\u0027s starting current breath.",
+      "comment": "The player's starting current breath.",
       "defaultValue": 0
     },
     "breathLimit": {
       "type": "int",
-      "comment": "The player\u0027s starting maximum breath.",
+      "comment": "The player's starting maximum breath.",
       "defaultValue": 0
     },
     "magic": {
       "type": "int",
-      "comment": "The player\u0027s starting magic value.",
+      "comment": "The player's starting magic value.",
       "defaultValue": 0
     },
     "ANIMATION_KEY": {
       "type": "string",
       "comment": "The animation played when the player attacks.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
+    },
+    "critanimationkey": {
+      "type": "string",
+      "comment": "The animation played on a critical attack.",
       "defaultValue": "",
       "reference": {
         "kind": "animation"
@@ -93,7 +101,8 @@
       "breath": 0,
       "breathLimit": 300,
       "magic": 0,
-      "ANIMATION_KEY": "02_jian"
+      "ANIMATION_KEY": "02_jian",
+      "critanimationkey": "03_jian2"
     },
     "Princess": {
       "name": "{PRINCESS}",
@@ -109,7 +118,8 @@
       "breath": 0,
       "breathLimit": 300,
       "magic": 0,
-      "ANIMATION_KEY": "02_jian"
+      "ANIMATION_KEY": "02_jian",
+      "critanimationkey": "03_jian2"
     }
   }
 }
