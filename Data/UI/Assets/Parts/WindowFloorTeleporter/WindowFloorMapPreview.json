@@ -29,7 +29,7 @@
             240
           ],
           "windowSkin": "",
-          "repeated": false,
+          "repeated": true,
           "visible": false
         },
         "slot": {
@@ -68,7 +68,7 @@
             240
           ],
           "windowSkin": "",
-          "repeated": false
+          "repeated": true
         },
         "slot": {
           "anchors": {

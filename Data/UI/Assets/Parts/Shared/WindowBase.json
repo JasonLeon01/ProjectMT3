@@ -59,7 +59,7 @@
             96
           ],
           "windowSkin": "",
-          "repeated": false
+          "repeated": true
         },
         "slot": {
           "anchors": {

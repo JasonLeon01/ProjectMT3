@@ -39,10 +39,6 @@ function Window:onTick(deltaTime) end
 
 function Window:openMenu() end
 
----@param logicalSize sf.Vector2u | nil
----@return Engine.Canvas
-function Window:prepare(logicalSize) end
-
 function Window:refresh() end
 
 ---@param language string | nil

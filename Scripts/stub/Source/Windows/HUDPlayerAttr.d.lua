@@ -12,9 +12,6 @@
 ---@field _stateDisplaySignature tuple<string> | nil
 ---@field _avatarTexture         sf.Texture | nil
 ---@field _avatarRect            sf.IntRect | nil
----@field _avatarSize            integer
----@field _infoStartX            integer
----@field _hpRate                number
 ---@field _language              string
 ---@field _headerSignature       tuple<any> | nil
 ---@field _combatSignature       tuple<any> | nil
@@ -59,9 +56,5 @@ function Controller:bind() end
 function Controller:refreshStates(language) end
 
 function Controller:refresh() end
-
----@param logicalSize sf.Vector2u | nil
----@return Engine.Canvas
-function Controller:prepare(logicalSize) end
 
 function Controller:dispose() end

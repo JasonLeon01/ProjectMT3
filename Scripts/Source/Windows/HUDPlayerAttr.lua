@@ -24,18 +24,8 @@ local createSignature = tuple
 ---@cast createStateSignature fun(values: string[]): tuple<string>
 ---@cast createSignature fun(...: any): tuple<any>
 
-local _AVATAR_MIN_SIZE = 32
-local _FONT_SIZE = 18
 local _STATE_ICON_SIZE = 16
 local _STATE_GAP = 4
-local _ROW_SHIFT = 64
-local _HEADER_ROW_Y = 0
-local _HP_ROW_Y = 68 + _ROW_SHIFT
-local _HP_TEXT_LAYOUT_HEIGHT = 12
-local _STAT_VALUE_X = 128
-local _DEBUFF_TEXT_OFFSET_X = 2
-local _KEY_ROW_Y = 288 + _ROW_SHIFT
-local _KEY_ICON_HEIGHT = 32
 
 local function getStateSignature(states)
     ---@type string[]
@@ -74,11 +64,8 @@ function Controller:init(player, openMenuCallback)
     self._openMenuCallback = openMenuCallback
     self._avatarTexture = nil
     self._avatarRect = nil
-    self._avatarSize = _AVATAR_MIN_SIZE
-    self._infoStartX = _AVATAR_MIN_SIZE
     self._stateSignature = nil
     self._stateDisplaySignature = nil
-    self._hpRate = 0.0
     self._language = ""
     self._headerSignature = nil
     self._combatSignature = nil
@@ -100,7 +87,6 @@ function Controller:onTick(_deltaTime)
     self:refresh()
     if self._layoutDirty then
         self.view:reflow()
-        self:_applyGeometry()
         self._layoutDirty = false
     end
 end
@@ -124,13 +110,10 @@ function Controller:_initialiseAvatar(player)
     local textureSize = texture:getSize()
     local frameWidth = math.max(1, math.floor(textureSize.x / 4))
     local frameHeight = math.max(1, math.floor(textureSize.y / 4))
-    local frameSize = math.min(frameWidth, frameHeight)
     self._avatarTexture = texture
     local avatarRect = sf.IntRect.new(0, 0, frameWidth, frameHeight)
     ---@cast avatarRect sf.IntRect
     self._avatarRect = avatarRect
-    self._avatarSize = math.max(self._avatarSize, frameSize)
-    self._infoStartX = math.max(self._infoStartX, self._avatarSize)
 end
 
 function Controller:bind()
@@ -212,7 +195,9 @@ function Controller:refresh()
         self:setText("MapName", LOC(tostring(mapName)))
         self:setText(
             "PlayerName",
-            Engine.TextLayout.fitPlainText(playerName, self.root:getSize().x, self.ui.controls["PlayerName"])
+            Engine.TextLayout.fitPlainText(
+                playerName, self.ui.controls["Canvas"]:getSize().x, self.ui.controls["PlayerName"]
+            )
         )
         self:setText("HpLabel", LOC("HP"))
         self:setText("AtkLabel", LOC("ATK"))
@@ -237,7 +222,10 @@ function Controller:refresh()
                 "#default#" .. tostring(ToShortNumber(self:getPlayer().attributes.HP)) .. "/#max#"
                     .. tostring(ToShortNumber(self:getPlayer().attributes.MAXHP)) .. "#default#"
             )
-            self._hpRate = self:getPlayer().attributes.HP / self:getPlayer().attributes.MAXHP
+            self.ui.controls["HpBar"]:setProgress(
+                self:getPlayer().attributes.MAXHP > 0 and self:getPlayer().attributes.HP
+                        / self:getPlayer().attributes.MAXHP or 0.0
+            )
             layoutDirty = true
         end
 
@@ -291,37 +279,6 @@ function Controller:refresh()
         self:refreshStates(language)
     end
     self._layoutDirty = layoutDirty
-end
-
-function Controller:_applyGeometry()
-    self.ui.controls["MapName"]:setPosition(sf.Vector2f.new(self._infoStartX, _HEADER_ROW_Y))
-    self.ui.controls["PlayerName"]:setPosition(sf.Vector2f.new(0.0, self._avatarSize))
-    self.ui.controls["Level"]:setPosition(sf.Vector2f.new(0.0, self._avatarSize + 32))
-    self.ui.controls["StateHost"]:setPosition(sf.Vector2f.new(0.0, self._avatarSize + _ROW_SHIFT))
-    local hpBarSize = self.ui.controls["HpBack"]:getSize()
-    self.ui.controls["HpFill"]:setSize(sf.Vector2f.new(hpBarSize.x * self._hpRate, hpBarSize.y))
-
-    local hpBounds = self.ui.controls["HpValue"]:getLocalBounds()
-    local textY = _HP_ROW_Y + (_HP_TEXT_LAYOUT_HEIGHT - hpBounds.size.y) / 2.0 - hpBounds.position.y
-    local textX = _STAT_VALUE_X - hpBounds.size.x - hpBounds.position.x
-    self.ui.controls["HpLabel"]:setPosition(sf.Vector2f.new(0.0, textY))
-    self.ui.controls["HpValue"]:setPosition(sf.Vector2f.new(textX, textY))
-    self.ui.controls["HpPoison"]:setPosition(sf.Vector2f.new(_STAT_VALUE_X + _DEBUFF_TEXT_OFFSET_X, textY))
-
-    local itemBounds = self.ui.controls["ItemCounts"]:getLocalBounds()
-    local itemX = _STAT_VALUE_X - itemBounds.size.x - itemBounds.position.x
-    local keyRowHeight = math.max(_FONT_SIZE, _KEY_ICON_HEIGHT)
-    local itemY = _KEY_ROW_Y + (keyRowHeight - itemBounds.size.y) / 2.0 - itemBounds.position.y
-    self.ui.controls["ItemCounts"]:setPosition(sf.Vector2f.new(itemX, itemY))
-    local iconY = _KEY_ROW_Y + (keyRowHeight - _KEY_ICON_HEIGHT) / 2.0
-    self.ui.controls["KeyIcon"]:setPosition(sf.Vector2f.new(0.0, iconY))
-end
-
-function Controller:prepare(logicalSize)
-    local root = super(Controller, self).prepare(logicalSize)
-    self:_applyGeometry()
-    self._layoutDirty = false
-    return root
 end
 
 return Ui.DefineWindow(View, Controller, Canvas)

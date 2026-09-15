@@ -2,30 +2,40 @@
 ---@meta Source.UI.PlayerAttrHUD
 
 ---@class Source.UIBase.GeneratedControls.PlayerAttrHUD
----@field AtkDebuff  Engine.PlainText
----@field AtkLabel   Engine.PlainText
----@field AtkValue   Engine.PlainText
----@field Avatar     Engine.Button
----@field Background Engine.Image
----@field DefDebuff  Engine.PlainText
----@field DefLabel   Engine.PlainText
----@field DefValue   Engine.PlainText
----@field ExpLabel   Engine.PlainText
----@field ExpValue   Engine.PlainText
----@field GoldLabel  Engine.PlainText
----@field GoldValue  Engine.PlainText
----@field HpBack     Engine.SolidRect
----@field HpFill     Engine.SolidRect
----@field HpLabel    Engine.PlainText
----@field HpPoison   Engine.PlainText
----@field HpValue    Engine.RichText
----@field ItemCounts Engine.RichText
----@field KeyIcon    Engine.Image
----@field Level      Engine.PlainText
----@field MapName    Engine.PlainText
----@field PlayerName Engine.PlainText
----@field Root       Engine.Canvas
----@field StateHost  Engine.Canvas
+---@field AtkDebuff           Engine.PlainText
+---@field AtkLabel            Engine.PlainText
+---@field AtkValue            Engine.PlainText
+---@field Avatar              Engine.Button
+---@field Background          Engine.Image
+---@field Background2         Engine.Image
+---@field Background3         Engine.Image
+---@field Background4         Engine.Image
+---@field BackgroundFloor1    Engine.Image
+---@field BackgroundFloorBtm  Engine.Image
+---@field BackgroundFloorHUD1 Engine.Image
+---@field BackgroundFloorHUD2 Engine.Image
+---@field BackgroundFloorHUD3 Engine.Image
+---@field BackgroundFloorHUD4 Engine.Image
+---@field Canvas              Engine.Canvas
+---@field Canvas2             Engine.Canvas
+---@field DefDebuff           Engine.PlainText
+---@field DefLabel            Engine.PlainText
+---@field DefValue            Engine.PlainText
+---@field ExpLabel            Engine.PlainText
+---@field ExpValue            Engine.PlainText
+---@field GoldLabel           Engine.PlainText
+---@field GoldValue           Engine.PlainText
+---@field HpBar               Engine.ProgressBar
+---@field HpLabel             Engine.PlainText
+---@field HpPoison            Engine.PlainText
+---@field HpValue             Engine.RichText
+---@field ItemCounts          Engine.RichText
+---@field KeyIcon             Engine.Image
+---@field Level               Engine.PlainText
+---@field MapName             Engine.PlainText
+---@field PlayerName          Engine.PlainText
+---@field Root                Engine.Canvas
+---@field StateHost           Engine.Canvas
 
 ---@class Source.UIBase.GeneratedAssets.PlayerAttrHUD
 ---@field StateItem1 Source.UI.Parts.PlayerAttrHUD.PlayerStateRow
