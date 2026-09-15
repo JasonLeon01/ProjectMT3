@@ -19,22 +19,26 @@ local _METADATA = {
         },
         setData = {
             type = "function",
-            parameters = { "animationData", animationData = { "Engine", "AnimationData" } },
+            parameters = { "self", "animationData", self = { "GlobalCore", "Animation" }, animationData = { "Engine", "AnimationData" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         update = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "GlobalCore", "Animation" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         playSoundsUpToFrame = {
             type = "function",
-            parameters = { "frameIndex", frameIndex = "int" },
+            parameters = { "self", "frameIndex", self = { "GlobalCore", "Animation" }, frameIndex = "int" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         stopSoundsAtFrame = {
             type = "function",
-            parameters = { "frameIndex", frameIndex = "int" },
+            parameters = { "self", "frameIndex", self = { "GlobalCore", "Animation" }, frameIndex = "int" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -52,13 +56,15 @@ local _METADATA = {
         attrs = {},
         setViewport = {
             type = "function",
-            parameters = { "inViewport", inViewport = "sf.FloatRect" },
+            parameters = { "self", "inViewport", self = { "GlobalCore", "Camera" }, inViewport = "sf.FloatRect" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getView = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "view",
                 view = "sf.View",
@@ -67,7 +73,8 @@ local _METADATA = {
         },
         getViewPosition = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "position",
                 position = "sf.Vector2f",
@@ -76,13 +83,15 @@ local _METADATA = {
         },
         setViewPosition = {
             type = "function",
-            parameters = { "inPosition", inPosition = "sf.Vector2f" },
+            parameters = { "self", "inPosition", self = { "GlobalCore", "Camera" }, inPosition = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getViewSize = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "size",
                 size = "sf.Vector2f",
@@ -91,13 +100,15 @@ local _METADATA = {
         },
         setViewSize = {
             type = "function",
-            parameters = { "inSize", inSize = "sf.Vector2f" },
+            parameters = { "self", "inSize", self = { "GlobalCore", "Camera" }, inSize = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getViewRotation = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "rotation",
                 rotation = "sf.Angle",
@@ -106,31 +117,36 @@ local _METADATA = {
         },
         setViewRotation = {
             type = "function",
-            parameters = { "inRotation", inRotation = "sf.Angle" },
+            parameters = { "self", "inRotation", self = { "GlobalCore", "Camera" }, inRotation = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         moveView = {
             type = "function",
-            parameters = { "delta", delta = "sf.Vector2f" },
+            parameters = { "self", "delta", self = { "GlobalCore", "Camera" }, delta = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         rotateView = {
             type = "function",
-            parameters = { "delta", delta = "sf.Angle" },
+            parameters = { "self", "delta", self = { "GlobalCore", "Camera" }, delta = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         resumeViewport = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getPosition = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "position",
                 position = "sf.Vector2f",
@@ -139,19 +155,22 @@ local _METADATA = {
         },
         setPosition = {
             type = "function",
-            parameters = { "inPosition", inPosition = "sf.Vector2f" },
+            parameters = { "self", "inPosition", self = { "GlobalCore", "Camera" }, inPosition = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         move = {
             type = "function",
-            parameters = { "delta", delta = "sf.Vector2f" },
+            parameters = { "self", "delta", self = { "GlobalCore", "Camera" }, delta = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getRotation = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "rotation",
                 rotation = "sf.Angle",
@@ -160,19 +179,22 @@ local _METADATA = {
         },
         setRotation = {
             type = "function",
-            parameters = { "inRotation", inRotation = "sf.Angle" },
+            parameters = { "self", "inRotation", self = { "GlobalCore", "Camera" }, inRotation = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         rotate = {
             type = "function",
-            parameters = { "delta", delta = "sf.Angle" },
+            parameters = { "self", "delta", self = { "GlobalCore", "Camera" }, delta = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getScale = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "scale",
                 scale = "sf.Vector2f",
@@ -181,19 +203,22 @@ local _METADATA = {
         },
         setScale = {
             type = "function",
-            parameters = { "factors", factors = "sf.Vector2f" },
+            parameters = { "self", "factors", self = { "GlobalCore", "Camera" }, factors = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         scale = {
             type = "function",
-            parameters = { "delta", delta = "sf.Vector2f" },
+            parameters = { "self", "delta", self = { "GlobalCore", "Camera" }, delta = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getParent = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "parent",
                 parent = { "Engine", "Actor" },
@@ -202,19 +227,22 @@ local _METADATA = {
         },
         setParent = {
             type = "function",
-            parameters = { "actor", actor = { "Engine", "Actor" } },
+            parameters = { "self", "actor", self = { "GlobalCore", "Camera" }, actor = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setMap = {
             type = "function",
-            parameters = { "map", map = { "GlobalCore", "GameMapBase" } },
+            parameters = { "self", "map", self = { "GlobalCore", "Camera" }, map = { "GlobalCore", "GameMapBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getMap = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "map",
                 map = { "GlobalCore", "GameMapBase" },
@@ -223,7 +251,8 @@ local _METADATA = {
         },
         mapPixelToCoords = {
             type = "function",
-            parameters = { "point", point = "sf.Vector2i" },
+            parameters = { "self", "point", self = { "GlobalCore", "Camera" }, point = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Vector2f",
@@ -231,7 +260,8 @@ local _METADATA = {
         },
         mapCoordsToPixel = {
             type = "function",
-            parameters = { "point", point = "sf.Vector2f" },
+            parameters = { "self", "point", self = { "GlobalCore", "Camera" }, point = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Vector2i",
@@ -239,7 +269,8 @@ local _METADATA = {
         },
         getRenderTexture = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Camera" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "renderTexture",
                 renderTexture = "sf.RenderTexture",
@@ -251,12 +282,14 @@ local _METADATA = {
         attrs = {},
         addTip = {
             type = "function",
-            parameters = { "text", text = "string" },
+            parameters = { "self", "text", self = { "GlobalCore", "CommonTipController" }, text = "string" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onTick = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "GlobalCore", "CommonTipController" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -270,17 +303,20 @@ local _METADATA = {
         },
         addItem = {
             type = "function",
-            parameters = { "item", item = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "item", self = { "GlobalCore", "FocusGroup" }, item = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         removeItem = {
             type = "function",
-            parameters = { "item", item = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "item", self = { "GlobalCore", "FocusGroup" }, item = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getItems = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -290,13 +326,14 @@ local _METADATA = {
         },
         setNeighbor = {
             type = "function",
-            parameters = { "direction", "neighbor", "transition", direction = "string", neighbor = { "GlobalCore", "FocusGroup" }, transition = "string" },
-            default = { [3] = "directional" },
+            parameters = { "self", "direction", "neighbor", "transition", self = { "GlobalCore", "FocusGroup" }, direction = "string", neighbor = { "GlobalCore", "FocusGroup" }, transition = "string" },
+            default = { [1] = "self", [4] = "directional" },
             ["return"] = {},
         },
         getNeighbor = {
             type = "function",
-            parameters = { "direction", direction = "string" },
+            parameters = { "self", "direction", self = { "GlobalCore", "FocusGroup" }, direction = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "FocusNeighbor" },
@@ -304,7 +341,8 @@ local _METADATA = {
         },
         canEnter = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -312,7 +350,8 @@ local _METADATA = {
         },
         findInitialFocus = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "FunctionalBase" },
@@ -320,12 +359,14 @@ local _METADATA = {
         },
         rememberFocus = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusGroup" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         moveWithin = {
             type = "function",
-            parameters = { "current", "direction", current = { "Engine", "FunctionalBase" }, direction = "string" },
+            parameters = { "self", "current", "direction", self = { "GlobalCore", "FocusGroup" }, current = { "Engine", "FunctionalBase" }, direction = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "FunctionalBase" },
@@ -336,12 +377,14 @@ local _METADATA = {
         attrs = {},
         setNavigationEnabled = {
             type = "function",
-            parameters = { "enabled", enabled = "bool" },
+            parameters = { "self", "enabled", self = { "GlobalCore", "FocusManager" }, enabled = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getNavigationEnabled = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusManager" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -349,7 +392,8 @@ local _METADATA = {
         },
         isRoutingKeyboard = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusManager" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -357,27 +401,32 @@ local _METADATA = {
         },
         registerElement = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         unregisterElement = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         registerFocusGroup = {
             type = "function",
-            parameters = { "group", group = { "GlobalCore", "FocusGroup" } },
+            parameters = { "self", "group", self = { "GlobalCore", "FocusManager" }, group = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         unregisterFocusGroup = {
             type = "function",
-            parameters = { "group", group = { "GlobalCore", "FocusGroup" } },
+            parameters = { "self", "group", self = { "GlobalCore", "FocusManager" }, group = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getFocus = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusManager" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "FunctionalBase" },
@@ -385,7 +434,8 @@ local _METADATA = {
         },
         setFocus = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -393,17 +443,20 @@ local _METADATA = {
         },
         clearFocus = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusManager" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         prepareFrame = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FocusManager" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         shouldDispatchKeyboardTo = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -411,7 +464,8 @@ local _METADATA = {
         },
         isFocused = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -419,7 +473,8 @@ local _METADATA = {
         },
         isCursorFocusOwner = {
             type = "function",
-            parameters = { "element", element = { "Engine", "FunctionalBase" } },
+            parameters = { "self", "element", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -427,7 +482,8 @@ local _METADATA = {
         },
         requestDirectionalMove = {
             type = "function",
-            parameters = { "element", "direction", element = { "Engine", "FunctionalBase" }, direction = "string" },
+            parameters = { "self", "element", "direction", self = { "GlobalCore", "FocusManager" }, element = { "Engine", "FunctionalBase" }, direction = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -435,8 +491,8 @@ local _METADATA = {
         },
         moveFocus = {
             type = "function",
-            parameters = { "direction", "source", direction = "string", source = { "Engine", "FunctionalBase" } },
-            default = {  },
+            parameters = { "self", "direction", "source", self = { "GlobalCore", "FocusManager" }, direction = "string", source = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
             defaultUnset = { "source" },
             ["return"] = {
                 "return",
@@ -445,7 +501,8 @@ local _METADATA = {
         },
         activateGroup = {
             type = "function",
-            parameters = { "group", group = { "GlobalCore", "FocusGroup" } },
+            parameters = { "self", "group", self = { "GlobalCore", "FocusManager" }, group = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -510,13 +567,14 @@ local _METADATA = {
         attrs = {},
         generateDataFromMap = {
             type = "function",
-            parameters = { "size", "materialMap", "smooth", size = "sf.Vector2u", materialMap = {
+            parameters = { "self", "size", "materialMap", "smooth", self = { "GlobalCore", "GameMapBase" }, size = "sf.Vector2u", materialMap = {
                 list = {
                     list = {
                         union = { "bool", "float" },
                     },
                 },
             }, smooth = "bool" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Texture",
@@ -524,10 +582,10 @@ local _METADATA = {
         },
         findPathExt = {
             type = "function",
-            parameters = { "start", "goal", "size", "movingActor", "excludedAnchors", start = "sf.Vector2i", goal = "sf.Vector2i", size = "sf.Vector2u", movingActor = { "Engine", "Actor" }, excludedAnchors = {
+            parameters = { "self", "start", "goal", "size", "movingActor", "excludedAnchors", self = { "GlobalCore", "GameMapBase" }, start = "sf.Vector2i", goal = "sf.Vector2i", size = "sf.Vector2u", movingActor = { "Engine", "Actor" }, excludedAnchors = {
                 list = "sf.Vector2i",
             } },
-            default = { [5] = {} },
+            default = { [1] = "self", [6] = {} },
             defaultUnset = { "start", "goal", "size", "movingActor" },
             ["return"] = {
                 "return",
@@ -536,9 +594,10 @@ local _METADATA = {
         },
         getMaterialPropertyMapExt = {
             type = "function",
-            parameters = { "width", "height", "propertyName", "invalidValue", width = "int", height = "int", propertyName = "string", invalidValue = {
+            parameters = { "self", "width", "height", "propertyName", "invalidValue", self = { "GlobalCore", "GameMapBase" }, width = "int", height = "int", propertyName = "string", invalidValue = {
                 union = { "bool", "float" },
             } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -552,7 +611,8 @@ local _METADATA = {
         },
         rebuildPassabilityCache = {
             type = "function",
-            parameters = { "size", size = "sf.Vector2u" },
+            parameters = { "self", "size", self = { "GlobalCore", "GameMapBase" }, size = "sf.Vector2u" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -564,12 +624,14 @@ local _METADATA = {
         },
         updateActorOccupancy = {
             type = "function",
-            parameters = { "actor", actor = { "Engine", "Actor" } },
+            parameters = { "self", "actor", self = { "GlobalCore", "GameMapBase" }, actor = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getActorsAt = {
             type = "function",
-            parameters = { "x", "y", x = "int", y = "int" },
+            parameters = { "self", "x", "y", self = { "GlobalCore", "GameMapBase" }, x = "int", y = "int" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -579,7 +641,8 @@ local _METADATA = {
         },
         getActorsInRange = {
             type = "function",
-            parameters = { "x", "y", "radius", x = "int", y = "int", radius = "int" },
+            parameters = { "self", "x", "y", "radius", self = { "GlobalCore", "GameMapBase" }, x = "int", y = "int", radius = "int" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -589,7 +652,8 @@ local _METADATA = {
         },
         getCollisionAt = {
             type = "function",
-            parameters = { "x", "y", "selfActor", x = "int", y = "int", selfActor = { "Engine", "Actor" } },
+            parameters = { "self", "x", "y", "selfActor", self = { "GlobalCore", "GameMapBase" }, x = "int", y = "int", selfActor = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -599,7 +663,8 @@ local _METADATA = {
         },
         getOverlapsAt = {
             type = "function",
-            parameters = { "x", "y", "selfActor", x = "int", y = "int", selfActor = { "Engine", "Actor" } },
+            parameters = { "self", "x", "y", "selfActor", self = { "GlobalCore", "GameMapBase" }, x = "int", y = "int", selfActor = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -609,16 +674,18 @@ local _METADATA = {
         },
         setTilemap = {
             type = "function",
-            parameters = { "tilemap", tilemap = { "Engine", "Tilemap" } },
+            parameters = { "self", "tilemap", self = { "GlobalCore", "GameMapBase" }, tilemap = { "Engine", "Tilemap" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         syncActorsRef = {
             type = "function",
-            parameters = { "actors", actors = {
+            parameters = { "self", "actors", self = { "GlobalCore", "GameMapBase" }, actors = {
                 dict = {
                     list = { "Engine", "Actor" },
                 },
             } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -644,7 +711,8 @@ local _METADATA = {
         attrs = {},
         getOwner = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "AbilitySystemComponent" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "any",
@@ -653,7 +721,8 @@ local _METADATA = {
         },
         getAttributeSet = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "AbilitySystemComponent" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "AttributeSet" },
@@ -662,7 +731,8 @@ local _METADATA = {
         },
         getNumericAttribute = {
             type = "function",
-            parameters = { "name", name = "string" },
+            parameters = { "self", "name", self = { "GlobalCore", "AbilitySystemComponent" }, name = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -673,7 +743,8 @@ local _METADATA = {
         },
         getNumericAttributeBase = {
             type = "function",
-            parameters = { "name", name = "string" },
+            parameters = { "self", "name", self = { "GlobalCore", "AbilitySystemComponent" }, name = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -684,23 +755,26 @@ local _METADATA = {
         },
         setNumericAttributeBase = {
             type = "function",
-            parameters = { "name", "value", name = "string", value = {
+            parameters = { "self", "name", "value", self = { "GlobalCore", "AbilitySystemComponent" }, name = "string", value = {
                 union = { "int", "float" },
             } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         setNumericAttributeBases = {
             type = "function",
-            parameters = { "values", values = {
+            parameters = { "self", "values", self = { "GlobalCore", "AbilitySystemComponent" }, values = {
                 dict = {
                     union = { "int", "float" },
                 },
             } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getNumericAttributeBases = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "AbilitySystemComponent" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -713,22 +787,22 @@ local _METADATA = {
         },
         addAttributeChangeListener = {
             type = "function",
-            parameters = { "name", "callback", "params", name = "string", callback = "function", params = "any[]" },
-            default = { [3] = {} },
+            parameters = { "self", "name", "callback", "params", self = { "GlobalCore", "AbilitySystemComponent" }, name = "string", callback = "function", params = "any[]" },
+            default = { [1] = "self", [4] = {} },
             defaultUnset = { "name", "callback" },
             ["return"] = {},
         },
         setNumericAttributeConstraint = {
             type = "function",
-            parameters = { "name", "callback", name = "string", callback = "function" },
-            default = {  },
+            parameters = { "self", "name", "callback", self = { "GlobalCore", "AbilitySystemComponent" }, name = "string", callback = "function" },
+            default = { [1] = "self" },
             defaultUnset = { "callback" },
             ["return"] = {},
         },
         giveAbility = {
             type = "function",
-            parameters = { "ability", "sourceKey", ability = { "GlobalCore", "GameplayAbility" }, sourceKey = "any" },
-            default = {  },
+            parameters = { "self", "ability", "sourceKey", self = { "GlobalCore", "AbilitySystemComponent" }, ability = { "GlobalCore", "GameplayAbility" }, sourceKey = "any" },
+            default = { [1] = "self" },
             defaultUnset = { "sourceKey" },
             ["return"] = {
                 "return",
@@ -737,13 +811,14 @@ local _METADATA = {
         },
         removeAbilitiesBySource = {
             type = "function",
-            parameters = { "sourceKey", sourceKey = "any" },
+            parameters = { "self", "sourceKey", self = { "GlobalCore", "AbilitySystemComponent" }, sourceKey = "any" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         tryActivateAbility = {
             type = "function",
-            parameters = { "abilityID", "eventData", abilityID = "string", eventData = { "GlobalCore", "GameplayEventData" } },
-            default = {  },
+            parameters = { "self", "abilityID", "eventData", self = { "GlobalCore", "AbilitySystemComponent" }, abilityID = "string", eventData = { "GlobalCore", "GameplayEventData" } },
+            default = { [1] = "self" },
             defaultUnset = { "eventData" },
             ["return"] = {
                 "return",
@@ -752,7 +827,8 @@ local _METADATA = {
         },
         handleGameplayEvent = {
             type = "function",
-            parameters = { "eventData", eventData = { "GlobalCore", "GameplayEventData" } },
+            parameters = { "self", "eventData", self = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -762,7 +838,8 @@ local _METADATA = {
         },
         applyGameplayEffectSpec = {
             type = "function",
-            parameters = { "spec", spec = { "GlobalCore", "GameplayEffectSpec" } },
+            parameters = { "self", "spec", self = { "GlobalCore", "AbilitySystemComponent" }, spec = { "GlobalCore", "GameplayEffectSpec" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "int",
@@ -770,7 +847,8 @@ local _METADATA = {
         },
         validateGameplayEffectSpec = {
             type = "function",
-            parameters = { "spec", spec = { "GlobalCore", "GameplayEffectSpec" } },
+            parameters = { "self", "spec", self = { "GlobalCore", "AbilitySystemComponent" }, spec = { "GlobalCore", "GameplayEffectSpec" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -779,8 +857,8 @@ local _METADATA = {
         },
         removeActiveGameplayEffect = {
             type = "function",
-            parameters = { "handle", "stacks", handle = "int", stacks = "int" },
-            default = {  },
+            parameters = { "self", "handle", "stacks", self = { "GlobalCore", "AbilitySystemComponent" }, handle = "int", stacks = "int" },
+            default = { [1] = "self" },
             defaultUnset = { "stacks" },
             ["return"] = {
                 "return",
@@ -789,7 +867,8 @@ local _METADATA = {
         },
         getActiveEffectStacks = {
             type = "function",
-            parameters = { "effectID", effectID = "string" },
+            parameters = { "self", "effectID", self = { "GlobalCore", "AbilitySystemComponent" }, effectID = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "int",
@@ -798,7 +877,8 @@ local _METADATA = {
         },
         getActiveGameplayEffects = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "AbilitySystemComponent" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -809,7 +889,8 @@ local _METADATA = {
         },
         hasMatchingGameplayTag = {
             type = "function",
-            parameters = { "tag", tag = "string" },
+            parameters = { "self", "tag", self = { "GlobalCore", "AbilitySystemComponent" }, tag = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -818,7 +899,8 @@ local _METADATA = {
         },
         getRevision = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "AbilitySystemComponent" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "int",
@@ -853,7 +935,8 @@ local _METADATA = {
         attrs = {},
         getAttributeNames = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "AttributeSet" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -864,7 +947,8 @@ local _METADATA = {
         },
         getAttributeSchema = {
             type = "function",
-            parameters = { "name", name = "string" },
+            parameters = { "self", "name", self = { "GlobalCore", "AttributeSet" }, name = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "AttributeSchema" },
@@ -912,7 +996,8 @@ local _METADATA = {
         },
         canActivate = {
             type = "function",
-            parameters = { "abilitySystem", "eventData", abilitySystem = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            parameters = { "self", "abilitySystem", "eventData", self = { "GlobalCore", "GameplayAbility" }, abilitySystem = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "GameplayAbilityResult" },
@@ -921,7 +1006,8 @@ local _METADATA = {
         },
         calculate = {
             type = "function",
-            parameters = { "abilitySystem", "eventData", abilitySystem = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            parameters = { "self", "abilitySystem", "eventData", self = { "GlobalCore", "GameplayAbility" }, abilitySystem = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "GameplayAbilityResult" },
@@ -930,7 +1016,8 @@ local _METADATA = {
         },
         activate = {
             type = "function",
-            parameters = { "abilitySystem", "eventData", abilitySystem = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            parameters = { "self", "abilitySystem", "eventData", self = { "GlobalCore", "GameplayAbility" }, abilitySystem = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "GameplayAbilityResult" },
@@ -1093,7 +1180,8 @@ local _METADATA = {
         },
         asDict = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "Light" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -1420,7 +1508,8 @@ local _METADATA = {
         },
         isReady = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "TimerEntry" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1428,7 +1517,8 @@ local _METADATA = {
         },
         isCancelled = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "TimerEntry" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1437,7 +1527,8 @@ local _METADATA = {
         },
         cancel = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "TimerEntry" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -1473,7 +1564,8 @@ local _METADATA = {
         attrs = {},
         getUIManager = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "UIManager" },
@@ -1482,8 +1574,8 @@ local _METADATA = {
         },
         addTimer = {
             type = "function",
-            parameters = { "interval", "task", "params", "blocking", interval = "float", task = "function", params = "any[]", blocking = "bool" },
-            default = { [3] = {}, [4] = false },
+            parameters = { "self", "interval", "task", "params", "blocking", self = { "GlobalCore", "SceneBase" }, interval = "float", task = "function", params = "any[]", blocking = "bool" },
+            default = { [1] = "self", [4] = {}, [5] = false },
             defaultUnset = { "interval", "task" },
             ["return"] = {
                 "return",
@@ -1494,7 +1586,8 @@ local _METADATA = {
         },
         isInputBlocked = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "blocked",
                 blocked = "bool",
@@ -1503,13 +1596,15 @@ local _METADATA = {
         },
         addAnim = {
             type = "function",
-            parameters = { "anim", anim = { "GlobalCore", "Animation" } },
+            parameters = { "self", "anim", self = { "GlobalCore", "SceneBase" }, anim = { "GlobalCore", "Animation" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getAnims = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "anims",
                 anims = {
@@ -1520,60 +1615,71 @@ local _METADATA = {
         },
         removeAnim = {
             type = "function",
-            parameters = { "anim", anim = { "GlobalCore", "Animation" } },
+            parameters = { "self", "anim", self = { "GlobalCore", "SceneBase" }, anim = { "GlobalCore", "Animation" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         clearAnims = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         addCommonTip = {
             type = "function",
-            parameters = { "text", text = "string" },
+            parameters = { "self", "text", self = { "GlobalCore", "SceneBase" }, text = "string" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         onEnter = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onQuit = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onCreate = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onInput = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onTick = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "GlobalCore", "SceneBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onLateTick = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "GlobalCore", "SceneBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onFixedTick = {
             type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
+            parameters = { "self", "fixedDelta", self = { "GlobalCore", "SceneBase" }, fixedDelta = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onDestroy = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "SceneBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -2464,7 +2570,8 @@ local _METADATA = {
         attrs = {},
         getFocusManager = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "UIManager" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "GlobalCore", "FocusManager" },
@@ -2473,23 +2580,27 @@ local _METADATA = {
         },
         setFocusNavigationEnabled = {
             type = "function",
-            parameters = { "enabled", enabled = "bool" },
+            parameters = { "self", "enabled", self = { "GlobalCore", "UIManager" }, enabled = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         registerFocusGroup = {
             type = "function",
-            parameters = { "group", group = { "GlobalCore", "FocusGroup" } },
+            parameters = { "self", "group", self = { "GlobalCore", "UIManager" }, group = { "GlobalCore", "FocusGroup" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         loadUI = {
             type = "function",
-            parameters = { "ui", ui = { "Engine", "ControlBase" } },
+            parameters = { "self", "ui", self = { "GlobalCore", "UIManager" }, ui = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getUIs = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "UIManager" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "uis",
                 uis = {
@@ -2500,7 +2611,8 @@ local _METADATA = {
         },
         removeUI = {
             type = "function",
-            parameters = { "ui", ui = { "Engine", "ControlBase" } },
+            parameters = { "self", "ui", self = { "GlobalCore", "UIManager" }, ui = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },

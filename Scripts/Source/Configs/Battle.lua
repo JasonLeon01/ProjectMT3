@@ -25,5 +25,6 @@ Battle.enemy = {
 
 Battle.criticalFatigue = 5
 Battle.attackInterval = 0.12
+Battle.attackExtraDelay = 0.10
 
 return Battle

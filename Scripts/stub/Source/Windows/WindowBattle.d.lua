@@ -31,7 +31,7 @@
 ---@field _criticalSelected boolean
 ---@field _retreatRequested boolean
 ---@field _watchStops       (fun())[]
----@field _floatingTexts    table<Source.Windows.WindowBattle.BattleFloatingText.Controller, boolean>
+---@field _particles        Engine.ParticleSystem
 ---@field _playerActor      Source.Player.Player | nil
 ---@field _enemyActor       Source.Enemy | nil
 ---@field _player           Source.Windows.WindowBattle.BattlerState | nil
@@ -54,7 +54,7 @@ function Controller:setPortrait(name, actor) end
 ---@param state Source.Windows.WindowBattle.BattlerState
 ---@param side  "Player" | "Enemy"
 function Controller:observeState(state, side) end
----@param side "Player" | "Enemy"
+---@param side  "Player" | "Enemy"
 ---@param delta integer
 function Controller:onHPChanged(side, delta) end
 ---@param state Source.Windows.WindowBattle.BattlerState

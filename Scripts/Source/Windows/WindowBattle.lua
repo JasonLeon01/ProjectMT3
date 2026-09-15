@@ -7,7 +7,7 @@ local Locale = require("Source.Locale.Core")
 local WindowBase = require("Source.Windows.Base.WindowBase")
 local Ui = require("Source.UIBase.Ui")
 local View = require("Source.UI.WindowBattle")
-local FloatingText = require("Source.Windows.WindowBattle.BattleFloatingText.Controller")
+local BattleTextParticle = require("Source.CustomParticles.BattleTextParticle")
 local Effects = require("Source.Gameplay.Effects")
 local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
 local PoisonedAbility = require("Source.Gameplay.SpecialAbilities.PoisonedAbility")
@@ -31,7 +31,8 @@ local function createState(actor, player)
     local states = Effects.GetStateStacks(actor)
     local abilitySystem = actor:getAbilitySystemComponent()
     ---@type Source.Configs.Battle.Rule
-    local rule = player and assert(Battle.players[actor.ID], "Missing player battle config: " .. actor.ID) or Battle.enemy
+    local rule = player and assert(Battle.players[actor.ID], "Missing player battle config: " .. actor.ID)
+        or Battle.enemy
     return {
         HP = player and attributes.HP or attributes.MAXHP,
         MAXHP = attributes.MAXHP,
@@ -60,7 +61,7 @@ function Controller:init(scene)
     self._criticalSelected = false
     self._retreatRequested = false
     self._watchStops = {}
-    self._floatingTexts = {}
+    self._particles = self.ui.controls["Content"]:getParticleSystem()
 end
 
 function Controller:bind()
@@ -68,11 +69,12 @@ function Controller:bind()
     local retreat = self:bindCallback(Controller.requestRetreat)
     for name, action in pairs({ CriticalButton = critical, RetreatButton = retreat }) do
         local button = self.ui.controls[name]
-        ---@cast button Engine.Button
+        ---@cast button Engine.FunctionalBase
         button:addClickCallback(action)
         button:addConfirmCallback(action)
         button:addKeyDownCallback(self:bindCallback(Controller.onKeyDown))
     end
+    self.ui.controls["RetreatButton"]:setTouchHitBounds(Engine.ToFloatRect(0, -10, 128, 44))
     self:watch(self, "_criticalSelected", Controller.refreshCritical)
     self:watch(self, "_retreatRequested", Controller.refreshCritical)
     self:watch(self, "_running", Controller.refreshCritical)
@@ -101,7 +103,7 @@ function Controller:refreshLocale()
             )
         end
     end
-    self:setText("RetreatLabel", LOC("BATTLE_RETREAT"))
+    self:setText("RetreatButton", LOC("BATTLE_RETREAT"))
     if self._playerActor ~= nil and self._enemyActor ~= nil then
         self:setBattleText("PlayerName", self._playerActor:getDisplayName())
         self:setBattleText("EnemyName", LOC(self._enemyActor.attributes.name))
@@ -126,12 +128,7 @@ function Controller:open(player, enemy, onFinished)
     local size = self.host:getSize()
     local bounds = Engine.ToFloatRect(rect.position.x, rect.position.y, rect.size.x, rect.size.y)
     local position = bounds:getCenter() - sf.Vector2f.new(size.x, size.y) / 2
-    self.host:setPosition(
-        sf.Vector2f.new(
-            math.floor(position.x),
-            math.floor(position.y)
-        )
-    )
+    self.host:setPosition(sf.Vector2f.new(math.floor(position.x), math.floor(position.y)))
     self.host:showWithAnimation(
         "FadeIn",
         self:bindCallback(function (controller)
@@ -142,7 +139,7 @@ function Controller:open(player, enemy, onFinished)
         end)
     )
     self:playBreathAnimation()
-    self:schedule(Battle.attackInterval, function () self:beginTurn(true) end)
+    self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function () self:beginTurn(true) end)
 end
 
 function Controller:setPortrait(name, actor)
@@ -162,8 +159,8 @@ end
 
 function Controller:observeState(state, side)
     ---@param controller Source.Windows.WindowBattle.Controller
-    ---@param value integer | nil
-    ---@param oldValue integer | Class.MissingValue | nil
+    ---@param value      integer | nil
+    ---@param oldValue   integer | Class.MissingValue | nil
     local function onHPChanged(controller, value, oldValue)
         -- HP exists before binding; immediate=false excludes the initial notification.
         ---@cast value integer
@@ -189,22 +186,13 @@ function Controller:onHPChanged(side, delta)
     if delta == 0 or not self._running then return end
     local portrait = assert(self.ui.controls[side .. "Portrait"])
     ---@cast portrait Engine.CharacterView
-    -- Ludork globalBounds is in the control's parent coordinates. Attach the
-    -- overlay to that same parent so window offsets and scale apply only once.
+    -- CharacterView bounds and the Content particle system share local coordinates.
     local bounds = portrait:getGlobalBounds()
-    local parent = assert(portrait:getParent())
-    ---@cast parent Engine.Canvas
     local point = sf.Vector2f.new(
         math.lerp(bounds.position.x, bounds.position.x + bounds.size.x, math.random()),
         math.lerp(bounds.position.y, bounds.position.y + bounds.size.y, math.random())
     )
-    local text = FloatingText.new()
-    self._floatingTexts[text] = true
-    text:show(parent, point, delta)
-    self:schedule(0.25, function ()
-        self._floatingTexts[text] = nil
-        text:dispose()
-    end)
+    BattleTextParticle.Emit(self._particles, point, delta)
 end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action mutation.
@@ -233,10 +221,7 @@ function Controller:calculateDamage(attacker, defender, critical)
     local damage = base
     if critical and base > 0 then
         damage = attacker.crit(base, attacker, defender)
-        assert(
-            math.isFinite(damage) and damage >= 0,
-            "Battle crit must return finite non-negative damage"
-        )
+        assert(math.isFinite(damage) and damage >= 0, "Battle crit must return finite non-negative damage")
     end
     return math.max(0, math.round(damage * math.max(0, 1 - attacker.fatigue / 100))), base
 end
@@ -320,13 +305,16 @@ function Controller:performAttack(attacker, defender, critical)
     else
         self:schedule(hitTime, hit)
     end
-    self:schedule(math.max(hitTime, animation:getVisualDuration()) + Battle.attackInterval, function ()
-        if defender.HP <= 0 then
-            self:finish(defender.isPlayer and "lose" or "win")
-        else
-            self:beginTurn(not attacker.isPlayer)
+    self:schedule(
+        math.max(hitTime, animation:getVisualDuration()) + Battle.attackInterval + Battle.attackExtraDelay,
+        function ()
+            if defender.HP <= 0 then
+                self:finish(defender.isPlayer and "lose" or "win")
+            else
+                self:beginTurn(not attacker.isPlayer)
+            end
         end
-    end)
+    )
 end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action mutation.
@@ -384,7 +372,9 @@ function Controller:refreshBreath(side, state)
     local unit = math.floor(state.breathLimit / 6)
     local fraction = state.isPlayer and (unit > 0 and state.breath % unit / unit or 0)
         or (state.breathLimit > 0 and state.breath / state.breathLimit or 0)
-    self.ui.controls[side .. "BreathFill"]:setTextureRect(Engine.ToIntRect(0, 4, math.floor(fraction * 80), 4))
+    local bar = self.ui.controls[side .. "BreathBar"]
+    ---@cast bar Engine.ProgressBar
+    bar:setProgress(fraction)
     if state.isPlayer then
         for index = 1, 6 do
             local lit = unit > 0 and state.breath >= unit * index
@@ -431,16 +421,14 @@ end
 function Controller:cancel()
     self._generation = self._generation + 1
     self._running = false
+    self._criticalSelected = false
     self._onFinished = nil
     for _, stop in ipairs(self._watchStops) do
         stop()
     end
     self._watchStops = {}
     self.ui.controls["Content"]:clearAnims()
-    for text in pairs(self._floatingTexts) do
-        text:dispose()
-    end
-    self._floatingTexts = {}
+    self._particles:clear()
     for _, kind in ipairs({ "Lit", "Dim" }) do
         for index = 1, 6 do
             self:getBreathCanvas(kind, index):clearAnims()

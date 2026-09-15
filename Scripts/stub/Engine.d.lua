@@ -2550,6 +2550,8 @@ function ParticleSystem:addParticle(particle) end
 ---@param text Engine.TextParticle|nil
 ---@return nil
 function ParticleSystem:addText(text) end
+---@return nil
+function ParticleSystem:clear() end
 --- @brief Remove a sprite particle from the system
 ---
 --- - @param particle Particle instance to remove
@@ -2753,6 +2755,8 @@ function Canvas:removeAnim(animation) end
 function Canvas:clearAnims() end
 ---@return (Engine.AnimSprite|nil)[]
 function Canvas:getAnims() end
+---@return Engine.ParticleSystem|nil
+function Canvas:getParticleSystem() end
 ---@param zOrder integer
 ---@return nil
 function Canvas:setZOrder(zOrder) end
@@ -3536,6 +3540,26 @@ function ProgressBar:getFillColor() end
 ---@param color sf.Color
 ---@return nil
 function ProgressBar:setFillColor(color) end
+---@return sf.Texture|nil
+function ProgressBar:getBackgroundTexture() end
+---@param texture sf.Texture|nil
+---@return nil
+function ProgressBar:setBackgroundTexture(texture) end
+---@return sf.Texture|nil
+function ProgressBar:getFillTexture() end
+---@param texture sf.Texture|nil
+---@return nil
+function ProgressBar:setFillTexture(texture) end
+---@return sf.IntRect|nil
+function ProgressBar:getBackgroundTextureRect() end
+---@param rect sf.IntRect|nil
+---@return nil
+function ProgressBar:setBackgroundTextureRect(rect) end
+---@return sf.IntRect|nil
+function ProgressBar:getFillTextureRect() end
+---@param rect sf.IntRect|nil
+---@return nil
+function ProgressBar:setFillTextureRect(rect) end
 ---@return sf.FloatRect
 function ProgressBar:getLocalBounds() end
 Engine.ProgressBar = ProgressBar

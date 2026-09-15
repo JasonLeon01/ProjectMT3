@@ -31,8 +31,7 @@
 ---@field EnemyATKLabel      Engine.PlainText
 ---@field EnemyATKValue      Engine.PlainText
 ---@field EnemyBREATHLabel   Engine.PlainText
----@field EnemyBreathBack    Engine.Image
----@field EnemyBreathFill    Engine.Image
+---@field EnemyBreathBar     Engine.ProgressBar
 ---@field EnemyDEFLabel      Engine.PlainText
 ---@field EnemyDEFValue      Engine.PlainText
 ---@field EnemyFATIGUELabel  Engine.PlainText
@@ -44,8 +43,7 @@
 ---@field PlayerATKLabel     Engine.PlainText
 ---@field PlayerATKValue     Engine.PlainText
 ---@field PlayerBREATHLabel  Engine.PlainText
----@field PlayerBreathBack   Engine.Image
----@field PlayerBreathFill   Engine.Image
+---@field PlayerBreathBar    Engine.ProgressBar
 ---@field PlayerDEFLabel     Engine.PlainText
 ---@field PlayerDEFValue     Engine.PlainText
 ---@field PlayerFATIGUELabel Engine.PlainText
@@ -54,8 +52,7 @@
 ---@field PlayerHPValue      Engine.PlainText
 ---@field PlayerName         Engine.PlainText
 ---@field PlayerPortrait     Engine.CharacterView
----@field RetreatButton      Engine.Button
----@field RetreatLabel       Engine.PlainText
+---@field RetreatButton      Engine.FunctionalPlainText
 ---@field Root               Engine.Canvas
 ---@field WindowFrame        Engine.Window
 

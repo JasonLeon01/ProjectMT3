@@ -572,21 +572,44 @@
             "children": []
           },
           {
-            "name": "EnemyBreathBack",
-            "controlId": "Engine.Image",
+            "name": "EnemyBreathBar",
+            "controlId": "Engine.ProgressBar",
             "properties": {
-              "texture": "/Game/Assets/System/mting-1226.png",
-              "textureRect": [
+              "size": [
+                80,
+                4
+              ],
+              "progress": 1,
+              "backgroundTexture": "/Game/Assets/System/mting-1226.png",
+              "fillTexture": "/Game/Assets/System/mting-1226.png",
+              "backgroundTextureRect": [
                 0,
                 0,
                 80,
                 4
               ],
+              "fillTextureRect": [
+                0,
+                4,
+                80,
+                4
+              ],
+              "backgroundColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
               "scale": [
                 1,
                 1.5
-              ],
-              "visible": true
+              ]
             },
             "slot": {
               "anchors": {
@@ -610,50 +633,6 @@
                 0
               ],
               "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": []
-          },
-          {
-            "name": "EnemyBreathFill",
-            "controlId": "Engine.Image",
-            "properties": {
-              "texture": "/Game/Assets/System/mting-1226.png",
-              "textureRect": [
-                0,
-                4,
-                80,
-                4
-              ],
-              "scale": [
-                1,
-                1.5
-              ],
-              "visible": true
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 72,
-                "top": 152,
-                "right": 80,
-                "bottom": 4
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": true,
               "zOrder": 0
             },
             "editor": {},
@@ -1139,15 +1118,39 @@
             "children": []
           },
           {
-            "name": "PlayerBreathBack",
-            "controlId": "Engine.Image",
+            "name": "PlayerBreathBar",
+            "controlId": "Engine.ProgressBar",
             "properties": {
-              "texture": "/Game/Assets/System/mting-1226.png",
-              "textureRect": [
+              "size": [
+                80,
+                4
+              ],
+              "progress": 1,
+              "backgroundTexture": "/Game/Assets/System/mting-1226.png",
+              "fillTexture": "/Game/Assets/System/mting-1226.png",
+              "backgroundTextureRect": [
                 0,
                 0,
                 80,
                 4
+              ],
+              "fillTextureRect": [
+                0,
+                4,
+                80,
+                4
+              ],
+              "backgroundColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillColor": [
+                255,
+                255,
+                255,
+                255
               ],
               "scale": [
                 1,
@@ -1176,49 +1179,6 @@
                 0
               ],
               "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": []
-          },
-          {
-            "name": "PlayerBreathFill",
-            "controlId": "Engine.Image",
-            "properties": {
-              "texture": "/Game/Assets/System/mting-1226.png",
-              "textureRect": [
-                0,
-                4,
-                80,
-                4
-              ],
-              "scale": [
-                1,
-                1
-              ]
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 296,
-                "top": 152,
-                "right": 80,
-                "bottom": 4
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": true,
               "zOrder": 0
             },
             "editor": {},
@@ -2107,7 +2067,7 @@
                 0,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {},
@@ -2115,46 +2075,7 @@
           },
           {
             "name": "RetreatButton",
-            "controlId": "Engine.Button",
-            "properties": {
-              "texture": "",
-              "colour": [
-                255,
-                255,
-                255,
-                0
-              ]
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 0,
-                "top": 184,
-                "right": 128,
-                "bottom": 24
-              },
-              "alignment": [
-                0,
-                0
-              ],
-              "autoSize": false,
-              "zOrder": 0
-            },
-            "editor": {},
-            "children": []
-          },
-          {
-            "name": "RetreatLabel",
-            "controlId": "Engine.PlainText",
+            "controlId": "Engine.FunctionalPlainText",
             "properties": {
               "text": "",
               "characterSize": 22,
@@ -2197,7 +2118,7 @@
               "zOrder": 0
             },
             "editor": {
-              "previewText": "\uFF5E\u64A4\u9000(Q)\uFF5E"
+              "previewText": "~\u64A4\u9000~"
             },
             "children": []
           }

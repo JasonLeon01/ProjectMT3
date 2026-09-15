@@ -39,8 +39,7 @@ function View:init(instance)
         EnemyATKLabel = assert(self.instance:requireControl("EnemyATKLabel")),
         EnemyATKValue = assert(self.instance:requireControl("EnemyATKValue")),
         EnemyBREATHLabel = assert(self.instance:requireControl("EnemyBREATHLabel")),
-        EnemyBreathBack = assert(self.instance:requireControl("EnemyBreathBack")),
-        EnemyBreathFill = assert(self.instance:requireControl("EnemyBreathFill")),
+        EnemyBreathBar = assert(self.instance:requireControl("EnemyBreathBar")),
         EnemyDEFLabel = assert(self.instance:requireControl("EnemyDEFLabel")),
         EnemyDEFValue = assert(self.instance:requireControl("EnemyDEFValue")),
         EnemyFATIGUELabel = assert(self.instance:requireControl("EnemyFATIGUELabel")),
@@ -52,8 +51,7 @@ function View:init(instance)
         PlayerATKLabel = assert(self.instance:requireControl("PlayerATKLabel")),
         PlayerATKValue = assert(self.instance:requireControl("PlayerATKValue")),
         PlayerBREATHLabel = assert(self.instance:requireControl("PlayerBREATHLabel")),
-        PlayerBreathBack = assert(self.instance:requireControl("PlayerBreathBack")),
-        PlayerBreathFill = assert(self.instance:requireControl("PlayerBreathFill")),
+        PlayerBreathBar = assert(self.instance:requireControl("PlayerBreathBar")),
         PlayerDEFLabel = assert(self.instance:requireControl("PlayerDEFLabel")),
         PlayerDEFValue = assert(self.instance:requireControl("PlayerDEFValue")),
         PlayerFATIGUELabel = assert(self.instance:requireControl("PlayerFATIGUELabel")),
@@ -63,7 +61,6 @@ function View:init(instance)
         PlayerName = assert(self.instance:requireControl("PlayerName")),
         PlayerPortrait = assert(self.instance:requireControl("PlayerPortrait")),
         RetreatButton = assert(self.instance:requireControl("RetreatButton")),
-        RetreatLabel = assert(self.instance:requireControl("RetreatLabel")),
         Root = assert(self.instance:requireControl("Root")),
         WindowFrame = assert(self.instance:requireControl("WindowFrame"))
     }

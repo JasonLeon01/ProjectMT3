@@ -2,7 +2,7 @@
   "type": "plainTextConfig",
   "name": "HealingText",
   "font": "",
-  "characterSize": 22,
+  "characterSize": 16,
   "style": {
     "bold": true,
     "italic": false,

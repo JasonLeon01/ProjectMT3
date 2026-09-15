@@ -6,7 +6,7 @@ return {
     ["ATK"] = "ATK",
     ["BAT"] = "Bat",
     ["BATTLE_FATIGUE"] = "Fatigue",
-    ["BATTLE_RETREAT"] = "Retreat (Q)",
+    ["BATTLE_RETREAT"] = "~Retreat~",
     ["BAT_DESC"] = "This is a bat.",
     ["BIG_WIZARD"] = "Big Wizard",
     ["BIG_WIZARD_DESC"] = "This is a big wizard.",

@@ -2,7 +2,7 @@
   "type": "plainTextConfig",
   "name": "DamageText",
   "font": "",
-  "characterSize": 22,
+  "characterSize": 16,
   "style": {
     "bold": true,
     "italic": false,

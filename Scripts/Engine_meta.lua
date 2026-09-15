@@ -4,12 +4,14 @@ local _METADATA = {
         attrs = {},
         setData = {
             type = "function",
-            parameters = { "animationData", animationData = { "Engine", "AnimationData" } },
+            parameters = { "self", "animationData", self = { "Engine", "AnimSprite" }, animationData = { "Engine", "AnimationData" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getDuration = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "float",
@@ -18,7 +20,8 @@ local _METADATA = {
         },
         getVisualDuration = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "float",
@@ -27,7 +30,8 @@ local _METADATA = {
         },
         getAllTimeTags = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -38,7 +42,8 @@ local _METADATA = {
         },
         isFinished = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -47,7 +52,8 @@ local _METADATA = {
         },
         getFrameIndex = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "int",
@@ -56,12 +62,14 @@ local _METADATA = {
         },
         update = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "Engine", "AnimSprite" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         applyFrame = {
             type = "function",
-            parameters = { "frameIndex", frameIndex = "int" },
+            parameters = { "self", "frameIndex", self = { "Engine", "AnimSprite" }, frameIndex = "int" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -146,7 +154,8 @@ local _METADATA = {
         },
         toData = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Curve" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "CurveData" },
@@ -155,7 +164,8 @@ local _METADATA = {
         },
         isEmpty = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Curve" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -164,7 +174,8 @@ local _METADATA = {
         },
         getDuration = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Curve" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "float",
@@ -173,7 +184,8 @@ local _METADATA = {
         },
         evaluate = {
             type = "function",
-            parameters = { "time", time = "float" },
+            parameters = { "self", "time", self = { "Engine", "Curve" }, time = "float" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "float",
@@ -235,53 +247,62 @@ local _METADATA = {
         attrs = {},
         load = {
             type = "function",
-            parameters = { "resourceKey", resourceKey = "string" },
+            parameters = { "self", "resourceKey", self = { "Engine", "Emitter" }, resourceKey = "string" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         play = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         pause = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         resume = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         restart = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         stop = {
             type = "function",
-            parameters = { "clear", clear = "bool" },
-            default = { [1] = true },
+            parameters = { "self", "clear", self = { "Engine", "Emitter" }, clear = "bool" },
+            default = { [1] = "self", [2] = true },
             ["return"] = {},
         },
         emit = {
             type = "function",
-            parameters = { "trackName", "count", trackName = "string", count = "int" },
+            parameters = { "self", "trackName", "count", self = { "Engine", "Emitter" }, trackName = "string", count = "int" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         setSpeed = {
             type = "function",
-            parameters = { "speed", speed = "float" },
+            parameters = { "self", "speed", self = { "Engine", "Emitter" }, speed = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         setColour = {
             type = "function",
-            parameters = { "colour", colour = "sf.Color" },
+            parameters = { "self", "colour", self = { "Engine", "Emitter" }, colour = "sf.Color" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getSpeed = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "float",
@@ -290,7 +311,8 @@ local _METADATA = {
         },
         getTime = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "float",
@@ -299,7 +321,8 @@ local _METADATA = {
         },
         isPlaying = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -308,7 +331,8 @@ local _METADATA = {
         },
         getCapacity = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Emitter" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "int",
@@ -317,7 +341,8 @@ local _METADATA = {
         },
         setProfiling = {
             type = "function",
-            parameters = { "enabled", enabled = "bool" },
+            parameters = { "self", "enabled", self = { "Engine", "Emitter" }, enabled = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -510,7 +535,8 @@ local _METADATA = {
         },
         getCollisionEnabled = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -519,13 +545,15 @@ local _METADATA = {
         },
         setCollisionEnabled = {
             type = "function",
-            parameters = { "enabled", enabled = "bool" },
+            parameters = { "self", "enabled", self = { "Engine", "Actor" }, enabled = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getPathfindingBlocks = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -534,12 +562,14 @@ local _METADATA = {
         },
         setPathfindingBlocks = {
             type = "function",
-            parameters = { "blocks", blocks = "bool" },
+            parameters = { "self", "blocks", self = { "Engine", "Actor" }, blocks = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         isDestroyed = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -548,18 +578,21 @@ local _METADATA = {
         },
         markDestroyed = {
             type = "function",
-            parameters = { "destroyed", destroyed = "bool" },
+            parameters = { "self", "destroyed", self = { "Engine", "Actor" }, destroyed = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         setShaderPath = {
             type = "function",
-            parameters = { "shaderPath", shaderPath = "string" },
+            parameters = { "self", "shaderPath", self = { "Engine", "Actor" }, shaderPath = "string" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getShaderPath = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "shaderPath",
                 shaderPath = "string",
@@ -568,7 +601,8 @@ local _METADATA = {
         },
         getShader = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "shader",
                 shader = "sf.Shader",
@@ -577,7 +611,8 @@ local _METADATA = {
         },
         hasShaderError = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "error",
                 error = "bool",
@@ -586,22 +621,26 @@ local _METADATA = {
         },
         update = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "Engine", "Actor" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         lateUpdate = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "Engine", "Actor" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         fixedUpdate = {
             type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
+            parameters = { "self", "fixedDelta", self = { "Engine", "Actor" }, fixedDelta = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getPosition = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "pos",
                 pos = "sf.Vector2f",
@@ -610,7 +649,8 @@ local _METADATA = {
         },
         getRelativePosition = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "pos",
                 pos = "sf.Vector2f",
@@ -619,7 +659,8 @@ local _METADATA = {
         },
         getMapPosition = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "pos",
                 pos = "sf.Vector2i",
@@ -628,8 +669,8 @@ local _METADATA = {
         },
         getOccupiedMapCells = {
             type = "function",
-            parameters = { "worldPosition", worldPosition = "sf.Vector2f" },
-            default = {  },
+            parameters = { "self", "worldPosition", self = { "Engine", "Actor" }, worldPosition = "sf.Vector2f" },
+            default = { [1] = "self" },
             defaultUnset = { "worldPosition" },
             ["return"] = {
                 "cells",
@@ -641,7 +682,8 @@ local _METADATA = {
         },
         getOccupiedMapCellsAtMapPosition = {
             type = "function",
-            parameters = { "mapPosition", mapPosition = "sf.Vector2i" },
+            parameters = { "self", "mapPosition", self = { "Engine", "Actor" }, mapPosition = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "cells",
                 cells = {
@@ -652,7 +694,8 @@ local _METADATA = {
         },
         getRelativeMapPosition = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "pos",
                 pos = "sf.Vector2i",
@@ -661,7 +704,8 @@ local _METADATA = {
         },
         getLocalBounds = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.FloatRect",
@@ -670,7 +714,8 @@ local _METADATA = {
         },
         getGlobalBounds = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.FloatRect",
@@ -679,37 +724,43 @@ local _METADATA = {
         },
         setPosition = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2f" },
+            parameters = { "self", "position", self = { "Engine", "Actor" }, position = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setRelativePosition = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2f" },
+            parameters = { "self", "position", self = { "Engine", "Actor" }, position = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setMapPosition = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2u" },
+            parameters = { "self", "position", self = { "Engine", "Actor" }, position = "sf.Vector2u" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setRelativeMapPosition = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2u" },
+            parameters = { "self", "position", self = { "Engine", "Actor" }, position = "sf.Vector2u" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         move = {
             type = "function",
-            parameters = { "offset", offset = "sf.Vector2f" },
+            parameters = { "self", "offset", self = { "Engine", "Actor" }, offset = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getRotation = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "angle",
                 angle = "sf.Angle",
@@ -718,7 +769,8 @@ local _METADATA = {
         },
         getRelativeRotation = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "angle",
                 angle = "sf.Angle",
@@ -727,25 +779,29 @@ local _METADATA = {
         },
         setRotation = {
             type = "function",
-            parameters = { "angle", angle = "sf.Angle" },
+            parameters = { "self", "angle", self = { "Engine", "Actor" }, angle = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         rotate = {
             type = "function",
-            parameters = { "angle", angle = "sf.Angle" },
+            parameters = { "self", "angle", self = { "Engine", "Actor" }, angle = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setRelativeRotation = {
             type = "function",
-            parameters = { "angle", angle = "sf.Angle" },
+            parameters = { "self", "angle", self = { "Engine", "Actor" }, angle = "sf.Angle" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getScale = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "scale",
                 scale = "sf.Vector2f",
@@ -754,7 +810,8 @@ local _METADATA = {
         },
         getRelativeScale = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "scale",
                 scale = "sf.Vector2f",
@@ -763,25 +820,29 @@ local _METADATA = {
         },
         setScale = {
             type = "function",
-            parameters = { "factors", factors = "sf.Vector2f" },
+            parameters = { "self", "factors", self = { "Engine", "Actor" }, factors = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         scale = {
             type = "function",
-            parameters = { "factor", factor = "sf.Vector2f" },
+            parameters = { "self", "factor", self = { "Engine", "Actor" }, factor = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setRelativeScale = {
             type = "function",
-            parameters = { "scale", scale = "sf.Vector2f" },
+            parameters = { "self", "scale", self = { "Engine", "Actor" }, scale = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getOrigin = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "origin",
                 origin = "sf.Vector2f",
@@ -790,13 +851,15 @@ local _METADATA = {
         },
         setOrigin = {
             type = "function",
-            parameters = { "origin", origin = "sf.Vector2f" },
+            parameters = { "self", "origin", self = { "Engine", "Actor" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getTranslation = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "translation",
                 translation = "sf.Vector2f",
@@ -805,19 +868,22 @@ local _METADATA = {
         },
         setTranslation = {
             type = "function",
-            parameters = { "translation", translation = "sf.Vector2f" },
+            parameters = { "self", "translation", self = { "Engine", "Actor" }, translation = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setAlignment = {
             type = "function",
-            parameters = { "alignment", alignment = "sf.Vector2f" },
+            parameters = { "self", "alignment", self = { "Engine", "Actor" }, alignment = "sf.Vector2f" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getMap = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "map_",
                 map_ = { "Engine", "ActorMapService" },
@@ -826,13 +892,15 @@ local _METADATA = {
         },
         setMap = {
             type = "function",
-            parameters = { "inMap", inMap = { "Engine", "ActorMapService" } },
+            parameters = { "self", "inMap", self = { "Engine", "Actor" }, inMap = { "Engine", "ActorMapService" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getParent = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "Actor" },
@@ -841,12 +909,14 @@ local _METADATA = {
         },
         setParent = {
             type = "function",
-            parameters = { "parent", parent = { "Engine", "Actor" } },
+            parameters = { "self", "parent", self = { "Engine", "Actor" }, parent = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getChildren = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -857,18 +927,21 @@ local _METADATA = {
         },
         addChild = {
             type = "function",
-            parameters = { "child", child = { "Engine", "Actor" } },
+            parameters = { "self", "child", self = { "Engine", "Actor" }, child = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         removeChild = {
             type = "function",
-            parameters = { "child", child = { "Engine", "Actor" } },
+            parameters = { "self", "child", self = { "Engine", "Actor" }, child = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getVisible = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "visible",
                 visible = "bool",
@@ -877,7 +950,8 @@ local _METADATA = {
         },
         isVisibleInHierarchy = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -886,15 +960,16 @@ local _METADATA = {
         },
         setVisible = {
             type = "function",
-            parameters = { "visible", "applyToChildren", visible = "bool", applyToChildren = "bool" },
-            default = { [2] = true },
+            parameters = { "self", "visible", "applyToChildren", self = { "Engine", "Actor" }, visible = "bool", applyToChildren = "bool" },
+            default = { [1] = "self", [3] = true },
             defaultUnset = { "visible" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getAnimatable = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "animatable",
                 animatable = "bool",
@@ -903,15 +978,16 @@ local _METADATA = {
         },
         setAnimatable = {
             type = "function",
-            parameters = { "animate", "applyToChildren", animate = "bool", applyToChildren = "bool" },
-            default = { [2] = true },
+            parameters = { "self", "animate", "applyToChildren", self = { "Engine", "Actor" }, animate = "bool", applyToChildren = "bool" },
+            default = { [1] = "self", [3] = true },
             defaultUnset = { "animate" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getSpriteTexture = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "texture",
                 texture = "sf.Texture",
@@ -920,7 +996,8 @@ local _METADATA = {
         },
         getTexture = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "texture",
                 texture = "sf.Texture",
@@ -929,28 +1006,30 @@ local _METADATA = {
         },
         setSpriteTexture = {
             type = "function",
-            parameters = { "texture", "resetRect", texture = "sf.Texture", resetRect = "bool" },
-            default = { [2] = false },
+            parameters = { "self", "texture", "resetRect", self = { "Engine", "Actor" }, texture = "sf.Texture", resetRect = "bool" },
+            default = { [1] = "self", [3] = false },
             defaultUnset = { "texture" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setTexture = {
             type = "function",
-            parameters = { "texture", "resetRect", texture = "sf.Texture", resetRect = "bool" },
-            default = { [2] = false },
+            parameters = { "self", "texture", "resetRect", self = { "Engine", "Actor" }, texture = "sf.Texture", resetRect = "bool" },
+            default = { [1] = "self", [3] = false },
             defaultUnset = { "texture" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setTextureRect = {
             type = "function",
-            parameters = { "rectangle", rectangle = "sf.IntRect" },
+            parameters = { "self", "rectangle", self = { "Engine", "Actor" }, rectangle = "sf.IntRect" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getTextureRect = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.IntRect",
@@ -959,7 +1038,8 @@ local _METADATA = {
         },
         getMaterial = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "material",
                 material = { "Engine", "Material" },
@@ -968,13 +1048,15 @@ local _METADATA = {
         },
         setMaterial = {
             type = "function",
-            parameters = { "material", material = { "Engine", "Material" } },
+            parameters = { "self", "material", self = { "Engine", "Actor" }, material = { "Engine", "Material" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getLightBlock = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "lightBlock",
                 lightBlock = "float",
@@ -983,13 +1065,15 @@ local _METADATA = {
         },
         setLightBlock = {
             type = "function",
-            parameters = { "lightBlock", lightBlock = "float" },
+            parameters = { "self", "lightBlock", self = { "Engine", "Actor" }, lightBlock = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getMirror = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "mirror",
                 mirror = "bool",
@@ -998,13 +1082,15 @@ local _METADATA = {
         },
         setMirror = {
             type = "function",
-            parameters = { "mirror", mirror = "bool" },
+            parameters = { "self", "mirror", self = { "Engine", "Actor" }, mirror = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getReflectionStrength = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "reflectionStrength",
                 reflectionStrength = "float",
@@ -1013,13 +1099,15 @@ local _METADATA = {
         },
         setReflectionStrength = {
             type = "function",
-            parameters = { "reflectionStrength", reflectionStrength = "float" },
+            parameters = { "self", "reflectionStrength", self = { "Engine", "Actor" }, reflectionStrength = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getOpacity = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "opacity",
                 opacity = "float",
@@ -1028,13 +1116,15 @@ local _METADATA = {
         },
         setOpacity = {
             type = "function",
-            parameters = { "opacity", opacity = "float" },
+            parameters = { "self", "opacity", self = { "Engine", "Actor" }, opacity = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getIgnoreLighting = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "ignoreLighting",
                 ignoreLighting = "bool",
@@ -1043,19 +1133,22 @@ local _METADATA = {
         },
         setIgnoreLighting = {
             type = "function",
-            parameters = { "ignoreLighting", ignoreLighting = "bool" },
+            parameters = { "self", "ignoreLighting", self = { "Engine", "Actor" }, ignoreLighting = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setGraph = {
             type = "function",
-            parameters = { "graph", graph = { "Engine", "Graph" } },
+            parameters = { "self", "graph", self = { "Engine", "Actor" }, graph = { "Engine", "Graph" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getGraph = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "Graph" },
@@ -1064,7 +1157,8 @@ local _METADATA = {
         },
         hasGraph = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1073,7 +1167,8 @@ local _METADATA = {
         },
         getMapTag = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "string",
@@ -1082,12 +1177,14 @@ local _METADATA = {
         },
         setMapTag = {
             type = "function",
-            parameters = { "value", value = "string" },
+            parameters = { "self", "value", self = { "Engine", "Actor" }, value = "string" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         ensureMapTag = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         onCreate = {
@@ -1150,13 +1247,15 @@ local _METADATA = {
         },
         destroy = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         MapMove = {
             type = "function",
-            parameters = { "offset", offset = "sf.Vector2i" },
+            parameters = { "self", "offset", self = { "Engine", "Actor" }, offset = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1165,7 +1264,8 @@ local _METADATA = {
         },
         getTickable = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "tickable",
                 tickable = "bool",
@@ -1174,15 +1274,16 @@ local _METADATA = {
         },
         setTickable = {
             type = "function",
-            parameters = { "tickable", "applyToChildren", tickable = "bool", applyToChildren = "bool" },
-            default = { [2] = true },
+            parameters = { "self", "tickable", "applyToChildren", self = { "Engine", "Actor" }, tickable = "bool", applyToChildren = "bool" },
+            default = { [1] = "self", [3] = true },
             defaultUnset = { "tickable" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         intersects = {
             type = "function",
-            parameters = { "other", other = { "Engine", "Actor" } },
+            parameters = { "self", "other", self = { "Engine", "Actor" }, other = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "intersects",
                 intersects = "bool",
@@ -1191,7 +1292,8 @@ local _METADATA = {
         },
         isMoving = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "isMoving",
                 isMoving = "bool",
@@ -1200,7 +1302,8 @@ local _METADATA = {
         },
         isInRoute = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "isInRoute",
                 isInRoute = "bool",
@@ -1209,17 +1312,18 @@ local _METADATA = {
         },
         setRoute = {
             type = "function",
-            parameters = { "route", route = {
+            parameters = { "self", "route", self = { "Engine", "Actor" }, route = {
                 list = "sf.Vector2i",
             } },
-            default = { [1] = {} },
+            default = { [1] = "self", [2] = {} },
             ["return"] = {},
             Meta = { MoveRouteVars = { "route" } },
             ExecSplit = { "default", default = "nil" },
         },
         getRoute = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "route",
                 route = {
@@ -1230,7 +1334,8 @@ local _METADATA = {
         },
         getMoveEnabled = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "moveEnabled",
                 moveEnabled = "bool",
@@ -1239,19 +1344,22 @@ local _METADATA = {
         },
         setMoveEnabled = {
             type = "function",
-            parameters = { "enabled", enabled = "bool" },
+            parameters = { "self", "enabled", self = { "Engine", "Actor" }, enabled = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         stop = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         getVelocity = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Actor" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "velocity",
                 velocity = "sf.Vector2f",
@@ -1334,29 +1442,31 @@ local _METADATA = {
         },
         setSpriteTexture = {
             type = "function",
-            parameters = { "texture", "resetRect", texture = "sf.Texture", resetRect = "bool" },
-            default = { [2] = false },
+            parameters = { "self", "texture", "resetRect", self = { "Engine", "Character" }, texture = "sf.Texture", resetRect = "bool" },
+            default = { [1] = "self", [3] = false },
             defaultUnset = { "texture" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setTexture = {
             type = "function",
-            parameters = { "texture", "resetRect", texture = "sf.Texture", resetRect = "bool" },
-            default = { [2] = false },
+            parameters = { "self", "texture", "resetRect", self = { "Engine", "Character" }, texture = "sf.Texture", resetRect = "bool" },
+            default = { [1] = "self", [3] = false },
             defaultUnset = { "texture" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         setTextureRect = {
             type = "function",
-            parameters = { "rectangle", rectangle = "sf.IntRect" },
+            parameters = { "self", "rectangle", self = { "Engine", "Character" }, rectangle = "sf.IntRect" },
+            default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
         MapMove = {
             type = "function",
-            parameters = { "offset", offset = "sf.Vector2i" },
+            parameters = { "self", "offset", self = { "Engine", "Character" }, offset = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1365,7 +1475,8 @@ local _METADATA = {
         },
         update = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "Engine", "Character" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         GenActor = {
@@ -1409,7 +1520,8 @@ local _METADATA = {
         },
         onAttach = {
             type = "function",
-            parameters = { "owner", owner = "any" },
+            parameters = { "self", "owner", self = { "Engine", "EmitterComponent" }, owner = "any" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -1419,7 +1531,8 @@ local _METADATA = {
         },
         getEmitter = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "EmitterComponent" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "Emitter" },
@@ -1455,7 +1568,8 @@ local _METADATA = {
         },
         getName = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "name",
                 name = "string",
@@ -1464,7 +1578,8 @@ local _METADATA = {
         },
         getTiles = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "tiles",
                 tiles = {
@@ -1477,7 +1592,8 @@ local _METADATA = {
         },
         getAutoTiles = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "autoTiles",
                 autoTiles = {
@@ -1492,7 +1608,8 @@ local _METADATA = {
         },
         getAutoTilePool = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "pool",
                 pool = {
@@ -1503,7 +1620,8 @@ local _METADATA = {
         },
         getVisible = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1512,12 +1630,14 @@ local _METADATA = {
         },
         setVisible = {
             type = "function",
-            parameters = { "visible", visible = "bool" },
+            parameters = { "self", "visible", self = { "Engine", "TileLayer" }, visible = "bool" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         hasContent = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1526,7 +1646,8 @@ local _METADATA = {
         },
         isDirectionPassable = {
             type = "function",
-            parameters = { "position", "directionIndex", position = "sf.Vector2i", directionIndex = "int" },
+            parameters = { "self", "position", "directionIndex", self = { "Engine", "TileLayer" }, position = "sf.Vector2i", directionIndex = "int" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -1535,7 +1656,8 @@ local _METADATA = {
         },
         getMaterialProperty = {
             type = "function",
-            parameters = { "position", "propertyName", position = "sf.Vector2i", propertyName = "string" },
+            parameters = { "self", "position", "propertyName", self = { "Engine", "TileLayer" }, position = "sf.Vector2i", propertyName = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -1546,7 +1668,8 @@ local _METADATA = {
         },
         getLightBlock = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "lightBlock",
                 lightBlock = "float",
@@ -1555,7 +1678,8 @@ local _METADATA = {
         },
         getMirror = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "mirror",
                 mirror = "bool",
@@ -1564,7 +1688,8 @@ local _METADATA = {
         },
         getReflectionStrength = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "reflectionStrength",
                 reflectionStrength = "float",
@@ -1573,7 +1698,8 @@ local _METADATA = {
         },
         getIgnoreLighting = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "ignoreLighting",
                 ignoreLighting = "bool",
@@ -1582,7 +1708,8 @@ local _METADATA = {
         },
         getSpeedRate = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "speedRate",
                 speedRate = "float",
@@ -1591,12 +1718,14 @@ local _METADATA = {
         },
         updateShader = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
+            parameters = { "self", "deltaTime", self = { "Engine", "TileLayer" }, deltaTime = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getShader = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Shader",
@@ -1605,7 +1734,8 @@ local _METADATA = {
         },
         getLightBlockImage = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Image",
@@ -1614,7 +1744,8 @@ local _METADATA = {
         },
         getReflectionStrengthImage = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Image",
@@ -1623,7 +1754,8 @@ local _METADATA = {
         },
         getIgnoreLightingImage = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Image",
@@ -1632,7 +1764,8 @@ local _METADATA = {
         },
         getGridSize = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "sf.Vector2u",
@@ -1644,12 +1777,14 @@ local _METADATA = {
         attrs = {},
         addLayer = {
             type = "function",
-            parameters = { "layer", layer = { "Engine", "TileLayer" } },
+            parameters = { "self", "layer", self = { "Engine", "Tilemap" }, layer = { "Engine", "TileLayer" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         getLayer = {
             type = "function",
-            parameters = { "name", name = "string" },
+            parameters = { "self", "name", self = { "Engine", "Tilemap" }, name = "string" },
+            default = { [1] = "self" },
             ["return"] = {
                 "layer",
                 layer = { "Engine", "TileLayer" },
@@ -1658,7 +1793,8 @@ local _METADATA = {
         },
         getTilesData = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Tilemap" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "tiles",
                 tiles = {
@@ -1673,7 +1809,8 @@ local _METADATA = {
         },
         getAllLayers = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Tilemap" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "layers",
                 layers = {
@@ -1684,7 +1821,8 @@ local _METADATA = {
         },
         getLayerNameList = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Tilemap" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "layerNames",
                 layerNames = {
@@ -1695,7 +1833,8 @@ local _METADATA = {
         },
         getAutoTilesData = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Tilemap" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "autoTiles",
                 autoTiles = {
@@ -1712,7 +1851,8 @@ local _METADATA = {
         },
         getSize = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Tilemap" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "size",
                 size = "sf.Vector2u",
@@ -1721,7 +1861,8 @@ local _METADATA = {
         },
         updateAutoTileAnimation = {
             type = "function",
-            parameters = { "deltaTime", "frameInterval", deltaTime = "float", frameInterval = "float" },
+            parameters = { "self", "deltaTime", "frameInterval", self = { "Engine", "Tilemap" }, deltaTime = "float", frameInterval = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -1745,7 +1886,8 @@ local _METADATA = {
         },
         asDict = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "AutoTile" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -1812,7 +1954,8 @@ local _METADATA = {
         },
         asDict = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Material" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -1910,7 +2053,8 @@ local _METADATA = {
         },
         asDict = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "Tileset" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -2095,11 +2239,12 @@ local _METADATA = {
         attrs = {},
         render = {
             type = "function",
-            parameters = { "dst", "edge", "edgeSprite", "backSprite", "cachedCorners", "cachedEdges", "renderStates", dst = "sf.RenderTexture", edge = "sf.RenderTexture", edgeSprite = "sf.Sprite", backSprite = "sf.Sprite", cachedCorners = {
+            parameters = { "self", "dst", "edge", "edgeSprite", "backSprite", "cachedCorners", "cachedEdges", "renderStates", self = { "Engine", "RectBase" }, dst = "sf.RenderTexture", edge = "sf.RenderTexture", edgeSprite = "sf.Sprite", backSprite = "sf.Sprite", cachedCorners = {
                 list = "sf.Texture",
             }, cachedEdges = {
                 list = "sf.Texture",
             }, renderStates = "sf.RenderStates" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -2107,17 +2252,20 @@ local _METADATA = {
         attrs = {},
         setTileColor = {
             type = "function",
-            parameters = { "x", "y", "color", x = "int", y = "int", color = "sf.Color" },
+            parameters = { "self", "x", "y", "color", self = { "Engine", "TileLayerGraphics" }, x = "int", y = "int", color = "sf.Color" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         resetTileColor = {
             type = "function",
-            parameters = { "x", "y", x = "int", y = "int" },
+            parameters = { "self", "x", "y", self = { "Engine", "TileLayerGraphics" }, x = "int", y = "int" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         floodFillTransparent = {
             type = "function",
-            parameters = { "startX", "startY", "color", startX = "int", startY = "int", color = "sf.Color" },
+            parameters = { "self", "startX", "startY", "color", self = { "Engine", "TileLayerGraphics" }, startX = "int", startY = "int", color = "sf.Color" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -2127,7 +2275,8 @@ local _METADATA = {
         },
         get = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayerGraphics" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "int",
@@ -2136,7 +2285,8 @@ local _METADATA = {
         },
         getAutoTileAt = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayerGraphics" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "AutoTile" },
@@ -2145,7 +2295,8 @@ local _METADATA = {
         },
         isPassable = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayerGraphics" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -2154,7 +2305,8 @@ local _METADATA = {
         },
         getMaterial = {
             type = "function",
-            parameters = { "position", position = "sf.Vector2i" },
+            parameters = { "self", "position", self = { "Engine", "TileLayerGraphics" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = { "Engine", "Material" },
@@ -2163,7 +2315,8 @@ local _METADATA = {
         },
         getLightBlockMap = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayerGraphics" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -2175,7 +2328,8 @@ local _METADATA = {
         },
         getReflectionStrengthMap = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayerGraphics" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -2187,7 +2341,8 @@ local _METADATA = {
         },
         getIgnoreLightingMap = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "Engine", "TileLayerGraphics" } },
+            default = { [1] = "self" },
             ["return"] = {
                 "return",
                 ["return"] = {
@@ -2199,7 +2354,8 @@ local _METADATA = {
         },
         updateAutoTileAnimation = {
             type = "function",
-            parameters = { "deltaTime", "frameInterval", deltaTime = "float", frameInterval = "float" },
+            parameters = { "self", "deltaTime", "frameInterval", self = { "Engine", "TileLayerGraphics" }, deltaTime = "float", frameInterval = "float" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
     },
@@ -2283,6 +2439,5013 @@ local _METADATA = {
         },
     },
     Service = {
+        attrs = {},
+        update = {
+            type = "function",
+            parameters = { "self", "window", self = { "Engine", "Service" }, window = "sf.RenderWindow" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        injectEvent = {
+            type = "function",
+            parameters = { "self", "event", self = { "Engine", "Service" }, event = { "Engine", "InjectedInputEvent" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setUseInjectedMouseOnly = {
+            type = "function",
+            parameters = { "self", "value", self = { "Engine", "Service" }, value = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isFocused = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isFocusLost = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isFocusGained = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isKeyPressed = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isKeyReleased = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getKeyPressed = {
+            type = "function",
+            parameters = { "self", "key", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, key = "int", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getScanPressed = {
+            type = "function",
+            parameters = { "self", "scan", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, scan = "sf.Keyboard.Scancode", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getKeyReleased = {
+            type = "function",
+            parameters = { "self", "key", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, key = "int", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getScanReleased = {
+            type = "function",
+            parameters = { "self", "scan", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, scan = "sf.Keyboard.Scancode", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isMouseWheelScrolled = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getMouseScrolledWheel = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        getMouseScrolledWheelDelta = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        isMouseWheelPrecise = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getMouseScrolledWheelPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        isMouseButtonPressed = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isMouseButtonReleased = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getMouseButtonPressed = {
+            type = "function",
+            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = "int", handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getMouseButtonReleased = {
+            type = "function",
+            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = "int", handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isMouseMoved = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getMousePosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        getMouseMovedDelta = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        setMousePosition = {
+            type = "function",
+            parameters = { "self", "position", self = { "Engine", "Service" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isMouseEntered = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isMouseLeft = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isTouchBegan = {
+            type = "function",
+            parameters = { "self", "handled", self = { "Engine", "Service" }, handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isTouchTap = {
+            type = "function",
+            parameters = { "self", "handled", self = { "Engine", "Service" }, handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isTouchEnded = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isTouchMoved = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isTouchDragged = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isTouchActive = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getTouchPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        getTouchBeganPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        getTouchTapPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        getTouchEndedPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        getTouchMovedDelta = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
+        },
+        cancelTouchGesture = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isTouchTriggered = {
+            type = "function",
+            parameters = { "self", "handled", self = { "Engine", "Service" }, handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isTouchBlocked = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        blockTouch = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        unblockTouch = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isJoystickButtonPressed = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isJoystickButtonReleased = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isMouseInputMode = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getJoystickButtonPressed = {
+            type = "function",
+            parameters = { "self", "joystickId", "button", "handled", self = { "Engine", "Service" }, joystickId = "int", button = "int", handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getJoystickButtonReleased = {
+            type = "function",
+            parameters = { "self", "joystickId", "button", "handled", self = { "Engine", "Service" }, joystickId = "int", button = "int", handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isJoystickAxisMoved = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getJoystickAxisMoved = {
+            type = "function",
+            parameters = { "self", "joystickId", "handled", self = { "Engine", "Service" }, joystickId = "int", handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "JoystickAxisEvent" },
+            },
+        },
+        isJoystickConnected = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isJoystickDisconnected = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isKeyTriggered = {
+            type = "function",
+            parameters = { "self", "key", "alt", "ctrl", "shift", "system", "handled", "repeatDelay", "repeatInterval", self = { "Engine", "Service" }, key = "int", alt = "bool", ctrl = "bool", shift = "bool", system = "bool", handled = "bool", repeatDelay = "float", repeatInterval = "float" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isJoystickButtonDown = {
+            type = "function",
+            parameters = { "self", "joystickId", "button", self = { "Engine", "Service" }, joystickId = "int", button = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isAnyJoystickButtonDown = {
+            type = "function",
+            parameters = { "self", "button", self = { "Engine", "Service" }, button = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isAnyJoystickButtonTriggered = {
+            type = "function",
+            parameters = { "self", "button", "handled", "repeatDelay", "repeatInterval", self = { "Engine", "Service" }, button = "int", handled = "bool", repeatDelay = "float", repeatInterval = "float" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isActionTriggered = {
+            type = "function",
+            parameters = { "self", "actionKeys", "handled", "repeatDelay", "repeatInterval", self = { "Engine", "Service" }, actionKeys = {
+                list = { "Engine", "InputActionKey" },
+            }, handled = "bool", repeatDelay = "float", repeatInterval = "float" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isActionHeld = {
+            type = "function",
+            parameters = { "self", "actionKeys", self = { "Engine", "Service" }, actionKeys = {
+                list = { "Engine", "InputActionKey" },
+            } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isMouseButtonTriggered = {
+            type = "function",
+            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = "int", handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        isMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "button", self = { "Engine", "Service" }, button = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getEnteredText = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        isTextEntered = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isKeyboardBlocked = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isMouseBlocked = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isJoystickBlocked = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        blockKeyboard = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        blockMouse = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        blockJoystick = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        unblockKeyboard = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        unblockMouse = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        unblockJoystick = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        blockInput = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        unblockInput = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getConfirmKeys = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "InputActionKey" },
+            },
+            },
+            Pure = true,
+        },
+        getCancelKeys = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "InputActionKey" },
+            },
+            },
+            Pure = true,
+        },
+        getUpKeys = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "InputActionKey" },
+            },
+            },
+            Pure = true,
+        },
+        getDownKeys = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "InputActionKey" },
+            },
+            },
+            Pure = true,
+        },
+        getLeftKeys = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "InputActionKey" },
+            },
+            },
+            Pure = true,
+        },
+        getRightKeys = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "InputActionKey" },
+            },
+            },
+            Pure = true,
+        },
+        registerActionMapping = {
+            type = "function",
+            parameters = { "self", "object", "actionName", "actionKeys", "callback", "triggerOnHold", self = { "Engine", "Service" }, object = "any", actionName = "string", actionKeys = {
+                list = { "Engine", "InputActionKey" },
+            }, callback = "function", triggerOnHold = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        unregisterActionMapping = {
+            type = "function",
+            parameters = { "self", "object", "actionName", self = { "Engine", "Service" }, object = "any", actionName = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    JoystickAxisEvent = {
+        attrs = { "axis", "position" },
+        axis = {
+            type = "int",
+        },
+        position = {
+            type = "float",
+            default = 0.0,
+        },
+    },
+    Clock = {
+        attrs = {},
+        v_reset = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Clock" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        v_restart = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Clock" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+    },
+    RenderStates = {
+        attrs = {},
+        Default = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "RenderStates" },
+            },
+            Pure = true,
+        },
+    },
+    Particle = {
+        bases = { { "Engine", "ParticleBase" } },
+        attrs = { "resourcePath", "info" },
+        resourcePath = {
+            type = "string",
+            Meta = { PathVars = "/Game/Assets" },
+        },
+        info = {
+            type = { "Engine", "ParticleInfo" },
+        },
+        onTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Particle" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onLateTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Particle" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onFixedTick = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "Particle" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        destroy = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Particle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    ParticleBase = {
+        attrs = {},
+        onTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ParticleBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onLateTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ParticleBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onFixedTick = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "ParticleBase" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCountTime = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ParticleBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        getParent = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ParticleBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ParticleSystem" },
+            },
+        },
+    },
+    ParticleInfo = {
+        attrs = { "position", "color", "rotation", "scale" },
+        position = {
+            type = "sf.Vector2f",
+        },
+        color = {
+            type = "sf.Color",
+        },
+        rotation = {
+            type = "sf.Angle",
+        },
+        scale = {
+            type = "sf.Vector2f",
+        },
+    },
+    ParticleSystem = {
+        attrs = {},
+        addParticle = {
+            type = "function",
+            parameters = { "self", "particle", self = { "Engine", "ParticleSystem" }, particle = { "Engine", "Particle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addText = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "ParticleSystem" }, text = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        clear = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ParticleSystem" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        removeParticle = {
+            type = "function",
+            parameters = { "self", "particle", self = { "Engine", "ParticleSystem" }, particle = { "Engine", "Particle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        removeText = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "ParticleSystem" }, text = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        removeParticleAt = {
+            type = "function",
+            parameters = { "self", "resourcePath", "index", self = { "Engine", "ParticleSystem" }, resourcePath = "string", index = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addUpdateFlag = {
+            type = "function",
+            parameters = { "self", "particle", self = { "Engine", "ParticleSystem" }, particle = { "Engine", "Particle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        updateParticlesInfo = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ParticleSystem" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ParticleSystem" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onLateTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ParticleSystem" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onFixedTick = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "ParticleSystem" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    TextParticle = {
+        bases = { { "Engine", "ParticleBase" } },
+        attrs = {},
+        getConfig = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "PlainTextConfig" },
+            },
+            Pure = true,
+        },
+        setString = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "TextParticle" }, text = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getString = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "TextParticle" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextParticle" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "TextParticle" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    Button = {
+        bases = { { "Engine", "Image" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        setTexture = {
+            type = "function",
+            parameters = { "self", "texture", "resetRect", self = { "Engine", "Button" }, texture = "sf.Texture", resetRect = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setGamepadButton = {
+            type = "function",
+            parameters = { "self", "button", self = { "Engine", "Button" }, button = { "Engine", "InputNamedValue" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getGamepadButton = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Button" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "InputNamedValue" },
+            },
+            Pure = true,
+        },
+        setGamepadLongPress = {
+            type = "function",
+            parameters = { "self", "longPress", self = { "Engine", "Button" }, longPress = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getGamepadLongPress = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Button" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Button" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setVisible = {
+            type = "function",
+            parameters = { "self", "visible", self = { "Engine", "Button" }, visible = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "Button" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Button" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setHoverColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "Button" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getHoverColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Button" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setPressedColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "Button" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getPressedColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Button" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "Button" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    Canvas = {
+        bases = { { "Engine", "SpriteBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getOrigin = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setOrigin = {
+            type = "function",
+            parameters = { "self", "origin", self = { "Engine", "Canvas" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2u",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "Canvas" }, size = "sf.Vector2u" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getNoTranslationRect = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.IntRect",
+            },
+            Pure = true,
+        },
+        getContentRect = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.IntRect",
+            },
+            Pure = true,
+        },
+        getView = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.View",
+            },
+            Pure = true,
+        },
+        getDefaultView = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.View",
+            },
+            Pure = true,
+        },
+        setView = {
+            type = "function",
+            parameters = { "self", "view", self = { "Engine", "Canvas" }, view = "sf.View" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getChildren = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "ControlBase" },
+            },
+            },
+            Pure = true,
+        },
+        addChild = {
+            type = "function",
+            parameters = { "self", "child", self = { "Engine", "Canvas" }, child = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        removeChild = {
+            type = "function",
+            parameters = { "self", "child", self = { "Engine", "Canvas" }, child = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addAnim = {
+            type = "function",
+            parameters = { "self", "animation", self = { "Engine", "Canvas" }, animation = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        removeAnim = {
+            type = "function",
+            parameters = { "self", "animation", self = { "Engine", "Canvas" }, animation = { "Engine", "AnimSprite" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        clearAnims = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getAnims = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "AnimSprite" },
+            },
+            },
+            Pure = true,
+        },
+        getParticleSystem = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ParticleSystem" },
+            },
+        },
+        setZOrder = {
+            type = "function",
+            parameters = { "self", "zOrder", self = { "Engine", "Canvas" }, zOrder = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getZOrder = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Canvas" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        render = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Canvas" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        lateUpdate = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Canvas" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        fixedUpdate = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "Canvas" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    CharacterView = {
+        bases = { { "Engine", "FunctionalImage" } },
+        attrs = {},
+        setCharacter = {
+            type = "function",
+            parameters = { "self", "texture", "frameRect", "characterScale", "animatable", "switchInterval", "shaderPath", "hue", self = { "Engine", "CharacterView" }, texture = "sf.Texture", frameRect = "sf.IntRect", characterScale = "sf.Vector2f", animatable = "bool", switchInterval = "float", shaderPath = "string", hue = "float" },
+            default = { [1] = "self", [7] = "", [8] = 0.0 },
+            defaultUnset = { "texture", "frameRect", "characterScale", "animatable", "switchInterval" },
+            ["return"] = {},
+        },
+        setCharacterTexture = {
+            type = "function",
+            parameters = { "self", "texture", self = { "Engine", "CharacterView" }, texture = "sf.Texture" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCharacterScale = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setCharacterScale = {
+            type = "function",
+            parameters = { "self", "scale", self = { "Engine", "CharacterView" }, scale = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getAnimatable = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setAnimatable = {
+            type = "function",
+            parameters = { "self", "animatable", self = { "Engine", "CharacterView" }, animatable = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSwitchInterval = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        setSwitchInterval = {
+            type = "function",
+            parameters = { "self", "switchInterval", self = { "Engine", "CharacterView" }, switchInterval = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSwitchTimer = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        getFrameRect = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.IntRect",
+            },
+            Pure = true,
+        },
+        setFrameRect = {
+            type = "function",
+            parameters = { "self", "frameRect", self = { "Engine", "CharacterView" }, frameRect = "sf.IntRect" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        resetFrameRectToTexture = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getShaderPath = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setShaderPath = {
+            type = "function",
+            parameters = { "self", "shaderPath", self = { "Engine", "CharacterView" }, shaderPath = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getHue = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        setHue = {
+            type = "function",
+            parameters = { "self", "hue", self = { "Engine", "CharacterView" }, hue = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        resetAnimation = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CharacterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "CharacterView" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "CharacterView" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "CharacterView" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    CheckBox = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CheckBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "CheckBox" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isChecked = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CheckBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setChecked = {
+            type = "function",
+            parameters = { "self", "checked", self = { "Engine", "CheckBox" }, checked = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        toggle = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CheckBox" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", self = { "Engine", "CheckBox" }, windowSkin = "sf.Image" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setTextConfig = {
+            type = "function",
+            parameters = { "self", "textConfig", self = { "Engine", "CheckBox" }, textConfig = { "Engine", "PlainTextConfig" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnCheckedChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "CheckBox" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "CheckBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "CheckBox" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onConfirm = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "CheckBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onClick = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "CheckBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "CheckBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        onKeyDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "CheckBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "CheckBox" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    ControlBase = {
+        attrs = {},
+        getVisible = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setVisible = {
+            type = "function",
+            parameters = { "self", "visible", self = { "Engine", "ControlBase" }, visible = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getName = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setName = {
+            type = "function",
+            parameters = { "self", "name", self = { "Engine", "ControlBase" }, name = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getParent = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ControlBase" },
+            },
+            Pure = true,
+        },
+        setParent = {
+            type = "function",
+            parameters = { "self", "parent", self = { "Engine", "ControlBase" }, parent = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getChildren = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "ControlBase" },
+            },
+            },
+            Pure = true,
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getAbsoluteBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getContentBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getRenderStates = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.RenderStates",
+            },
+            Pure = true,
+        },
+        setPosition = {
+            type = "function",
+            parameters = { "self", "position", self = { "Engine", "ControlBase" }, position = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        move = {
+            type = "function",
+            parameters = { "self", "offset", self = { "Engine", "ControlBase" }, offset = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getRotation = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Angle",
+            },
+            Pure = true,
+        },
+        setRotation = {
+            type = "function",
+            parameters = { "self", "angle", self = { "Engine", "ControlBase" }, angle = "sf.Angle" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        rotate = {
+            type = "function",
+            parameters = { "self", "angle", self = { "Engine", "ControlBase" }, angle = "sf.Angle" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getScale = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setScale = {
+            type = "function",
+            parameters = { "self", "scale", self = { "Engine", "ControlBase" }, scale = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        scale = {
+            type = "function",
+            parameters = { "self", "factor", self = { "Engine", "ControlBase" }, factor = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getOrigin = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setOrigin = {
+            type = "function",
+            parameters = { "self", "origin", self = { "Engine", "ControlBase" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getTransform = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Transform",
+            },
+            Pure = true,
+        },
+        getInverseTransform = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Transform",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "ControlBase" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    DropBox = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "DropBox" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", "repeated", self = { "Engine", "DropBox" }, windowSkin = "sf.Image", repeated = "bool" },
+            default = { [1] = "self", [3] = false },
+            ["return"] = {},
+        },
+        setTextConfig = {
+            type = "function",
+            parameters = { "self", "textConfig", self = { "Engine", "DropBox" }, textConfig = { "Engine", "PlainTextConfig" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getItems = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "string",
+            },
+            },
+            Pure = true,
+        },
+        setItems = {
+            type = "function",
+            parameters = { "self", "items", self = { "Engine", "DropBox" }, items = {
+                list = "string",
+            } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSelectedIndex = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setSelectedIndex = {
+            type = "function",
+            parameters = { "self", "index", self = { "Engine", "DropBox" }, index = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSelectedItem = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        isExpanded = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setExpanded = {
+            type = "function",
+            parameters = { "self", "expanded", self = { "Engine", "DropBox" }, expanded = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        open = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        cancel = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnSelectedIndexChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "DropBox" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnSelectionConfirmed = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "DropBox" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnExpandedChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "DropBox" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOpenSound = {
+            type = "function",
+            parameters = { "self", "filename", self = { "Engine", "DropBox" }, filename = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getOpenSound = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setCursorSound = {
+            type = "function",
+            parameters = { "self", "filename", self = { "Engine", "DropBox" }, filename = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCursorSound = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setSelectSound = {
+            type = "function",
+            parameters = { "self", "filename", self = { "Engine", "DropBox" }, filename = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSelectSound = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setCancelSound = {
+            type = "function",
+            parameters = { "self", "filename", self = { "Engine", "DropBox" }, filename = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCancelSound = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "DropBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "DropBox" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onConfirm = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onCancel = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onClick = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        onMouseMoved = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseWheelScrolled = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onKeyDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "DropBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "DropBox" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    EmitterView = {
+        bases = { { "Engine", "ControlBase" } },
+        attrs = {},
+        getEmitter = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "EmitterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Emitter" },
+            },
+            Pure = true,
+        },
+        getParticle = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "EmitterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setParticle = {
+            type = "function",
+            parameters = { "self", "particle", self = { "Engine", "EmitterView" }, particle = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "EmitterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setSize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "EmitterView" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getAnchor = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "EmitterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setAnchor = {
+            type = "function",
+            parameters = { "self", "anchor", self = { "Engine", "EmitterView" }, anchor = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getAutoPlay = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "EmitterView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setAutoPlay = {
+            type = "function",
+            parameters = { "self", "autoPlay", self = { "Engine", "EmitterView" }, autoPlay = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        dispose = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "EmitterView" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "EmitterView" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    FocusableMixin = {
+        attrs = {},
+        setCanReceiveFocus = {
+            type = "function",
+            parameters = { "self", "canReceiveFocus", self = { "Engine", "FocusableMixin" }, canReceiveFocus = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCanReceiveFocus = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FocusableMixin" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getFocused = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FocusableMixin" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setFocused = {
+            type = "function",
+            parameters = { "self", "focused", self = { "Engine", "FocusableMixin" }, focused = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setFocusGroup = {
+            type = "function",
+            parameters = { "self", "focusGroup", self = { "Engine", "FocusableMixin" }, focusGroup = { "Engine", "RuntimeObject" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getFocusGroup = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FocusableMixin" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "RuntimeObject" },
+            },
+            Pure = true,
+        },
+        onFocusGained = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FocusableMixin" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onFocusLost = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FocusableMixin" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    FunctionalBase = {
+        bases = { { "Engine", "FocusableMixin" } },
+        attrs = {},
+        setKeyboardFocusResolver = {
+            type = "function",
+            parameters = { "resolver", resolver = "function" },
+            ["return"] = {},
+        },
+        setDirectionalFocusRequester = {
+            type = "function",
+            parameters = { "requester", requester = "function" },
+            ["return"] = {},
+        },
+        setKeyboardFocusSetter = {
+            type = "function",
+            parameters = { "setter", setter = "function" },
+            ["return"] = {},
+        },
+        setKeyboardCursorResolver = {
+            type = "function",
+            parameters = { "resolver", resolver = "function" },
+            ["return"] = {},
+        },
+        canReceiveFocus = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        shouldDispatchKeyboardInput = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        requestDirectionalFocusMove = {
+            type = "function",
+            parameters = { "self", "direction", self = { "Engine", "FunctionalBase" }, direction = "string" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        requestKeyboardFocus = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        ownsKeyboardCursorFocus = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isHovered = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isPressed = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getActive = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setActive = {
+            type = "function",
+            parameters = { "self", "active", self = { "Engine", "FunctionalBase" }, active = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setTouchHitBounds = {
+            type = "function",
+            parameters = { "self", "bounds", self = { "Engine", "FunctionalBase" }, bounds = "sf.FloatRect" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getAbsoluteTouchHitBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "FunctionalBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        addConfirmCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addCancelCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addClickCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addMouseButtonDownCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addHoverCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addUnHoverCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addMouseMovedCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addMouseWheelScrolledCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addKeyDownCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        addKeyUpCallback = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "FunctionalBase" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "FunctionalBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        lateUpdate = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "FunctionalBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        fixedUpdate = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "FunctionalBase" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onConfirm = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onCancel = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onClick = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        onHover = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onUnHover = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseMoved = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseWheelScrolled = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onKeyDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onKeyUp = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "FunctionalBase" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "FunctionalBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onLateTick = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "FunctionalBase" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onFixedTick = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "FunctionalBase" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    FunctionalImage = {
+        bases = { { "Engine", "Image" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+    },
+    FunctionalPlainText = {
+        bases = { { "Engine", "PlainText" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+    },
+    FunctionalRichText = {
+        bases = { { "Engine", "RichText" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+    },
+    GamepadHintBar = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "GamepadHintBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "GamepadHintBar" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setTextConfig = {
+            type = "function",
+            parameters = { "self", "textConfig", self = { "Engine", "GamepadHintBar" }, textConfig = { "Engine", "PlainTextConfig" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setHints = {
+            type = "function",
+            parameters = { "self", "hints", self = { "Engine", "GamepadHintBar" }, hints = {
+                list = { "Engine", "GamepadHint" },
+            } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getHintCount = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "GamepadHintBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setHintEnabled = {
+            type = "function",
+            parameters = { "self", "index", "enabled", self = { "Engine", "GamepadHintBar" }, index = "int", enabled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isHintEnabled = {
+            type = "function",
+            parameters = { "self", "index", self = { "Engine", "GamepadHintBar" }, index = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isGamepadConnected = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "GamepadHintBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setOnHintTriggered = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "GamepadHintBar" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "GamepadHintBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "GamepadHintBar" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "GamepadHintBar" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    GamepadHint = {
+        attrs = { "Button", "LongPress", "Text" },
+        Button = {
+            type = { "Engine", "InputNamedValue" },
+        },
+        LongPress = {
+            type = "bool",
+            default = false,
+        },
+        Text = {
+            type = "string",
+        },
+    },
+    Image = {
+        bases = { { "Engine", "SpriteBase" } },
+        attrs = {},
+    },
+    ListView = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getOrigin = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setOrigin = {
+            type = "function",
+            parameters = { "self", "origin", self = { "Engine", "ListView" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getColumns = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getContentBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        setSize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "ListView" }, size = "sf.Vector2i" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setColumns = {
+            type = "function",
+            parameters = { "self", "columns", self = { "Engine", "ListView" }, columns = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getChildren = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "Engine", "ControlBase" },
+            },
+            },
+            Pure = true,
+        },
+        addChild = {
+            type = "function",
+            parameters = { "self", "child", self = { "Engine", "ListView" }, child = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        removeChild = {
+            type = "function",
+            parameters = { "self", "child", self = { "Engine", "ListView" }, child = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        clearChildren = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getRenderStates = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.RenderStates",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ListView" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        lateUpdate = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ListView" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        fixedUpdate = {
+            type = "function",
+            parameters = { "self", "fixedDelta", self = { "Engine", "ListView" }, fixedDelta = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        invalidatePositions = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        applyPositions = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "ListView" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    PlainText = {
+        bases = { { "Engine", "ControlBase" } },
+        attrs = {},
+        getConfig = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "PlainTextConfig" },
+            },
+            Pure = true,
+        },
+        getCharacterSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setString = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "PlainText" }, text = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getString = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getOrigin = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setOrigin = {
+            type = "function",
+            parameters = { "self", "origin", self = { "Engine", "PlainText" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "PlainText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "PlainText" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "PlainText" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    PlainTextConfig = {
+        attrs = { "type", "name", "font", "characterSize", "style", "slantAngle", "fillColor", "letterSpacing", "lineSpacing", "lineAlignment", "outline", "glow", "gradient" },
+        type = {
+            type = "string",
+            default = "plainTextConfig",
+        },
+        name = {
+            type = "string",
+        },
+        font = {
+            type = "sf.Font",
+        },
+        characterSize = {
+            type = "int",
+            default = 30,
+        },
+        style = {
+            type = "int",
+        },
+        slantAngle = {
+            type = "float",
+            default = 0.0,
+        },
+        fillColor = {
+            type = "sf.Color",
+        },
+        letterSpacing = {
+            type = "float",
+            default = 1.0,
+        },
+        lineSpacing = {
+            type = "float",
+            default = 1.0,
+        },
+        lineAlignment = {
+            type = "int",
+        },
+        outline = {
+            type = { "Engine", "TextOutlineConfig" },
+        },
+        glow = {
+            type = { "Engine", "TextGlowConfig" },
+        },
+        gradient = {
+            type = { "Engine", "TextGradientConfig" },
+        },
+    },
+    ProgressBar = {
+        bases = { { "Engine", "ControlBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "ProgressBar" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getProgress = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        setProgress = {
+            type = "function",
+            parameters = { "self", "progress", self = { "Engine", "ProgressBar" }, progress = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getBackgroundColor = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setBackgroundColor = {
+            type = "function",
+            parameters = { "self", "color", self = { "Engine", "ProgressBar" }, color = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getFillColor = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setFillColor = {
+            type = "function",
+            parameters = { "self", "color", self = { "Engine", "ProgressBar" }, color = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getBackgroundTexture = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Texture",
+            },
+            Pure = true,
+        },
+        setBackgroundTexture = {
+            type = "function",
+            parameters = { "self", "texture", self = { "Engine", "ProgressBar" }, texture = "sf.Texture" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getFillTexture = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Texture",
+            },
+            Pure = true,
+        },
+        setFillTexture = {
+            type = "function",
+            parameters = { "self", "texture", self = { "Engine", "ProgressBar" }, texture = "sf.Texture" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getBackgroundTextureRect = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.IntRect",
+            },
+            Pure = true,
+        },
+        setBackgroundTextureRect = {
+            type = "function",
+            parameters = { "self", "rect", self = { "Engine", "ProgressBar" }, rect = "sf.IntRect" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getFillTextureRect = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.IntRect",
+            },
+            Pure = true,
+        },
+        setFillTextureRect = {
+            type = "function",
+            parameters = { "self", "rect", self = { "Engine", "ProgressBar" }, rect = "sf.IntRect" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ProgressBar" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "ProgressBar" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    Rect = {
+        bases = { { "Engine", "SpriteBase" } },
+        attrs = {},
+        setOpacityMultiplier = {
+            type = "function",
+            parameters = { "self", "multiplier", self = { "Engine", "Rect" }, multiplier = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "Rect" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", self = { "Engine", "Rect" }, windowSkin = "sf.Image" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Rect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2u",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Rect" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    RichText = {
+        bases = { { "Engine", "ControlBase" } },
+        attrs = {},
+        getConfig = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "RichTextConfig" },
+            },
+            Pure = true,
+        },
+        setString = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "RichText" }, text = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getString = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "RichText" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getOrigin = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RichText" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setOrigin = {
+            type = "function",
+            parameters = { "self", "origin", self = { "Engine", "RichText" }, origin = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "RichText" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    RichTextConfig = {
+        attrs = { "type", "name", "font", "lineAlignment", "defaultStyle", "styleOrder", "styles", "glow", "gradient" },
+        type = {
+            type = "string",
+            default = "richTextConfig",
+        },
+        name = {
+            type = "string",
+        },
+        font = {
+            type = "sf.Font",
+        },
+        lineAlignment = {
+            type = "int",
+        },
+        defaultStyle = {
+            type = { "Engine", "TextStyle" },
+        },
+        styleOrder = {
+            type = {
+                list = "string",
+            },
+        },
+        styles = {
+            type = {
+                dict = { "Engine", "TextStyle" },
+            },
+        },
+        glow = {
+            type = { "Engine", "TextGlowConfig" },
+        },
+        gradient = {
+            type = { "Engine", "TextGradientConfig" },
+        },
+    },
+    ScrollBox = {
+        bases = { { "Engine", "Canvas" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ScrollBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "ScrollBox" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", self = { "Engine", "ScrollBox" }, windowSkin = "sf.Image" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getScrollOffset = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ScrollBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setScrollOffset = {
+            type = "function",
+            parameters = { "self", "offset", self = { "Engine", "ScrollBox" }, offset = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getMaxScrollOffset = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ScrollBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getScrollingEnabled = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ScrollBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setScrollingEnabled = {
+            type = "function",
+            parameters = { "self", "enabled", self = { "Engine", "ScrollBox" }, enabled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        scrollDescendantIntoView = {
+            type = "function",
+            parameters = { "self", "descendant", self = { "Engine", "ScrollBox" }, descendant = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "ScrollBox" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        render = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ScrollBox" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseMoved = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "ScrollBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseWheelScrolled = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "ScrollBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    SectorShape = {
+        attrs = {},
+        getRadius = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SectorShape" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        setRadius = {
+            type = "function",
+            parameters = { "self", "radius", self = { "Engine", "SectorShape" }, radius = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getAngle = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SectorShape" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Angle",
+            },
+            Pure = true,
+        },
+        setAngle = {
+            type = "function",
+            parameters = { "self", "angle", self = { "Engine", "SectorShape" }, angle = "sf.Angle" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getFillColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SectorShape" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setFillColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "SectorShape" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SectorShape" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SectorShape" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+    },
+    Slider = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        setVisible = {
+            type = "function",
+            parameters = { "self", "visible", self = { "Engine", "Slider" }, visible = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Slider" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "Slider" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getValue = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Slider" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setValue = {
+            type = "function",
+            parameters = { "self", "value", self = { "Engine", "Slider" }, value = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setRange = {
+            type = "function",
+            parameters = { "self", "minValue", "maxValue", self = { "Engine", "Slider" }, minValue = "int", maxValue = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getRange = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Slider" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "minimum",
+                "maximum",
+                minimum = "int",
+                maximum = "int",
+            },
+            Pure = true,
+        },
+        setValueFromRatio = {
+            type = "function",
+            parameters = { "self", "ratio", self = { "Engine", "Slider" }, ratio = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setValueFromBoundsPosition = {
+            type = "function",
+            parameters = { "self", "bounds", "position", self = { "Engine", "Slider" }, bounds = "sf.FloatRect", position = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        adjust = {
+            type = "function",
+            parameters = { "self", "delta", self = { "Engine", "Slider" }, delta = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getHandlePosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Slider" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setLineTexture = {
+            type = "function",
+            parameters = { "self", "texture", self = { "Engine", "Slider" }, texture = "sf.Texture" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setHandleTexture = {
+            type = "function",
+            parameters = { "self", "texture", self = { "Engine", "Slider" }, texture = "sf.Texture" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnValueChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "Slider" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Slider" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "Slider" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onClick = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "Slider" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "Slider" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        onMouseMoved = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "Slider" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onKeyDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "Slider" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "Slider" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    SolidRect = {
+        bases = { { "Engine", "ControlBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SolidRect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        setSize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "SolidRect" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getFillColor = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SolidRect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setFillColor = {
+            type = "function",
+            parameters = { "self", "color", self = { "Engine", "SolidRect" }, color = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getOutlineColor = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SolidRect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        setOutlineColor = {
+            type = "function",
+            parameters = { "self", "color", self = { "Engine", "SolidRect" }, color = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getOutlineThickness = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SolidRect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        setOutlineThickness = {
+            type = "function",
+            parameters = { "self", "thickness", self = { "Engine", "SolidRect" }, thickness = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SolidRect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SolidRect" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "SolidRect" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    SpriteBase = {
+        bases = { { "Engine", "ControlBase" } },
+        attrs = {},
+        setTexture = {
+            type = "function",
+            parameters = { "self", "texture", "resetRect", self = { "Engine", "SpriteBase" }, texture = "sf.Texture", resetRect = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getTexture = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Texture",
+            },
+            Pure = true,
+        },
+        setTextureRect = {
+            type = "function",
+            parameters = { "self", "rect", self = { "Engine", "SpriteBase" }, rect = "sf.IntRect" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getTextureRect = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.IntRect",
+            },
+            Pure = true,
+        },
+        setColour = {
+            type = "function",
+            parameters = { "self", "colour", self = { "Engine", "SpriteBase" }, colour = "sf.Color" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getColour = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Color",
+            },
+            Pure = true,
+        },
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getGlobalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        getRenderStates = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "SpriteBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.RenderStates",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "SpriteBase" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    TabView = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "TabView" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", self = { "Engine", "TabView" }, windowSkin = "sf.Image" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setTextConfig = {
+            type = "function",
+            parameters = { "self", "textConfig", self = { "Engine", "TabView" }, textConfig = { "Engine", "PlainTextConfig" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getItems = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "string",
+            },
+            },
+            Pure = true,
+        },
+        setItems = {
+            type = "function",
+            parameters = { "self", "items", self = { "Engine", "TabView" }, items = {
+                list = "string",
+            } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnSelectedIndexChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "TabView" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSelectedIndex = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        setSelectedIndex = {
+            type = "function",
+            parameters = { "self", "index", self = { "Engine", "TabView" }, index = "int" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getSelectedItem = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        selectPrevious = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        selectNext = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        handleNavigationInput = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        setCursorSound = {
+            type = "function",
+            parameters = { "self", "filename", self = { "Engine", "TabView" }, filename = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getCursorSound = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setKeyHint = {
+            type = "function",
+            parameters = { "self", "leftHint", "rightHint", self = { "Engine", "TabView" }, leftHint = { "Engine", "KeyHint" }, rightHint = { "Engine", "KeyHint" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TabView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "TabView" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onClick = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TabView" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TabView" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        onMouseMoved = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TabView" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "TabView" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    KeyHint = {
+        attrs = { "Keyboard", "Joystick" },
+        Keyboard = {
+            type = "int",
+        },
+        Joystick = {
+            type = { "Engine", "InputNamedValue" },
+        },
+    },
+    TextBox = {
+        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getLocalBounds = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "TextBox" }, size = "sf.Vector2f" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", self = { "Engine", "TextBox" }, windowSkin = "sf.Image" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setTextConfig = {
+            type = "function",
+            parameters = { "self", "textConfig", self = { "Engine", "TextBox" }, textConfig = { "Engine", "PlainTextConfig" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        getString = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+        setString = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "TextBox" }, text = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        isEditing = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        beginEdit = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        finishEdit = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        cancelEdit = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "TextBox" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setInputDialogLabels = {
+            type = "function",
+            parameters = { "self", "title", "done", "cancel", self = { "Engine", "TextBox" }, title = "string", done = "string", cancel = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnTextChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "TextBox" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setOnEditingChanged = {
+            type = "function",
+            parameters = { "self", "callback", self = { "Engine", "TextBox" }, callback = "function" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        update = {
+            type = "function",
+            parameters = { "self", "deltaTime", self = { "Engine", "TextBox" }, deltaTime = "float" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onConfirm = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TextBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onCancel = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TextBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onClick = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TextBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onMouseButtonDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TextBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        onMouseMoved = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TextBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        onKeyDown = {
+            type = "function",
+            parameters = { "self", "arguments", self = { "Engine", "TextBox" }, arguments = { "Engine", "UiInputEventArguments" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        draw = {
+            type = "function",
+            parameters = { "self", "target", "states", self = { "Engine", "TextBox" }, target = "sf.RenderTarget", states = "sf.RenderStates" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    TextGlowConfig = {
+        attrs = { "enabled", "color", "radius", "intensity" },
+        enabled = {
+            type = "bool",
+            default = false,
+        },
+        color = {
+            type = "sf.Color",
+        },
+        radius = {
+            type = "float",
+            default = 0.0,
+        },
+        intensity = {
+            type = "float",
+            default = 0.0,
+        },
+    },
+    TextGradientConfig = {
+        attrs = { "enabled", "direction", "curve" },
+        enabled = {
+            type = "bool",
+            default = false,
+        },
+        direction = {
+            type = "string",
+            default = "vertical",
+        },
+        curve = {
+            type = { "Engine", "Vector4Curve" },
+        },
+    },
+    TextOutlineConfig = {
+        attrs = { "color", "thickness" },
+        color = {
+            type = "sf.Color",
+        },
+        thickness = {
+            type = "float",
+            default = 0.0,
+        },
+    },
+    TextStyle = {
+        attrs = { "characterSize", "bold", "italic", "underlined", "strikeThrough", "fillColor", "letterSpacing", "lineSpacing", "outlineColor", "outlineThickness" },
+        characterSize = {
+            type = "int",
+        },
+        bold = {
+            type = "bool",
+        },
+        italic = {
+            type = "bool",
+        },
+        underlined = {
+            type = "bool",
+        },
+        strikeThrough = {
+            type = "bool",
+        },
+        fillColor = {
+            type = "sf.Color",
+        },
+        letterSpacing = {
+            type = "float",
+        },
+        lineSpacing = {
+            type = "float",
+        },
+        outlineColor = {
+            type = "sf.Color",
+        },
+        outlineThickness = {
+            type = "float",
+        },
+        enableStyle = {
+            type = "function",
+            parameters = { "self", "text", self = { "Engine", "TextStyle" }, text = "sf.Text" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        adaptStyle = {
+            type = "function",
+            parameters = { "self", "inStyle", self = { "Engine", "TextStyle" }, inStyle = { "Engine", "TextStyle" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    AssetInstance = {
+        attrs = {},
+        getRoot = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "AssetInstance" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ControlBase" },
+            },
+            Pure = true,
+        },
+        requireControl = {
+            type = "function",
+            parameters = { "self", "localName", self = { "Engine", "AssetInstance" }, localName = "string" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ControlBase" },
+            },
+            Pure = true,
+        },
+        getNodeByName = {
+            type = "function",
+            parameters = { "self", "name", self = { "Engine", "AssetInstance" }, name = "string" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "ControlBase" },
+            },
+            Pure = true,
+        },
+        requireAsset = {
+            type = "function",
+            parameters = { "self", "localName", self = { "Engine", "AssetInstance" }, localName = "string" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "AssetInstance" },
+            },
+            Pure = true,
+        },
+        setProperty = {
+            type = "function",
+            parameters = { "self", "localName", "propertyId", "value", self = { "Engine", "AssetInstance" }, localName = "string", propertyId = "string", value = {
+                union = {
+                    "nil",
+                    "bool",
+                    "float",
+                    "int",
+                    "string",
+                    "sf.Vector2f",
+                    "sf.Vector2u",
+                    "sf.IntRect",
+                    "sf.Color",
+                    {
+                        list = "string",
+                    },
+                },
+            } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setText = {
+            type = "function",
+            parameters = { "self", "localName", "text", self = { "Engine", "AssetInstance" }, localName = "string", text = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        reflow = {
+            type = "function",
+            parameters = { "self", "logicalSize", self = { "Engine", "AssetInstance" }, logicalSize = "sf.Vector2u" },
+            default = { [1] = "self" },
+            defaultUnset = { "logicalSize" },
+            ["return"] = {},
+        },
+        hasAnimation = {
+            type = "function",
+            parameters = { "self", "name", "target", self = { "Engine", "AssetInstance" }, name = "string", target = "string" },
+            default = { [1] = "self" },
+            defaultUnset = { "target" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        playAnimation = {
+            type = "function",
+            parameters = { "self", "name", "target", "onFinished", self = { "Engine", "AssetInstance" }, name = "string", target = "string", onFinished = "function" },
+            default = { [1] = "self" },
+            defaultUnset = { "target", "onFinished" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        stopAnimation = {
+            type = "function",
+            parameters = { "self", "name", "target", self = { "Engine", "AssetInstance" }, name = "string", target = "string" },
+            default = { [1] = "self" },
+            defaultUnset = { "target" },
+            ["return"] = {},
+        },
+    },
+    UiInputEventArguments = {
+        attrs = { "position", "button", "delta" },
+        position = {
+            type = "sf.Vector2f",
+        },
+        button = {
+            type = "int",
+        },
+        delta = {
+            type = "float",
+        },
+    },
+    Window = {
+        bases = { { "Engine", "SpriteBase" } },
+        attrs = {},
+        getSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Window" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2u",
+            },
+            Pure = true,
+        },
+        resize = {
+            type = "function",
+            parameters = { "self", "size", self = { "Engine", "Window" }, size = "sf.Vector2u" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setWindowSkin = {
+            type = "function",
+            parameters = { "self", "windowSkin", "repeated", self = { "Engine", "Window" }, windowSkin = "sf.Image", repeated = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
+    EventBus = {
+        attrs = {},
+        subscribe = {
+            type = "function",
+            parameters = { "self", "event", "handler", "priority", self = { "Engine", "EventBus" }, event = "string", handler = "function", priority = "int" },
+            default = { [1] = "self", [4] = 0 },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        once = {
+            type = "function",
+            parameters = { "self", "event", "handler", "priority", self = { "Engine", "EventBus" }, event = "string", handler = "function", priority = "int" },
+            default = { [1] = "self", [4] = 0 },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        subscribeObjectHandler = {
+            type = "function",
+            parameters = { "self", "event", "object", "handler", "priority", self = { "Engine", "EventBus" }, event = "string", object = "any", handler = "function", priority = "int" },
+            default = { [1] = "self", [5] = 0 },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        subscribeBlueprintEvent = {
+            type = "function",
+            parameters = { "self", "event", "object", "eventName", "priority", self = { "Engine", "EventBus" }, event = "string", object = "any", eventName = "string", priority = "int" },
+            default = { [1] = "self", [5] = 0 },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        onceBlueprintEvent = {
+            type = "function",
+            parameters = { "self", "event", "object", "eventName", "priority", self = { "Engine", "EventBus" }, event = "string", object = "any", eventName = "string", priority = "int" },
+            default = { [1] = "self", [5] = 0 },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        unsubscribe = {
+            type = "function",
+            parameters = { "self", "token", self = { "Engine", "EventBus" }, token = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        unsubscribeEvent = {
+            type = "function",
+            parameters = { "self", "event", self = { "Engine", "EventBus" }, event = "string" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        unsubscribeObjectHandler = {
+            type = "function",
+            parameters = { "self", "event", "object", self = { "Engine", "EventBus" }, event = "string", object = "any" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        clear = {
+            type = "function",
+            parameters = { "self", "event", self = { "Engine", "EventBus" }, event = "string" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        publish = {
+            type = "function",
+            parameters = { "self", "event", "payload", self = { "Engine", "EventBus" }, event = "string", payload = "any" },
+            default = { [1] = "self" },
+            defaultUnset = { "payload" },
+            ["return"] = {},
+        },
+        post = {
+            type = "function",
+            parameters = { "self", "event", "payload", self = { "Engine", "EventBus" }, event = "string", payload = "any" },
+            default = { [1] = "self" },
+            defaultUnset = { "payload" },
+            ["return"] = {},
+        },
+        flush = {
+            type = "function",
+            parameters = { "self", "limit", self = { "Engine", "EventBus" }, limit = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+    },
+    Vector2Curve = {
+        attrs = { "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
+        name = {
+            type = "string",
+        },
+        defaultValue = {
+            type = {
+                list = "float",
+            },
+        },
+        preInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        postInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        keys = {
+            type = {
+                list = { "Engine", "Vector2CurveKey" },
+            },
+        },
+        fromData = {
+            type = "function",
+            parameters = { "data", data = { "Engine", "Vector2CurveData" } },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Vector2Curve" },
+            },
+            Pure = true,
+        },
+        toData = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector2Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Vector2CurveData" },
+            },
+            Pure = true,
+        },
+        isEmpty = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector2Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getDuration = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector2Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        evaluate = {
+            type = "function",
+            parameters = { "self", "time", self = { "Engine", "Vector2Curve" }, time = "float" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "float",
+            },
+            },
+            Pure = true,
+        },
+    },
+    Vector2CurveData = {
+        attrs = { "type", "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
+        type = {
+            type = "string",
+            default = "vector2Curve",
+        },
+        name = {
+            type = "string",
+        },
+        defaultValue = {
+            type = {
+                list = "float",
+            },
+        },
+        preInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        postInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        keys = {
+            type = {
+                list = { "Engine", "Vector2CurveKey" },
+            },
+        },
+    },
+    Vector2CurveKey = {
+        attrs = { "time", "value", "interpolation", "arriveTangent", "leaveTangent" },
+        time = {
+            type = "float",
+            default = 0.0,
+        },
+        value = {
+            type = {
+                list = "float",
+            },
+        },
+        interpolation = {
+            type = "string",
+            default = "linear",
+        },
+        arriveTangent = {
+            type = {
+                list = "float",
+            },
+        },
+        leaveTangent = {
+            type = {
+                list = "float",
+            },
+        },
+    },
+    Vector3Curve = {
+        attrs = { "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
+        name = {
+            type = "string",
+        },
+        defaultValue = {
+            type = {
+                list = "float",
+            },
+        },
+        preInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        postInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        keys = {
+            type = {
+                list = { "Engine", "Vector3CurveKey" },
+            },
+        },
+        fromData = {
+            type = "function",
+            parameters = { "data", data = { "Engine", "Vector3CurveData" } },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Vector3Curve" },
+            },
+            Pure = true,
+        },
+        toData = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector3Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Vector3CurveData" },
+            },
+            Pure = true,
+        },
+        isEmpty = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector3Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getDuration = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector3Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        evaluate = {
+            type = "function",
+            parameters = { "self", "time", self = { "Engine", "Vector3Curve" }, time = "float" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "float",
+            },
+            },
+            Pure = true,
+        },
+    },
+    Vector3CurveData = {
+        attrs = { "type", "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
+        type = {
+            type = "string",
+            default = "vector3Curve",
+        },
+        name = {
+            type = "string",
+        },
+        defaultValue = {
+            type = {
+                list = "float",
+            },
+        },
+        preInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        postInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        keys = {
+            type = {
+                list = { "Engine", "Vector3CurveKey" },
+            },
+        },
+    },
+    Vector3CurveKey = {
+        attrs = { "time", "value", "interpolation", "arriveTangent", "leaveTangent" },
+        time = {
+            type = "float",
+            default = 0.0,
+        },
+        value = {
+            type = {
+                list = "float",
+            },
+        },
+        interpolation = {
+            type = "string",
+            default = "linear",
+        },
+        arriveTangent = {
+            type = {
+                list = "float",
+            },
+        },
+        leaveTangent = {
+            type = {
+                list = "float",
+            },
+        },
+    },
+    Vector4Curve = {
+        attrs = { "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
+        name = {
+            type = "string",
+        },
+        defaultValue = {
+            type = {
+                list = "float",
+            },
+        },
+        preInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        postInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        keys = {
+            type = {
+                list = { "Engine", "Vector4CurveKey" },
+            },
+        },
+        fromData = {
+            type = "function",
+            parameters = { "data", data = { "Engine", "Vector4CurveData" } },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Vector4Curve" },
+            },
+            Pure = true,
+        },
+        toData = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector4Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "Vector4CurveData" },
+            },
+            Pure = true,
+        },
+        isEmpty = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector4Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getDuration = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Vector4Curve" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        evaluate = {
+            type = "function",
+            parameters = { "self", "time", self = { "Engine", "Vector4Curve" }, time = "float" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "float",
+            },
+            },
+            Pure = true,
+        },
+    },
+    Vector4CurveData = {
+        attrs = { "type", "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
+        type = {
+            type = "string",
+            default = "vector4Curve",
+        },
+        name = {
+            type = "string",
+        },
+        defaultValue = {
+            type = {
+                list = "float",
+            },
+        },
+        preInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        postInfinity = {
+            type = "string",
+            default = "constant",
+        },
+        keys = {
+            type = {
+                list = { "Engine", "Vector4CurveKey" },
+            },
+        },
+    },
+    Vector4CurveKey = {
+        attrs = { "time", "value", "interpolation", "arriveTangent", "leaveTangent" },
+        time = {
+            type = "float",
+            default = 0.0,
+        },
+        value = {
+            type = {
+                list = "float",
+            },
+        },
+        interpolation = {
+            type = "string",
+            default = "linear",
+        },
+        arriveTangent = {
+            type = {
+                list = "float",
+            },
+        },
+        leaveTangent = {
+            type = {
+                list = "float",
+            },
+        },
+    },
+    BPBase = {
+        attrs = {},
+        BlueprintEvent = {
+            type = "function",
+            parameters = { "object", "objectType", "eventName", "keywordArguments", "onComplete", object = "any", objectType = "any", eventName = "string", keywordArguments = "any", onComplete = "any" },
+            default = {  },
+            defaultUnset = { "keywordArguments", "onComplete" },
+            ["return"] = {},
+        },
+        HasBlueprintEvent = {
+            type = "function",
+            parameters = { "object", "eventName", object = "any", eventName = "string" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        IsBlueprintEventEmpty = {
+            type = "function",
+            parameters = { "object", "eventName", object = "any", eventName = "string" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        ExecuteParentEvent = {
+            type = "function",
+            parameters = { "object", "classType", "eventName", "arguments", "keywordArguments", "localGraph", "onComplete", object = "any", classType = "any", eventName = "string", arguments = "any", keywordArguments = "any", localGraph = "any", onComplete = "any" },
+            default = {  },
+            defaultUnset = { "arguments", "keywordArguments", "localGraph", "onComplete" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+    },
+    Component = {
+        attrs = {},
+        onAttach = {
+            type = "function",
+            parameters = { "self", "owner", self = { "Engine", "Component" }, owner = "any" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "any",
+            },
+            },
+        },
+    },
+    RuntimeValue = {
+        attrs = {},
+        isNil = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RuntimeValue" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        typeName = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "RuntimeValue" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+            Pure = true,
+        },
+    },
+    Engine = {
+        attrs = { "ZeroVector2f", "ZeroVector2i", "ZeroVector2u", "ZeroVector3f", "ZeroVector3i", "ZeroVector3u", "Direction", "FocusDirection", "DefaultFontSize" },
+        ZeroVector2f = {
+            type = "sf.Vector2f",
+        },
+        ZeroVector2i = {
+            type = "sf.Vector2i",
+        },
+        ZeroVector2u = {
+            type = "sf.Vector2u",
+        },
+        ZeroVector3f = {
+            type = "sf.Vector3f",
+        },
+        ZeroVector3i = {
+            type = "sf.Vector3i",
+        },
+        ZeroVector3u = {
+            type = "sf.Vector3u",
+        },
+        Direction = {
+            type = {
+                dict = "int",
+            },
+        },
+        FocusDirection = {
+            type = {
+                dict = "string",
+            },
+        },
+        DefaultFontSize = {
+            type = "int",
+        },
+        GetCellSize = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
+        GetGameSize = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2u",
+            },
+            Pure = true,
+        },
+        GetScale = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        IsGameRunning = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        C_CompressAnimation = {
+            type = "function",
+            parameters = { "frameCount", "frameStep", "frameRate", "timeLines", "assets", "imageFormat", frameCount = "int", frameStep = "float", frameRate = "int", timeLines = {
+                list = { "Engine", "AnimationTimeline" },
+            }, assets = {
+                list = "string",
+            }, imageFormat = "string" },
+            ["return"] = {
+                "duration",
+                "frames",
+                "sounds",
+                duration = "float",
+                frames = {
+                list = "string",
+            },
+                sounds = {
+                list = { "Engine", "AnimationSoundEntry" },
+            },
+            },
+        },
+        OpenWebView = {
+            type = "function",
+            parameters = { "url", url = "string" },
+            ["return"] = {
+                "accepted",
+                accepted = "bool",
+            },
+        },
+    },
+    Input = {
         attrs = {},
         update = {
             type = "function",
@@ -2946,3763 +8109,6 @@ local _METADATA = {
             type = "function",
             parameters = { "object", "actionName", object = "any", actionName = "string" },
             ["return"] = {},
-        },
-    },
-    JoystickAxisEvent = {
-        attrs = { "axis", "position" },
-        axis = {
-            type = "int",
-        },
-        position = {
-            type = "float",
-            default = 0.0,
-        },
-    },
-    Clock = {
-        attrs = {},
-        v_reset = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        v_restart = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-    },
-    RenderStates = {
-        attrs = {},
-        Default = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "RenderStates" },
-            },
-            Pure = true,
-        },
-    },
-    Particle = {
-        bases = { { "Engine", "ParticleBase" } },
-        attrs = { "resourcePath", "info" },
-        resourcePath = {
-            type = "string",
-            Meta = { PathVars = "/Game/Assets" },
-        },
-        info = {
-            type = { "Engine", "ParticleInfo" },
-        },
-        onTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onLateTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onFixedTick = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-        destroy = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-    },
-    ParticleBase = {
-        attrs = {},
-        onTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onLateTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onFixedTick = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-        getCountTime = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        getParent = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "ParticleSystem" },
-            },
-        },
-    },
-    ParticleInfo = {
-        attrs = { "position", "color", "rotation", "scale" },
-        position = {
-            type = "sf.Vector2f",
-        },
-        color = {
-            type = "sf.Color",
-        },
-        rotation = {
-            type = "sf.Angle",
-        },
-        scale = {
-            type = "sf.Vector2f",
-        },
-    },
-    ParticleSystem = {
-        attrs = {},
-        addParticle = {
-            type = "function",
-            parameters = { "particle", particle = { "Engine", "Particle" } },
-            ["return"] = {},
-        },
-        addText = {
-            type = "function",
-            parameters = { "text", text = { "Engine", "TextParticle" } },
-            ["return"] = {},
-        },
-        removeParticle = {
-            type = "function",
-            parameters = { "particle", particle = { "Engine", "Particle" } },
-            ["return"] = {},
-        },
-        removeText = {
-            type = "function",
-            parameters = { "text", text = { "Engine", "TextParticle" } },
-            ["return"] = {},
-        },
-        removeParticleAt = {
-            type = "function",
-            parameters = { "resourcePath", "index", resourcePath = "string", index = "int" },
-            ["return"] = {},
-        },
-        addUpdateFlag = {
-            type = "function",
-            parameters = { "particle", particle = { "Engine", "Particle" } },
-            ["return"] = {},
-        },
-        updateParticlesInfo = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        onTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onLateTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onFixedTick = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-    },
-    TextParticle = {
-        bases = { { "Engine", "ParticleBase" } },
-        attrs = {},
-        getConfig = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "PlainTextConfig" },
-            },
-            Pure = true,
-        },
-        setString = {
-            type = "function",
-            parameters = { "text", text = "string" },
-            ["return"] = {},
-        },
-        getString = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    Button = {
-        bases = { { "Engine", "Image" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        setTexture = {
-            type = "function",
-            parameters = { "texture", "resetRect", texture = "sf.Texture", resetRect = "bool" },
-            ["return"] = {},
-        },
-        setGamepadButton = {
-            type = "function",
-            parameters = { "button", button = { "Engine", "InputNamedValue" } },
-            ["return"] = {},
-        },
-        getGamepadButton = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "InputNamedValue" },
-            },
-            Pure = true,
-        },
-        setGamepadLongPress = {
-            type = "function",
-            parameters = { "longPress", longPress = "bool" },
-            ["return"] = {},
-        },
-        getGamepadLongPress = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        setVisible = {
-            type = "function",
-            parameters = { "visible", visible = "bool" },
-            ["return"] = {},
-        },
-        setColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setHoverColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getHoverColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setPressedColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getPressedColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    Canvas = {
-        bases = { { "Engine", "SpriteBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getOrigin = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setOrigin = {
-            type = "function",
-            parameters = { "origin", origin = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2u",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2u" },
-            ["return"] = {},
-        },
-        getNoTranslationRect = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.IntRect",
-            },
-            Pure = true,
-        },
-        getContentRect = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.IntRect",
-            },
-            Pure = true,
-        },
-        getView = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.View",
-            },
-            Pure = true,
-        },
-        getDefaultView = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.View",
-            },
-            Pure = true,
-        },
-        setView = {
-            type = "function",
-            parameters = { "view", view = "sf.View" },
-            ["return"] = {},
-        },
-        getChildren = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = { "Engine", "ControlBase" },
-            },
-            },
-            Pure = true,
-        },
-        addChild = {
-            type = "function",
-            parameters = { "child", child = { "Engine", "ControlBase" } },
-            ["return"] = {},
-        },
-        removeChild = {
-            type = "function",
-            parameters = { "child", child = { "Engine", "ControlBase" } },
-            ["return"] = {},
-        },
-        addAnim = {
-            type = "function",
-            parameters = { "animation", animation = { "Engine", "AnimSprite" } },
-            ["return"] = {},
-        },
-        removeAnim = {
-            type = "function",
-            parameters = { "animation", animation = { "Engine", "AnimSprite" } },
-            ["return"] = {},
-        },
-        clearAnims = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        getAnims = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = { "Engine", "AnimSprite" },
-            },
-            },
-            Pure = true,
-        },
-        setZOrder = {
-            type = "function",
-            parameters = { "zOrder", zOrder = "int" },
-            ["return"] = {},
-        },
-        getZOrder = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        render = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        lateUpdate = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        fixedUpdate = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-    },
-    CharacterView = {
-        bases = { { "Engine", "FunctionalImage" } },
-        attrs = {},
-        setCharacter = {
-            type = "function",
-            parameters = { "texture", "frameRect", "characterScale", "animatable", "switchInterval", "shaderPath", "hue", texture = "sf.Texture", frameRect = "sf.IntRect", characterScale = "sf.Vector2f", animatable = "bool", switchInterval = "float", shaderPath = "string", hue = "float" },
-            default = { [6] = "", [7] = 0.0 },
-            defaultUnset = { "texture", "frameRect", "characterScale", "animatable", "switchInterval" },
-            ["return"] = {},
-        },
-        setCharacterTexture = {
-            type = "function",
-            parameters = { "texture", texture = "sf.Texture" },
-            ["return"] = {},
-        },
-        getCharacterScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setCharacterScale = {
-            type = "function",
-            parameters = { "scale", scale = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getAnimatable = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setAnimatable = {
-            type = "function",
-            parameters = { "animatable", animatable = "bool" },
-            ["return"] = {},
-        },
-        getSwitchInterval = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        setSwitchInterval = {
-            type = "function",
-            parameters = { "switchInterval", switchInterval = "float" },
-            ["return"] = {},
-        },
-        getSwitchTimer = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        getFrameRect = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.IntRect",
-            },
-            Pure = true,
-        },
-        setFrameRect = {
-            type = "function",
-            parameters = { "frameRect", frameRect = "sf.IntRect" },
-            ["return"] = {},
-        },
-        resetFrameRectToTexture = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        getShaderPath = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setShaderPath = {
-            type = "function",
-            parameters = { "shaderPath", shaderPath = "string" },
-            ["return"] = {},
-        },
-        getHue = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        setHue = {
-            type = "function",
-            parameters = { "hue", hue = "float" },
-            ["return"] = {},
-        },
-        resetAnimation = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    CheckBox = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        isChecked = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setChecked = {
-            type = "function",
-            parameters = { "checked", checked = "bool" },
-            ["return"] = {},
-        },
-        toggle = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", windowSkin = "sf.Image" },
-            ["return"] = {},
-        },
-        setTextConfig = {
-            type = "function",
-            parameters = { "textConfig", textConfig = { "Engine", "PlainTextConfig" } },
-            ["return"] = {},
-        },
-        setOnCheckedChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onConfirm = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onClick = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseButtonDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        onKeyDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    ControlBase = {
-        attrs = {},
-        getVisible = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setVisible = {
-            type = "function",
-            parameters = { "visible", visible = "bool" },
-            ["return"] = {},
-        },
-        getName = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setName = {
-            type = "function",
-            parameters = { "name", name = "string" },
-            ["return"] = {},
-        },
-        getParent = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "ControlBase" },
-            },
-            Pure = true,
-        },
-        setParent = {
-            type = "function",
-            parameters = { "parent", parent = { "Engine", "ControlBase" } },
-            ["return"] = {},
-        },
-        getChildren = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = { "Engine", "ControlBase" },
-            },
-            },
-            Pure = true,
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getAbsoluteBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getContentBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getRenderStates = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.RenderStates",
-            },
-            Pure = true,
-        },
-        setPosition = {
-            type = "function",
-            parameters = { "position", position = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getPosition = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        move = {
-            type = "function",
-            parameters = { "offset", offset = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getRotation = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Angle",
-            },
-            Pure = true,
-        },
-        setRotation = {
-            type = "function",
-            parameters = { "angle", angle = "sf.Angle" },
-            ["return"] = {},
-        },
-        rotate = {
-            type = "function",
-            parameters = { "angle", angle = "sf.Angle" },
-            ["return"] = {},
-        },
-        getScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setScale = {
-            type = "function",
-            parameters = { "scale", scale = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        scale = {
-            type = "function",
-            parameters = { "factor", factor = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getOrigin = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setOrigin = {
-            type = "function",
-            parameters = { "origin", origin = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getTransform = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Transform",
-            },
-            Pure = true,
-        },
-        getInverseTransform = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Transform",
-            },
-            Pure = true,
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    DropBox = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", "repeated", windowSkin = "sf.Image", repeated = "bool" },
-            default = { [2] = false },
-            ["return"] = {},
-        },
-        setTextConfig = {
-            type = "function",
-            parameters = { "textConfig", textConfig = { "Engine", "PlainTextConfig" } },
-            ["return"] = {},
-        },
-        getItems = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "string",
-            },
-            },
-            Pure = true,
-        },
-        setItems = {
-            type = "function",
-            parameters = { "items", items = {
-                list = "string",
-            } },
-            ["return"] = {},
-        },
-        getSelectedIndex = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        setSelectedIndex = {
-            type = "function",
-            parameters = { "index", index = "int" },
-            ["return"] = {},
-        },
-        getSelectedItem = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        isExpanded = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setExpanded = {
-            type = "function",
-            parameters = { "expanded", expanded = "bool" },
-            ["return"] = {},
-        },
-        open = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        cancel = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        setOnSelectedIndexChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        setOnSelectionConfirmed = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        setOnExpandedChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        setOpenSound = {
-            type = "function",
-            parameters = { "filename", filename = "string" },
-            ["return"] = {},
-        },
-        getOpenSound = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setCursorSound = {
-            type = "function",
-            parameters = { "filename", filename = "string" },
-            ["return"] = {},
-        },
-        getCursorSound = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setSelectSound = {
-            type = "function",
-            parameters = { "filename", filename = "string" },
-            ["return"] = {},
-        },
-        getSelectSound = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setCancelSound = {
-            type = "function",
-            parameters = { "filename", filename = "string" },
-            ["return"] = {},
-        },
-        getCancelSound = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onConfirm = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onCancel = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onClick = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseButtonDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        onMouseMoved = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseWheelScrolled = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onKeyDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    EmitterView = {
-        bases = { { "Engine", "ControlBase" } },
-        attrs = {},
-        getEmitter = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Emitter" },
-            },
-            Pure = true,
-        },
-        getParticle = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setParticle = {
-            type = "function",
-            parameters = { "particle", particle = "string" },
-            ["return"] = {},
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setSize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getAnchor = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setAnchor = {
-            type = "function",
-            parameters = { "anchor", anchor = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getAutoPlay = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setAutoPlay = {
-            type = "function",
-            parameters = { "autoPlay", autoPlay = "bool" },
-            ["return"] = {},
-        },
-        dispose = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    FocusableMixin = {
-        attrs = {},
-        setCanReceiveFocus = {
-            type = "function",
-            parameters = { "canReceiveFocus", canReceiveFocus = "bool" },
-            ["return"] = {},
-        },
-        getCanReceiveFocus = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        getFocused = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setFocused = {
-            type = "function",
-            parameters = { "focused", focused = "bool" },
-            ["return"] = {},
-        },
-        setFocusGroup = {
-            type = "function",
-            parameters = { "focusGroup", focusGroup = { "Engine", "RuntimeObject" } },
-            ["return"] = {},
-        },
-        getFocusGroup = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "RuntimeObject" },
-            },
-            Pure = true,
-        },
-        onFocusGained = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        onFocusLost = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-    },
-    FunctionalBase = {
-        bases = { { "Engine", "FocusableMixin" } },
-        attrs = {},
-        setKeyboardFocusResolver = {
-            type = "function",
-            parameters = { "resolver", resolver = "function" },
-            ["return"] = {},
-        },
-        setDirectionalFocusRequester = {
-            type = "function",
-            parameters = { "requester", requester = "function" },
-            ["return"] = {},
-        },
-        setKeyboardFocusSetter = {
-            type = "function",
-            parameters = { "setter", setter = "function" },
-            ["return"] = {},
-        },
-        setKeyboardCursorResolver = {
-            type = "function",
-            parameters = { "resolver", resolver = "function" },
-            ["return"] = {},
-        },
-        canReceiveFocus = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        shouldDispatchKeyboardInput = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        requestDirectionalFocusMove = {
-            type = "function",
-            parameters = { "direction", direction = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        requestKeyboardFocus = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        ownsKeyboardCursorFocus = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        isHovered = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        isPressed = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        getActive = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setActive = {
-            type = "function",
-            parameters = { "active", active = "bool" },
-            ["return"] = {},
-        },
-        setTouchHitBounds = {
-            type = "function",
-            parameters = { "bounds", bounds = "sf.FloatRect" },
-            ["return"] = {},
-        },
-        getAbsoluteTouchHitBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        addConfirmCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addCancelCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addClickCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addMouseButtonDownCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addHoverCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addUnHoverCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addMouseMovedCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addMouseWheelScrolledCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addKeyDownCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        addKeyUpCallback = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        lateUpdate = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        fixedUpdate = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-        onConfirm = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onCancel = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onClick = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseButtonDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        onHover = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onUnHover = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseMoved = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseWheelScrolled = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onKeyDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onKeyUp = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onLateTick = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onFixedTick = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-    },
-    FunctionalImage = {
-        bases = { { "Engine", "Image" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-    },
-    FunctionalPlainText = {
-        bases = { { "Engine", "PlainText" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-    },
-    FunctionalRichText = {
-        bases = { { "Engine", "RichText" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-    },
-    GamepadHintBar = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        setTextConfig = {
-            type = "function",
-            parameters = { "textConfig", textConfig = { "Engine", "PlainTextConfig" } },
-            ["return"] = {},
-        },
-        setHints = {
-            type = "function",
-            parameters = { "hints", hints = {
-                list = { "Engine", "GamepadHint" },
-            } },
-            ["return"] = {},
-        },
-        getHintCount = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        setHintEnabled = {
-            type = "function",
-            parameters = { "index", "enabled", index = "int", enabled = "bool" },
-            ["return"] = {},
-        },
-        isHintEnabled = {
-            type = "function",
-            parameters = { "index", index = "int" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        isGamepadConnected = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setOnHintTriggered = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    GamepadHint = {
-        attrs = { "Button", "LongPress", "Text" },
-        Button = {
-            type = { "Engine", "InputNamedValue" },
-        },
-        LongPress = {
-            type = "bool",
-            default = false,
-        },
-        Text = {
-            type = "string",
-        },
-    },
-    Image = {
-        bases = { { "Engine", "SpriteBase" } },
-        attrs = {},
-    },
-    ListView = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getOrigin = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setOrigin = {
-            type = "function",
-            parameters = { "origin", origin = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getColumns = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getContentBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        setSize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2i" },
-            ["return"] = {},
-        },
-        setColumns = {
-            type = "function",
-            parameters = { "columns", columns = "int" },
-            ["return"] = {},
-        },
-        getChildren = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = { "Engine", "ControlBase" },
-            },
-            },
-            Pure = true,
-        },
-        addChild = {
-            type = "function",
-            parameters = { "child", child = { "Engine", "ControlBase" } },
-            ["return"] = {},
-        },
-        removeChild = {
-            type = "function",
-            parameters = { "child", child = { "Engine", "ControlBase" } },
-            ["return"] = {},
-        },
-        clearChildren = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        getRenderStates = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.RenderStates",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        lateUpdate = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        fixedUpdate = {
-            type = "function",
-            parameters = { "fixedDelta", fixedDelta = "float" },
-            ["return"] = {},
-        },
-        invalidatePositions = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        applyPositions = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    PlainText = {
-        bases = { { "Engine", "ControlBase" } },
-        attrs = {},
-        getConfig = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "PlainTextConfig" },
-            },
-            Pure = true,
-        },
-        getCharacterSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        setString = {
-            type = "function",
-            parameters = { "text", text = "string" },
-            ["return"] = {},
-        },
-        getString = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getOrigin = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setOrigin = {
-            type = "function",
-            parameters = { "origin", origin = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    PlainTextConfig = {
-        attrs = { "type", "name", "font", "characterSize", "style", "slantAngle", "fillColor", "letterSpacing", "lineSpacing", "lineAlignment", "outline", "glow", "gradient" },
-        type = {
-            type = "string",
-            default = "plainTextConfig",
-        },
-        name = {
-            type = "string",
-        },
-        font = {
-            type = "sf.Font",
-        },
-        characterSize = {
-            type = "int",
-            default = 30,
-        },
-        style = {
-            type = "int",
-        },
-        slantAngle = {
-            type = "float",
-            default = 0.0,
-        },
-        fillColor = {
-            type = "sf.Color",
-        },
-        letterSpacing = {
-            type = "float",
-            default = 1.0,
-        },
-        lineSpacing = {
-            type = "float",
-            default = 1.0,
-        },
-        lineAlignment = {
-            type = "int",
-        },
-        outline = {
-            type = { "Engine", "TextOutlineConfig" },
-        },
-        glow = {
-            type = { "Engine", "TextGlowConfig" },
-        },
-        gradient = {
-            type = { "Engine", "TextGradientConfig" },
-        },
-    },
-    ProgressBar = {
-        bases = { { "Engine", "ControlBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getProgress = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        setProgress = {
-            type = "function",
-            parameters = { "progress", progress = "float" },
-            ["return"] = {},
-        },
-        getBackgroundColor = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setBackgroundColor = {
-            type = "function",
-            parameters = { "color", color = "sf.Color" },
-            ["return"] = {},
-        },
-        getFillColor = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setFillColor = {
-            type = "function",
-            parameters = { "color", color = "sf.Color" },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    Rect = {
-        bases = { { "Engine", "SpriteBase" } },
-        attrs = {},
-        setOpacityMultiplier = {
-            type = "function",
-            parameters = { "multiplier", multiplier = "float" },
-            ["return"] = {},
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", windowSkin = "sf.Image" },
-            ["return"] = {},
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2u",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-    },
-    RichText = {
-        bases = { { "Engine", "ControlBase" } },
-        attrs = {},
-        getConfig = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "RichTextConfig" },
-            },
-            Pure = true,
-        },
-        setString = {
-            type = "function",
-            parameters = { "text", text = "string" },
-            ["return"] = {},
-        },
-        getString = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getOrigin = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setOrigin = {
-            type = "function",
-            parameters = { "origin", origin = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    RichTextConfig = {
-        attrs = { "type", "name", "font", "lineAlignment", "defaultStyle", "styleOrder", "styles", "glow", "gradient" },
-        type = {
-            type = "string",
-            default = "richTextConfig",
-        },
-        name = {
-            type = "string",
-        },
-        font = {
-            type = "sf.Font",
-        },
-        lineAlignment = {
-            type = "int",
-        },
-        defaultStyle = {
-            type = { "Engine", "TextStyle" },
-        },
-        styleOrder = {
-            type = {
-                list = "string",
-            },
-        },
-        styles = {
-            type = {
-                dict = { "Engine", "TextStyle" },
-            },
-        },
-        glow = {
-            type = { "Engine", "TextGlowConfig" },
-        },
-        gradient = {
-            type = { "Engine", "TextGradientConfig" },
-        },
-    },
-    ScrollBox = {
-        bases = { { "Engine", "Canvas" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", windowSkin = "sf.Image" },
-            ["return"] = {},
-        },
-        getScrollOffset = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setScrollOffset = {
-            type = "function",
-            parameters = { "offset", offset = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getMaxScrollOffset = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getScrollingEnabled = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        setScrollingEnabled = {
-            type = "function",
-            parameters = { "enabled", enabled = "bool" },
-            ["return"] = {},
-        },
-        scrollDescendantIntoView = {
-            type = "function",
-            parameters = { "descendant", descendant = { "Engine", "ControlBase" } },
-            ["return"] = {},
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        render = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        onMouseMoved = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseWheelScrolled = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-    },
-    SectorShape = {
-        attrs = {},
-        getRadius = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        setRadius = {
-            type = "function",
-            parameters = { "radius", radius = "float" },
-            ["return"] = {},
-        },
-        getAngle = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Angle",
-            },
-            Pure = true,
-        },
-        setAngle = {
-            type = "function",
-            parameters = { "angle", angle = "sf.Angle" },
-            ["return"] = {},
-        },
-        getFillColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setFillColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-    },
-    Slider = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        setVisible = {
-            type = "function",
-            parameters = { "visible", visible = "bool" },
-            ["return"] = {},
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getValue = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        setValue = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        setRange = {
-            type = "function",
-            parameters = { "minValue", "maxValue", minValue = "int", maxValue = "int" },
-            ["return"] = {},
-        },
-        getRange = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "minimum",
-                "maximum",
-                minimum = "int",
-                maximum = "int",
-            },
-            Pure = true,
-        },
-        setValueFromRatio = {
-            type = "function",
-            parameters = { "ratio", ratio = "float" },
-            ["return"] = {},
-        },
-        setValueFromBoundsPosition = {
-            type = "function",
-            parameters = { "bounds", "position", bounds = "sf.FloatRect", position = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        adjust = {
-            type = "function",
-            parameters = { "delta", delta = "int" },
-            ["return"] = {},
-        },
-        getHandlePosition = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        setLineTexture = {
-            type = "function",
-            parameters = { "texture", texture = "sf.Texture" },
-            ["return"] = {},
-        },
-        setHandleTexture = {
-            type = "function",
-            parameters = { "texture", texture = "sf.Texture" },
-            ["return"] = {},
-        },
-        setOnValueChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onClick = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseButtonDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        onMouseMoved = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onKeyDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    SolidRect = {
-        bases = { { "Engine", "ControlBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        setSize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        getFillColor = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setFillColor = {
-            type = "function",
-            parameters = { "color", color = "sf.Color" },
-            ["return"] = {},
-        },
-        getOutlineColor = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        setOutlineColor = {
-            type = "function",
-            parameters = { "color", color = "sf.Color" },
-            ["return"] = {},
-        },
-        getOutlineThickness = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        setOutlineThickness = {
-            type = "function",
-            parameters = { "thickness", thickness = "float" },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    SpriteBase = {
-        bases = { { "Engine", "ControlBase" } },
-        attrs = {},
-        setTexture = {
-            type = "function",
-            parameters = { "texture", "resetRect", texture = "sf.Texture", resetRect = "bool" },
-            ["return"] = {},
-        },
-        getTexture = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Texture",
-            },
-            Pure = true,
-        },
-        setTextureRect = {
-            type = "function",
-            parameters = { "rect", rect = "sf.IntRect" },
-            ["return"] = {},
-        },
-        getTextureRect = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.IntRect",
-            },
-            Pure = true,
-        },
-        setColour = {
-            type = "function",
-            parameters = { "colour", colour = "sf.Color" },
-            ["return"] = {},
-        },
-        getColour = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Color",
-            },
-            Pure = true,
-        },
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getGlobalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        getRenderStates = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.RenderStates",
-            },
-            Pure = true,
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    TabView = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", windowSkin = "sf.Image" },
-            ["return"] = {},
-        },
-        setTextConfig = {
-            type = "function",
-            parameters = { "textConfig", textConfig = { "Engine", "PlainTextConfig" } },
-            ["return"] = {},
-        },
-        getItems = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "string",
-            },
-            },
-            Pure = true,
-        },
-        setItems = {
-            type = "function",
-            parameters = { "items", items = {
-                list = "string",
-            } },
-            ["return"] = {},
-        },
-        setOnSelectedIndexChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        getSelectedIndex = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        setSelectedIndex = {
-            type = "function",
-            parameters = { "index", index = "int" },
-            ["return"] = {},
-        },
-        getSelectedItem = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        selectPrevious = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        selectNext = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        handleNavigationInput = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setCursorSound = {
-            type = "function",
-            parameters = { "filename", filename = "string" },
-            ["return"] = {},
-        },
-        getCursorSound = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setKeyHint = {
-            type = "function",
-            parameters = { "leftHint", "rightHint", leftHint = { "Engine", "KeyHint" }, rightHint = { "Engine", "KeyHint" } },
-            ["return"] = {},
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onClick = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseButtonDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        onMouseMoved = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    KeyHint = {
-        attrs = { "Keyboard", "Joystick" },
-        Keyboard = {
-            type = "int",
-        },
-        Joystick = {
-            type = { "Engine", "InputNamedValue" },
-        },
-    },
-    TextBox = {
-        bases = { { "Engine", "ControlBase" }, { "Engine", "FunctionalBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2f",
-            },
-            Pure = true,
-        },
-        getLocalBounds = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.FloatRect",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2f" },
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", windowSkin = "sf.Image" },
-            ["return"] = {},
-        },
-        setTextConfig = {
-            type = "function",
-            parameters = { "textConfig", textConfig = { "Engine", "PlainTextConfig" } },
-            ["return"] = {},
-        },
-        getString = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-        setString = {
-            type = "function",
-            parameters = { "text", text = "string" },
-            ["return"] = {},
-        },
-        isEditing = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        beginEdit = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        finishEdit = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        cancelEdit = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        setInputDialogLabels = {
-            type = "function",
-            parameters = { "title", "done", "cancel", title = "string", done = "string", cancel = "string" },
-            ["return"] = {},
-        },
-        setOnTextChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        setOnEditingChanged = {
-            type = "function",
-            parameters = { "callback", callback = "function" },
-            ["return"] = {},
-        },
-        update = {
-            type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        onConfirm = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onCancel = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onClick = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onMouseButtonDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        onMouseMoved = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        onKeyDown = {
-            type = "function",
-            parameters = { "arguments", arguments = { "Engine", "UiInputEventArguments" } },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "target", "states", target = "sf.RenderTarget", states = "sf.RenderStates" },
-            ["return"] = {},
-        },
-    },
-    TextGlowConfig = {
-        attrs = { "enabled", "color", "radius", "intensity" },
-        enabled = {
-            type = "bool",
-            default = false,
-        },
-        color = {
-            type = "sf.Color",
-        },
-        radius = {
-            type = "float",
-            default = 0.0,
-        },
-        intensity = {
-            type = "float",
-            default = 0.0,
-        },
-    },
-    TextGradientConfig = {
-        attrs = { "enabled", "direction", "curve" },
-        enabled = {
-            type = "bool",
-            default = false,
-        },
-        direction = {
-            type = "string",
-            default = "vertical",
-        },
-        curve = {
-            type = { "Engine", "Vector4Curve" },
-        },
-    },
-    TextOutlineConfig = {
-        attrs = { "color", "thickness" },
-        color = {
-            type = "sf.Color",
-        },
-        thickness = {
-            type = "float",
-            default = 0.0,
-        },
-    },
-    TextStyle = {
-        attrs = { "characterSize", "bold", "italic", "underlined", "strikeThrough", "fillColor", "letterSpacing", "lineSpacing", "outlineColor", "outlineThickness" },
-        characterSize = {
-            type = "int",
-        },
-        bold = {
-            type = "bool",
-        },
-        italic = {
-            type = "bool",
-        },
-        underlined = {
-            type = "bool",
-        },
-        strikeThrough = {
-            type = "bool",
-        },
-        fillColor = {
-            type = "sf.Color",
-        },
-        letterSpacing = {
-            type = "float",
-        },
-        lineSpacing = {
-            type = "float",
-        },
-        outlineColor = {
-            type = "sf.Color",
-        },
-        outlineThickness = {
-            type = "float",
-        },
-        enableStyle = {
-            type = "function",
-            parameters = { "text", text = "sf.Text" },
-            ["return"] = {},
-        },
-        adaptStyle = {
-            type = "function",
-            parameters = { "inStyle", inStyle = { "Engine", "TextStyle" } },
-            ["return"] = {},
-        },
-    },
-    AssetInstance = {
-        attrs = {},
-        getRoot = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "ControlBase" },
-            },
-            Pure = true,
-        },
-        requireControl = {
-            type = "function",
-            parameters = { "localName", localName = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "ControlBase" },
-            },
-            Pure = true,
-        },
-        getNodeByName = {
-            type = "function",
-            parameters = { "name", name = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "ControlBase" },
-            },
-            Pure = true,
-        },
-        requireAsset = {
-            type = "function",
-            parameters = { "localName", localName = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AssetInstance" },
-            },
-            Pure = true,
-        },
-        setProperty = {
-            type = "function",
-            parameters = { "localName", "propertyId", "value", localName = "string", propertyId = "string", value = {
-                union = {
-                    "nil",
-                    "bool",
-                    "float",
-                    "int",
-                    "string",
-                    "sf.Vector2f",
-                    "sf.Vector2u",
-                    "sf.IntRect",
-                    "sf.Color",
-                    {
-                        list = "string",
-                    },
-                },
-            } },
-            ["return"] = {},
-        },
-        setText = {
-            type = "function",
-            parameters = { "localName", "text", localName = "string", text = "string" },
-            ["return"] = {},
-        },
-        reflow = {
-            type = "function",
-            parameters = { "logicalSize", logicalSize = "sf.Vector2u" },
-            default = {  },
-            defaultUnset = { "logicalSize" },
-            ["return"] = {},
-        },
-        hasAnimation = {
-            type = "function",
-            parameters = { "name", "target", name = "string", target = "string" },
-            default = {  },
-            defaultUnset = { "target" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        playAnimation = {
-            type = "function",
-            parameters = { "name", "target", "onFinished", name = "string", target = "string", onFinished = "function" },
-            default = {  },
-            defaultUnset = { "target", "onFinished" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        stopAnimation = {
-            type = "function",
-            parameters = { "name", "target", name = "string", target = "string" },
-            default = {  },
-            defaultUnset = { "target" },
-            ["return"] = {},
-        },
-    },
-    UiInputEventArguments = {
-        attrs = { "position", "button", "delta" },
-        position = {
-            type = "sf.Vector2f",
-        },
-        button = {
-            type = "int",
-        },
-        delta = {
-            type = "float",
-        },
-    },
-    Window = {
-        bases = { { "Engine", "SpriteBase" } },
-        attrs = {},
-        getSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2u",
-            },
-            Pure = true,
-        },
-        resize = {
-            type = "function",
-            parameters = { "size", size = "sf.Vector2u" },
-            ["return"] = {},
-        },
-        setWindowSkin = {
-            type = "function",
-            parameters = { "windowSkin", "repeated", windowSkin = "sf.Image", repeated = "bool" },
-            ["return"] = {},
-        },
-    },
-    EventBus = {
-        attrs = {},
-        subscribe = {
-            type = "function",
-            parameters = { "event", "handler", "priority", event = "string", handler = "function", priority = "int" },
-            default = { [3] = 0 },
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        once = {
-            type = "function",
-            parameters = { "event", "handler", "priority", event = "string", handler = "function", priority = "int" },
-            default = { [3] = 0 },
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        subscribeObjectHandler = {
-            type = "function",
-            parameters = { "event", "object", "handler", "priority", event = "string", object = "any", handler = "function", priority = "int" },
-            default = { [4] = 0 },
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        subscribeBlueprintEvent = {
-            type = "function",
-            parameters = { "event", "object", "eventName", "priority", event = "string", object = "any", eventName = "string", priority = "int" },
-            default = { [4] = 0 },
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        onceBlueprintEvent = {
-            type = "function",
-            parameters = { "event", "object", "eventName", "priority", event = "string", object = "any", eventName = "string", priority = "int" },
-            default = { [4] = 0 },
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        unsubscribe = {
-            type = "function",
-            parameters = { "token", token = "int" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        unsubscribeEvent = {
-            type = "function",
-            parameters = { "event", event = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        unsubscribeObjectHandler = {
-            type = "function",
-            parameters = { "event", "object", event = "string", object = "any" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        clear = {
-            type = "function",
-            parameters = { "event", event = "string" },
-            ["return"] = {},
-        },
-        publish = {
-            type = "function",
-            parameters = { "event", "payload", event = "string", payload = "any" },
-            default = {  },
-            defaultUnset = { "payload" },
-            ["return"] = {},
-        },
-        post = {
-            type = "function",
-            parameters = { "event", "payload", event = "string", payload = "any" },
-            default = {  },
-            defaultUnset = { "payload" },
-            ["return"] = {},
-        },
-        flush = {
-            type = "function",
-            parameters = { "limit", limit = "int" },
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-    },
-    Vector2Curve = {
-        attrs = { "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
-        name = {
-            type = "string",
-        },
-        defaultValue = {
-            type = {
-                list = "float",
-            },
-        },
-        preInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        postInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        keys = {
-            type = {
-                list = { "Engine", "Vector2CurveKey" },
-            },
-        },
-        fromData = {
-            type = "function",
-            parameters = { "data", data = { "Engine", "Vector2CurveData" } },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Vector2Curve" },
-            },
-            Pure = true,
-        },
-        toData = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Vector2CurveData" },
-            },
-            Pure = true,
-        },
-        isEmpty = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        getDuration = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        evaluate = {
-            type = "function",
-            parameters = { "time", time = "float" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "float",
-            },
-            },
-            Pure = true,
-        },
-    },
-    Vector2CurveData = {
-        attrs = { "type", "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
-        type = {
-            type = "string",
-            default = "vector2Curve",
-        },
-        name = {
-            type = "string",
-        },
-        defaultValue = {
-            type = {
-                list = "float",
-            },
-        },
-        preInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        postInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        keys = {
-            type = {
-                list = { "Engine", "Vector2CurveKey" },
-            },
-        },
-    },
-    Vector2CurveKey = {
-        attrs = { "time", "value", "interpolation", "arriveTangent", "leaveTangent" },
-        time = {
-            type = "float",
-            default = 0.0,
-        },
-        value = {
-            type = {
-                list = "float",
-            },
-        },
-        interpolation = {
-            type = "string",
-            default = "linear",
-        },
-        arriveTangent = {
-            type = {
-                list = "float",
-            },
-        },
-        leaveTangent = {
-            type = {
-                list = "float",
-            },
-        },
-    },
-    Vector3Curve = {
-        attrs = { "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
-        name = {
-            type = "string",
-        },
-        defaultValue = {
-            type = {
-                list = "float",
-            },
-        },
-        preInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        postInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        keys = {
-            type = {
-                list = { "Engine", "Vector3CurveKey" },
-            },
-        },
-        fromData = {
-            type = "function",
-            parameters = { "data", data = { "Engine", "Vector3CurveData" } },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Vector3Curve" },
-            },
-            Pure = true,
-        },
-        toData = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Vector3CurveData" },
-            },
-            Pure = true,
-        },
-        isEmpty = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        getDuration = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        evaluate = {
-            type = "function",
-            parameters = { "time", time = "float" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "float",
-            },
-            },
-            Pure = true,
-        },
-    },
-    Vector3CurveData = {
-        attrs = { "type", "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
-        type = {
-            type = "string",
-            default = "vector3Curve",
-        },
-        name = {
-            type = "string",
-        },
-        defaultValue = {
-            type = {
-                list = "float",
-            },
-        },
-        preInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        postInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        keys = {
-            type = {
-                list = { "Engine", "Vector3CurveKey" },
-            },
-        },
-    },
-    Vector3CurveKey = {
-        attrs = { "time", "value", "interpolation", "arriveTangent", "leaveTangent" },
-        time = {
-            type = "float",
-            default = 0.0,
-        },
-        value = {
-            type = {
-                list = "float",
-            },
-        },
-        interpolation = {
-            type = "string",
-            default = "linear",
-        },
-        arriveTangent = {
-            type = {
-                list = "float",
-            },
-        },
-        leaveTangent = {
-            type = {
-                list = "float",
-            },
-        },
-    },
-    Vector4Curve = {
-        attrs = { "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
-        name = {
-            type = "string",
-        },
-        defaultValue = {
-            type = {
-                list = "float",
-            },
-        },
-        preInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        postInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        keys = {
-            type = {
-                list = { "Engine", "Vector4CurveKey" },
-            },
-        },
-        fromData = {
-            type = "function",
-            parameters = { "data", data = { "Engine", "Vector4CurveData" } },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Vector4Curve" },
-            },
-            Pure = true,
-        },
-        toData = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Vector4CurveData" },
-            },
-            Pure = true,
-        },
-        isEmpty = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        getDuration = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        evaluate = {
-            type = "function",
-            parameters = { "time", time = "float" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "float",
-            },
-            },
-            Pure = true,
-        },
-    },
-    Vector4CurveData = {
-        attrs = { "type", "name", "defaultValue", "preInfinity", "postInfinity", "keys" },
-        type = {
-            type = "string",
-            default = "vector4Curve",
-        },
-        name = {
-            type = "string",
-        },
-        defaultValue = {
-            type = {
-                list = "float",
-            },
-        },
-        preInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        postInfinity = {
-            type = "string",
-            default = "constant",
-        },
-        keys = {
-            type = {
-                list = { "Engine", "Vector4CurveKey" },
-            },
-        },
-    },
-    Vector4CurveKey = {
-        attrs = { "time", "value", "interpolation", "arriveTangent", "leaveTangent" },
-        time = {
-            type = "float",
-            default = 0.0,
-        },
-        value = {
-            type = {
-                list = "float",
-            },
-        },
-        interpolation = {
-            type = "string",
-            default = "linear",
-        },
-        arriveTangent = {
-            type = {
-                list = "float",
-            },
-        },
-        leaveTangent = {
-            type = {
-                list = "float",
-            },
-        },
-    },
-    BPBase = {
-        attrs = {},
-        BlueprintEvent = {
-            type = "function",
-            parameters = { "object", "objectType", "eventName", "keywordArguments", "onComplete", object = "any", objectType = "any", eventName = "string", keywordArguments = "any", onComplete = "any" },
-            default = {  },
-            defaultUnset = { "keywordArguments", "onComplete" },
-            ["return"] = {},
-        },
-        HasBlueprintEvent = {
-            type = "function",
-            parameters = { "object", "eventName", object = "any", eventName = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        IsBlueprintEventEmpty = {
-            type = "function",
-            parameters = { "object", "eventName", object = "any", eventName = "string" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        ExecuteParentEvent = {
-            type = "function",
-            parameters = { "object", "classType", "eventName", "arguments", "keywordArguments", "localGraph", "onComplete", object = "any", classType = "any", eventName = "string", arguments = "any", keywordArguments = "any", localGraph = "any", onComplete = "any" },
-            default = {  },
-            defaultUnset = { "arguments", "keywordArguments", "localGraph", "onComplete" },
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-    },
-    Component = {
-        attrs = {},
-        onAttach = {
-            type = "function",
-            parameters = { "owner", owner = "any" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "any",
-            },
-            },
-        },
-    },
-    RuntimeValue = {
-        attrs = {},
-        isNil = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        typeName = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-            Pure = true,
-        },
-    },
-    Engine = {
-        attrs = { "ZeroVector2f", "ZeroVector2i", "ZeroVector2u", "ZeroVector3f", "ZeroVector3i", "ZeroVector3u", "Direction", "FocusDirection", "DefaultFontSize" },
-        ZeroVector2f = {
-            type = "sf.Vector2f",
-        },
-        ZeroVector2i = {
-            type = "sf.Vector2i",
-        },
-        ZeroVector2u = {
-            type = "sf.Vector2u",
-        },
-        ZeroVector3f = {
-            type = "sf.Vector3f",
-        },
-        ZeroVector3i = {
-            type = "sf.Vector3i",
-        },
-        ZeroVector3u = {
-            type = "sf.Vector3u",
-        },
-        Direction = {
-            type = {
-                dict = "int",
-            },
-        },
-        FocusDirection = {
-            type = {
-                dict = "string",
-            },
-        },
-        DefaultFontSize = {
-            type = "int",
-        },
-        GetCellSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-            Pure = true,
-        },
-        GetGameSize = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2u",
-            },
-            Pure = true,
-        },
-        GetScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-            Pure = true,
-        },
-        IsGameRunning = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        C_CompressAnimation = {
-            type = "function",
-            parameters = { "frameCount", "frameStep", "frameRate", "timeLines", "assets", "imageFormat", frameCount = "int", frameStep = "float", frameRate = "int", timeLines = {
-                list = { "Engine", "AnimationTimeline" },
-            }, assets = {
-                list = "string",
-            }, imageFormat = "string" },
-            ["return"] = {
-                "duration",
-                "frames",
-                "sounds",
-                duration = "float",
-                frames = {
-                list = "string",
-            },
-                sounds = {
-                list = { "Engine", "AnimationSoundEntry" },
-            },
-            },
-        },
-        OpenWebView = {
-            type = "function",
-            parameters = { "url", url = "string" },
-            ["return"] = {
-                "accepted",
-                accepted = "bool",
-            },
         },
     },
 }

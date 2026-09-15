@@ -868,7 +868,7 @@
       "breathLimit": 80,
       "drops": {},
       "special": {
-        "Poisoning": 30,
+        "Poisoning": 1,
         "Vampire": 0.3,
         "MultiHit": 2
       },

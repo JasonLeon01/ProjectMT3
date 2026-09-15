@@ -6,7 +6,7 @@ return {
     ["ATK"] = "攻击",
     ["BAT"] = "大蝙蝠",
     ["BATTLE_FATIGUE"] = "疲劳",
-    ["BATTLE_RETREAT"] = "～撤退(Q)～",
+    ["BATTLE_RETREAT"] = "~撤退~",
     ["BAT_DESC"] = "这是一个大蝙蝠。",
     ["BIG_WIZARD"] = "大法师",
     ["BIG_WIZARD_DESC"] = "这是一个大法师。",
