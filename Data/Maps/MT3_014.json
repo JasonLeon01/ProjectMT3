@@ -996,14 +996,6 @@
         ]
       },
       {
-        "tag": "MT3_014.Gem_Level_default_9_0",
-        "bp": "Data.Blueprints.Consumables.Gem_Level",
-        "position": [
-          9,
-          0
-        ]
-      },
-      {
         "tag": "MT3_014.KeyBox_default_10_0",
         "bp": "Data.Blueprints.Consumables.KeyBox",
         "position": [
@@ -1047,9 +1039,6 @@
   "fogDistort": 0,
   "panorama": "",
   "BPClassVarChanged": {
-    "MT3_014.Gem_Level_default_9_0": {
-      "plus": 1
-    },
     "MT3_014.KeyBox_default_10_0": {
       "plus": 1
     },

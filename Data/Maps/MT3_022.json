@@ -416,14 +416,6 @@
         ]
       },
       {
-        "tag": "MT3_022.Gem_GOLD_default_7_6",
-        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
-        "position": [
-          7,
-          6
-        ]
-      },
-      {
         "tag": "MT3_022.Bottle_150_default_5_8",
         "bp": "Data.Blueprints.Consumables.Bottle_150",
         "position": [
@@ -494,6 +486,14 @@
           3,
           3
         ]
+      },
+      {
+        "tag": "Consumables_Bottle_400_default_7_6",
+        "bp": "Data.Blueprints.Consumables.Bottle_400",
+        "position": [
+          7,
+          6
+        ]
       }
     ]
   },
@@ -514,10 +514,5 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {
-    "MT3_022.Gem_GOLD_default_7_6": {
-      "plus": 200
-    }
-  },
   "type": "map"
 }

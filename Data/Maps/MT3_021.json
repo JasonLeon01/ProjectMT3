@@ -456,14 +456,6 @@
         ]
       },
       {
-        "tag": "MT3_021.Gem_GOLD_default_9_7",
-        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
-        "position": [
-          9,
-          7
-        ]
-      },
-      {
         "tag": "MT3_021.Gem_EXP_default_8_2",
         "bp": "Data.Blueprints.Consumables.Gem_EXP",
         "position": [
@@ -486,6 +478,14 @@
           5,
           2
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_GOLD_100",
+        "tag": "Consumables_Gem_GOLD_100_default_9_7",
+        "position": [
+          9,
+          7
+        ]
       }
     ]
   },
@@ -507,9 +507,6 @@
   "fogDistort": 0,
   "panorama": "",
   "BPClassVarChanged": {
-    "MT3_021.Gem_GOLD_default_9_7": {
-      "plus": 200
-    },
     "MT3_021.Gem_EXP_default_8_2": {
       "plus": 5
     }

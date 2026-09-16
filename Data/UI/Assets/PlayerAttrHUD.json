@@ -1294,6 +1294,93 @@
         },
         "editor": {},
         "children": []
+      },
+      {
+        "name": "PlainText",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "visible": true,
+          "rotation": 0,
+          "scale": [
+            1,
+            1
+          ],
+          "origin": [
+            0,
+            0
+          ],
+          "textConfig": "",
+          "font": "",
+          "characterSize": 22,
+          "bold": true,
+          "italic": false,
+          "underlined": false,
+          "strikeThrough": false,
+          "slantAngle": 0,
+          "fillColor": [
+            255,
+            255,
+            255,
+            255
+          ],
+          "letterSpacing": 1.1,
+          "lineSpacing": 1,
+          "lineAlignment": "default",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 0,
+          "glowEnabled": false,
+          "glowColor": [
+            255,
+            255,
+            255,
+            0
+          ],
+          "glowRadius": 0,
+          "glowIntensity": 0,
+          "gradientEnabled": false,
+          "gradientDirection": "vertical",
+          "gradientCurve": "",
+          "text": "- Press L -",
+          "colour": [
+            255,
+            255,
+            255,
+            255
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              1,
+              1
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": -4,
+            "top": -4,
+            "right": 100,
+            "bottom": 34
+          },
+          "alignment": [
+            1,
+            1
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {
+          "previewText": "- Press L -"
+        },
+        "children": []
       }
     ]
   },

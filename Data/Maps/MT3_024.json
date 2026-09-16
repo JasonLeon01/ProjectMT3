@@ -416,22 +416,6 @@
         ]
       },
       {
-        "tag": "MT3_025.Gem_GOLD_default_2_3",
-        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
-        "position": [
-          2,
-          3
-        ]
-      },
-      {
-        "tag": "MT3_025.Gem_GOLD_default_8_7",
-        "bp": "Data.Blueprints.Consumables.Gem_GOLD",
-        "position": [
-          8,
-          7
-        ]
-      },
-      {
         "tag": "MT3_025.Bottle_400_default_2_5",
         "bp": "Data.Blueprints.Consumables.Bottle_400",
         "position": [
@@ -478,6 +462,22 @@
           7,
           6
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_1_2",
+        "tag": "Consumables_Gem_1_2_default_2_3",
+        "position": [
+          2,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_2_2",
+        "tag": "Consumables_Gem_2_2_default_8_7",
+        "position": [
+          8,
+          7
+        ]
       }
     ]
   },
@@ -498,13 +498,5 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {
-    "MT3_025.Gem_GOLD_default_2_3": {
-      "plus": 100
-    },
-    "MT3_025.Gem_GOLD_default_8_7": {
-      "plus": 100
-    }
-  },
   "type": "map"
 }

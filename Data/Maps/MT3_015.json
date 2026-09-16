@@ -784,7 +784,7 @@
         "bp": "Data.Blueprints.Consumables.Gem_2_2",
         "position": [
           10,
-          0
+          1
         ]
       },
       {
@@ -848,7 +848,7 @@
         "bp": "Data.Blueprints.Consumables.Bottle_400",
         "position": [
           9,
-          1
+          0
         ]
       },
       {
@@ -928,14 +928,6 @@
         "bp": "Data.Blueprints.Items.BP_Item_Key_B",
         "position": [
           5,
-          0
-        ]
-      },
-      {
-        "tag": "MT3_015.Gem_Level_default_8_0",
-        "bp": "Data.Blueprints.Consumables.Gem_Level",
-        "position": [
-          8,
           0
         ]
       },
@@ -1026,6 +1018,14 @@
           2,
           5
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_GOLD_100",
+        "tag": "Consumables_Gem_GOLD_100_default_9_0",
+        "position": [
+          10,
+          0
+        ]
       }
     ]
   },
@@ -1052,9 +1052,6 @@
     },
     "MT3_015.Gem_GOLD_default_0_5": {
       "plus": 200
-    },
-    "MT3_015.Gem_Level_default_8_0": {
-      "plus": 1
     },
     "MT3_015.Gem_EXP_default_5_10": {
       "plus": 5

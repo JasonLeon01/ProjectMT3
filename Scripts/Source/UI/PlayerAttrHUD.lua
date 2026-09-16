@@ -42,6 +42,7 @@ function View:init(instance)
         KeyIcon = assert(self.instance:requireControl("KeyIcon")),
         Level = assert(self.instance:requireControl("Level")),
         MapName = assert(self.instance:requireControl("MapName")),
+        PlainText = assert(self.instance:requireControl("PlainText")),
         PlayerName = assert(self.instance:requireControl("PlayerName")),
         Root = assert(self.instance:requireControl("Root")),
         StateHost = assert(self.instance:requireControl("StateHost"))

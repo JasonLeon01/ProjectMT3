@@ -33,6 +33,7 @@
 ---@field KeyIcon             Engine.Image
 ---@field Level               Engine.PlainText
 ---@field MapName             Engine.PlainText
+---@field PlainText           Engine.PlainText
 ---@field PlayerName          Engine.PlainText
 ---@field Root                Engine.Canvas
 ---@field StateHost           Engine.Canvas
