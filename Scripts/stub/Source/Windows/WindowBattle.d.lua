@@ -12,9 +12,14 @@
 ---@field mucus            integer
 ---@field sureKill         boolean
 ---@field berserk          boolean
+---@field hard             boolean
+---@field magic            boolean
+---@field compete          boolean
+---@field first            boolean
+---@field hitCount         integer
 ---@field ATK              integer
 ---@field DEF              integer
----@field magic            integer
+---@field MAGIC            integer
 ---@field breath           integer
 ---@field breathLimit      integer
 ---@field fatigue          integer
@@ -81,18 +86,22 @@ function Controller:calculateDamage(attacker, defender, critical) end
 ---@param defender Source.Windows.WindowBattle.BattlerState
 ---@return boolean
 function Controller:canCritical(attacker, defender) end
----@param playerTurn boolean
-function Controller:beginTurn(playerTurn) end
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
-function Controller:normalAttack(attacker, defender) end
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
-function Controller:criticalAttack(attacker, defender) end
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
----@param critical boolean
-function Controller:performAttack(attacker, defender, critical) end
+---@param playerTurn     boolean
+---@param remainingHits  integer | nil
+function Controller:beginTurn(playerTurn, remainingHits) end
+---@param attacker       Source.Windows.WindowBattle.BattlerState
+---@param defender       Source.Windows.WindowBattle.BattlerState
+---@param remainingHits  integer
+function Controller:normalAttack(attacker, defender, remainingHits) end
+---@param attacker       Source.Windows.WindowBattle.BattlerState
+---@param defender       Source.Windows.WindowBattle.BattlerState
+---@param remainingHits  integer
+function Controller:criticalAttack(attacker, defender, remainingHits) end
+---@param attacker       Source.Windows.WindowBattle.BattlerState
+---@param defender       Source.Windows.WindowBattle.BattlerState
+---@param critical       boolean
+---@param remainingHits  integer
+function Controller:performAttack(attacker, defender, critical, remainingHits) end
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
 ---@param damage   integer

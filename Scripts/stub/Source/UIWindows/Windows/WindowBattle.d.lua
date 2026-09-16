@@ -22,8 +22,9 @@ function Window:addBreath(state, amount) end
 ---@param defender Source.Windows.WindowBattle.BattlerState
 function Window:applyAttackStates(attacker, defender) end
 
----@param playerTurn boolean
-function Window:beginTurn(playerTurn) end
+---@param playerTurn    boolean
+---@param remainingHits integer | nil
+function Window:beginTurn(playerTurn, remainingHits) end
 
 function Window:bind() end
 
@@ -46,9 +47,10 @@ function Window:cancel() end
 ---@return integer
 function Window:changeHP(state, delta) end
 
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
-function Window:criticalAttack(attacker, defender) end
+---@param attacker      Source.Windows.WindowBattle.BattlerState
+---@param defender      Source.Windows.WindowBattle.BattlerState
+---@param remainingHits integer
+function Window:criticalAttack(attacker, defender, remainingHits) end
 
 function Window:dispose() end
 
@@ -64,9 +66,10 @@ function Window:getBreathBox(kind) end
 ---@return Engine.Canvas
 function Window:getBreathCanvas(kind, index) end
 
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
-function Window:normalAttack(attacker, defender) end
+---@param attacker      Source.Windows.WindowBattle.BattlerState
+---@param defender      Source.Windows.WindowBattle.BattlerState
+---@param remainingHits integer
+function Window:normalAttack(attacker, defender, remainingHits) end
 
 ---@param state Source.Windows.WindowBattle.BattlerState
 ---@param side  "Player" | "Enemy"
@@ -84,10 +87,11 @@ function Window:onKeyDown(kwargs) end
 ---@param onFinished Source.Windows.WindowBattle.Finished
 function Window:open(player, enemy, onFinished) end
 
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
----@param critical boolean
-function Window:performAttack(attacker, defender, critical) end
+---@param attacker      Source.Windows.WindowBattle.BattlerState
+---@param defender      Source.Windows.WindowBattle.BattlerState
+---@param critical      boolean
+---@param remainingHits integer
+function Window:performAttack(attacker, defender, critical, remainingHits) end
 
 function Window:playBreathAnimation() end
 

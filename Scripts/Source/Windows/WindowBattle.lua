@@ -38,7 +38,7 @@ local function createState(actor, player)
         MAXHP = attributes.MAXHP,
         ATK = attributes.ATK,
         DEF = attributes.DEF,
-        magic = player and attributes.magic or 0,
+        MAGIC = player and attributes.MAGIC or 0,
         breath = player and attributes.breath or 0,
         breathLimit = attributes.breathLimit,
         fatigue = 0,
@@ -54,7 +54,12 @@ local function createState(actor, player)
         vampire = SpecialAbilities.GetMagnitude(abilitySystem, Special.Vampire) or 0,
         mucus = SpecialAbilities.GetMagnitude(abilitySystem, Special.Mucus) or 0,
         sureKill = SpecialAbilities.GetMagnitude(abilitySystem, Special.SureKill) ~= nil,
-        berserk = SpecialAbilities.GetMagnitude(abilitySystem, Special.Berserk) ~= nil
+        berserk = SpecialAbilities.GetMagnitude(abilitySystem, Special.Berserk) ~= nil,
+        hard = SpecialAbilities.GetMagnitude(abilitySystem, Special.Hard) ~= nil,
+        magic = SpecialAbilities.GetMagnitude(abilitySystem, Special.Magic) ~= nil,
+        compete = SpecialAbilities.GetMagnitude(abilitySystem, Special.Compete) ~= nil,
+        first = SpecialAbilities.GetMagnitude(abilitySystem, Special.First) ~= nil,
+        hitCount = math.max(1, SpecialAbilities.GetMagnitude(abilitySystem, Special.MultiHit) or 1)
     }
 end
 
@@ -143,7 +148,9 @@ function Controller:open(player, enemy, onFinished)
         end)
     )
     self:playBreathAnimation()
-    self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function () self:beginTurn(true) end)
+    self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function ()
+        self:beginTurn(not assert(self._enemy).first)
+    end)
 end
 
 function Controller:setPortrait(name, actor)
@@ -220,7 +227,15 @@ end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action calculation.
 function Controller:calculateDamage(attacker, defender, critical)
-    local base = math.max(0, attacker.ATK - defender.DEF)
+    local atk = attacker.ATK
+    if attacker.compete then
+        atk = math.max(atk, defender.ATK)
+    end
+    local def = attacker.magic and 0 or defender.DEF
+    if defender.hard then
+        def = math.max(def, atk - 1)
+    end
+    local base = math.max(0, atk - def)
     ---@type number
     local damage = base
     if critical and base > 0 then
@@ -258,31 +273,32 @@ function Controller:onKeyDown(_kwargs)
     end
 end
 
-function Controller:beginTurn(playerTurn)
+function Controller:beginTurn(playerTurn, remainingHits)
     if self._retreatRequested then
         self:finish("retreat")
         return
     end
     local attacker = assert(playerTurn and self._player or self._enemy)
     local defender = assert(playerTurn and self._enemy or self._player)
+    local hits = playerTurn and 1 or (remainingHits or attacker.hitCount)
     local critical = (not playerTurn or self._criticalSelected) and self:canCritical(attacker, defender)
     if playerTurn then self._criticalSelected = false end
     if critical then
-        self:criticalAttack(attacker, defender)
+        self:criticalAttack(attacker, defender, hits)
     else
-        self:normalAttack(attacker, defender)
+        self:normalAttack(attacker, defender, hits)
     end
 end
 
-function Controller:normalAttack(attacker, defender)
-    self:performAttack(attacker, defender, false)
+function Controller:normalAttack(attacker, defender, remainingHits)
+    self:performAttack(attacker, defender, false, remainingHits)
 end
 
-function Controller:criticalAttack(attacker, defender)
-    self:performAttack(attacker, defender, true)
+function Controller:criticalAttack(attacker, defender, remainingHits)
+    self:performAttack(attacker, defender, true, remainingHits)
 end
 
-function Controller:performAttack(attacker, defender, critical)
+function Controller:performAttack(attacker, defender, critical, remainingHits)
     local damage, base = self:calculateDamage(attacker, defender, critical)
     local key = base == 0 and "09_datie"
         or (damage == 0 and "08_miss" or (critical and attacker.CritAnimationKey or attacker.animationKey))
@@ -309,9 +325,18 @@ function Controller:performAttack(attacker, defender, critical)
     else
         self:schedule(hitTime, hit)
     end
-    self:schedule(math.max(hitTime, animation:getVisualDuration()) + Battle.attackInterval + Battle.attackExtraDelay, function ()
+    local visualWait = math.max(hitTime, animation:getVisualDuration())
+    local chain = remainingHits - 1 > 0
+    ---@type number
+    local delay = visualWait
+    if not chain then
+        delay = delay + Battle.attackInterval + Battle.attackExtraDelay
+    end
+    self:schedule(delay, function ()
         if defender.HP <= 0 then
             self:finish(defender.isPlayer and "lose" or "win")
+        elseif chain then
+            self:beginTurn(false, remainingHits - 1)
         else
             self:beginTurn(not attacker.isPlayer)
         end

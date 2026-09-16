@@ -15,7 +15,7 @@ Battle.players = {
     },
     Princess = {
         crit = function (damage, attacker, defender)
-            local magic = math.max(0, attacker.magic)
+            local magic = math.max(0, attacker.MAGIC)
             local extra = defender.DEF * magic / (Battle.princessCritMagicScale + magic)
             return damage + math.min(damage, Battle.princessCritDirectCap) + extra
         end

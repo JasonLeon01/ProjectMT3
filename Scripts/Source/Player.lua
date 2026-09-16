@@ -122,7 +122,7 @@ function Player:init(texture, tag)
         self:addAttr("MAXHP", delta * LEVEL_HP_GAIN)
         self:addAttr("ATK", delta * LEVEL_ATK_GAIN)
         self:addAttr("DEF", delta * LEVEL_DEF_GAIN)
-        self:addAttr("magic", delta * LEVEL_MAGIC_GAIN)
+        self:addAttr("MAGIC", delta * LEVEL_MAGIC_GAIN)
     end)
     self._items = {}
     self._equips = {}
