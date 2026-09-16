@@ -16,6 +16,10 @@
 ---@field BackgroundFloorHUD2 Engine.Image
 ---@field BackgroundFloorHUD3 Engine.Image
 ---@field BackgroundFloorHUD4 Engine.Image
+---@field BreathBar           Engine.ProgressBar
+---@field BreathDim           Engine.WrapBox
+---@field BreathLabel         Engine.PlainText
+---@field BreathLit           Engine.WrapBox
 ---@field Canvas              Engine.Canvas
 ---@field Canvas2             Engine.Canvas
 ---@field DefDebuff           Engine.PlainText

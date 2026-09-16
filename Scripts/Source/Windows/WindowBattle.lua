@@ -51,7 +51,10 @@ local function createState(actor, player)
         addedStates = { Poisoned = 0, Weak = 0 },
         poisoning = SpecialAbilities.GetMagnitude(abilitySystem, Special.Poisoning) or 0,
         weaken = SpecialAbilities.GetMagnitude(abilitySystem, Special.Weaken) or 0,
-        vampire = SpecialAbilities.GetMagnitude(abilitySystem, Special.Vampire) or 0
+        vampire = SpecialAbilities.GetMagnitude(abilitySystem, Special.Vampire) or 0,
+        mucus = SpecialAbilities.GetMagnitude(abilitySystem, Special.Mucus) or 0,
+        sureKill = SpecialAbilities.GetMagnitude(abilitySystem, Special.SureKill) ~= nil,
+        berserk = SpecialAbilities.GetMagnitude(abilitySystem, Special.Berserk) ~= nil
     }
 end
 
@@ -341,6 +344,12 @@ function Controller:receiveAttack(attacker, defender, damage, critical)
     end
     self:changeHP(attacker, VampireAbility.CalculateHealing(lostHP, attacker.vampire))
     self:applyAttackStates(attacker, defender)
+    if not attacker.isPlayer then
+        defender.fatigue = defender.fatigue + attacker.mucus
+    end
+    if critical and attacker.berserk then
+        self:changeHP(attacker, -math.floor(attacker.HP / 2))
+    end
 end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action mutation.

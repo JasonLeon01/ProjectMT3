@@ -5,12 +5,27 @@ local Battler = require("Source.Battler")
 local Effects = require("Source.Gameplay.Effects")
 local GeneralDataGraphAbility = require("Source.Gameplay.GeneralDataGraphAbility")
 local LocaleCore = require("Source.Locale.Core")
+local EventKeys = require("Source.Configs.EventKeys")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 local GameplayEffectSpec = GlobalCore.GameplayEffectSpec
 local GameplayEventData = GlobalCore.GameplayEventData
 local Character = Engine.Character
 local Input = Engine.Input
+
+---@param player Source.Player.Player
+---@param kind   string
+---@param name?  string
+local function publishPlayerChanged(player, kind, name)
+    if player:getLoading() then
+        return
+    end
+    Engine.publish(EventKeys.PlayerChanged, {
+        owner = player,
+        kind = kind,
+        name = name
+    })
+end
 
 local LEVEL_HP_GAIN = 200
 local LEVEL_ATK_GAIN = 2
@@ -170,6 +185,7 @@ function Player:setName(name)
         return false
     end
     self._customName = trimmedName
+    publishPlayerChanged(self, EventKeys.PlayerChangeKind.Name)
     return true
 end
 
@@ -235,15 +251,7 @@ function Player:asDict()
         customName = self._customName,
         tag = self.tag,
         position = { position.x, position.y },
-        attr = {
-            LEVEL = bases.LEVEL,
-            HP = bases.HP,
-            MAXHP = bases.MAXHP,
-            ATK = bases.ATK,
-            DEF = bases.DEF,
-            EXP = bases.EXP,
-            GOLD = bases.GOLD
-        },
+        attr = copy(bases),
         items = copy(self._items),
         equips = copy(self._equips),
         equipInfo = copy(self._equipInfo),
@@ -347,6 +355,7 @@ function Player:addItem(itemID, count)
     ---@cast itemCount integer
     self._items[itemID] = (self._items[itemID] or 0) + itemCount
     self:_syncItemAbility(itemID)
+    publishPlayerChanged(self, EventKeys.PlayerChangeKind.Inventory, itemID)
 end
 
 function Player:removeItem(itemID, count)
@@ -360,6 +369,7 @@ function Player:removeItem(itemID, count)
         self._items[itemID] = nil
     end
     self:_syncItemAbility(itemID)
+    publishPlayerChanged(self, EventKeys.PlayerChangeKind.Inventory, itemID)
     return true
 end
 

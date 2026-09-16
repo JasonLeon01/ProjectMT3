@@ -1,4 +1,5 @@
 local Engine = require("Engine")
+local GlobalCore = require("GlobalCore")
 local Data = require("Source.Data")
 local EventKeys = require("Source.Configs.EventKeys")
 ---@type { Item: Source.Configs.GeneralEnum.Item, State: Source.Configs.GeneralEnum.State }
@@ -15,6 +16,7 @@ local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 ---@type fun(value: string): string
 local LOC = LocaleCore.ApplyStringLocaleFormat
+local Animation = GlobalCore.Animation
 local Canvas = Engine.Canvas
 local Item = GeneralEnum.Item
 local State = GeneralEnum.State
@@ -26,6 +28,7 @@ local createSignature = tuple
 
 local _STATE_ICON_SIZE = 16
 local _STATE_GAP = 4
+local _BREATH_ANIM_DURATION = 1.2
 
 local function getStateSignature(states)
     ---@type string[]
@@ -57,7 +60,11 @@ local Controller = {}
 
 Controller.windowOptions = { position = sf.Vector2f.new(0, 0) }
 
-Controller.refreshEvents = { EventKeys.LocaleChanged }
+Controller.refreshEvents = {
+    EventKeys.LocaleChanged,
+    EventKeys.AbilitySystemChanged,
+    EventKeys.PlayerChanged
+}
 
 function Controller:init(player, openMenuCallback)
     self._player = player
@@ -72,22 +79,31 @@ function Controller:init(player, openMenuCallback)
     self._hpSignature = nil
     self._statSignature = nil
     self._stackSignature = nil
+    self._breathSignature = nil
+    self._breathAnimElapsed = 0
     self._progressSignature = nil
     self._keySignature = nil
-    self._layoutDirty = false
     self:_initialiseAvatar(player)
     self._states = self:createCollection(self.ui.controls["StateHost"], PlayerStateRowController)
 end
 
 function Controller:setPlayer(player)
     self._player = player
+    self:refresh()
 end
 
-function Controller:onTick(_deltaTime)
-    self:refresh()
-    if self._layoutDirty then
-        self.view:reflow()
-        self._layoutDirty = false
+---@param payload Source.Configs.EventKeys.ChangePayload | { language: string } | nil
+function Controller:refreshFromEvent(payload)
+    if payload ~= nil and payload.owner ~= nil and payload.owner ~= self:getPlayer() then
+        return
+    end
+    super(Controller, self).refreshFromEvent(payload)
+end
+
+function Controller:onTick(deltaTime)
+    self._breathAnimElapsed = self._breathAnimElapsed + deltaTime
+    if self._breathAnimElapsed >= _BREATH_ANIM_DURATION then
+        self:playBreathAnimation()
     end
 end
 
@@ -119,14 +135,15 @@ end
 function Controller:bind()
     if self._avatarTexture == nil then
         self:setProperty("Avatar", "visible", false)
-        return
+    else
+        ---@cast self._avatarTexture sf.Texture
+        ---@cast self._avatarRect sf.IntRect
+        self.ui.controls["Avatar"]:setTexture(self._avatarTexture, true)
+        self.ui.controls["Avatar"]:setTextureRect(self._avatarRect)
+        self:setProperty("Avatar", "visible", true)
+        self.ui.controls["Avatar"]:addClickCallback(self:bindCallback(Controller.openMenu))
     end
-    ---@cast self._avatarTexture sf.Texture
-    ---@cast self._avatarRect sf.IntRect
-    self.ui.controls["Avatar"]:setTexture(self._avatarTexture, true)
-    self.ui.controls["Avatar"]:setTextureRect(self._avatarRect)
-    self:setProperty("Avatar", "visible", true)
-    self.ui.controls["Avatar"]:addClickCallback(self:bindCallback(Controller.openMenu))
+    self:playBreathAnimation()
 end
 
 ---@param states    Source.Configs.GeneralDataTypes.StateAttributeSet[]
@@ -202,6 +219,7 @@ function Controller:refresh()
         self:setText("HpLabel", LOC("HP"))
         self:setText("AtkLabel", LOC("ATK"))
         self:setText("DefLabel", LOC("DEF"))
+        self:setText("BreathLabel", LOC("BREATH"))
         self:setText("ExpLabel", LOC("EXP"))
         self:setText("GoldLabel", LOC("GOLD"))
         layoutDirty = true
@@ -250,6 +268,15 @@ function Controller:refresh()
         end
     end
 
+    local breathSignature = createSignature(
+        self:getPlayer().attributes.breath, self:getPlayer().attributes.breathLimit
+    )
+    if self._breathSignature ~= breathSignature then
+        self._breathSignature = breathSignature
+        self:refreshBreath()
+        layoutDirty = true
+    end
+
     local progressSignature = createSignature(
         self:getPlayer().attributes.LEVEL, self:getPlayer().attributes.EXP, self:getPlayer().attributes.GOLD
     )
@@ -278,7 +305,65 @@ function Controller:refresh()
     if refreshStateRows then
         self:refreshStates(language)
     end
-    self._layoutDirty = layoutDirty
+    if layoutDirty then
+        self.view:reflow()
+    end
+end
+
+function Controller:refreshBreath()
+    local attributes = self:getPlayer().attributes
+    local unit = math.floor(attributes.breathLimit / 6)
+    local fraction = unit > 0 and attributes.breath % unit / unit or 0
+    local bar = self.ui.controls["BreathBar"]
+    ---@cast bar Engine.ProgressBar
+    bar:setProgress(fraction)
+    for _, kind in ipairs({ "Lit", "Dim" }) do
+        for index = 1, self:getBreathBox(kind):getCount() do
+            local lit = unit > 0 and attributes.breath >= unit * index
+            local canvas = self:getBreathCanvas(kind, index)
+            canvas:setVisible(true)
+            canvas:setColour((lit == (kind == "Lit")) and sf.Color.White or sf.Color.Transparent)
+        end
+    end
+end
+
+function Controller:getBreathBox(kind)
+    local box = assert(self.ui.controls["Breath" .. kind])
+    assert(Class.isInstance(box, Engine.WrapBox), "Breath group must be an Engine.WrapBox")
+    ---@cast box Engine.WrapBox
+    return box
+end
+
+function Controller:getBreathCanvas(kind, index)
+    local canvas = self:getBreathBox(kind):get(index)
+    assert(Class.isInstance(canvas, Engine.Canvas), "Breath template must be an Engine.Canvas")
+    ---@cast canvas Engine.Canvas
+    return canvas
+end
+
+function Controller:playBreathAnimation()
+    self._breathAnimElapsed = 0
+    for _, kind in ipairs({ "Lit", "Dim" }) do
+        local data = Data.GetAnimation("BattleBreath" .. kind)
+        for index = 1, self:getBreathBox(kind):getCount() do
+            local canvas = self:getBreathCanvas(kind, index)
+            canvas:clearAnims()
+            local animation = Animation.new(data, false)
+            animation:setPosition(sf.Vector2f.new(8, 10))
+            canvas:addAnim(animation)
+            local preview = assert(canvas:getChildren()[1])
+            preview:setVisible(false)
+        end
+    end
+end
+
+function Controller:dispose()
+    for _, kind in ipairs({ "Lit", "Dim" }) do
+        for index = 1, self:getBreathBox(kind):getCount() do
+            self:getBreathCanvas(kind, index):clearAnims()
+        end
+    end
+    super(Controller, self).dispose()
 end
 
 return Ui.DefineWindow(View, Controller, Canvas)

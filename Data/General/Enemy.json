@@ -438,9 +438,7 @@
       "GOLD": 5,
       "breathLimit": 35,
       "drops": {},
-      "special": {
-        "AntiMagic": ""
-      },
+      "special": {},
       "ANIMATION_KEY": "00_kongshou",
       "CritAnimationKey": "01_kongshou2"
     },
@@ -516,9 +514,7 @@
       "GOLD": 10,
       "breathLimit": 36,
       "drops": {},
-      "special": {
-        "AntiMagic": ""
-      },
+      "special": {},
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
     },
@@ -579,8 +575,7 @@
       "breathLimit": 52,
       "drops": {},
       "special": {
-        "MultiHit": 2,
-        "ManaDrain": 1
+        "MultiHit": 2
       },
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
@@ -1012,8 +1007,7 @@
       "breathLimit": 72,
       "drops": {},
       "special": {
-        "MultiHit": 3,
-        "ManaDrain": 2
+        "MultiHit": 3
       },
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
@@ -1095,9 +1089,7 @@
       "GOLD": 14,
       "breathLimit": 88,
       "drops": {},
-      "special": {
-        "AntiMagic": ""
-      },
+      "special": {},
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
     },
@@ -1112,8 +1104,7 @@
       "breathLimit": 30,
       "drops": {},
       "special": {
-        "Hard": "",
-        "AntiMagic": ""
+        "Hard": ""
       },
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
@@ -1697,9 +1688,7 @@
       "GOLD": 0,
       "breathLimit": 388,
       "drops": {},
-      "special": {
-        "AntiMagic": ""
-      },
+      "special": {},
       "ANIMATION_KEY": "68_doushen",
       "CritAnimationKey": "69_doushen2"
     },

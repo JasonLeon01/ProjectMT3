@@ -173,7 +173,6 @@ local Player = {}
 --- @brief Special member keys.
 ---@class Source.Configs.GeneralEnum.Special
 ---@field Ambush string
----@field AntiMagic string
 ---@field ArmorBreak string
 ---@field AuraField string
 ---@field Berserk string
@@ -195,7 +194,6 @@ local Player = {}
 ---@field Hard string
 ---@field HolySword string
 ---@field Magic string
----@field ManaDrain string
 ---@field Mucus string
 ---@field MultiHit string
 ---@field Pierce string

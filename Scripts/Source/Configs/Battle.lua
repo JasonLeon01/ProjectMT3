@@ -23,7 +23,13 @@ Battle.players = {
 }
 
 Battle.enemy = {
-    crit = function (damage, _attacker, _defender)
+    crit = function (damage, attacker, _defender)
+        if attacker.berserk then
+            return damage * 5
+        end
+        if attacker.sureKill then
+            return damage * 3
+        end
         return damage * 2
     end
 }

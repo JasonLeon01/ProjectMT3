@@ -93,16 +93,6 @@
       "desc": "{S_SUREKILL_DESC}",
       "icon": ""
     },
-    "AntiMagic": {
-      "name": "{S_ANTIMAGIC}",
-      "desc": "{S_ANTIMAGIC_DESC}",
-      "icon": ""
-    },
-    "ManaDrain": {
-      "name": "{S_MANADRAIN}",
-      "desc": "{S_MANADRAIN_DESC}",
-      "icon": ""
-    },
     "DeathCurse": {
       "name": "{S_DEATHCURSE}",
       "desc": "{S_DEATHCURSE_DESC}",

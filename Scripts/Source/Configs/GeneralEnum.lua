@@ -158,7 +158,6 @@ local Player = {
 
 local Special = {
     Ambush = "Ambush",
-    AntiMagic = "AntiMagic",
     ArmorBreak = "ArmorBreak",
     AuraField = "AuraField",
     Berserk = "Berserk",
@@ -180,7 +179,6 @@ local Special = {
     Hard = "Hard",
     HolySword = "HolySword",
     Magic = "Magic",
-    ManaDrain = "ManaDrain",
     Mucus = "Mucus",
     MultiHit = "MultiHit",
     Pierce = "Pierce",

@@ -9,6 +9,9 @@
 ---@field poisoning        integer
 ---@field weaken           integer
 ---@field vampire          number
+---@field mucus            integer
+---@field sureKill         boolean
+---@field berserk          boolean
 ---@field ATK              integer
 ---@field DEF              integer
 ---@field magic            integer

@@ -1,7 +1,7 @@
 ---@meta
 
 ---
---- Shows the player's avatar, current map name, level, states, HP bar with value, and stat values.
+--- Shows the player's avatar, current map name, level, states, HP bar with value, stat values, and breath slots.
 ---@class Source.Windows.PlayerAttrHUD.Controller: Source.UIBase.UiController
 ---@field host                   Source.Windows.PlayerAttrHUD
 ---@field _player                Source.Player.Player
@@ -18,9 +18,10 @@
 ---@field _hpSignature           tuple<any> | nil
 ---@field _statSignature         tuple<any> | nil
 ---@field _stackSignature        tuple<any> | nil
+---@field _breathSignature       tuple<any> | nil
+---@field _breathAnimElapsed     number
 ---@field _progressSignature     tuple<any> | nil
 ---@field _keySignature          tuple<any> | nil
----@field _layoutDirty           boolean
 ---@field _states                Source.UIBase.UiCollection<Source.Windows.HUDPlayerAttr.PlayerStateRow.Controller>
 local Controller = {}
 
@@ -38,7 +39,13 @@ function Controller:init(player, openMenuCallback) end
 ---@param player Source.Player.Player
 function Controller:setPlayer(player) end
 
---- Poll lightweight player signatures every frame and refresh only the HUD groups whose displayed values changed.
+--- Ignore Ability System and player events from other battlers, then refresh the HUD.
+---
+--- - @param payload EventBus payload. Locale events have no owner; player and ability events include `owner`.
+---@param payload Source.Configs.EventKeys.ChangePayload | { language: string } | nil
+function Controller:refreshFromEvent(payload) end
+
+--- Advance the breath-slot animation clock and replay the loop when it elapses.
 ---
 --- - @param deltaTime  Elapsed frame time in seconds
 ---@param deltaTime number
@@ -56,5 +63,18 @@ function Controller:bind() end
 function Controller:refreshStates(language) end
 
 function Controller:refresh() end
+
+---@param kind "Lit" | "Dim"
+---@return Engine.WrapBox
+function Controller:getBreathBox(kind) end
+
+---@param kind  "Lit" | "Dim"
+---@param index integer
+---@return Engine.Canvas
+function Controller:getBreathCanvas(kind, index) end
+
+function Controller:refreshBreath() end
+
+function Controller:playBreathAnimation() end
 
 function Controller:dispose() end

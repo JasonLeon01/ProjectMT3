@@ -2,7 +2,7 @@
 ---@meta Source.Windows.HUDPlayerAttr
 
 ---
---- Shows the player's avatar, current map name, level, states, HP bar with value, and stat values.
+--- Shows the player's avatar, current map name, level, states, HP bar with value, stat values, and breath slots.
 ---@class Source.Windows.PlayerAttrHUD: Engine.Canvas, Source.UIBase.Ui.Window
 ---@field ui Source.UI.PlayerAttrHUD
 local Window = {}
@@ -28,10 +28,21 @@ function Window.FromView(ui, player, openMenuCallback) end
 
 function Window:bind() end
 
+function Window:dispose() end
+
+---@param kind "Lit" | "Dim"
+---@return Engine.WrapBox
+function Window:getBreathBox(kind) end
+
+---@param kind  "Lit" | "Dim"
+---@param index integer
+---@return Engine.Canvas
+function Window:getBreathCanvas(kind, index) end
+
 ---@return Source.Player.Player
 function Window:getPlayer() end
 
---- Poll lightweight player signatures every frame and refresh only the HUD groups whose displayed values changed.
+--- Advance the breath-slot animation clock and replay the loop when it elapses.
 ---
 --- - @param deltaTime  Elapsed frame time in seconds
 ---@param deltaTime number
@@ -39,7 +50,17 @@ function Window:onTick(deltaTime) end
 
 function Window:openMenu() end
 
+function Window:playBreathAnimation() end
+
 function Window:refresh() end
+
+function Window:refreshBreath() end
+
+--- Ignore Ability System and player events from other battlers, then refresh the HUD.
+---
+--- - @param payload EventBus payload. Locale events have no owner; player and ability events include `owner`.
+---@param payload Source.Configs.EventKeys.ChangePayload | { language: string } | nil
+function Window:refreshFromEvent(payload) end
 
 ---@param language string | nil
 ---@return boolean
