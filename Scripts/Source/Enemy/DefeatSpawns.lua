@@ -9,6 +9,26 @@ local Special = GeneralEnum.Special
 
 local DefeatSpawns = {}
 
+local AREA_OFFSETS = {
+    sf.Vector2i.new(0, 0),
+    sf.Vector2i.new(-1, -1),
+    sf.Vector2i.new(0, -1),
+    sf.Vector2i.new(1, -1),
+    sf.Vector2i.new(-1, 0),
+    sf.Vector2i.new(1, 0),
+    sf.Vector2i.new(-1, 1),
+    sf.Vector2i.new(0, 1),
+    sf.Vector2i.new(1, 1)
+}
+
+local SPAWN_KINDS = {
+    { special = Special.Reborn, area = false, skipPlayer = false, allowPlayer = false },
+    { special = Special.Ember, area = false, skipPlayer = false, allowPlayer = false },
+    { special = Special.Glacial, area = false, skipPlayer = false, allowPlayer = false },
+    { special = Special.BurstFlame, area = true, skipPlayer = false, allowPlayer = true },
+    { special = Special.Snowland, area = true, skipPlayer = true, allowPlayer = false }
+}
+
 ---@class EnemyDefeatSpawnContext
 ---@field gameMap      GameMap
 ---@field layerName    string
@@ -52,8 +72,9 @@ end
 ---@param blueprintPath string
 ---@param kind          string
 ---@param tagSuffix     string
+---@param position      sf.Vector2i
 ---@return Engine.Actor
-local function prepareActor(context, blueprintPath, kind, tagSuffix)
+local function prepareActor(context, blueprintPath, kind, tagSuffix, position)
     assert(
         Class.isInstance(blueprintPath, "string") and bool(blueprintPath),
         "Enemy " .. kind .. " requires a Blueprint class path"
@@ -62,7 +83,7 @@ local function prepareActor(context, blueprintPath, kind, tagSuffix)
         Data.GenActorFromClassPath(blueprintPath), "Enemy " .. kind .. " Blueprint class not found: " .. blueprintPath
     )
     actor:setMapTag(reserveTag(context, tagSuffix))
-    actor:setMapPosition(copy(context.position))
+    actor:setMapPosition(copy(position))
     return actor
 end
 
@@ -104,17 +125,101 @@ local function prepareDrop(context, blueprintPath, offset)
     return actor
 end
 
+---@param gameMap  GameMap
+---@param position sf.Vector2i
+---@return boolean
+local function inBounds(gameMap, position)
+    local size = gameMap:getSize()
+    return position.x >= 0 and position.y >= 0 and position.x < size.x and position.y < size.y
+end
+
+---@param gameMap GameMap
+---@param position sf.Vector2i
+---@param ignored Engine.Actor
+---@return boolean
+local function hasOtherActor(gameMap, position, ignored)
+    for _, actor in ipairs(gameMap:getActorsByPosition(position)) do
+        if actor ~= ignored and not actor:isDestroyed() and actor:isVisibleInHierarchy() then
+            return true
+        end
+    end
+    return false
+end
+
+---@param player   Engine.Actor | nil
+---@param position sf.Vector2i
+---@return boolean
+local function isPlayerOn(player, position)
+    if player == nil then
+        return false
+    end
+    local playerPosition = player:getMapPosition()
+    return position.x == playerPosition.x and position.y == playerPosition.y
+end
+
+---@param context     EnemyDefeatSpawnContext
+---@param enemy       Source.Enemy
+---@param player      Engine.Actor | nil
+---@param position    sf.Vector2i
+---@param isOrigin    boolean
+---@param skipPlayer  boolean
+---@param allowPlayer boolean
+---@return boolean
+local function canPlace(context, enemy, player, position, isOrigin, skipPlayer, allowPlayer)
+    if not inBounds(context.gameMap, position) then
+        return false
+    end
+    if skipPlayer and isPlayerOn(player, position) then
+        return false
+    end
+    if isOrigin then
+        return true
+    end
+    if isPlayerOn(player, position) then
+        return allowPlayer
+    end
+    if hasOtherActor(context.gameMap, position, enemy) then
+        return false
+    end
+    return player == nil or context.gameMap:isPassable(player, position)
+end
+
 function DefeatSpawns.Prepare(enemy, scene)
-    ---@type string | nil
-    local blueprintPath = SpecialAbilities.GetMagnitude(enemy:getAbilitySystemComponent(), Special.Reborn)
+    local abilitySystem = enemy:getAbilitySystemComponent()
+    ---@type { special: string, area: boolean, skipPlayer: boolean, allowPlayer: boolean, path: string }[]
+    local kinds = {}
+    for _, kind in ipairs(SPAWN_KINDS) do
+        local path = SpecialAbilities.GetMagnitude(abilitySystem, kind.special)
+        if Class.isInstance(path, "string") and bool(path) then
+            kinds[#kinds + 1] = {
+                special = kind.special,
+                area = kind.area,
+                skipPlayer = kind.skipPlayer,
+                allowPlayer = kind.allowPlayer,
+                path = path
+            }
+        end
+    end
     local drops = deepcopy(enemy.attributes.drops)
-    if blueprintPath == nil and not bool(drops) then
-        return nil, {}, nil
+    if not bool(kinds) and not bool(drops) then
+        return {}, {}, nil
     end
     local context = createContext(enemy, scene)
-    local rebornActor = nil
-    if blueprintPath ~= nil then
-        rebornActor = prepareActor(context, blueprintPath, "Reborn special", "Reborn")
+    local player = context.gameMap:getPlayer()
+    local spawnActors = {}
+    for _, kind in ipairs(kinds) do
+        local offsets = kind.area and AREA_OFFSETS or { sf.Vector2i.new(0, 0) }
+        for _, offset in ipairs(offsets) do
+            local position = context.position + offset
+            local isOrigin = offset.x == 0 and offset.y == 0
+            if canPlace(context, enemy, player, position, isOrigin, kind.skipPlayer, kind.allowPlayer) then
+                local tagSuffix = kind.special == Special.Reborn and "Reborn"
+                    or (kind.special .. "_" .. tostring(position.x) .. "_" .. tostring(position.y))
+                spawnActors[#spawnActors + 1] = prepareActor(
+                    context, kind.path, kind.special .. " special", tagSuffix, position
+                )
+            end
+        end
     end
     local droppedActors = {}
     for _, dropPath in ipairs(table.orderedStringKeys(drops)) do
@@ -123,7 +228,7 @@ function DefeatSpawns.Prepare(enemy, scene)
             droppedActors[#droppedActors + 1] = actor
         end
     end
-    return rebornActor, droppedActors, context.layerName
+    return spawnActors, droppedActors, context.layerName
 end
 
 function DefeatSpawns.Spawn(scene, actor, layerName)

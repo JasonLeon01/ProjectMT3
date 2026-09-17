@@ -128,7 +128,7 @@ function Controller:buildEntry(enemy, visual)
         name = self:formatName(nameSource),
         desc = self:formatText(descSource),
         MAXHP = enemy.attributes.MAXHP,
-        ATK = battleData.enemyAttack.attackerATK,
+        ATK = enemy.attributes.ATK,
         DEF = battleData.playerAttack.defenderDEF,
         EXP = enemy.attributes.EXP,
         GOLD = enemy.attributes.GOLD,

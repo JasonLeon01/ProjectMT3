@@ -36,7 +36,8 @@ local function createState(actor, player)
     return {
         HP = player and attributes.HP or attributes.MAXHP,
         MAXHP = attributes.MAXHP,
-        ATK = attributes.ATK,
+        ATK = (not player and SpecialAbilities.GetMagnitude(abilitySystem, Special.Ambush) ~= nil)
+            and attributes.ATK * 2 or attributes.ATK,
         DEF = attributes.DEF,
         MAGIC = player and attributes.MAGIC or 0,
         breath = player and attributes.breath or 0,
@@ -53,12 +54,20 @@ local function createState(actor, player)
         weaken = SpecialAbilities.GetMagnitude(abilitySystem, Special.Weaken) or 0,
         vampire = SpecialAbilities.GetMagnitude(abilitySystem, Special.Vampire) or 0,
         mucus = SpecialAbilities.GetMagnitude(abilitySystem, Special.Mucus) or 0,
+        thunder = tonumber(SpecialAbilities.GetMagnitude(abilitySystem, Special.Thunder)) or 0,
         sureKill = SpecialAbilities.GetMagnitude(abilitySystem, Special.SureKill) ~= nil,
         berserk = SpecialAbilities.GetMagnitude(abilitySystem, Special.Berserk) ~= nil,
         hard = SpecialAbilities.GetMagnitude(abilitySystem, Special.Hard) ~= nil,
         magic = SpecialAbilities.GetMagnitude(abilitySystem, Special.Magic) ~= nil,
         compete = SpecialAbilities.GetMagnitude(abilitySystem, Special.Compete) ~= nil,
         first = SpecialAbilities.GetMagnitude(abilitySystem, Special.First) ~= nil,
+        deathCurse = SpecialAbilities.GetMagnitude(abilitySystem, Special.DeathCurse) ~= nil,
+        armorBreak = SpecialAbilities.GetMagnitude(abilitySystem, Special.ArmorBreak) ~= nil,
+        burn = SpecialAbilities.GetMagnitude(abilitySystem, Special.Burn) ~= nil,
+        auraField = SpecialAbilities.GetMagnitude(abilitySystem, Special.AuraField) ~= nil,
+        frost = SpecialAbilities.GetMagnitude(abilitySystem, Special.Frost) ~= nil,
+        burnHits = 0,
+        frozenTurns = 0,
         hitCount = math.max(1, SpecialAbilities.GetMagnitude(abilitySystem, Special.MultiHit) or 1)
     }
 end
@@ -231,7 +240,11 @@ function Controller:calculateDamage(attacker, defender, critical)
     if attacker.compete then
         atk = math.max(atk, defender.ATK)
     end
+    local originalDef = defender.DEF
     local def = attacker.magic and 0 or defender.DEF
+    if attacker.armorBreak then
+        def = math.floor(def / 2)
+    end
     if defender.hard then
         def = math.max(def, atk - 1)
     end
@@ -242,7 +255,18 @@ function Controller:calculateDamage(attacker, defender, critical)
         damage = attacker.crit(base, attacker, defender)
         assert(math.isFinite(damage) and damage >= 0, "Battle crit must return finite non-negative damage")
     end
-    return math.max(0, math.round(damage * math.max(0, 1 - attacker.fatigue / 100))), base
+    if attacker.deathCurse and atk >= originalDef then
+        damage = damage * 2
+    end
+    if attacker.burn and damage > 0 then
+        damage = damage * (2 ^ attacker.burnHits)
+    end
+    damage = math.max(0, math.round(damage * math.max(0, 1 - attacker.fatigue / 100)))
+    if not defender.isPlayer and defender.auraField
+        and (defender.breath <= 0 or defender.breath >= defender.breathLimit) then
+        damage = 0
+    end
+    return damage, base
 end
 
 function Controller:canCritical(attacker, defender)
@@ -276,6 +300,13 @@ end
 function Controller:beginTurn(playerTurn, remainingHits)
     if self._retreatRequested then
         self:finish("retreat")
+        return
+    end
+    if playerTurn and assert(self._player).frozenTurns > 0 then
+        self._player.frozenTurns = self._player.frozenTurns - 1
+        self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function ()
+            self:beginTurn(false)
+        end)
         return
     end
     local attacker = assert(playerTurn and self._player or self._enemy)
@@ -354,13 +385,22 @@ function Controller:receiveAttack(attacker, defender, damage, critical)
         if critical then
             attacker.breath = attacker.isPlayer and attacker.breath - math.floor(attacker.breathLimit / 6) or 0
             attacker.fatigue = attacker.fatigue + Battle.criticalFatigue
+            if attacker.thunder > 0 and defender.isPlayer then
+                defender.breath = math.max(0, defender.breath - math.floor(defender.breathLimit / 3))
+                defender.fatigue = defender.fatigue + attacker.thunder
+            end
+            if attacker.frost and defender.isPlayer then
+                defender.frozenTurns = 1
+            end
         else
             local player = assert(self._player)
             local defense = attacker.isPlayer and defender.DEF or player.DEF
             local gain = player.ATK > 0 and math.round(defense / player.ATK * 6) or 0
             self:addBreath(attacker, gain)
         end
-        self:addBreath(defender, math.round(damage / (defender.isPlayer and 10 or 3)))
+        if not (attacker.thunder > 0 and defender.isPlayer) then
+            self:addBreath(defender, math.round(damage / (defender.isPlayer and 10 or 3)))
+        end
     end
     if damage <= 0 then return end
     local lostHP = -self:changeHP(defender, -damage)
@@ -371,6 +411,9 @@ function Controller:receiveAttack(attacker, defender, damage, critical)
     self:applyAttackStates(attacker, defender)
     if not attacker.isPlayer then
         defender.fatigue = defender.fatigue + attacker.mucus
+    end
+    if attacker.burn then
+        attacker.burnHits = attacker.burnHits + 1
     end
     if critical and attacker.berserk then
         self:changeHP(attacker, -math.floor(attacker.HP / 2))

@@ -148,11 +148,6 @@
       "desc": "{S_AURAFIELD_DESC}",
       "icon": ""
     },
-    "BloodThrall": {
-      "name": "{S_BLOODTHRALL}",
-      "desc": "{S_BLOODTHRALL_DESC}",
-      "icon": ""
-    },
     "ArmorBreak": {
       "name": "{S_ARMORBREAK}",
       "desc": "{S_ARMORBREAK_DESC}",
@@ -161,36 +156,6 @@
     "Snowland": {
       "name": "{S_SNOWLAND}",
       "desc": "{S_SNOWLAND_DESC}",
-      "icon": ""
-    },
-    "Pierce": {
-      "name": "{S_PIERCE}",
-      "desc": "{S_PIERCE_DESC}",
-      "icon": ""
-    },
-    "Venom": {
-      "name": "{S_VENOM}",
-      "desc": "{S_VENOM_DESC}",
-      "icon": ""
-    },
-    "DoomBlade": {
-      "name": "{S_DOOMBLADE}",
-      "desc": "{S_DOOMBLADE_DESC}",
-      "icon": ""
-    },
-    "HolySword": {
-      "name": "{S_HOLYSWORD}",
-      "desc": "{S_HOLYSWORD_DESC}",
-      "icon": ""
-    },
-    "Trick": {
-      "name": "{S_TRICK}",
-      "desc": "{S_TRICK_DESC}",
-      "icon": ""
-    },
-    "Samsara": {
-      "name": "{S_SAMSARA}",
-      "desc": "{S_SAMSARA_DESC}",
       "icon": ""
     }
   }

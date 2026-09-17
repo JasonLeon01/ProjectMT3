@@ -739,7 +739,7 @@
       "special": {
         "Magic": "",
         "Flank": "",
-        "Frost": 1
+        "Frost": ""
       },
       "ANIMATION_KEY": "31_bing",
       "CritAnimationKey": "32_bing2"
@@ -1025,7 +1025,7 @@
       "special": {
         "Magic": "",
         "Flank": "",
-        "Frost": 2
+        "Frost": ""
       },
       "ANIMATION_KEY": "43_lvyi1",
       "CritAnimationKey": "44_lvyi2"
@@ -1203,7 +1203,7 @@
       "drops": {},
       "special": {
         "First": "",
-        "Frost": 5
+        "Frost": ""
       },
       "ANIMATION_KEY": "47_bingshilaimu",
       "CritAnimationKey": "48_bingshilaimu2"
@@ -1236,7 +1236,7 @@
       "breathLimit": 100,
       "drops": {},
       "special": {
-        "Ember": ""
+        "Ember": "Data.Blueprints.Actors.BP_Barrier_50"
       },
       "ANIMATION_KEY": "17_zhua",
       "CritAnimationKey": "18_zhua2"
@@ -1253,7 +1253,7 @@
       "drops": {},
       "special": {
         "First": "",
-        "Glacial": ""
+        "Glacial": "Data.Blueprints.Actors.BP_SWall_Ice"
       },
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
@@ -1353,7 +1353,7 @@
       "special": {
         "Magic": "",
         "Domain": 1,
-        "BurstFlame": ""
+        "BurstFlame": "Data.Blueprints.Actors.BP_Barrier_50"
       },
       "ANIMATION_KEY": "50_huoyan",
       "CritAnimationKey": "51_huoyan2"
@@ -1387,8 +1387,7 @@
       "drops": {},
       "special": {
         "Vampire": 0.5,
-        "MultiHit": 0,
-        "BloodThrall": ""
+        "MultiHit": 3
       },
       "ANIMATION_KEY": "54_xixuegui",
       "CritAnimationKey": "55_xixuegui2"
@@ -1472,7 +1471,7 @@
       "special": {
         "Magic": "",
         "Domain": 1,
-        "Snowland": ""
+        "Snowland": "Data.Blueprints.Actors.BP_SWall_Ice"
       },
       "ANIMATION_KEY": "47_bingshilaimu",
       "CritAnimationKey": "48_bingshilaimu2"
@@ -1639,9 +1638,7 @@
       "GOLD": 0,
       "breathLimit": 270,
       "drops": {},
-      "special": {
-        "Pierce": 10
-      },
+      "special": {},
       "ANIMATION_KEY": "19_2jian",
       "CritAnimationKey": "20_2jian2"
     },
@@ -1656,8 +1653,7 @@
       "breathLimit": 290,
       "drops": {},
       "special": {
-        "MultiHit": 2,
-        "Venom": 10
+        "MultiHit": 2
       },
       "ANIMATION_KEY": "04_bianfu",
       "CritAnimationKey": "05_bianfu2"
@@ -1703,8 +1699,7 @@
       "breathLimit": 288,
       "drops": {},
       "special": {
-        "MultiHit": 4,
-        "DoomBlade": ""
+        "MultiHit": 4
       },
       "ANIMATION_KEY": "62_jianwang",
       "CritAnimationKey": "63_jianwang2"
@@ -1719,9 +1714,7 @@
       "GOLD": 0,
       "breathLimit": 318,
       "drops": {},
-      "special": {
-        "HolySword": ""
-      },
+      "special": {},
       "ANIMATION_KEY": "66_jianshen",
       "CritAnimationKey": "67_jianshen2"
     },
@@ -1736,8 +1729,7 @@
       "breathLimit": 348,
       "drops": {},
       "special": {
-        "Magic": "",
-        "Trick": ""
+        "Magic": ""
       },
       "ANIMATION_KEY": "70_moshen",
       "CritAnimationKey": "71_moshen2"
@@ -1753,8 +1745,7 @@
       "breathLimit": 400,
       "drops": {},
       "special": {
-        "Magic": "",
-        "Samsara": ""
+        "Magic": ""
       },
       "ANIMATION_KEY": "56_damofa",
       "CritAnimationKey": "57_damofa2"

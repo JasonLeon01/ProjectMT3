@@ -11,6 +11,13 @@
 
 local MovementSpecials = {}
 
+---@param gameMap      GameMap
+---@param actor        Engine.Actor
+---@param fromPosition sf.Vector2i
+---@param toPosition   sf.Vector2i
+---@return boolean
+function MovementSpecials.HasClearLine(gameMap, actor, fromPosition, toPosition) end
+
 ---@param enemies Source.Enemy[]
 ---@param player  Source.Player.Player
 ---@return Source.MovementSpecials.PreviewContext

@@ -105,7 +105,7 @@ end
 ---@param scene  Source.Gameplay.GameplayScene
 function Enemy:_preparePostBattle(player, scene)
     self:_evaluateAfterBattleVariableChanges(scene:getGameInstance())
-    local rebornEnemy, droppedActors, spawnLayer = DefeatSpawns.Prepare(self, scene)
+    local spawnActors, droppedActors, spawnLayer = DefeatSpawns.Prepare(self, scene)
     local eventData = GameplayEventData.new(self, player, "Event.Combat.Reward")
     local effectSpecs = {
         Effects.CreateInstantModifierSpec("Combat.Reward.Gold", "GOLD", "Add", self.attributes.GOLD, eventData),
@@ -117,7 +117,7 @@ function Enemy:_preparePostBattle(player, scene)
     end
     return {
         player = player,
-        rebornEnemy = rebornEnemy,
+        spawnActors = spawnActors,
         droppedActors = droppedActors,
         spawnLayer = spawnLayer,
         effectSpecs = effectSpecs
@@ -147,8 +147,8 @@ function Enemy:_finaliseDefeat(scene, prepared)
         scene:getGameMap():playActorPixelShatterEffect(self)
     end
     self:destroy()
-    if prepared.rebornEnemy ~= nil then
-        DefeatSpawns.Spawn(scene, prepared.rebornEnemy, prepared.spawnLayer)
+    for _, spawnActor in ipairs(prepared.spawnActors) do
+        DefeatSpawns.Spawn(scene, spawnActor, assert(prepared.spawnLayer))
     end
     for _, droppedActor in ipairs(prepared.droppedActors) do
         DefeatSpawns.Spawn(scene, droppedActor, prepared.spawnLayer)

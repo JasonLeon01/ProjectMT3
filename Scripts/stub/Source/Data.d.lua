@@ -26,7 +26,25 @@
 ---@field Domain?    integer
 ---@field Flank?     boolean
 ---@field Blockade?  boolean
----@field Reborn?    string
+---@field Reborn?     string
+---@field Vampire?    number
+---@field First?      boolean
+---@field FixDmg?     number|string
+---@field Mucus?      integer
+---@field SureKill?   boolean
+---@field DeathCurse? boolean
+---@field Berserk?    boolean
+---@field Ambush?     boolean
+---@field Frost?      boolean
+---@field Thunder?    integer
+---@field Ember?      string
+---@field Glacial?    string
+---@field Burn?       boolean
+---@field BurstFlame? string
+---@field AuraField?  boolean
+---@field ArmorBreak? boolean
+---@field Snowland?   string
+---@field EvilEye?    boolean
 
 ---@class Source.Data.InitialLoadStage
 ---@field animationData       table<string, Engine.AnimationData>

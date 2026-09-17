@@ -4,7 +4,7 @@ local DefeatSpawns = {}
 
 ---@param enemy Source.Enemy
 ---@param scene Source.Gameplay.GameplayScene
----@return Engine.Actor | nil rebornActor
+---@return Engine.Actor[] spawnActors
 ---@return Source.Item[] droppedActors
 ---@return string | nil layerName
 function DefeatSpawns.Prepare(enemy, scene) end
