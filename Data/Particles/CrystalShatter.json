@@ -1,0 +1,167 @@
+{
+  "type": "particle",
+  "name": "CrystalShatter",
+  "simulationRate": 60,
+  "seed": 137,
+  "tracks": [
+    {
+      "name": "Shatter",
+      "enabled": true,
+      "mode": "emission",
+      "delay": 0,
+      "duration": 0.2,
+      "loop": false,
+      "prewarm": false,
+      "capacity": 64,
+      "count": 32,
+      "rate": 0,
+      "distanceRate": 0,
+      "bursts": [],
+      "shape": "rectangle",
+      "extent": [
+        21,
+        55
+      ],
+      "radius": 16,
+      "innerRadius": 8,
+      "direction": -90,
+      "spread": 180,
+      "lifetime": [
+        0.5,
+        1.0
+      ],
+      "speed": [
+        30,
+        90
+      ],
+      "sizeMin": [
+        4,
+        6
+      ],
+      "sizeMax": [
+        8,
+        12
+      ],
+      "rotation": [
+        0,
+        360
+      ],
+      "angularVelocity": [
+        -180,
+        180
+      ],
+      "colourMin": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "colourMax": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "gravity": [
+        0,
+        50
+      ],
+      "radialAcceleration": 0,
+      "tangentialAcceleration": 0,
+      "damping": 1.2,
+      "texture": "/Game/Assets/Characters/actors/mting-1245.png",
+      "textureRect": [
+        0,
+        0,
+        21,
+        55
+      ],
+      "columns": 1,
+      "rows": 1,
+      "frameCount": 1,
+      "frameRate": 0,
+      "randomStartFrame": false,
+      "frameLoop": true,
+      "space": "world",
+      "scaleMode": "local",
+      "blend": "alpha",
+      "offset": [
+        0,
+        0
+      ],
+      "rotationOffset": 0,
+      "scale": [
+        1,
+        1
+      ],
+      "curves": {
+        "alpha": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        },
+        "sizeX": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0.2,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        },
+        "sizeY": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0.2,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
