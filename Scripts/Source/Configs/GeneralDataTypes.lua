@@ -45,13 +45,14 @@ EnemyAttributeSet.init = initAttributeSet
 EnemyAttributeSet = class(EnemyAttributeSet, AttributeSet)
 
 local EquipAttributeSet = {}
-EquipAttributeSet.ATTRIBUTE_NAMES = { "name", "desc", "icon", "slot", "attrPlus" }
+EquipAttributeSet.ATTRIBUTE_NAMES = { "name", "desc", "icon", "slot", "attrPlus", "AnimationKey" }
 EquipAttributeSet.SCHEMA = {
     name = { type = "string", default = "" },
     desc = { type = "string", default = "" },
     icon = { type = "file", default = "" },
     slot = { type = "string", default = "" },
-    attrPlus = { type = {dict = "int"}, default = {} }
+    attrPlus = { type = {dict = "int"}, default = {} },
+    AnimationKey = { type = "string", default = "" }
 }
 EquipAttributeSet.init = initAttributeSet
 EquipAttributeSet = class(EquipAttributeSet, AttributeSet)

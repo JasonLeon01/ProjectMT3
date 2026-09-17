@@ -1,71 +1,80 @@
 {
-    "params": {
-        "name": {
-            "type": "string",
-            "comment": "The display name of this equipment.",
-            "defaultValue": ""
-        },
-        "desc": {
-            "type": "string",
-            "comment": "The display description of this equipment.",
-            "defaultValue": ""
-        },
-        "icon": {
-            "type": "file",
-            "comment": "The icon asset logical path.",
-            "base": "Icons",
-            "defaultValue": ""
-        },
-        "slot": {
-            "type": "string",
-            "comment": "The Class slot key occupied by this equipment.",
-            "defaultValue": ""
-        },
-        "attrPlus": {
-            "type": "dict",
-            "comment": "Attribute names mapped to integer modifiers applied while this equipment is equipped.",
-            "defaultValue": {},
-            "valueType": "int"
-        }
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this equipment.",
+      "defaultValue": ""
     },
-    "members": {
-        "Sword_A": {
-            "name": "{SWORD_A}",
-            "desc": "{SWORD_A_DESC}",
-            "icon": "/Game/Assets/Icons/classic-equips-2-0.png",
-            "slot": "weapon",
-            "attrPlus": {
-                "ATK": 10
-            },
-            "_graph": {
-                "nodeGraph": {
-                    "onEquip": {
-                        "nodes": [],
-                        "links": []
-                    },
-                    "onUnequip": {
-                        "nodes": [],
-                        "links": []
-                    }
-                },
-                "startNodes": {
-                    "onEquip": null,
-                    "onUnequip": null
-                }
-            }
-        },
-        "Shield_A": {
-            "name": "{SHIELD_A}",
-            "desc": "{SHIELD_A_DESC}",
-            "icon": "/Game/Assets/Icons/classic-equips-3-0.png",
-            "slot": "shield",
-            "attrPlus": {
-                "DEF": 10
-            }
-        }
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this equipment.",
+      "defaultValue": ""
     },
-    "events": [
-        "onEquip",
-        "onUnequip"
-    ]
+    "icon": {
+      "type": "file",
+      "comment": "The icon asset logical path.",
+      "base": "Icons",
+      "defaultValue": ""
+    },
+    "slot": {
+      "type": "string",
+      "comment": "The Class slot key occupied by this equipment.",
+      "defaultValue": ""
+    },
+    "attrPlus": {
+      "type": "dict",
+      "comment": "Attribute names mapped to integer modifiers applied while this equipment is equipped.",
+      "defaultValue": {},
+      "valueType": "int"
+    },
+    "AnimationKey": {
+      "type": "string",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
+    }
+  },
+  "members": {
+    "Sword_A": {
+      "name": "{SWORD_A}",
+      "desc": "{SWORD_A_DESC}",
+      "icon": "/Game/Assets/Icons/classic-equips-2-0.png",
+      "slot": "weapon",
+      "attrPlus": {
+        "ATK": 10
+      },
+      "_graph": {
+        "nodeGraph": {
+          "onEquip": {
+            "nodes": [],
+            "links": []
+          },
+          "onUnequip": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onEquip": null,
+          "onUnequip": null
+        }
+      },
+      "AnimationKey": ""
+    },
+    "Shield_A": {
+      "name": "{SHIELD_A}",
+      "desc": "{SHIELD_A_DESC}",
+      "icon": "/Game/Assets/Icons/classic-equips-3-0.png",
+      "slot": "shield",
+      "attrPlus": {
+        "DEF": 10
+      },
+      "AnimationKey": ""
+    }
+  },
+  "events": [
+    "onEquip",
+    "onUnequip"
+  ]
 }

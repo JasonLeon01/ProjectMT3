@@ -39,6 +39,7 @@ local EnemyAttributeSet = {}
 ---@field icon            string
 ---@field slot            string
 ---@field attrPlus        table<string, integer>
+---@field AnimationKey    string
 ---@type Source.Configs.GeneralDataTypes.EquipAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.EquipAttributeSet>
 local EquipAttributeSet = {}
 
