@@ -71,7 +71,7 @@ local ItemAttributeSet = {}
 ---@field LEVEL            integer
 ---@field breath           integer
 ---@field breathLimit      integer
----@field magic            integer
+---@field MAGIC            integer
 ---@field ANIMATION_KEY    string
 ---@field CritAnimationKey string
 ---@type Source.Configs.GeneralDataTypes.PlayerAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.PlayerAttributeSet>

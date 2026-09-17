@@ -30,7 +30,8 @@ function Window:getVisible() end
 
 function Window:hideImmediate() end
 
-function Window:open() end
+---@param transitionProfile string | nil
+function Window:open(transitionProfile) end
 
 function Window:refreshLocale() end
 

@@ -100,6 +100,7 @@ return {
     ["PRINCESS"] = "Princess",
     ["PRINCESS_DESC"] = "..",
     ["Palace"] = "The Palace",
+    ["QUICK_SAVE"] = "Saved to file {slot}.",
     ["REFLECTION_NET"] = "Reflection Net",
     ["REFLECTION_NET_DESC"] = "Reduces map damage from monsters by half.",
     ["ROCK"] = "Rock",

@@ -50,7 +50,10 @@ function Window:onReturn() end
 function Window:onTick(deltaTime) end
 
 ---@brief Open the item window, refreshing inventory and selecting its first item.
-function Window:open() end
+---
+--- Defaults to Menu dock + FadeIn_Menu. Pass DEFAULT to center with scale fade.
+---@param transitionProfile string | nil
+function Window:open(transitionProfile) end
 
 function Window:refresh() end
 

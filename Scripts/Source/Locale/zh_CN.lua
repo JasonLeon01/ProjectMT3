@@ -399,6 +399,7 @@ return {
     ["PRINCESS"] = "公主",
     ["PRINCESS_DESC"] = "..",
     ["Palace"] = "皇    宫",
+    ["QUICK_SAVE"] = "已存档到文件 {slot}。",
     ["REFLECTION_NET"] = "反射网",
     ["REFLECTION_NET_DESC"] = "可将来自怪物的地图伤害降低一半。",
     ["ROCK"] = "石头人",

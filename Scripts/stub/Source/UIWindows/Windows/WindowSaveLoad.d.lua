@@ -91,11 +91,13 @@ function Window:onSlotConfirm(slot) end
 ---@param index integer
 function Window:onTabSelected(index) end
 
----@brief Open the save/load UI in Load mode with the slot list focused.
+---@brief Open the save/load UI with the slot list focused.
 ---
+--- Defaults to Load. Pass `"save"` to open the Save tab when tabs are present.
 --- Selects the latest existing save, or the first slot when none exists.
 ---@param transitionProfile string | nil
-function Window:open(transitionProfile) end
+---@param initialMode       "load" | "save" | nil
+function Window:open(transitionProfile, initialMode) end
 
 ---@brief Set the visibility of all save/load child windows.
 ---
