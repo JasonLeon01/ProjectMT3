@@ -28,7 +28,11 @@
         96,
         128
       ],
-      "lightRadius": 16.0
+      "lightRadius": 32,
+      "lightOffset": [
+        0,
+        0
+      ]
     },
     "tag": ""
   },

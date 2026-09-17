@@ -14,12 +14,16 @@
     "texturePath": "/Game/Assets/Characters/items/Item028.png",
     "lightComp": {
       "lightColour": [
-        255,
-        96,
-        96,
-        128
+        160,
+        160,
+        160,
+        192
       ],
-      "lightRadius": 16.0
+      "lightRadius": 24,
+      "lightOffset": [
+        0,
+        0
+      ]
     },
     "tag": "",
     "ATTR_key": "GOLD",

@@ -14,12 +14,16 @@
     "texturePath": "/Game/Assets/Characters/items/classic-items.png",
     "lightComp": {
       "lightColour": [
-        255,
+        192,
+        192,
         96,
-        96,
-        128
+        192
       ],
-      "lightRadius": 16.0
+      "lightRadius": 32,
+      "lightOffset": [
+        0,
+        0
+      ]
     },
     "tag": "",
     "ATTR_key": "LEVEL",

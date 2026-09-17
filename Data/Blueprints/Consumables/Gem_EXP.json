@@ -14,12 +14,16 @@
     "texturePath": "/Game/Assets/Characters/items/Item401.png",
     "lightComp": {
       "lightColour": [
-        255,
         96,
+        255,
         96,
         128
       ],
-      "lightRadius": 16.0
+      "lightRadius": 16.0,
+      "lightOffset": [
+        0,
+        0
+      ]
     },
     "tag": "",
     "ATTR_key": "EXP",
