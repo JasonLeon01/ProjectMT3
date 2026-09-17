@@ -481,7 +481,12 @@
           {
             "nodeFunction": "NodeFunctions.Utils.AddPlayerByClass",
             "params": [
-              "Data.Blueprints.Actors.BP_Actor_Braver"
+              "Data.Blueprints.Actors.BP_Actor_Braver",
+              "MT3_025.json",
+              [
+                5,
+                2
+              ]
             ],
             "pos": [
               22320.0,

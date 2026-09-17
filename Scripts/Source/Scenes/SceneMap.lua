@@ -665,6 +665,10 @@ function Scene:applyLoadedGame(inst)
     return SceneMapInteractions.ApplyLoadedGame(self, inst)
 end
 
+function Scene:applyPrimaryPlayer()
+    return SceneMapInteractions.ApplyPrimaryPlayer(self)
+end
+
 function Scene:_rebindPlayerToUI()
     return SceneMapInteractions.RebindPlayerToUI(self)
 end

@@ -41,7 +41,7 @@
           "offsets": {
             "left": 0.0,
             "top": 0.0,
-            "right": 192,
+            "right": 224,
             "bottom": 32
           },
           "alignment": [
@@ -1351,7 +1351,7 @@
             ]
           },
           "offsets": {
-            "left": 192,
+            "left": 224,
             "top": 0,
             "right": 64,
             "bottom": 0
