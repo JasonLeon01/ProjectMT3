@@ -28,17 +28,31 @@ function Window:beginTurn(playerTurn, remainingHits) end
 
 function Window:bind() end
 
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
----@param critical boolean
+---@param attacker     Source.Windows.WindowBattle.BattlerState
+---@param defender     Source.Windows.WindowBattle.BattlerState
+---@param critical     boolean
+---@param attackSkill? boolean
 ---@return integer damage
 ---@return integer base
-function Window:calculateDamage(attacker, defender, critical) end
+function Window:calculateDamage(attacker, defender, critical, attackSkill) end
+
+---@param state Source.Windows.WindowBattle.BattlerState
+---@return boolean
+function Window:canAffordSkill(state) end
+
+---@param attacker Source.Windows.WindowBattle.BattlerState
+---@param defender Source.Windows.WindowBattle.BattlerState
+---@return boolean
+function Window:canAttackSkill(attacker, defender) end
 
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
 ---@return boolean
 function Window:canCritical(attacker, defender) end
+
+---@param state Source.Windows.WindowBattle.BattlerState
+---@return boolean
+function Window:canDefenseSkill(state) end
 
 function Window:cancel() end
 
@@ -91,17 +105,26 @@ function Window:open(player, enemy, onFinished) end
 ---@param defender      Source.Windows.WindowBattle.BattlerState
 ---@param critical      boolean
 ---@param remainingHits integer
-function Window:performAttack(attacker, defender, critical, remainingHits) end
+---@param attackSkill?  boolean
+function Window:performAttack(attacker, defender, critical, remainingHits, attackSkill) end
 
 function Window:playBreathAnimation() end
 
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
----@param damage   integer
----@param critical boolean
-function Window:receiveAttack(attacker, defender, damage, critical) end
+---@param attacker      Source.Windows.WindowBattle.BattlerState
+---@param defender      Source.Windows.WindowBattle.BattlerState
+---@param damage        integer
+---@param critical      boolean
+---@param attackSkill?  boolean
+---@param defenseSkill? boolean
+function Window:receiveAttack(attacker, defender, damage, critical, attackSkill, defenseSkill) end
 
 function Window:refresh() end
+
+---@param name     string
+---@param selected boolean
+---@param idleFile string
+---@param enabled  boolean | nil
+function Window:refreshActionButton(name, selected, idleFile, enabled) end
 
 ---@param side  "Player" | "Enemy"
 ---@param state Source.Windows.WindowBattle.BattlerState
@@ -111,7 +134,11 @@ function Window:refreshCritical() end
 
 function Window:refreshLocale() end
 
+function Window:requestAttackSkill() end
+
 function Window:requestCritical() end
+
+function Window:requestDefenseSkill() end
 
 function Window:requestRetreat() end
 
@@ -126,5 +153,9 @@ function Window:setBattleText(name, text) end
 ---@param name  string
 ---@param actor Engine.Actor
 function Window:setPortrait(name, actor) end
+
+---@param state Source.Windows.WindowBattle.BattlerState
+---@return integer
+function Window:skillBreathCost(state) end
 
 return Window

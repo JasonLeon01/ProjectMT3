@@ -704,14 +704,6 @@
         ]
       },
       {
-        "tag": "MT3_019.BP_Equip_Sword_A_default_0_10",
-        "bp": "Data.Blueprints.Equips.BP_Equip_Sword_A",
-        "position": [
-          0,
-          10
-        ]
-      },
-      {
         "tag": "MT3_019.BP_Enemy_E29_xieyanshilaimu_default_3_8",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E29_xieyanshilaimu",
         "position": [

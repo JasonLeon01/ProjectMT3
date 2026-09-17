@@ -123,8 +123,8 @@ local Enemy = {
 }
 
 local Equip = {
-    Shield_A = "Shield_A",
-    Sword_A = "Sword_A",
+    HuiMu = "HuiMu",
+    HuiRen = "HuiRen",
 }
 
 local Item = {

@@ -22,9 +22,8 @@
       "name": "{WARRIOR}",
       "desc": "{WARRIOR_DESC}",
       "slot": {
-        "weapon": "",
-        "shield": "",
-        "accessory": ""
+        "weaponb": "",
+        "shieldb": ""
       }
     },
     "Princess": {

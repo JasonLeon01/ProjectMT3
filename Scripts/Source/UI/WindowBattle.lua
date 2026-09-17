@@ -10,10 +10,12 @@ View.designSize = sf.Vector2f.new(416, 256)
 function View:init(instance)
     UiView.init(self, instance)
     local controls = {
+        AttackSkillButton = assert(self.instance:requireControl("AttackSkillButton")),
         BreathDim = assert(self.instance:requireControl("BreathDim")),
         BreathLit = assert(self.instance:requireControl("BreathLit")),
         Content = assert(self.instance:requireControl("Content")),
         CriticalButton = assert(self.instance:requireControl("CriticalButton")),
+        DefenseSkillButton = assert(self.instance:requireControl("DefenseSkillButton")),
         EnemyATKLabel = assert(self.instance:requireControl("EnemyATKLabel")),
         EnemyATKValue = assert(self.instance:requireControl("EnemyATKValue")),
         EnemyBREATHLabel = assert(self.instance:requireControl("EnemyBREATHLabel")),

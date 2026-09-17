@@ -132,8 +132,8 @@ local Enemy = {}
 
 --- @brief Equip member keys.
 ---@class Source.Configs.GeneralEnum.Equip
----@field Shield_A string
----@field Sword_A string
+---@field HuiMu string
+---@field HuiRen string
 ---@type Source.Configs.GeneralEnum.Equip
 local Equip = {}
 

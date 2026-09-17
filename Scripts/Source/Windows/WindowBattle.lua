@@ -23,6 +23,25 @@ local Animation = GlobalCore.Animation
 local Controller = {}
 Controller.windowOptions = { hidden = true, focusable = true }
 
+---@param actor Source.Player.Player
+---@param slot  string
+---@param skills table<string, Source.Configs.Battle.Skill | nil>
+---@return Source.Configs.Battle.Skill | nil
+---@return string
+local function resolveEquipSkill(actor, slot, skills)
+    local equipID = actor:getEquipInfo(slot)
+    if not bool(equipID) then
+        return nil, ""
+    end
+    ---@cast equipID string
+    local skill = skills[equipID]
+    if skill == nil then
+        return nil, ""
+    end
+    local animationKey = Data.GetGeneralEquipData(equipID).AnimationKey
+    return skill, bool(animationKey) and animationKey or ""
+end
+
 ---@param actor  Source.Player.Player | Source.Enemy
 ---@param player boolean
 ---@return Source.Windows.WindowBattle.BattlerState
@@ -33,6 +52,17 @@ local function createState(actor, player)
     ---@type Source.Configs.Battle.Rule
     local rule = player and assert(Battle.players[actor.ID], "Missing player battle config: " .. actor.ID)
         or Battle.enemy
+    ---@type Source.Configs.Battle.Skill | nil
+    local attackSkill = nil
+    ---@type Source.Configs.Battle.Skill | nil
+    local defenseSkill = nil
+    local attackSkillAnimationKey = ""
+    local defenseSkillAnimationKey = ""
+    if player then
+        ---@cast actor Source.Player.Player
+        attackSkill, attackSkillAnimationKey = resolveEquipSkill(actor, "weapon", Battle.attackSkills)
+        defenseSkill, defenseSkillAnimationKey = resolveEquipSkill(actor, "shield", Battle.defenseSkills)
+    end
     return {
         HP = player and attributes.HP or attributes.MAXHP,
         MAXHP = attributes.MAXHP,
@@ -45,7 +75,11 @@ local function createState(actor, player)
         fatigue = 0,
         animationKey = attributes.ANIMATION_KEY,
         CritAnimationKey = attributes.CritAnimationKey,
+        attackSkillAnimationKey = attackSkillAnimationKey,
+        defenseSkillAnimationKey = defenseSkillAnimationKey,
         crit = rule.crit,
+        attackSkill = attackSkill,
+        defenseSkill = defenseSkill,
         isPlayer = player,
         poisoned = states.Poisoned or 0,
         weak = states.Weak or 0,
@@ -77,6 +111,8 @@ function Controller:init(scene)
     self._generation = 0
     self._running = false
     self._criticalSelected = false
+    self._attackSkillSelected = false
+    self._defenseSkillSelected = false
     self._retreatRequested = false
     self._watchStops = {}
     self._particles = self.ui.controls["Content"]:getParticleSystem()
@@ -84,8 +120,15 @@ end
 
 function Controller:bind()
     local critical = self:bindCallback(Controller.requestCritical)
+    local attackSkill = self:bindCallback(Controller.requestAttackSkill)
+    local defenseSkill = self:bindCallback(Controller.requestDefenseSkill)
     local retreat = self:bindCallback(Controller.requestRetreat)
-    for name, action in pairs({ CriticalButton = critical, RetreatButton = retreat }) do
+    for name, action in pairs({
+        AttackSkillButton = attackSkill,
+        CriticalButton = critical,
+        DefenseSkillButton = defenseSkill,
+        RetreatButton = retreat
+    }) do
         local button = self.ui.controls[name]
         ---@cast button Engine.FunctionalBase
         button:addClickCallback(action)
@@ -94,6 +137,8 @@ function Controller:bind()
     end
     self.ui.controls["RetreatButton"]:setTouchHitBounds(Engine.ToFloatRect(0, -10, 128, 44))
     self:watch(self, "_criticalSelected", Controller.refreshCritical)
+    self:watch(self, "_attackSkillSelected", Controller.refreshCritical)
+    self:watch(self, "_defenseSkillSelected", Controller.refreshCritical)
     self:watch(self, "_retreatRequested", Controller.refreshCritical)
     self:watch(self, "_running", Controller.refreshCritical)
 end
@@ -135,6 +180,8 @@ function Controller:open(player, enemy, onFinished)
     self._enemy = createState(enemy, false)
     self._onFinished = onFinished
     self._criticalSelected = false
+    self._attackSkillSelected = false
+    self._defenseSkillSelected = false
     self._retreatRequested = false
     self._running = true
     self:observeState(self._player, "Player")
@@ -235,7 +282,7 @@ function Controller:schedule(delay, action)
 end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action calculation.
-function Controller:calculateDamage(attacker, defender, critical)
+function Controller:calculateDamage(attacker, defender, critical, attackSkill)
     local atk = attacker.ATK
     if attacker.compete then
         atk = math.max(atk, defender.ATK)
@@ -251,7 +298,11 @@ function Controller:calculateDamage(attacker, defender, critical)
     local base = math.max(0, atk - def)
     ---@type number
     local damage = base
-    if critical and base > 0 then
+    if attackSkill and base > 0 then
+        local skill = assert(attacker.attackSkill, "Attack skill is missing")
+        damage = skill.apply(base, attacker, defender)
+        assert(math.isFinite(damage) and damage >= 0, "Battle attack skill must return finite non-negative damage")
+    elseif critical and base > 0 then
         damage = attacker.crit(base, attacker, defender)
         assert(math.isFinite(damage) and damage >= 0, "Battle crit must return finite non-negative damage")
     end
@@ -269,15 +320,53 @@ function Controller:calculateDamage(attacker, defender, critical)
     return damage, base
 end
 
+function Controller:skillBreathCost(state)
+    return math.floor(state.breathLimit / 6)
+end
+
+function Controller:canAffordSkill(state)
+    local cost = self:skillBreathCost(state)
+    return cost > 0 and state.breath >= cost
+end
+
 function Controller:canCritical(attacker, defender)
-    local cost = attacker.isPlayer and math.floor(attacker.breathLimit / 6) or attacker.breathLimit
+    local cost = attacker.isPlayer and self:skillBreathCost(attacker) or attacker.breathLimit
     return cost > 0 and attacker.breath >= cost and self:calculateDamage(attacker, defender, true) > 0
+end
+
+function Controller:canAttackSkill(attacker, defender)
+    return attacker.isPlayer and attacker.attackSkill ~= nil and self:canAffordSkill(attacker)
+        and self:calculateDamage(attacker, defender, false, true) > 0
+end
+
+function Controller:canDefenseSkill(state)
+    return state.isPlayer and state.defenseSkill ~= nil and self:canAffordSkill(state)
 end
 
 function Controller:requestCritical()
     if self._running and not self._retreatRequested and not self._criticalSelected
         and self:canCritical(assert(self._player), assert(self._enemy)) then
         self._criticalSelected = true
+        self._attackSkillSelected = false
+        self._defenseSkillSelected = false
+    end
+end
+
+function Controller:requestAttackSkill()
+    if self._running and not self._retreatRequested and not self._attackSkillSelected
+        and self:canAttackSkill(assert(self._player), assert(self._enemy)) then
+        self._attackSkillSelected = true
+        self._criticalSelected = false
+        self._defenseSkillSelected = false
+    end
+end
+
+function Controller:requestDefenseSkill()
+    if self._running and not self._retreatRequested and not self._defenseSkillSelected
+        and self:canDefenseSkill(assert(self._player)) then
+        self._defenseSkillSelected = true
+        self._criticalSelected = false
+        self._attackSkillSelected = false
     end
 end
 
@@ -285,6 +374,8 @@ function Controller:requestRetreat()
     if self._running then
         self._retreatRequested = true
         self._criticalSelected = false
+        self._attackSkillSelected = false
+        self._defenseSkillSelected = false
     end
 end
 
@@ -294,6 +385,10 @@ function Controller:onKeyDown(_kwargs)
         self:requestRetreat()
     elseif Input.getKeyPressed(sf.Keyboard.Key.C, true) then
         self:requestCritical()
+    elseif Input.getKeyPressed(sf.Keyboard.Key.Z, true) then
+        self:requestAttackSkill()
+    elseif Input.getKeyPressed(sf.Keyboard.Key.X, true) then
+        self:requestDefenseSkill()
     end
 end
 
@@ -312,9 +407,22 @@ function Controller:beginTurn(playerTurn, remainingHits)
     local attacker = assert(playerTurn and self._player or self._enemy)
     local defender = assert(playerTurn and self._enemy or self._player)
     local hits = playerTurn and 1 or (remainingHits or attacker.hitCount)
-    local critical = (not playerTurn or self._criticalSelected) and self:canCritical(attacker, defender)
-    if playerTurn then self._criticalSelected = false end
-    if critical then
+    local attackSkill = false
+    local critical = false
+    if playerTurn then
+        if self._attackSkillSelected and self:canAttackSkill(attacker, defender) then
+            attackSkill = true
+        elseif self._criticalSelected and self:canCritical(attacker, defender) then
+            critical = true
+        end
+        self._attackSkillSelected = false
+        self._criticalSelected = false
+    else
+        critical = self:canCritical(attacker, defender)
+    end
+    if attackSkill then
+        self:performAttack(attacker, defender, false, hits, true)
+    elseif critical then
         self:criticalAttack(attacker, defender, hits)
     else
         self:normalAttack(attacker, defender, hits)
@@ -329,10 +437,31 @@ function Controller:criticalAttack(attacker, defender, remainingHits)
     self:performAttack(attacker, defender, true, remainingHits)
 end
 
-function Controller:performAttack(attacker, defender, critical, remainingHits)
-    local damage, base = self:calculateDamage(attacker, defender, critical)
-    local key = base == 0 and "09_datie"
-        or (damage == 0 and "08_miss" or (critical and attacker.CritAnimationKey or attacker.animationKey))
+function Controller:performAttack(attacker, defender, critical, remainingHits, attackSkill)
+    local damage, base = self:calculateDamage(attacker, defender, critical, attackSkill)
+    local defenseSkill = false
+    if not attacker.isPlayer and self._defenseSkillSelected and damage > 0 and self:canDefenseSkill(defender) then
+        local skill = assert(defender.defenseSkill, "Defense skill is missing")
+        local applied = skill.apply(damage, attacker, defender)
+        assert(math.isFinite(applied) and applied >= 0, "Battle defense skill must return finite non-negative damage")
+        damage = math.max(0, math.round(applied))
+        defenseSkill = true
+        self._defenseSkillSelected = false
+    end
+    local key
+    if base == 0 then
+        key = "09_datie"
+    elseif damage == 0 and not defenseSkill then
+        key = "08_miss"
+    elseif attackSkill then
+        key = bool(attacker.attackSkillAnimationKey) and attacker.attackSkillAnimationKey or attacker.animationKey
+    elseif defenseSkill then
+        key = bool(defender.defenseSkillAnimationKey) and defender.defenseSkillAnimationKey or attacker.animationKey
+    elseif critical then
+        key = attacker.CritAnimationKey
+    else
+        key = attacker.animationKey
+    end
     local side = defender.isPlayer and "Player" or "Enemy"
     local animation = Animation.new(Data.GetAnimation(key), false)
     local portrait = assert(self.ui.controls[side .. "Portrait"])
@@ -349,7 +478,7 @@ function Controller:performAttack(attacker, defender, critical, remainingHits)
         end
     end
     local function hit()
-        self:receiveAttack(attacker, defender, damage, critical)
+        self:receiveAttack(attacker, defender, damage, critical, attackSkill, defenseSkill)
     end
     if hitTime <= 0 then
         hit()
@@ -380,10 +509,19 @@ function Controller:addBreath(state, amount)
     state.breath = math.min(maximum, state.breath + amount)
 end
 
-function Controller:receiveAttack(attacker, defender, damage, critical)
+function Controller:receiveAttack(attacker, defender, damage, critical, attackSkill, defenseSkill)
+    if defenseSkill and defender.isPlayer then
+        local skill = assert(defender.defenseSkill, "Defense skill is missing")
+        defender.breath = defender.breath - self:skillBreathCost(defender)
+        defender.fatigue = defender.fatigue + skill.fatigue
+    end
     if damage > 0 then
-        if critical then
-            attacker.breath = attacker.isPlayer and attacker.breath - math.floor(attacker.breathLimit / 6) or 0
+        if attackSkill then
+            local skill = assert(attacker.attackSkill, "Attack skill is missing")
+            attacker.breath = attacker.breath - self:skillBreathCost(attacker)
+            attacker.fatigue = attacker.fatigue + skill.fatigue
+        elseif critical then
+            attacker.breath = attacker.isPlayer and attacker.breath - self:skillBreathCost(attacker) or 0
             attacker.fatigue = attacker.fatigue + Battle.criticalFatigue
             if attacker.thunder > 0 and defender.isPlayer then
                 defender.breath = math.max(0, defender.breath - math.floor(defender.breathLimit / 3))
@@ -431,16 +569,44 @@ function Controller:applyAttackStates(attacker, defender)
     defender.DEF = math.max(0, defender.DEF - attacker.weaken)
 end
 
-function Controller:refreshCritical()
-    local enabled = self._running and not self._retreatRequested and not self._criticalSelected and self._player ~= nil
-        and self._enemy ~= nil and self:canCritical(self._player, self._enemy)
-    local button = self.ui.controls["CriticalButton"]
+function Controller:refreshActionButton(name, selected, idleFile, enabled)
+    local button = self.ui.controls[name]
     button:setActive(enabled == true)
-    button:setColour((enabled or self._criticalSelected) and sf.Color.White or sf.Color.new(128, 128, 128, 255))
-    local file = self._criticalSelected and "mting-1227.png" or "mting-528.png"
+    button:setColour((enabled or selected) and sf.Color.White or sf.Color.new(128, 128, 128, 255))
+    local file = selected and "mting-1227.png" or idleFile
     button:setTexture(assert(GlobalCore.TextureManager.load("/Game/Assets/Icons/" .. file)), true)
     button:setOrigin(button:getLocalBounds():getCenter())
-    self.ui.controls["RetreatButton"]:setActive(self._running and not self._retreatRequested)
+end
+
+function Controller:refreshCritical()
+    local player = self._player
+    local enemy = self._enemy
+    if not self._running or self._retreatRequested or player == nil or enemy == nil then
+        self:refreshActionButton("CriticalButton", false, "mting-528.png", false)
+        self:refreshActionButton("AttackSkillButton", false, "mting-1215.png", false)
+        self:refreshActionButton("DefenseSkillButton", false, "mting-1214.png", false)
+        self.ui.controls["RetreatButton"]:setActive(self._running and not self._retreatRequested)
+        return
+    end
+    self:refreshActionButton(
+        "CriticalButton",
+        self._criticalSelected,
+        "mting-528.png",
+        not self._criticalSelected and self:canCritical(player, enemy)
+    )
+    self:refreshActionButton(
+        "AttackSkillButton",
+        self._attackSkillSelected,
+        "mting-1215.png",
+        not self._attackSkillSelected and self:canAttackSkill(player, enemy)
+    )
+    self:refreshActionButton(
+        "DefenseSkillButton",
+        self._defenseSkillSelected,
+        "mting-1214.png",
+        not self._defenseSkillSelected and self:canDefenseSkill(player)
+    )
+    self.ui.controls["RetreatButton"]:setActive(true)
 end
 
 function Controller:refreshBreath(side, state)
@@ -504,6 +670,8 @@ function Controller:cancel()
     self._generation = self._generation + 1
     self._running = false
     self._criticalSelected = false
+    self._attackSkillSelected = false
+    self._defenseSkillSelected = false
     self._onFinished = nil
     for _, stop in ipairs(self._watchStops) do
         stop()

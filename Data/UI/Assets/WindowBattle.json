@@ -169,7 +169,7 @@
               "offsets": {
                 "left": 72,
                 "top": 0,
-                "right": 96,
+                "right": 160,
                 "bottom": 24
               },
               "alignment": [
@@ -1387,13 +1387,87 @@
               },
               "offsets": {
                 "left": 256,
-                "top": 176,
+                "top": 192,
                 "right": 28,
                 "bottom": 29
               },
               "alignment": [
-                0,
-                0
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "AttackSkillButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1215.png",
+              "origin": [
+                8,
+                8
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 280,
+                "top": 192,
+                "right": 16,
+                "bottom": 16
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "DefenseSkillButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1214.png",
+              "origin": [
+                9.5,
+                9.5
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 304,
+                "top": 192,
+                "right": 19,
+                "bottom": 19
+              },
+              "alignment": [
+                0.5,
+                0.5
               ],
               "autoSize": true,
               "zOrder": 0

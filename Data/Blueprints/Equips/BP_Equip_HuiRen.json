@@ -1,7 +1,7 @@
 {
   "parent": "Source.Equip",
   "attrs": {
-    "ID": "Sword_A",
+    "ID": "HuiRen",
     "material": {
       "lightBlock": 0.24,
       "mirror": false,
@@ -10,11 +10,11 @@
       "speedRate": 1.0
     },
     "collisionEnabled": true,
-    "texturePath": "/Game/Assets/Characters/equips/classic-equips.png",
+    "texturePath": "/Game/Assets/Characters/equips/彩虹岛精灵石.png",
     "defaultRect": [
       [
         0,
-        64,
+        32,
         32,
         32
       ]

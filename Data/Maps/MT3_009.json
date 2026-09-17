@@ -973,8 +973,8 @@
         ]
       },
       {
-        "tag": "MT3_009.BP_Equip_Sword_A_default_8_0",
-        "bp": "Data.Blueprints.Equips.BP_Equip_Sword_A",
+        "tag": "MT3_009.BP_Equip_HuiRen_default_8_0",
+        "bp": "Data.Blueprints.Equips.BP_Equip_HuiRen",
         "position": [
           8,
           0

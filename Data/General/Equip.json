@@ -36,13 +36,14 @@
     }
   },
   "members": {
-    "Sword_A": {
-      "name": "{SWORD_A}",
-      "desc": "{SWORD_A_DESC}",
-      "icon": "/Game/Assets/Icons/classic-equips-2-0.png",
+    "HuiRen": {
+      "name": "{HUIREN}",
+      "desc": "{HUIREN_DESC}",
+      "icon": "/Game/Assets/Icons/彩虹岛精灵石05.png",
       "slot": "weapon",
       "attrPlus": {
-        "ATK": 10
+        "ATK": 8,
+        "MAGIC": 2
       },
       "_graph": {
         "nodeGraph": {
@@ -60,17 +61,18 @@
           "onUnequip": null
         }
       },
-      "AnimationKey": ""
+      "AnimationKey": "16_huixiang"
     },
-    "Shield_A": {
-      "name": "{SHIELD_A}",
-      "desc": "{SHIELD_A_DESC}",
-      "icon": "/Game/Assets/Icons/classic-equips-3-0.png",
+    "HuiMu": {
+      "name": "{HUIMU}",
+      "desc": "{HUIMU_DESC}",
+      "icon": "/Game/Assets/Icons/彩虹岛盾牌17.png",
       "slot": "shield",
       "attrPlus": {
-        "DEF": 10
+        "DEF": 8,
+        "MAGIC": 2
       },
-      "AnimationKey": ""
+      "AnimationKey": "26_dunsui"
     }
   },
   "events": [

@@ -33,8 +33,12 @@
 ---@field fatigue          integer
 ---@field animationKey     string
 ---@field CritAnimationKey string
+---@field attackSkillAnimationKey string
+---@field defenseSkillAnimationKey string
 ---@field isPlayer         boolean
 ---@field crit             fun(damage: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
+---@field attackSkill      Source.Configs.Battle.Skill | nil
+---@field defenseSkill     Source.Configs.Battle.Skill | nil
 
 ---@alias Source.Windows.WindowBattle.Result "win"|"lose"|"retreat"
 ---@alias Source.Windows.WindowBattle.Finished fun(result: Source.Windows.WindowBattle.Result, hp: integer, breath: integer, addedStates: table<string, integer>)
@@ -46,6 +50,8 @@
 ---@field _generation       integer
 ---@field _running          boolean
 ---@field _criticalSelected boolean
+---@field _attackSkillSelected boolean
+---@field _defenseSkillSelected boolean
 ---@field _retreatRequested boolean
 ---@field _watchStops       (fun())[]
 ---@field _particles        Engine.ParticleSystem
@@ -84,16 +90,30 @@ function Controller:applyAttackStates(attacker, defender) end
 ---@param delay  number
 ---@param action fun()
 function Controller:schedule(delay, action) end
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
----@param critical boolean
+---@param attacker     Source.Windows.WindowBattle.BattlerState
+---@param defender     Source.Windows.WindowBattle.BattlerState
+---@param critical     boolean
+---@param attackSkill? boolean
 ---@return integer damage
 ---@return integer base
-function Controller:calculateDamage(attacker, defender, critical) end
+function Controller:calculateDamage(attacker, defender, critical, attackSkill) end
+---@param state Source.Windows.WindowBattle.BattlerState
+---@return integer
+function Controller:skillBreathCost(state) end
+---@param state Source.Windows.WindowBattle.BattlerState
+---@return boolean
+function Controller:canAffordSkill(state) end
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
 ---@return boolean
 function Controller:canCritical(attacker, defender) end
+---@param attacker Source.Windows.WindowBattle.BattlerState
+---@param defender Source.Windows.WindowBattle.BattlerState
+---@return boolean
+function Controller:canAttackSkill(attacker, defender) end
+---@param state Source.Windows.WindowBattle.BattlerState
+---@return boolean
+function Controller:canDefenseSkill(state) end
 ---@param playerTurn     boolean
 ---@param remainingHits  integer | nil
 function Controller:beginTurn(playerTurn, remainingHits) end
@@ -109,12 +129,15 @@ function Controller:criticalAttack(attacker, defender, remainingHits) end
 ---@param defender       Source.Windows.WindowBattle.BattlerState
 ---@param critical       boolean
 ---@param remainingHits  integer
-function Controller:performAttack(attacker, defender, critical, remainingHits) end
----@param attacker Source.Windows.WindowBattle.BattlerState
----@param defender Source.Windows.WindowBattle.BattlerState
----@param damage   integer
----@param critical boolean
-function Controller:receiveAttack(attacker, defender, damage, critical) end
+---@param attackSkill?   boolean
+function Controller:performAttack(attacker, defender, critical, remainingHits, attackSkill) end
+---@param attacker      Source.Windows.WindowBattle.BattlerState
+---@param defender      Source.Windows.WindowBattle.BattlerState
+---@param damage        integer
+---@param critical      boolean
+---@param attackSkill?  boolean
+---@param defenseSkill? boolean
+function Controller:receiveAttack(attacker, defender, damage, critical, attackSkill, defenseSkill) end
 ---@param state  Source.Windows.WindowBattle.BattlerState
 ---@param amount integer
 function Controller:addBreath(state, amount) end
@@ -134,8 +157,15 @@ function Controller:onKeyDown(kwargs) end
 function Controller:finish(result) end
 
 function Controller:requestCritical() end
+function Controller:requestAttackSkill() end
+function Controller:requestDefenseSkill() end
 function Controller:requestRetreat() end
 function Controller:cancel() end
+---@param name     string
+---@param selected boolean
+---@param idleFile string
+---@param enabled  boolean | nil
+function Controller:refreshActionButton(name, selected, idleFile, enabled) end
 function Controller:refreshCritical() end
 function Controller:playBreathAnimation() end
 function Controller:refreshLocale() end

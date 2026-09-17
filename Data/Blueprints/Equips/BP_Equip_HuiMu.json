@@ -1,7 +1,7 @@
 {
   "parent": "Source.Equip",
   "attrs": {
-    "ID": "Shield_A",
+    "ID": "HuiMu",
     "material": {
       "lightBlock": 0.24,
       "mirror": false,
@@ -10,11 +10,11 @@
       "speedRate": 1.0
     },
     "collisionEnabled": true,
-    "texturePath": "/Game/Assets/Characters/equips/classic-equips.png",
+    "texturePath": "/Game/Assets/Characters/equips/彩虹岛盾牌2.png",
     "defaultRect": [
       [
         0,
-        96,
+        0,
         32,
         32
       ]

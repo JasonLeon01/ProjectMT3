@@ -1573,16 +1573,16 @@
         ]
       },
       {
-        "tag": "Data.Blueprints.Equips.BP_Equip_Shield_A_default_1_10",
-        "bp": "Data.Blueprints.Equips.BP_Equip_Shield_A",
+        "tag": "Data.Blueprints.Equips.BP_Equip_HuiMu_default_1_10",
+        "bp": "Data.Blueprints.Equips.BP_Equip_HuiMu",
         "position": [
           1,
           10
         ]
       },
       {
-        "tag": "Data.Blueprints.Equips.BP_Equip_Sword_A_default_0_10",
-        "bp": "Data.Blueprints.Equips.BP_Equip_Sword_A",
+        "tag": "Data.Blueprints.Equips.BP_Equip_HuiRen_default_0_10",
+        "bp": "Data.Blueprints.Equips.BP_Equip_HuiRen",
         "position": [
           0,
           10

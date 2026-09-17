@@ -2,10 +2,12 @@
 ---@meta Source.UI.WindowBattle
 
 ---@class Source.UIBase.GeneratedControls.WindowBattle
+---@field AttackSkillButton  Engine.Button
 ---@field BreathDim          Engine.WrapBox
 ---@field BreathLit          Engine.WrapBox
 ---@field Content            Engine.Canvas
 ---@field CriticalButton     Engine.Button
+---@field DefenseSkillButton Engine.Button
 ---@field EnemyATKLabel      Engine.PlainText
 ---@field EnemyATKValue      Engine.PlainText
 ---@field EnemyBREATHLabel   Engine.PlainText
