@@ -606,14 +606,23 @@
   },
   "actors": {
     "floor": [],
-    "lava": [],
+    "lava": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Bravor_NPC",
+        "tag": "Bravor",
+        "position": [
+          5,
+          2
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "YMFS",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E32_youmingfashi",
         "position": [
           5,
-          4
+          5
         ]
       },
       {
@@ -625,7 +634,7 @@
         ]
       },
       {
-        "tag": "MT3_025.BP_NPC_092_default_4_7",
+        "tag": "Old",
         "bp": "Data.Blueprints.Actors.BP_NPC_092",
         "position": [
           4,
@@ -633,7 +642,7 @@
         ]
       },
       {
-        "tag": "MT3_025.BP_NPC_062_default_6_7",
+        "tag": "Thief",
         "bp": "Data.Blueprints.Actors.BP_NPC_062",
         "position": [
           6,
@@ -646,6 +655,14 @@
         "position": [
           5,
           2
+        ]
+      },
+      {
+        "tag": "Doors_ConditionDoors_BP_Door_Condition_default_5_3",
+        "bp": "Data.Blueprints.Doors.ConditionDoors.BP_Door_Condition",
+        "position": [
+          5,
+          3
         ]
       }
     ]
@@ -668,16 +685,6 @@
   "fogDistort": 0,
   "panorama": "",
   "BPClassVarChanged": {
-    "MT3_025.BP_NPC_092_default_4_7": {
-      "conditionVariable": "floor25Phase",
-      "conditionValue": 2,
-      "conditionOperator": "\u003E="
-    },
-    "MT3_025.BP_NPC_062_default_6_7": {
-      "conditionVariable": "floor25Phase",
-      "conditionValue": 2,
-      "conditionOperator": "\u003E="
-    },
     "YMFS": {
       "afterBattleVarChanges": {
         "floor25Phase": [
@@ -685,6 +692,20 @@
           1
         ]
       }
+    },
+    "Old": {
+      "conditionVariable": "floor25Phase",
+      "conditionValue": 2,
+      "conditionOperator": "\u003E="
+    },
+    "Thief": {
+      "conditionVariable": "floor25Phase",
+      "conditionValue": 2,
+      "conditionOperator": "\u003E="
+    },
+    "Doors_ConditionDoors_BP_Door_Condition_default_5_3": {
+      "openConditionName": "floor25Phase",
+      "openConditionVal": 1
     }
   },
   "type": "map"
