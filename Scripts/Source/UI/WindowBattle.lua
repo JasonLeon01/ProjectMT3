@@ -11,11 +11,14 @@ function View:init(instance)
     UiView.init(self, instance)
     local controls = {
         AttackSkillButton = assert(self.instance:requireControl("AttackSkillButton")),
+        AttackSkillButtonSelected = assert(self.instance:requireControl("AttackSkillButtonSelected")),
         BreathDim = assert(self.instance:requireControl("BreathDim")),
         BreathLit = assert(self.instance:requireControl("BreathLit")),
         Content = assert(self.instance:requireControl("Content")),
         CriticalButton = assert(self.instance:requireControl("CriticalButton")),
+        CriticalButtonSelected = assert(self.instance:requireControl("CriticalButtonSelected")),
         DefenseSkillButton = assert(self.instance:requireControl("DefenseSkillButton")),
+        DefenseSkillButtonSelected = assert(self.instance:requireControl("DefenseSkillButtonSelected")),
         EnemyATKLabel = assert(self.instance:requireControl("EnemyATKLabel")),
         EnemyATKValue = assert(self.instance:requireControl("EnemyATKValue")),
         EnemyBREATHLabel = assert(self.instance:requireControl("EnemyBREATHLabel")),

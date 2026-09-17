@@ -122,9 +122,8 @@ function Window:refresh() end
 
 ---@param name     string
 ---@param selected boolean
----@param idleFile string
 ---@param enabled  boolean | nil
-function Window:refreshActionButton(name, selected, idleFile, enabled) end
+function Window:refreshActionButton(name, selected, enabled) end
 
 ---@param side  "Player" | "Enemy"
 ---@param state Source.Windows.WindowBattle.BattlerState

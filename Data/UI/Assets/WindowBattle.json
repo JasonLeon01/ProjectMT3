@@ -1476,6 +1476,120 @@
             "children": []
           },
           {
+            "name": "CriticalButtonSelected",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1227.png",
+              "origin": [
+                12,
+                12
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 256,
+                "top": 192,
+                "right": 24,
+                "bottom": 24
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "AttackSkillButtonSelected",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1227.png",
+              "origin": [
+                12,
+                12
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 280,
+                "top": 192,
+                "right": 24,
+                "bottom": 24
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "DefenseSkillButtonSelected",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1227.png",
+              "origin": [
+                12,
+                12
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 304,
+                "top": 192,
+                "right": 24,
+                "bottom": 24
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {},
+            "children": []
+          },
+          {
             "name": "RetreatButton",
             "controlId": "Engine.FunctionalPlainText",
             "properties": {

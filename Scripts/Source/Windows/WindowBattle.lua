@@ -569,41 +569,37 @@ function Controller:applyAttackStates(attacker, defender)
     defender.DEF = math.max(0, defender.DEF - attacker.weaken)
 end
 
-function Controller:refreshActionButton(name, selected, idleFile, enabled)
+function Controller:refreshActionButton(name, selected, enabled)
     local button = self.ui.controls[name]
+    button:setVisible(not selected)
     button:setActive(enabled == true)
-    button:setColour((enabled or selected) and sf.Color.White or sf.Color.new(128, 128, 128, 255))
-    local file = selected and "mting-1227.png" or idleFile
-    button:setTexture(assert(GlobalCore.TextureManager.load("/Game/Assets/Icons/" .. file)), true)
-    button:setOrigin(button:getLocalBounds():getCenter())
+    button:setColour(enabled and sf.Color.White or sf.Color.new(128, 128, 128, 255))
+    self.ui.controls[name .. "Selected"]:setVisible(selected == true)
 end
 
 function Controller:refreshCritical()
     local player = self._player
     local enemy = self._enemy
     if not self._running or self._retreatRequested or player == nil or enemy == nil then
-        self:refreshActionButton("CriticalButton", false, "mting-528.png", false)
-        self:refreshActionButton("AttackSkillButton", false, "mting-1215.png", false)
-        self:refreshActionButton("DefenseSkillButton", false, "mting-1214.png", false)
+        self:refreshActionButton("CriticalButton", false, false)
+        self:refreshActionButton("AttackSkillButton", false, false)
+        self:refreshActionButton("DefenseSkillButton", false, false)
         self.ui.controls["RetreatButton"]:setActive(self._running and not self._retreatRequested)
         return
     end
     self:refreshActionButton(
         "CriticalButton",
         self._criticalSelected,
-        "mting-528.png",
         not self._criticalSelected and self:canCritical(player, enemy)
     )
     self:refreshActionButton(
         "AttackSkillButton",
         self._attackSkillSelected,
-        "mting-1215.png",
         not self._attackSkillSelected and self:canAttackSkill(player, enemy)
     )
     self:refreshActionButton(
         "DefenseSkillButton",
         self._defenseSkillSelected,
-        "mting-1214.png",
         not self._defenseSkillSelected and self:canDefenseSkill(player)
     )
     self.ui.controls["RetreatButton"]:setActive(true)

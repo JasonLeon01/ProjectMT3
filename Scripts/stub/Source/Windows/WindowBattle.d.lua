@@ -163,9 +163,8 @@ function Controller:requestRetreat() end
 function Controller:cancel() end
 ---@param name     string
 ---@param selected boolean
----@param idleFile string
 ---@param enabled  boolean | nil
-function Controller:refreshActionButton(name, selected, idleFile, enabled) end
+function Controller:refreshActionButton(name, selected, enabled) end
 function Controller:refreshCritical() end
 function Controller:playBreathAnimation() end
 function Controller:refreshLocale() end

@@ -2,39 +2,42 @@
 ---@meta Source.UI.WindowBattle
 
 ---@class Source.UIBase.GeneratedControls.WindowBattle
----@field AttackSkillButton  Engine.Button
----@field BreathDim          Engine.WrapBox
----@field BreathLit          Engine.WrapBox
----@field Content            Engine.Canvas
----@field CriticalButton     Engine.Button
----@field DefenseSkillButton Engine.Button
----@field EnemyATKLabel      Engine.PlainText
----@field EnemyATKValue      Engine.PlainText
----@field EnemyBREATHLabel   Engine.PlainText
----@field EnemyBreathBar     Engine.ProgressBar
----@field EnemyDEFLabel      Engine.PlainText
----@field EnemyDEFValue      Engine.PlainText
----@field EnemyFATIGUELabel  Engine.PlainText
----@field EnemyFATIGUEValue  Engine.PlainText
----@field EnemyHPLabel       Engine.PlainText
----@field EnemyHPValue       Engine.PlainText
----@field EnemyName          Engine.PlainText
----@field EnemyPortrait      Engine.CharacterView
----@field PlayerATKLabel     Engine.PlainText
----@field PlayerATKValue     Engine.PlainText
----@field PlayerBREATHLabel  Engine.PlainText
----@field PlayerBreathBar    Engine.ProgressBar
----@field PlayerDEFLabel     Engine.PlainText
----@field PlayerDEFValue     Engine.PlainText
----@field PlayerFATIGUELabel Engine.PlainText
----@field PlayerFATIGUEValue Engine.PlainText
----@field PlayerHPLabel      Engine.PlainText
----@field PlayerHPValue      Engine.PlainText
----@field PlayerName         Engine.PlainText
----@field PlayerPortrait     Engine.CharacterView
----@field RetreatButton      Engine.FunctionalPlainText
----@field Root               Engine.Canvas
----@field WindowFrame        Engine.Window
+---@field AttackSkillButton          Engine.Button
+---@field AttackSkillButtonSelected  Engine.Image
+---@field BreathDim                  Engine.WrapBox
+---@field BreathLit                  Engine.WrapBox
+---@field Content                    Engine.Canvas
+---@field CriticalButton             Engine.Button
+---@field CriticalButtonSelected     Engine.Image
+---@field DefenseSkillButton         Engine.Button
+---@field DefenseSkillButtonSelected Engine.Image
+---@field EnemyATKLabel              Engine.PlainText
+---@field EnemyATKValue              Engine.PlainText
+---@field EnemyBREATHLabel           Engine.PlainText
+---@field EnemyBreathBar             Engine.ProgressBar
+---@field EnemyDEFLabel              Engine.PlainText
+---@field EnemyDEFValue              Engine.PlainText
+---@field EnemyFATIGUELabel          Engine.PlainText
+---@field EnemyFATIGUEValue          Engine.PlainText
+---@field EnemyHPLabel               Engine.PlainText
+---@field EnemyHPValue               Engine.PlainText
+---@field EnemyName                  Engine.PlainText
+---@field EnemyPortrait              Engine.CharacterView
+---@field PlayerATKLabel             Engine.PlainText
+---@field PlayerATKValue             Engine.PlainText
+---@field PlayerBREATHLabel          Engine.PlainText
+---@field PlayerBreathBar            Engine.ProgressBar
+---@field PlayerDEFLabel             Engine.PlainText
+---@field PlayerDEFValue             Engine.PlainText
+---@field PlayerFATIGUELabel         Engine.PlainText
+---@field PlayerFATIGUEValue         Engine.PlainText
+---@field PlayerHPLabel              Engine.PlainText
+---@field PlayerHPValue              Engine.PlainText
+---@field PlayerName                 Engine.PlainText
+---@field PlayerPortrait             Engine.CharacterView
+---@field RetreatButton              Engine.FunctionalPlainText
+---@field Root                       Engine.Canvas
+---@field WindowFrame                Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowBattle
 
