@@ -8,13 +8,13 @@
       "opacity": 1.0,
       "speedRate": 1.5
     },
-    "texturePath": "/Game/Assets/Characters/enemies/classic-enemies-50F-single.png",
+    "texturePath": "/Game/Assets/Characters/enemies/039-Monster09.png",
     "defaultRect": [
       [
         0,
-        64,
-        32,
-        32
+        96,
+        96,
+        96
       ]
     ],
     "ID": "E79_judabazhaoyu",
