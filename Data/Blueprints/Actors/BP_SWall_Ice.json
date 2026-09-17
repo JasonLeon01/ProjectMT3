@@ -1,25 +1,24 @@
 {
-  "parent": "Source.Player",
+  "parent": "Source.SWall",
   "attrs": {
     "material": {
-      "lightBlock": 0.4,
+      "lightBlock": 0.64,
       "mirror": false,
       "reflectionStrength": 0.5,
       "opacity": 1.0,
       "speedRate": 1.0
     },
-    "speed": 160,
-    "texturePath": "/Game/Assets/Characters/actors/Braver002.png",
-    "ID": "Bravor",
-    "lightComp": {
-      "lightColour": [
-        255,
-        255,
-        255,
-        255
-      ],
-      "lightRadius": 64.0
-    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/blocks/Wall002.png",
+    "defaultRect": [
+      [
+        64,
+        0,
+        32,
+        32
+      ]
+    ],
     "tag": ""
   },
   "graph": {
