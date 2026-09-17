@@ -203,6 +203,7 @@ return {
     ["musicvolume"] = "Music Volume",
     ["original"] = "Original",
     ["other"] = "Other",
+    ["price"] = "Price",
     ["scale"] = "Scale",
     ["soundon"] = "Sound",
     ["soundvolume"] = "Sound Volume",

@@ -546,6 +546,7 @@ return {
     ["musicvolume"] = "音乐音量",
     ["original"] = "原画",
     ["other"] = "其他",
+    ["price"] = "价格",
     ["scale"] = "缩放",
     ["soundon"] = "音效",
     ["soundvolume"] = "音效音量",

@@ -53,7 +53,7 @@
 ---@field worldMovedActors table<string, Source.GameInstance.SavedWorldMovedActorRecord[]> | nil        Required when `map` is a world manifest or the save retains moved-world state.
 ---@field destroyedActors  table<string, string[]>
 ---@field destroyedTerrain table<string, table<string, Source.GameInstance.SavedTerrainChangeRecord[]>>
----@field telepoints       table<string, Source.GameInstance.SavedTelepointRecord[]>
+---@field telepoints       table<string, table<string, Source.GameInstance.SavedTelepointRecord[]>>
 ---@field screenshot       integer[] | nil
 
 ---@brief Persistent game state container that survives across scene transitions.
@@ -65,7 +65,7 @@
 ---@field _playerKeys                 string[]
 ---@field _players                    table<string, Source.Player.Player>
 ---@field _cachedMap                  string | nil
----@field _cachedTelepoints           table<string, Source.GameInstance.TelepointRecord[]>
+---@field _cachedTelepoints           table<string, table<string, Source.GameInstance.TelepointRecord[]>>
 ---@field _cachedWorldMovedActors     table<string, Source.GameInstance.WorldMovedActorRecord[]>
 ---@field new                         fun(skipDefaultPlayer?: boolean): Source.GameInstance.GameInstance
 ---@field FromDict                    fun(data: Source.GameInstance.SaveData): Source.GameInstance.GameInstance
@@ -102,7 +102,7 @@ function GameInstance:restoreFromData(data) end
 ---@return string | nil
 function GameInstance:getCurrentMapPath() end
 
----@brief Get an independent, ordered list of maps with recorded telepoints.
+---@brief Get an independent, ordered list of maps with telepoints recorded by the primary player.
 ---@return string[]
 function GameInstance:getVisitedMapPaths() end
 
@@ -335,7 +335,7 @@ function GameInstance:recordTerrainDestruction(mapPath, layerName, position, til
 ---@return table<string, table<string, Source.GameInstance.TerrainChangeRecord>>
 function GameInstance:getTerrainDestructions(mapPath) end
 
----@brief Record a telepoint for persistence.
+---@brief Record a telepoint for the primary player.
 ---
 --- Repeated coordinates keep the first recorded position and raw tag unchanged.
 ---
@@ -347,7 +347,7 @@ function GameInstance:getTerrainDestructions(mapPath) end
 ---@param tag      string
 function GameInstance:recordTelepoint(mapPath, position, tag) end
 
----@brief Get telepoint records for a map.
+---@brief Get the primary player's telepoint records for a map.
 ---
 --- - @param mapPath The map path.
 --- - @return An ordered list of positions and raw tags.

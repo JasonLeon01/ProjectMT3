@@ -195,11 +195,14 @@ end
 
 local function normaliseTelepoints(telepoints)
     local result = {}
-    for mapPath, points in pairs(telepoints) do
-        local bucket = {}
-        result[MapPath.Normalise(mapPath)] = bucket
-        for _, point in ipairs(points) do
-            Records.AppendUniqueTelepoint(bucket, savedVector2u(point.position), point.tag)
+    for playerKey, maps in pairs(telepoints) do
+        result[playerKey] = {}
+        for mapPath, points in pairs(maps) do
+            local bucket = {}
+            result[playerKey][MapPath.Normalise(mapPath)] = bucket
+            for _, point in ipairs(points) do
+                Records.AppendUniqueTelepoint(bucket, savedVector2u(point.position), point.tag)
+            end
         end
     end
     return result
@@ -207,13 +210,16 @@ end
 
 local function serialiseTelepoints(telepoints)
     local result = {}
-    for mapPath, points in pairs(telepoints) do
-        local serialisedPoints = {}
-        for _, point in ipairs(points) do
-            serialisedPoints[#serialisedPoints + 1] = { position = vectorArray(point.position), tag = point.tag }
-        end
-        if bool(serialisedPoints) then
-            result[mapPath] = serialisedPoints
+    for playerKey, maps in pairs(telepoints) do
+        result[playerKey] = {}
+        for mapPath, points in pairs(maps) do
+            local serialisedPoints = {}
+            for _, point in ipairs(points) do
+                serialisedPoints[#serialisedPoints + 1] = { position = vectorArray(point.position), tag = point.tag }
+            end
+            if bool(serialisedPoints) then
+                result[playerKey][mapPath] = serialisedPoints
+            end
         end
     end
     return result

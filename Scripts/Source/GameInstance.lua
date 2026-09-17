@@ -80,7 +80,7 @@ function GameInstance:getCurrentMapPath()
 end
 
 function GameInstance:getVisitedMapPaths()
-    return table.orderedStringKeys(self._cachedTelepoints)
+    return table.orderedStringKeys(self._cachedTelepoints[self._playerKeys[1]] or {})
 end
 
 function GameInstance:getCurrentRegion()
@@ -204,23 +204,25 @@ end
 
 function GameInstance:recordTelepoint(mapPath, position, tag)
     mapPath = MapPath.Normalise(mapPath)
-    local points = self._cachedTelepoints[mapPath] or {}
-    self._cachedTelepoints[mapPath] = points
+    local playerKey = self._playerKeys[1]
+    self._cachedTelepoints[playerKey] = self._cachedTelepoints[playerKey] or {}
+    local points = self._cachedTelepoints[playerKey][mapPath] or {}
+    self._cachedTelepoints[playerKey][mapPath] = points
     GameInstanceRecords.AppendUniqueTelepoint(points, position, tag)
 end
 
 function GameInstance:getTelepointsForMap(mapKey)
     local target = MapPath.WithoutExtension(mapKey)
-    for _, mapPath in ipairs(table.orderedStringKeys(self._cachedTelepoints)) do
+    for _, mapPath in ipairs(self:getVisitedMapPaths()) do
         if MapPath.WithoutExtension(mapPath) == target then
-            return deepcopy(self._cachedTelepoints[mapPath])
+            return deepcopy(self:getTelepoints(mapPath))
         end
     end
     return {}
 end
 
 function GameInstance:getTelepoints(mapPath)
-    return self._cachedTelepoints[MapPath.Normalise(mapPath)] or {}
+    return (self._cachedTelepoints[self._playerKeys[1]] or {})[MapPath.Normalise(mapPath)] or {}
 end
 
 ---@param actor            Engine.Actor

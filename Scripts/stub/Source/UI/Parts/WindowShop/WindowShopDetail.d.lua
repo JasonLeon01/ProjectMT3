@@ -6,6 +6,7 @@
 ---@field Description Engine.PlainText
 ---@field ItemName    Engine.PlainText
 ---@field Price       Engine.PlainText
+---@field PriceLabel  Engine.PlainText
 ---@field Root        Engine.Canvas
 ---@field WindowFrame Engine.Window
 

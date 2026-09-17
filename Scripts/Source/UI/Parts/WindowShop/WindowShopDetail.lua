@@ -14,6 +14,7 @@ function View:init(instance)
         Description = assert(self.instance:requireControl("Description")),
         ItemName = assert(self.instance:requireControl("ItemName")),
         Price = assert(self.instance:requireControl("Price")),
+        PriceLabel = assert(self.instance:requireControl("PriceLabel")),
         Root = assert(self.instance:requireControl("Root")),
         WindowFrame = assert(self.instance:requireControl("WindowFrame"))
     }
