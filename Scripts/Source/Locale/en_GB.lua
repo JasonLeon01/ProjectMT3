@@ -69,6 +69,7 @@ return {
     ["LEVEL"] = "Level",
     ["MAGE"] = "Mage",
     ["MAGE_DESC"] = "This is a mage.",
+    ["MAGIC"] = "Magic",
     ["MAP_01"] = "Tower G",
     ["MAP_02"] = "Tower 1F",
     ["MAP_03"] = "Tower 2F",

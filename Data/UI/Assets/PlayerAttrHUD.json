@@ -244,8 +244,8 @@
                 ]
               },
               "offsets": {
-                "left": 8,
-                "top": 72,
+                "left": 48,
+                "top": 48,
                 "right": 16,
                 "bottom": 24
               },
@@ -326,7 +326,7 @@
               },
               "offsets": {
                 "left": 8,
-                "top": 132,
+                "top": 100,
                 "right": 16,
                 "bottom": 8.0
               },
@@ -360,7 +360,7 @@
               },
               "offsets": {
                 "left": 8,
-                "top": 128,
+                "top": 96,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -396,7 +396,7 @@
               },
               "offsets": {
                 "left": 136,
-                "top": 128,
+                "top": 96,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -438,7 +438,7 @@
               },
               "offsets": {
                 "left": 140,
-                "top": 120,
+                "top": 88,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -474,7 +474,7 @@
               },
               "offsets": {
                 "left": 8,
-                "top": 160.0,
+                "top": 128.0,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -511,7 +511,7 @@
               },
               "offsets": {
                 "left": 128.0,
-                "top": 160.0,
+                "top": 128.0,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -553,7 +553,7 @@
               },
               "offsets": {
                 "left": 130.0,
-                "top": 160.0,
+                "top": 128.0,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -589,7 +589,7 @@
               },
               "offsets": {
                 "left": 8,
-                "top": 192.0,
+                "top": 160.0,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -626,7 +626,7 @@
               },
               "offsets": {
                 "left": 128.0,
-                "top": 192.0,
+                "top": 160.0,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -668,7 +668,7 @@
               },
               "offsets": {
                 "left": 130.0,
-                "top": 192.0,
+                "top": 160.0,
                 "right": 0.0,
                 "bottom": 0.0
               },
@@ -681,6 +681,79 @@
             },
             "editor": {
               "previewText": "(-1)"
+            },
+            "children": []
+          },
+          {
+            "name": "MagicLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 18,
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.0,
+                  0.0
+                ],
+                "max": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "offsets": {
+                "left": 8,
+                "top": 192.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [
+                0.0,
+                0.0
+              ],
+              "autoSize": true,
+              "zOrder": 27
+            },
+            "editor": {
+              "previewText": "MAGIC"
+            },
+            "children": []
+          },
+          {
+            "name": "MagicValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 18,
+              "lineAlignment": "right",
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.0,
+                  0.0
+                ],
+                "max": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "offsets": {
+                "left": 128.0,
+                "top": 192.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [
+                1.0,
+                0.0
+              ],
+              "autoSize": true,
+              "zOrder": 28
+            },
+            "editor": {
+              "previewText": "999"
             },
             "children": []
           },
@@ -1204,7 +1277,7 @@
                 "left": 0,
                 "top": 0,
                 "right": 0,
-                "bottom": 96
+                "bottom": 64
               },
               "alignment": [
                 0,
@@ -1236,9 +1309,9 @@
               },
               "offsets": {
                 "left": 0,
-                "top": 112,
+                "top": 80,
                 "right": 0,
-                "bottom": 144
+                "bottom": 176
               },
               "alignment": [
                 0,

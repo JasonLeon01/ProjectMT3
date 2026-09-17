@@ -17,6 +17,7 @@
 ---@field _combatSignature       tuple<any> | nil
 ---@field _hpSignature           tuple<any> | nil
 ---@field _statSignature         tuple<any> | nil
+---@field _magicSignature        tuple<any> | nil
 ---@field _stackSignature        tuple<any> | nil
 ---@field _breathSignature       tuple<any> | nil
 ---@field _breathAnimElapsed     number

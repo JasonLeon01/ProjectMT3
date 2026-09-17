@@ -15,12 +15,16 @@
     "HP_plus": 400,
     "lightComp": {
       "lightColour": [
+        96,
+        96,
         255,
-        96,
-        96,
         128
       ],
-      "lightRadius": 16.0
+      "lightRadius": 16.0,
+      "lightOffset": [
+        0,
+        0
+      ]
     },
     "tag": "",
     "defaultRect": [

@@ -36,6 +36,8 @@
 ---@field ItemCounts          Engine.RichText
 ---@field KeyIcon             Engine.Image
 ---@field Level               Engine.PlainText
+---@field MagicLabel          Engine.PlainText
+---@field MagicValue          Engine.PlainText
 ---@field MapName             Engine.PlainText
 ---@field PlainText           Engine.PlainText
 ---@field PlayerName          Engine.PlainText

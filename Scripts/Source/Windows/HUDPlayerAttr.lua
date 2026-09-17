@@ -78,6 +78,7 @@ function Controller:init(player, openMenuCallback)
     self._combatSignature = nil
     self._hpSignature = nil
     self._statSignature = nil
+    self._magicSignature = nil
     self._stackSignature = nil
     self._breathSignature = nil
     self._breathAnimElapsed = 0
@@ -143,6 +144,7 @@ function Controller:bind()
         self:setProperty("Avatar", "visible", true)
         self.ui.controls["Avatar"]:addClickCallback(self:bindCallback(Controller.openMenu))
     end
+    self:watch(self:getPlayer().attributes, "MAGIC", Controller.refresh, false)
     self:playBreathAnimation()
 end
 
@@ -219,6 +221,7 @@ function Controller:refresh()
         self:setText("HpLabel", LOC("HP"))
         self:setText("AtkLabel", LOC("ATK"))
         self:setText("DefLabel", LOC("DEF"))
+        self:setText("MagicLabel", LOC("MAGIC"))
         self:setText("BreathLabel", LOC("BREATH"))
         self:setText("ExpLabel", LOC("EXP"))
         self:setText("GoldLabel", LOC("GOLD"))
@@ -266,6 +269,14 @@ function Controller:refresh()
             self:setText("HpPoison", poisonStacks > 0 and "(" .. tostring(poisonStacks) .. ")" or "")
             layoutDirty = true
         end
+    end
+
+    local magic = self:getPlayer():getAttr("MAGIC")
+    local magicSignature = createSignature(magic)
+    if self._magicSignature ~= magicSignature then
+        self._magicSignature = magicSignature
+        self:setText("MagicValue", tostring(ToShortNumber(magic)))
+        layoutDirty = true
     end
 
     local breathSignature = createSignature(

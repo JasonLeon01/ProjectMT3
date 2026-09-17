@@ -45,6 +45,8 @@ function View:init(instance)
         ItemCounts = assert(self.instance:requireControl("ItemCounts")),
         KeyIcon = assert(self.instance:requireControl("KeyIcon")),
         Level = assert(self.instance:requireControl("Level")),
+        MagicLabel = assert(self.instance:requireControl("MagicLabel")),
+        MagicValue = assert(self.instance:requireControl("MagicValue")),
         MapName = assert(self.instance:requireControl("MapName")),
         PlainText = assert(self.instance:requireControl("PlainText")),
         PlayerName = assert(self.instance:requireControl("PlayerName")),
