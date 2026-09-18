@@ -664,6 +664,14 @@
           5,
           3
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.Downstair_25",
+        "tag": "Teleportations_Downstair_25_default_5_8",
+        "position": [
+          5,
+          8
+        ]
       }
     ]
   },
