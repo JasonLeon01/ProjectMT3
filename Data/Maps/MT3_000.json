@@ -901,25 +901,9 @@
     "floor": [
       {
         "bp": "Data.Blueprints.Actors.BP_Fire_Right",
-        "tag": "Actors_BP_Fire_Right_default_0_8",
-        "position": [
-          0,
-          8
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
         "tag": "Actors_BP_Fire_Right_default_0_4_2",
         "position": [
           0,
-          4
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
-        "tag": "Actors_BP_Fire_Left_default_10_4_2",
-        "position": [
-          10,
           4
         ]
       },
@@ -945,14 +929,6 @@
         "position": [
           6,
           3
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
-        "tag": "Actors_BP_Fire_Right_default_2_1_2",
-        "position": [
-          2,
-          2
         ]
       },
       {
@@ -1026,22 +1002,6 @@
         "tag": "Actors_BP_Fire_default_3_0",
         "position": [
           3,
-          0
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire",
-        "tag": "Actors_BP_Fire_default_7_0",
-        "position": [
-          7,
-          0
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire",
-        "tag": "Actors_BP_Fire_default_5_0",
-        "position": [
-          5,
           0
         ]
       }

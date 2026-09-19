@@ -601,7 +601,64 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_9_4_2",
+        "position": [
+          9,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_6_3",
+        "position": [
+          6,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_3_2",
+        "position": [
+          3,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_1_6",
+        "position": [
+          1,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_1_7",
+        "position": [
+          1,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_5_8",
+        "position": [
+          5,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_6_5",
+        "position": [
+          6,
+          5
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_004.Downstair_default_10_4",
@@ -962,6 +1019,14 @@
           9,
           1
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_10_8",
+        "position": [
+          10,
+          8
+        ]
       }
     ]
   },
@@ -988,6 +1053,19 @@
     },
     "Consumables_Gem_Level_default_9_1": {
       "plus": 1
+    },
+    "Actors_BP_Fire_Right_default_9_4_2": {
+      "defaultTranslation": [
+        8,
+        8
+      ],
+      "defaultRotation": 45
+    },
+    "Actors_BP_Fire_default_5_8": {
+      "defaultTranslation": [
+        0,
+        16
+      ]
     }
   },
   "type": "map"
