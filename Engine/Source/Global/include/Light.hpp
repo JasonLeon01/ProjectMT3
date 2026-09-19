@@ -1,0 +1,62 @@
+#pragma once
+
+#include <CoreMinimal.hpp>
+
+using LightValue =
+    std::variant<std::vector<float>, std::vector<int>, float, int>;
+using LightData = std::unordered_map<std::string, LightValue>;
+
+////////////////////////////////////////////////////////////
+/// \brief Light source with position, colour, radius, and intensity
+///
+////////////////////////////////////////////////////////////
+BIND_CLASS(copyable = true)
+struct Light {
+    BIND_CLASS_PROPERTY(readonly = true)
+    static const int MAX_SHADER_LIGHTS;
+
+    BIND_PROPERTY(default = {0.0, 0.0})
+    sf::Vector2f position{0.0f, 0.0f};
+
+    BIND_PROPERTY(default = {255, 255, 255, 255})
+    sf::Color colour = sf::Color::White;
+
+    BIND_PROPERTY()
+    float radius = 256.0f;
+
+    BIND_PROPERTY()
+    float intensity = 1.0f;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Construct a light source
+    ///
+    /// - \param position Light position in world space
+    /// - \param colour Light colour
+    /// - \param radius Light radius in pixels
+    /// - \param intensity Light intensity multiplier
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_INIT()
+    Light(const sf::Vector2f& position = sf::Vector2f(),
+          const sf::Color& colour = sf::Color::White, float radius = 256.0f,
+          float intensity = 1.0f);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Serialize the light to a dictionary-compatible map
+    ///
+    /// - \return Map containing position, color, radius, and intensity
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    LightData asDict() const;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Create a light from a dictionary-compatible map
+    ///
+    /// - \param data Raw light data
+    /// - \return Light instance
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    static Light fromDict(const LightData& data);
+};

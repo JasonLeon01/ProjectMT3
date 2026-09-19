@@ -1,0 +1,31 @@
+#
+# Try to find GLES library and include path.
+# Once done this will define
+#
+# GLES_FOUND
+# GLES_INCLUDE_DIR
+# GLES_LIBRARY
+#
+
+set(_SFML_GLES_INCLUDE_HINTS)
+if(CMAKE_SYSTEM_NAME STREQUAL "OHOS" AND CMAKE_SYSROOT)
+    list(APPEND _SFML_GLES_INCLUDE_HINTS "${CMAKE_SYSROOT}/usr/include")
+endif()
+
+find_path(GLES_INCLUDE_DIR GLES2/gl2.h
+          HINTS ${_SFML_GLES_INCLUDE_HINTS}
+          PATHS ${FIND_SFML_PATHS}
+          PATH_SUFFIXES include)
+find_library(GLES_LIBRARY NAMES GLESv2 libGLESv2 PATHS ${FIND_SFML_PATHS} PATH_SUFFIXES lib)
+
+unset(_SFML_GLES_INCLUDE_HINTS)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(GLES DEFAULT_MSG GLES_LIBRARY GLES_INCLUDE_DIR)
+
+if(GLES_FOUND AND NOT TARGET GLES::GLES)
+    add_library(GLES::GLES IMPORTED UNKNOWN)
+    set_target_properties(GLES::GLES PROPERTIES
+        INTERFACE_INCLUDE_DIRECTORIES "${GLES_INCLUDE_DIR}"
+        IMPORTED_LOCATION "${GLES_LIBRARY}")
+endif()

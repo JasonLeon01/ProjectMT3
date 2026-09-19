@@ -1,0 +1,9 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "SFML Harmony native example HAP",
+  "main": "",
+  "author": "SFML",
+  "license": "Zlib",
+  "dependencies": {}
+}

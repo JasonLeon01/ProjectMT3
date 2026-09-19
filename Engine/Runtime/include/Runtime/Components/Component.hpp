@@ -1,0 +1,21 @@
+#pragma once
+
+#include <Runtime/RuntimeObject.hpp>
+
+#include <CoreMinimal.hpp>
+
+#include <RuntimeApi.hpp>
+
+BIND_CLASS(callbacks = true)
+class LUDORK_RUNTIME_API Component : public RuntimeObject {
+public:
+    LUDORK_CAST_DERIVED(Component, RuntimeObject)
+
+    BIND_INIT()
+    Component() = default;
+
+    virtual ~Component() = default;
+
+    BIND_METHOD()
+    virtual RuntimeValue::Array onAttach(const RuntimeIdentityPtr& owner);
+};

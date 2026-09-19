@@ -1,0 +1,144 @@
+name: Analyze and Sanitize
+
+on: [workflow_call, workflow_dispatch]
+
+concurrency:
+  group: ${{ github.workflow }}-analyze-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DISPLAY: ":99" # Display number to use for the X server
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  tidy:
+    name: Analyzing on ${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+        - { name: Windows,         os: windows-2025, flags: -GNinja }
+        - { name: Linux,           os: ubuntu-24.04 }
+        - { name: Linux DRM,       os: ubuntu-24.04, flags: -DSFML_USE_DRM=ON }
+        - { name: Linux OpenGL ES, os: ubuntu-24.04, flags: -DSFML_OPENGL_ES=ON }
+        - { name: macOS,           os: macos-14 }
+        - { name: iOS,             os: macos-14,     flags: -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64 }
+        - { name: Android,         os: ubuntu-24.04, flags: -DCMAKE_ANDROID_ARCH_ABI=x86_64 -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=22 -DCMAKE_ANDROID_NDK=$ANDROID_NDK -DCMAKE_ANDROID_STL_TYPE=c++_shared }
+        - { name: OpenHarmony MOBILE arm64-v8a, os: ubuntu-24.04, form: MOBILE, opengl_es: 'ON', flags: -GNinja -DCMAKE_TOOLCHAIN_FILE=$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1 -DOHOS_ARCH=arm64-v8a -DOHOS_STL=c++_shared -DOHOS_COMPATIBLE_SDK_VERSION=22 -DBUILD_SHARED_LIBS=OFF -DSFML_BUILD_EXAMPLES=OFF -DSFML_HARMONY_DEVICE_FORM=MOBILE -DSFML_OPENGL_ES=ON -DSFML_USE_SYSTEM_DEPS=OFF }
+        - { name: OpenHarmony 2IN1 desktop GL arm64-v8a, os: ubuntu-24.04, form: 2IN1, opengl_es: 'OFF', flags: -GNinja -DCMAKE_TOOLCHAIN_FILE=$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1 -DOHOS_ARCH=arm64-v8a -DOHOS_STL=c++_shared -DOHOS_COMPATIBLE_SDK_VERSION=22 -DBUILD_SHARED_LIBS=OFF -DSFML_BUILD_EXAMPLES=OFF -DSFML_HARMONY_DEVICE_FORM=2IN1 -DSFML_OPENGL_ES=OFF -DSFML_USE_SYSTEM_DEPS=OFF }
+        - { name: OpenHarmony 2IN1 OpenGL ES arm64-v8a, os: ubuntu-24.04, form: 2IN1, opengl_es: 'ON', flags: -GNinja -DCMAKE_TOOLCHAIN_FILE=$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1 -DOHOS_ARCH=arm64-v8a -DOHOS_STL=c++_shared -DOHOS_COMPATIBLE_SDK_VERSION=22 -DBUILD_SHARED_LIBS=OFF -DSFML_BUILD_EXAMPLES=OFF -DSFML_HARMONY_DEVICE_FORM=2IN1 -DSFML_OPENGL_ES=ON -DSFML_USE_SYSTEM_DEPS=OFF }
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v6
+
+    - name: Get CMake and Ninja
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: latest
+        ninjaVersion: latest
+
+    - name: Setup OpenHarmony SDK
+      if: contains(matrix.platform.name, 'OpenHarmony')
+      id: ohos-sdk
+      uses: openharmony-rs/setup-ohos-sdk@eb82b94ef522b07269679195c2512f22e922ef3b # v1.0.0
+      with:
+        version: '6.1'
+        components: native
+        cache: true
+
+    - name: Validate OpenHarmony SDK
+      if: contains(matrix.platform.name, 'OpenHarmony')
+      run: |
+        test "${{ steps.ohos-sdk.outputs.api-version }}" -ge 22
+        test -f "$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake"
+        test -x "$OHOS_SDK_NATIVE/llvm/bin/clang++"
+        test -f "$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1/optional"
+        echo "OpenHarmony SDK ${{ steps.ohos-sdk.outputs.sdk-version }} (API ${{ steps.ohos-sdk.outputs.api-version }})"
+
+    - name: Install Windows Dependencies
+      if: runner.os == 'Windows'
+      run: |
+        curl.exe -o run-clang-tidy https://raw.githubusercontent.com/llvm/llvm-project/llvmorg-15.0.7/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
+
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux' && !contains(matrix.platform.name, 'OpenHarmony')
+      run: |
+        sudo apt-get update
+        sudo apt-get install libharfbuzz-dev libfreetype-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libdrm-dev libgbm-dev libmbedtls-dev libssh2-1-dev
+
+    - name: Install macOS Dependencies
+      if: runner.os == 'macOS'
+      run: |
+        brew update
+        brew install llvm@18
+        echo "$(brew --prefix llvm@18)/bin" >> $GITHUB_PATH
+
+    - name: Configure
+      run: cmake --preset dev ${{ matrix.platform.name != 'Android' && !contains(matrix.platform.name, 'OpenHarmony') && '-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++' || ''}} -DCMAKE_UNITY_BUILD=ON -DSFML_RUN_IPV4_LINK_TESTS=ON -DSFML_RUN_IPV4_INTERNET_TESTS=ON -DSFML_RUN_IPV6_LINK_TESTS=ON -DSFML_NETWORK_TESTS_MAX_FDS=1028 ${{matrix.platform.flags}}
+
+    - name: Validate OpenHarmony Compilation Database
+      if: contains(matrix.platform.name, 'OpenHarmony')
+      run: |
+        grep -Fq -- "$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1" build/compile_commands.json
+        grep -Fq -- '-DSFML_HARMONY_${{ matrix.platform.form }}' build/compile_commands.json
+        if [ "${{ matrix.platform.opengl_es }}" = "ON" ]; then
+          grep -Fq -- '-DSFML_OPENGL_ES' build/compile_commands.json
+        else
+          ! grep -Fq -- '-DSFML_OPENGL_ES' build/compile_commands.json
+        fi
+
+    - name: Analyze Code
+      run: cmake --build build --target tidy
+
+  sanitize:
+    name: Sanitizing on ${{ matrix.platform.name }}
+    runs-on: ${{ matrix.platform.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+        - { name: Linux,               os: ubuntu-24.04 }
+        - { name: Linux DRM,           os: ubuntu-24.04, flags: -DSFML_RUN_DISPLAY_TESTS=OFF -DSFML_USE_DRM=ON }
+        - { name: Linux GCC OpenGL ES, os: ubuntu-24.04, flags: -DSFML_RUN_DISPLAY_TESTS=OFF -DSFML_OPENGL_ES=ON }
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v6
+
+    - name: Get CMake and Ninja
+      uses: lukka/get-cmake@latest
+      with:
+        cmakeVersion: latest
+        ninjaVersion: latest
+
+    - name: Install Linux Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install xorg-dev libharfbuzz-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libdrm-dev libgbm-dev libmbedtls-dev libssh2-1-dev xvfb fluxbox
+
+    - name: Configure
+      run: cmake --preset dev -GNinja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DSFML_BUILD_EXAMPLES=OFF -DSFML_ENABLE_SANITIZERS=ON -DSFML_RUN_IPV4_LINK_TESTS=ON -DSFML_RUN_IPV4_INTERNET_TESTS=ON -DSFML_RUN_IPV6_LINK_TESTS=ON -DSFML_NETWORK_TESTS_MAX_FDS=1028 ${{matrix.platform.flags}}
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Prepare Test
+      run: |
+        set -e
+        # Start up Xvfb and fluxbox to host display tests
+        if [ "${{ runner.os }}" == "Linux" ]; then
+          Xvfb $DISPLAY -screen 0 1920x1080x24 &
+          sleep 5
+          fluxbox > /dev/null 2>&1 &
+          sleep 5
+        fi
+
+    - name: Test
+      run: ctest --test-dir build --output-on-failure

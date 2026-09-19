@@ -1,0 +1,28 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "SFML Harmony mobile diagnostics"
+    },
+    {
+      "name": "ability_desc",
+      "value": "Runs the SFML mobile platform example"
+    },
+    {
+      "name": "ability_label",
+      "value": "SFML Harmony"
+    },
+    {
+      "name": "permission_microphone",
+      "value": "Record a short sample for the SFML audio capture diagnostic"
+    },
+    {
+      "name": "permission_clipboard",
+      "value": "Verify SFML plain-text clipboard integration"
+    },
+    {
+      "name": "permission_sensor",
+      "value": "Display SFML accelerometer and gyroscope values"
+    }
+  ]
+}

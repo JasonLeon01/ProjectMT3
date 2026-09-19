@@ -1,0 +1,66 @@
+{
+  "apiType": "stageMode",
+  "buildOptionSet": [
+    {
+      "name": "release",
+      "arkOptions": {
+        "obfuscation": {
+          "ruleOptions": {
+            "enable": false,
+            "files": []
+          }
+        }
+      }
+    }
+  ],
+  "targets": [
+    {
+      "name": "desktopGl",
+      "config": {
+        "buildOption": {
+          "externalNativeOptions": {
+            "path": "./src/main/cpp/CMakeLists.txt",
+            "arguments": [
+              "-DSFML_HARMONY_DEVICE_FORM=2IN1",
+              "-DSFML_OPENGL_ES=OFF",
+              "-DOHOS_COMPATIBLE_SDK_VERSION=22",
+              "-DSFML_USE_SYSTEM_DEPS=OFF",
+              "-DBUILD_SHARED_LIBS=OFF"
+            ],
+            "cppFlags": "-std=c++17",
+            "abiFilters": [
+              "arm64-v8a"
+            ],
+            "targets": [
+              "entry"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "gles",
+      "config": {
+        "buildOption": {
+          "externalNativeOptions": {
+            "path": "./src/main/cpp/CMakeLists.txt",
+            "arguments": [
+              "-DSFML_HARMONY_DEVICE_FORM=2IN1",
+              "-DSFML_OPENGL_ES=ON",
+              "-DOHOS_COMPATIBLE_SDK_VERSION=22",
+              "-DSFML_USE_SYSTEM_DEPS=OFF",
+              "-DBUILD_SHARED_LIBS=OFF"
+            ],
+            "cppFlags": "-std=c++17",
+            "abiFilters": [
+              "arm64-v8a"
+            ],
+            "targets": [
+              "entry"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

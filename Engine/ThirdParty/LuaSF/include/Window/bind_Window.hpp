@@ -1,0 +1,13 @@
+#pragma once
+
+#include <SFML/Window/Window.hpp>
+#include <SFML/System/Time.hpp>
+#include <SFML/System/Vector2.hpp>
+#include <SFML/Window/ContextSettings.hpp>
+#include <SFML/Window/Cursor.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <SFML/Window/WindowBase.hpp>
+#include <SFML/Window/WindowEnums.hpp>
+#include "utils.hpp"
+
+void bind_Window(sol::state_view lua);

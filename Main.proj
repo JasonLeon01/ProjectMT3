@@ -1,5 +1,5 @@
 {
-  "Cpp": false,
-  "IndividualWindow": true,
-  "lastFileExplorerPath": "Data/Blueprints/Teleportations"
+  "Cpp": true,
+  "ffmpeg": true,
+  "IndividualWindow": true
 }
