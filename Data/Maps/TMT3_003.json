@@ -735,8 +735,8 @@
         "bp": "Data.Blueprints.Teleportations.Downstair",
         "tag": "Teleportations_Downstair_default_10_2",
         "position": [
-          10,
-          2
+          0,
+          10
         ]
       },
       {
@@ -823,8 +823,8 @@
         "bp": "Data.Blueprints.Teleportations.Downstair",
         "tag": "Teleportations_Downstair_default_10_5",
         "position": [
-          10,
-          5
+          5,
+          10
         ]
       },
       {
@@ -999,8 +999,8 @@
         "bp": "Data.Blueprints.Teleportations.Upstair",
         "tag": "Teleportations_Upstair_default_0_10",
         "position": [
-          0,
-          10
+          10,
+          2
         ]
       },
       {
@@ -1015,8 +1015,8 @@
         "bp": "Data.Blueprints.Teleportations.Upstair",
         "tag": "Teleportations_Upstair_default_5_10",
         "position": [
-          5,
-          10
+          10,
+          5
         ]
       },
       {

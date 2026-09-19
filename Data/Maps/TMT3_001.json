@@ -620,22 +620,6 @@
     "floor": [],
     "default": [
       {
-        "bp": "Data.Blueprints.Teleportations.Upstair",
-        "tag": "Teleportations_Upstair_default_9_0",
-        "position": [
-          9,
-          0
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Teleportations.Upstair",
-        "tag": "Teleportations_Upstair_default_0_10",
-        "position": [
-          0,
-          10
-        ]
-      },
-      {
         "bp": "Data.Blueprints.Doors.BP_Door_Y",
         "tag": "Doors_BP_Door_Y_default_2_1",
         "position": [
@@ -977,6 +961,22 @@
         "position": [
           0,
           6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.Downstair",
+        "tag": "Teleportations_Downstair_default_0_10",
+        "position": [
+          0,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.Downstair",
+        "tag": "Teleportations_Downstair_default_9_0",
+        "position": [
+          9,
+          0
         ]
       }
     ]
