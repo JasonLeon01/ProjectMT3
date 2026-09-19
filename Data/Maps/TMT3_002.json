@@ -1,5 +1,5 @@
 {
-  "mapName": "{TMT3_001}",
+  "mapName": "{TMT3_002}",
   "width": 11,
   "height": 11,
   "ambientLight": [
@@ -324,93 +324,67 @@
       "layerTileset": "Mota",
       "tiles": [
         [
-          null,
-          null,
-          null,
           7,
           null,
-          7,
           null,
-          7,
-          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
           null,
           7
         ],
         [
           7,
-          7,
           null,
           7,
           null,
           7,
           null,
-          null,
-          7,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           7,
           null,
           7,
           7,
-          null
-        ],
-        [
-          7,
-          7,
-          7,
-          null,
-          7,
-          7,
-          7,
-          null,
-          7,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          7,
-          null,
-          null,
-          null,
-          7,
-          null,
           7
         ],
         [
+          7,
+          null,
+          7,
           null,
           null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null
+        ],
+        [
+          7,
+          null,
+          null,
+          7,
+          7,
           7,
           null,
           7,
           7,
-          7,
-          null,
-          null,
           null,
           null
         ],
         [
-          null,
           7,
           7,
           null,
           null,
           null,
           null,
-          7,
-          7,
+          null,
+          null,
+          null,
           null,
           7
         ],
@@ -418,13 +392,39 @@
           null,
           null,
           7,
+          7,
+          7,
+          7,
           null,
           7,
           7,
           7,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
           7,
           null,
           null,
+          null,
+          null,
+          null,
+          7,
+          null
+        ],
+        [
+          7,
+          7,
+          null,
+          7,
+          null,
+          7,
+          7,
+          7,
+          null,
+          7,
           null
         ],
         [
@@ -435,33 +435,33 @@
           null,
           null,
           null,
-          7,
-          7,
           null,
-          7
-        ],
-        [
-          7,
-          7,
-          7,
-          null,
-          7,
-          null,
-          null,
-          7,
           null,
           null,
           null
         ],
         [
           null,
+          7,
           null,
+          7,
+          7,
+          7,
           null,
+          7,
+          7,
+          7,
+          null
+        ],
+        [
           null,
           7,
           null,
           null,
-          7,
+          null,
+          null,
+          null,
+          null,
           null,
           null,
           null
@@ -620,259 +620,203 @@
     "floor": [],
     "default": [
       {
-        "bp": "Data.Blueprints.Teleportations.Upstair",
-        "tag": "Teleportations_Upstair_default_9_0",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_2_0",
+        "position": [
+          2,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E33_shilaimu",
+        "tag": "Enemies_BP_Enemy_E33_shilaimu_default_4_0",
+        "position": [
+          4,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.Downstair",
+        "tag": "Teleportations_Downstair_default_9_0",
         "position": [
           9,
           0
         ]
       },
       {
-        "bp": "Data.Blueprints.Teleportations.Upstair",
-        "tag": "Teleportations_Upstair_default_0_10",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E34_dashilaimu",
+        "tag": "Enemies_BP_Enemy_E34_dashilaimu_default_3_1",
         "position": [
-          0,
-          10
+          3,
+          1
         ]
       },
       {
-        "bp": "Data.Blueprints.Doors.BP_Door_Y",
-        "tag": "Doors_BP_Door_Y_default_2_1",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
+        "tag": "Enemies_BP_Enemy_E35_bianfu_default_5_1",
         "position": [
-          2,
+          5,
           1
         ]
       },
       {
         "bp": "Data.Blueprints.Doors.BP_Door_Y",
-        "tag": "Doors_BP_Door_Y_default_2_4",
+        "tag": "Doors_BP_Door_Y_default_7_1",
         "position": [
-          2,
-          4
+          7,
+          1
         ]
       },
       {
-        "bp": "Data.Blueprints.Doors.BP_Door_Y",
-        "tag": "Doors_BP_Door_Y_default_2_8",
-        "position": [
-          2,
-          8
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Doors.BP_Door_B",
-        "tag": "Doors_BP_Door_B_default_4_8",
-        "position": [
-          4,
-          8
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Doors.BP_Door_Y",
-        "tag": "Doors_BP_Door_Y_default_9_6",
-        "position": [
-          9,
-          6
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Doors.BP_Door_Y",
-        "tag": "Doors_BP_Door_Y_default_9_4",
-        "position": [
-          9,
-          4
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
-        "tag": "Items_BP_Item_Key_Y_default_1_0",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
+        "tag": "Enemies_BP_Enemy_E36_fashi_default_1_2",
         "position": [
           1,
-          0
+          2
         ]
       },
       {
-        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
-        "tag": "Items_BP_Item_Key_Y_default_5_10",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_3_2",
+        "position": [
+          3,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_1_2",
+        "tag": "Consumables_Gem_1_2_default_4_2",
+        "position": [
+          4,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_5_2",
         "position": [
           5,
-          10
+          2
         ]
       },
       {
-        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
-        "tag": "Items_BP_Item_Key_Y_default_6_10",
+        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "tag": "Actors_BP_SWall_default_6_2",
         "position": [
           6,
-          10
+          2
         ]
       },
       {
-        "bp": "Data.Blueprints.Consumables.Bottle_400",
-        "tag": "Consumables_Bottle_400_default_5_6",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
+        "tag": "Enemies_BP_Enemy_E36_fashi_default_7_2",
         "position": [
-          5,
-          6
+          7,
+          2
         ]
       },
       {
-        "bp": "Data.Blueprints.Consumables.Bottle_400",
-        "tag": "Consumables_Bottle_400_default_9_10",
-        "position": [
-          9,
-          10
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Gem_1_2",
-        "tag": "Consumables_Gem_1_2_default_8_9",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_8_2",
         "position": [
           8,
-          9
+          2
         ]
       },
       {
-        "bp": "Data.Blueprints.Consumables.Gem_1_2",
-        "tag": "Consumables_Gem_1_2_default_1_5",
+        "bp": "Data.Blueprints.Teleportations.Upstair",
+        "tag": "Teleportations_Upstair_default_10_2",
+        "position": [
+          10,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_6_3",
+        "position": [
+          6,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_2_2",
+        "tag": "Consumables_Gem_2_2_default_2_4",
+        "position": [
+          2,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E40_kulou",
+        "tag": "Enemies_BP_Enemy_E40_kulou_default_4_4",
+        "position": [
+          4,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
+        "tag": "Enemies_BP_Enemy_E35_bianfu_default_8_4",
+        "position": [
+          8,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_0_5",
+        "position": [
+          0,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_1_5",
         "position": [
           1,
           5
         ]
       },
       {
-        "bp": "Data.Blueprints.Consumables.Gem_2_2",
-        "tag": "Consumables_Gem_2_2_default_1_7",
-        "position": [
-          1,
-          7
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Gem_2_2",
-        "tag": "Consumables_Gem_2_2_default_10_9",
-        "position": [
-          10,
-          9
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Gem_3_1",
-        "tag": "Consumables_Gem_3_1_default_6_6",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_6_5",
         "position": [
           6,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.Upstair",
+        "tag": "Teleportations_Upstair_default_10_5",
+        "position": [
+          10,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_0_6",
+        "position": [
+          0,
           6
         ]
       },
       {
         "bp": "Data.Blueprints.Consumables.Bottle_150",
-        "tag": "Consumables_Bottle_150_default_0_4",
-        "position": [
-          0,
-          4
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Bottle_150",
-        "tag": "Consumables_Bottle_150_default_0_8",
-        "position": [
-          0,
-          8
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Bottle_150",
-        "tag": "Consumables_Bottle_150_default_5_9",
-        "position": [
-          5,
-          9
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Bottle_150",
-        "tag": "Consumables_Bottle_150_default_6_9",
-        "position": [
-          6,
-          9
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Bottle_150",
-        "tag": "Consumables_Bottle_150_default_7_3",
-        "position": [
-          7,
-          3
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Consumables.Bottle_150",
-        "tag": "Consumables_Bottle_150_default_5_4",
-        "position": [
-          5,
-          4
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
-        "tag": "Items_BP_Item_Key_Y_default_10_2",
-        "position": [
-          10,
-          2
-        ]
-      },
-      {
-        "tag": "Doors_ConditionDoors_BP_Door_Condition_default_9_8",
-        "bp": "Data.Blueprints.Doors.ConditionDoors.BP_Door_Condition",
-        "position": [
-          9,
-          8
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Items.BP_Item_Key_B",
-        "tag": "Items_BP_Item_Key_B_default_0_0",
-        "position": [
-          0,
-          0
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
-        "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_3_2",
-        "position": [
-          3,
-          2
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
-        "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_5_2",
-        "position": [
-          5,
-          2
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
-        "tag": "Enemies_BP_Enemy_E31_huiqishi_default_1_4",
+        "tag": "Consumables_Bottle_150_default_1_6",
         "position": [
           1,
-          4
+          6
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
-        "tag": "Enemies_BP_Enemy_E26_shixuebianfu_default_3_9",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E37_dusangshi",
+        "tag": "Enemies_BP_Enemy_E37_dusangshi_default_2_6",
         "position": [
-          3,
-          9
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
-        "tag": "Enemies_BP_Enemy_E24_gongbing_default_3_7",
-        "position": [
-          3,
-          7
+          2,
+          6
         ]
       },
       {
@@ -884,124 +828,159 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
-        "tag": "Enemies_BP_Enemy_E24_gongbing_default_0_2",
+        "bp": "Data.Blueprints.Consumables.Gem_1_2",
+        "tag": "Consumables_Gem_1_2_default_5_6",
         "position": [
-          0,
-          2
+          5,
+          6
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
-        "tag": "Enemies_BP_Enemy_E31_huiqishi_default_2_0",
+        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "tag": "Actors_BP_SWall_default_6_6",
+        "position": [
+          6,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Gem_2_2",
+        "tag": "Consumables_Gem_2_2_default_7_6",
+        "position": [
+          7,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "tag": "Enemies_BP_Enemy_E26_shixuebianfu_default_8_6",
+        "position": [
+          8,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "tag": "Enemies_BP_Enemy_E24_gongbing_default_10_6",
+        "position": [
+          10,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_B",
+        "tag": "Doors_BP_Door_B_default_2_7",
         "position": [
           2,
-          0
+          7
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
-        "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_1_8",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_4_7",
+        "position": [
+          4,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_8_7",
+        "position": [
+          8,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "tag": "Actors_BP_Barrier_50_default_1_8",
         "position": [
           1,
           8
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
-        "tag": "Enemies_BP_Enemy_E25_moyushilaimu_default_5_8",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "tag": "Enemies_BP_Enemy_E31_huiqishi_default_3_8",
+        "position": [
+          3,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_5_8",
         "position": [
           5,
           8
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E33_shilaimu",
-        "tag": "Enemies_BP_Enemy_E33_shilaimu_default_7_1",
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_7_8",
         "position": [
           7,
-          1
+          8
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E34_dashilaimu",
-        "tag": "Enemies_BP_Enemy_E34_dashilaimu_default_8_5",
-        "position": [
-          8,
-          5
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E34_dashilaimu",
-        "tag": "Enemies_BP_Enemy_E34_dashilaimu_default_9_1",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
+        "tag": "Enemies_BP_Enemy_E25_moyushilaimu_default_9_8",
         "position": [
           9,
-          1
+          8
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
-        "tag": "Enemies_BP_Enemy_E35_bianfu_default_9_3",
-        "position": [
-          9,
-          3
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
-        "tag": "Enemies_BP_Enemy_E35_bianfu_default_6_4",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_6_9",
         "position": [
           6,
-          4
+          9
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
-        "tag": "Enemies_BP_Enemy_E36_fashi_default_8_7",
-        "position": [
-          8,
-          7
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
-        "tag": "Enemies_BP_Enemy_E36_fashi_default_10_7",
-        "position": [
-          10,
-          7
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
-        "tag": "Actors_BP_SWall_default_0_6",
+        "bp": "Data.Blueprints.Teleportations.Downstair",
+        "tag": "Teleportations_Downstair_default_0_10",
         "position": [
           0,
-          6
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_4_10",
+        "position": [
+          4,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.Bottle_150",
+        "tag": "Consumables_Bottle_150_default_5_10",
+        "position": [
+          5,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E22_yanshushi",
+        "tag": "Enemies_BP_Enemy_E22_yanshushi_default_7_10",
+        "position": [
+          7,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E23_sangshijianshi",
+        "tag": "Enemies_BP_Enemy_E23_sangshijianshi_default_9_10",
+        "position": [
+          9,
+          10
         ]
       }
     ]
   },
-  "BPClassVarChanged": {
-    "Doors_ConditionDoors_BP_Door_Condition_default_9_8": {
-      "openConditionName": "sdoortmt1_b",
-      "openConditionVal": 2
-    },
-    "Enemies_BP_Enemy_E36_fashi_default_8_7": {
-      "afterBattleVarChanges": {
-        "sdoortmt1_b": [
-          "\u002B",
-          1
-        ]
-      }
-    },
-    "Enemies_BP_Enemy_E36_fashi_default_10_7": {
-      "afterBattleVarChanges": {
-        "sdoortmt1_b": [
-          "\u002B",
-          1
-        ]
-      }
-    }
-  },
+  "BPClassVarChanged": {},
   "type": "map"
 }

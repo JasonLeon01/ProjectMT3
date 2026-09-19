@@ -6,6 +6,7 @@ return {
     ["DoorGate7"] = 0,
     ["MTExample"] = 0,
     ["ShopPrice"] = 20,
+    ["ShopPrice2"] = 50,
     ["bravorshow"] = false,
     ["floor25Phase"] = 0,
     ["fly"] = false,
