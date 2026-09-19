@@ -3,10 +3,307 @@
   "width": 11,
   "height": 11,
   "layerOrder": [
+    "deepfloor",
     "floor",
     "default"
   ],
   "layers": {
+    "deepfloor": {
+      "layerName": "deepfloor",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          11,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          11,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          11,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          11,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          11,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          11,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "autoTiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "shaderPath": "",
+      "actors": []
+    },
     "floor": {
       "layerName": "floor",
       "layerTileset": "magictower",
@@ -65,7 +362,7 @@
         ],
         [
           11,
-          11,
+          348,
           11,
           637,
           11,
@@ -94,6 +391,32 @@
           11,
           11,
           11,
+          348,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          348,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          348,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          348,
+          11,
           11,
           11,
           11,
@@ -110,33 +433,7 @@
           11,
           11,
           11,
-          11,
-          11,
-          11,
-          11
-        ],
-        [
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11
-        ],
-        [
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
-          11,
+          348,
           11,
           11,
           11
@@ -361,7 +658,7 @@
         ],
         [
           336,
-          348,
+          null,
           336,
           null,
           336,
@@ -390,7 +687,7 @@
           null,
           null,
           339,
-          348,
+          null,
           null,
           null,
           339,
@@ -400,21 +697,21 @@
         ],
         [
           336,
-          348,
+          null,
           null,
           null,
           339,
           null,
           350,
           null,
-          348,
+          null,
           null,
           336
         ],
         [
           336,
           null,
-          348,
+          null,
           null,
           350,
           null,
@@ -432,7 +729,7 @@
           null,
           null,
           null,
-          348,
+          null,
           null,
           null,
           336
@@ -601,7 +898,56 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_0_8",
+        "position": [
+          0,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_0_4_2",
+        "position": [
+          0,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_10_4_2",
+        "position": [
+          10,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_10_8_2",
+        "position": [
+          10,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_4_4",
+        "position": [
+          4,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_6_3_2",
+        "position": [
+          6,
+          3
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_000.BP_NPC_00_default_6_1",
@@ -642,6 +988,62 @@
           5,
           10
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_8_1",
+        "position": [
+          8,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_2_1",
+        "position": [
+          2,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_2_6",
+        "position": [
+          4,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_8_6",
+        "position": [
+          6,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_3_0",
+        "position": [
+          3,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_7_0",
+        "position": [
+          7,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_5_0",
+        "position": [
+          5,
+          0
+        ]
       }
     ]
   },
@@ -662,6 +1064,19 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {},
+  "BPClassVarChanged": {
+    "Actors_BP_Fire_default_4_4": {
+      "defaultTranslation": [
+        0,
+        16
+      ]
+    },
+    "Actors_BP_Fire_default_6_3_2": {
+      "defaultTranslation": [
+        0,
+        16
+      ]
+    }
+  },
   "type": "map"
 }
