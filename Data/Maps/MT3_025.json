@@ -679,6 +679,22 @@
           5,
           2
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_DeadDoor",
+        "tag": "Doors_BP_DeadDoor_default_4_1",
+        "position": [
+          4,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_General",
+        "tag": "Doors_BP_Door_General_default_6_1",
+        "position": [
+          6,
+          1
+        ]
       }
     ],
     "default": [
@@ -737,6 +753,22 @@
           5,
           8
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_General",
+        "tag": "Doors_BP_Door_General_default_4_1",
+        "position": [
+          4,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_General",
+        "tag": "Doors_BP_Door_General_default_6_1_2",
+        "position": [
+          6,
+          1
+        ]
       }
     ]
   },
@@ -779,6 +811,58 @@
     "Doors_ConditionDoors_BP_Door_Condition_default_5_3": {
       "openConditionName": "floor25Phase",
       "openConditionVal": 1
+    },
+    "Doors_BP_Door_General_default_4_1": {
+      "texturePath": "/Game/Assets/Characters/blocks/classic-doors-008-single.png",
+      "defaultRect": [
+        [
+          0,
+          96,
+          32,
+          32
+        ]
+      ],
+      "conditionVariable": "princesspart",
+      "conditionValue": true
+    },
+    "Doors_BP_DeadDoor_default_4_1": {
+      "conditionVariable": "princesspart",
+      "conditionValue": false,
+      "texturePath": "/Game/Assets/Characters/blocks/classic-doors-008-single.png",
+      "defaultRect": [
+        [
+          0,
+          96,
+          32,
+          32
+        ]
+      ]
+    },
+    "Doors_BP_Door_General_default_6_1": {
+      "conditionVariable": "princesspart",
+      "conditionValue": true,
+      "texturePath": "/Game/Assets/Characters/blocks/classic-doors-008-single.png",
+      "defaultRect": [
+        [
+          0,
+          64,
+          32,
+          32
+        ]
+      ]
+    },
+    "Doors_BP_Door_General_default_6_1_2": {
+      "conditionVariable": "princesspart",
+      "conditionValue": false,
+      "texturePath": "/Game/Assets/Characters/blocks/classic-doors-008-single.png",
+      "defaultRect": [
+        [
+          0,
+          64,
+          32,
+          32
+        ]
+      ]
     }
   },
   "type": "map"

@@ -60,7 +60,7 @@
     "ext": [
       ".json"
     ],
-    "value": "MT3_015.json"
+    "value": "MT3_000.json"
   },
   "startPlayerBlueprint": {
     "type": "file",
@@ -78,8 +78,8 @@
   "startPos": {
     "type": "int[2]",
     "value": [
-      8,
-      5
+      5,
+      0
     ]
   },
   "type": "system"

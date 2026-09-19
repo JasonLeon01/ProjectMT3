@@ -23,7 +23,7 @@ local GameMap = {}
 
 ---@alias GameMapImplState GameMap
 
-local defaultMapViewRect = sf.IntRect.new(192, 32, 416, 416)
+local defaultMapViewRect = sf.IntRect.new(224, 64, 352, 352)
 ---@cast defaultMapViewRect sf.IntRect
 GameMap.MapViewRect = defaultMapViewRect
 GameMap.HideDisconnectedRegions = false
@@ -245,9 +245,16 @@ function GameMap:addDamageText(text, position, sourceActor)
         return
     end
     local drawPosition = self:worldToMapViewPosition(position)
-    DamageTextParticle.new(self._particleSystem, text, drawPosition, self._damageTextConfig, self._damageTextSpeedCurve, function ()
-        return self:isActorVisibleOnMap(sourceActor)
-    end)
+    DamageTextParticle.new(
+        self._particleSystem,
+        text,
+        drawPosition,
+        self._damageTextConfig,
+        self._damageTextSpeedCurve,
+        function ()
+            return self:isActorVisibleOnMap(sourceActor)
+        end
+    )
 end
 
 function GameMap:onTick(deltaTime)

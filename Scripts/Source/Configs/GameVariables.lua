@@ -11,7 +11,9 @@ return {
     ["fly"] = false,
     ["mbook"] = false,
     ["net1"] = false,
+    ["princesspart"] = true,
     ["sdoor"] = false,
+    ["sdoortmt1_b"] = 0,
     ["thief9"] = false,
     ["thief9door"] = 0,
 }

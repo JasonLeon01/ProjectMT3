@@ -13,7 +13,9 @@ local _METADATA = {
             "fly",
             "mbook",
             "net1",
+            "princesspart",
             "sdoor",
+            "sdoortmt1_b",
             "thief9",
             "thief9door",
         },
@@ -47,8 +49,14 @@ local _METADATA = {
         ["net1"] = {
             type = "bool",
         },
+        ["princesspart"] = {
+            type = "bool",
+        },
         ["sdoor"] = {
             type = "bool",
+        },
+        ["sdoortmt1_b"] = {
+            type = "int",
         },
         ["thief9"] = {
             type = "bool",
