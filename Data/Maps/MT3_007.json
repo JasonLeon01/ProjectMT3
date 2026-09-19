@@ -601,7 +601,48 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_1_1",
+        "position": [
+          1,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_3_3",
+        "position": [
+          3,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_7_7",
+        "position": [
+          7,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_2_7",
+        "position": [
+          2,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_9_2",
+        "position": [
+          9,
+          2
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_007.Downstair_default_0_0",
@@ -1002,6 +1043,12 @@
           1
         ]
       }
+    },
+    "Actors_BP_Fire_default_7_7": {
+      "defaultTranslation": [
+        -0.39453125,
+        -18.62109375
+      ]
     }
   },
   "type": "map"

@@ -601,7 +601,32 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_9_4",
+        "position": [
+          9,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_9_9",
+        "position": [
+          9,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_1_4",
+        "position": [
+          1,
+          4
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_015.Downstair_default_8_5",

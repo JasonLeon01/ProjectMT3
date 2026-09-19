@@ -601,7 +601,72 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_4_8",
+        "position": [
+          4,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_7_6",
+        "position": [
+          7,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_0_7",
+        "position": [
+          0,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_4_1",
+        "position": [
+          4,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_7_1",
+        "position": [
+          7,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_9_5",
+        "position": [
+          9,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_7_4",
+        "position": [
+          7,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_7_9",
+        "position": [
+          7,
+          9
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_008.Downstair_default_8_7",
@@ -1037,6 +1102,19 @@
     },
     "Consumables_Gem_GOLD_default_10_6": {
       "plus": 200
+    },
+    "Actors_BP_Fire_default_4_8": {
+      "defaultTranslation": [
+        -0.43359375,
+        -19.87890625
+      ]
+    },
+    "Actors_BP_Fire_Right_default_0_7": {
+      "defaultTranslation": [
+        7.25390625,
+        36.625
+      ],
+      "defaultRotation": 37.7801513671875
     }
   },
   "type": "map"

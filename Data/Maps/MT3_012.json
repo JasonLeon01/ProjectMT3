@@ -601,7 +601,48 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_0_1",
+        "position": [
+          0,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_1_5",
+        "position": [
+          1,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_8_5",
+        "position": [
+          8,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_9_10",
+        "position": [
+          9,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_10_2",
+        "position": [
+          10,
+          2
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_012.Downstair_default_0_10",

@@ -601,7 +601,16 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_7_6",
+        "position": [
+          7,
+          6
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_005.Downstair_default_0_4",
@@ -1022,6 +1031,13 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {},
+  "BPClassVarChanged": {
+    "Actors_BP_Fire_default_7_6": {
+      "defaultTranslation": [
+        0.53515625,
+        -19.71875
+      ]
+    }
+  },
   "type": "map"
 }

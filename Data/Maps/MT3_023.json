@@ -317,6 +317,14 @@
           2,
           8
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_6_5",
+        "position": [
+          6,
+          5
+        ]
       }
     ],
     "default": [

@@ -309,7 +309,24 @@
     }
   },
   "actors": {
-    "floor": [],
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_4_4",
+        "position": [
+          4,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_6_6",
+        "position": [
+          6,
+          6
+        ]
+      }
+    ],
     "default": [
       {
         "tag": "MT3_025.Downstair_default_5_2",
