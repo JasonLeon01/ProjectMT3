@@ -10,12 +10,6 @@
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowSaveLoad.WindowSaveSlot
 ---@field SaveSlotPlaceholder1 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
----@field SaveSlotPlaceholder2 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
----@field SaveSlotPlaceholder3 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
----@field SaveSlotPlaceholder4 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
----@field SaveSlotPlaceholder5 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
----@field SaveSlotPlaceholder6 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
----@field SaveSlotPlaceholder7 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
 
 ---@class Source.UI.Parts.WindowSaveLoad.WindowSaveSlot: Source.UIBase.UiView
 ---@field root     Engine.Canvas

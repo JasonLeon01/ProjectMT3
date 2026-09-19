@@ -54,6 +54,7 @@
 ---@field ParticleSystem Engine.ParticleSystem
 ---@field TextParticle Engine.TextParticle
 ---@field ResourceFileConstants Engine.ResourceFileConstants
+---@field SavePreviewReader Engine.SavePreviewReader
 ---@field Button Engine.Button
 ---@field Canvas Engine.Canvas
 ---@field CharacterView Engine.CharacterView
@@ -2664,6 +2665,52 @@ ResourceFileConstants.ANIMATION_CACHE_SUFFIX = nil
 ---@type string
 ResourceFileConstants.ENCRYPTED_ANIMATION_CACHE_SUFFIX = nil
 Engine.ResourceFileConstants = ResourceFileConstants
+
+--- Background save metadata and thumbnail reader. Call public methods on the
+--- game thread.
+---@class Engine.SavePreviewReader
+local SavePreviewReader = {}
+---@return Engine.SavePreviewReader
+function SavePreviewReader.new() end
+---@param self Engine.SavePreviewReader
+function SavePreviewReader.init(self) end
+--- Starts a scan; the latest slot is a one-based index into paths, or zero.
+---@param paths string[]
+---@return nil
+function SavePreviewReader:requestScan(paths) end
+---@return boolean
+function SavePreviewReader:pollScan() end
+---@return integer
+function SavePreviewReader:getLatestSlot() end
+---@return string
+function SavePreviewReader:getScanError() end
+--- Starts a new preview and supersedes the previous request. Maximum size
+--- is 1024x1024.
+---@param path string
+---@param width integer
+---@param height integer
+---@return nil
+function SavePreviewReader:requestPreview(path, width, height) end
+---@return boolean
+function SavePreviewReader:pollPreview() end
+--- Returns idle, loading, empty, ready or failed.
+---@return string
+function SavePreviewReader:getState() end
+---@return number
+function SavePreviewReader:getModificationTime() end
+---@return sf.Image|nil
+function SavePreviewReader:getImage() end
+---@return string
+function SavePreviewReader:getError() end
+---@return nil
+function SavePreviewReader:cancelPreview() end
+--- Cancels pending results without waiting for worker I/O.
+---@return nil
+function SavePreviewReader:cancel() end
+---@param path string
+---@return nil
+function SavePreviewReader.invalidate(path) end
+Engine.SavePreviewReader = SavePreviewReader
 
 ---@class Engine.Button : Engine.Image, Engine.FunctionalBase
 local Button = {}

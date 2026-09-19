@@ -20,20 +20,7 @@
       ]
     ],
     "ID": "KEY_B",
-    "tag": "",
-    "lightComp": {
-      "lightColour": [
-        0,
-        128,
-        128,
-        255
-      ],
-      "lightRadius": 16,
-      "lightOffset": [
-        0,
-        0
-      ]
-    }
+    "tag": ""
   },
   "graph": {
     "nodeGraph": {

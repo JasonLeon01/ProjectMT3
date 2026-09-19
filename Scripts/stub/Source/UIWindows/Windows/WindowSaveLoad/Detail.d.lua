@@ -4,8 +4,8 @@
 ---@brief Save-file detail panel showing the current slot's screenshot and timestamp.
 ---
 --- Renders the snapshot horizontally filling the content area at a 4:3 ratio
---- and displays the file's last-modified timestamp underneath. When the slot
---- has no save file on disk, both the snapshot and timestamp stay hidden.
+--- and displays the file's last-modified timestamp underneath. Loading, empty
+--- and failed slots display a status message. Native previews are read in the background.
 ---@class Source.Windows.WindowSaveDetail: Source.Windows.Base.WindowBase, Source.UIBase.Ui.Window
 ---@field ui Source.UI.Parts.WindowSaveLoad.WindowSaveDetail
 local Window = {}
@@ -31,6 +31,9 @@ function Window:refresh() end
 
 ---@param modificationTime number
 function Window:setModificationTime(modificationTime) end
+
+---@param enabled boolean
+function Window:setPreviewEnabled(enabled) end
 
 ---@brief Set the slot index to display, or ``nil`` to clear the panel.
 ---

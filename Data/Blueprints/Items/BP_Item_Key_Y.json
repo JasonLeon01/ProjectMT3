@@ -12,20 +12,7 @@
     "tickable": false,
     "texturePath": "/Game/Assets/Characters/items/classic-keys.png",
     "ID": "KEY_Y",
-    "tag": "",
-    "lightComp": {
-      "lightColour": [
-        128,
-        128,
-        0,
-        255
-      ],
-      "lightRadius": 16,
-      "lightOffset": [
-        0,
-        0
-      ]
-    }
+    "tag": ""
   },
   "graph": {
     "nodeGraph": {

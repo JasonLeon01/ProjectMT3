@@ -29,6 +29,9 @@ function Window:confirmSlot(slot) end
 
 function Window:dispose() end
 
+---@return boolean
+function Window:isReady() end
+
 ---@param kwargs Engine.UiInputEventArguments
 function Window:onKeyDown(kwargs) end
 

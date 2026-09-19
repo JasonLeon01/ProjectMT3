@@ -946,6 +946,22 @@
           6,
           3
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_2_1_2",
+        "position": [
+          2,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_8_1_2",
+        "position": [
+          8,
+          2
+        ]
       }
     ],
     "default": [
@@ -987,22 +1003,6 @@
         "position": [
           5,
           10
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
-        "tag": "Actors_BP_Fire_Left_default_8_1",
-        "position": [
-          8,
-          1
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
-        "tag": "Actors_BP_Fire_Right_default_2_1",
-        "position": [
-          2,
-          1
         ]
       },
       {

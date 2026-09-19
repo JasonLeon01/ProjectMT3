@@ -19,15 +19,7 @@ function View:init(instance)
     }
     ---@cast controls Source.UIBase.GeneratedControls.Parts.WindowSaveLoad.WindowSaveSlot
     self.controls = controls
-    local assets = {
-        SaveSlotPlaceholder1 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder1")))),
-        SaveSlotPlaceholder2 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder2")))),
-        SaveSlotPlaceholder3 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder3")))),
-        SaveSlotPlaceholder4 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder4")))),
-        SaveSlotPlaceholder5 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder5")))),
-        SaveSlotPlaceholder6 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder6")))),
-        SaveSlotPlaceholder7 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder7"))))
-    }
+    local assets = { SaveSlotPlaceholder1 = self:own(ChildView1.new(assert(self.instance:requireAsset("SaveSlotPlaceholder1")))) }
     ---@cast assets Source.UIBase.GeneratedAssets.Parts.WindowSaveLoad.WindowSaveSlot
     self.assets = assets
 end

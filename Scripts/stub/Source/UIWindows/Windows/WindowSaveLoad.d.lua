@@ -87,9 +87,14 @@ function Window:notifySlotIndexMaybeChanged(index) end
 ---@param slot integer
 function Window:onSlotConfirm(slot) end
 
+function Window:onSlotsReady() end
+
 ---@brief Apply a zero-based tab selection without changing slot cursor or scroll state.
 ---@param index integer
 function Window:onTabSelected(index) end
+
+---@param _ number
+function Window:onTick(_) end
 
 ---@brief Open the save/load UI with the slot list focused.
 ---
