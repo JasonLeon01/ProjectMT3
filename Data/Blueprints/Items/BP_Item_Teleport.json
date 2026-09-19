@@ -22,7 +22,20 @@
     "ID": "Teleport",
     "tag": "",
     "conditionVariable": "fly",
-    "conditionValue": true
+    "conditionValue": true,
+    "lightComp": {
+      "lightColour": [
+        160,
+        160,
+        160,
+        255
+      ],
+      "lightRadius": 32,
+      "lightOffset": [
+        0,
+        0
+      ]
+    }
   },
   "graph": {
     "nodeGraph": {

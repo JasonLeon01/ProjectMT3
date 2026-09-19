@@ -22,7 +22,20 @@
     "ID": "EnemyBook",
     "tag": "",
     "conditionVariable": "mbook",
-    "conditionValue": true
+    "conditionValue": true,
+    "lightComp": {
+      "lightColour": [
+        32,
+        48,
+        80,
+        255
+      ],
+      "lightRadius": 32,
+      "lightOffset": [
+        0,
+        0
+      ]
+    }
   },
   "graph": {
     "nodeGraph": {
