@@ -33,9 +33,7 @@ function MovementSpecials.HasClearLine(gameMap, actor, fromPosition, toPosition)
     if fromPosition.x == toPosition.x and fromPosition.y == toPosition.y then
         return true
     end
-    local step = sf.Vector2i.new(
-        math.sign(toPosition.x - fromPosition.x), math.sign(toPosition.y - fromPosition.y)
-    )
+    local step = sf.Vector2i.new(math.sign(toPosition.x - fromPosition.x), math.sign(toPosition.y - fromPosition.y))
     ---@cast step sf.Vector2i
     local position = fromPosition + step
     while position.x ~= toPosition.x or position.y ~= toPosition.y do
@@ -238,7 +236,7 @@ function MovementSpecials.Commit(player, pathPositions)
         allSources[1].enemy, player, "Event.Movement.HazardDamage", { sources = allSources }
     )
     Effects.ApplyInstantModifier(player, "Movement.HazardDamage", "HP", "Add", -totalDamage, eventData)
-    gameMap:addDamageText(tostring(totalDamage), player:getPosition())
+    gameMap:addDamageText(tostring(totalDamage), player:getPosition(), player)
     if player.attributes.HP <= 0 then
         scene:requestGameOver(player, animationLength)
     end

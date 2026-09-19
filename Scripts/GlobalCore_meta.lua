@@ -688,6 +688,49 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {},
         },
+        setHideDisconnectedRegions = {
+            type = "function",
+            parameters = { "self", "enabled", self = { "GlobalCore", "GameMapBase" }, enabled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        setVisibilityObserver = {
+            type = "function",
+            parameters = { "self", "position", self = { "GlobalCore", "GameMapBase" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
+            defaultUnset = { "position" },
+            ["return"] = {},
+        },
+        isCellVisible = {
+            type = "function",
+            parameters = { "self", "position", self = { "GlobalCore", "GameMapBase" }, position = "sf.Vector2i" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        isActorVisibleOnMap = {
+            type = "function",
+            parameters = { "self", "actor", self = { "GlobalCore", "GameMapBase" }, actor = { "Engine", "Actor" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getVisibilityRevision = {
+            type = "function",
+            parameters = { "self", self = { "GlobalCore", "GameMapBase" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+            Pure = true,
+        },
     },
     PathResult = {
         attrs = { "offsets", "points", "route" },

@@ -96,6 +96,7 @@ function System.Init()
     Engine.DefaultFontSize = systemState.fontSize
     Engine.DefaultWindowskinName = systemState.windowskinName
     GameMap.DefaultCoverAlpha = coverOpaqueAlpha
+    GameMap.HideDisconnectedRegions = true
     local audioData = Engine.getJSONData("./Data/Configs/Audio.json")
     systemState.audioConfigValues = extractConfigValues(audioData)
     systemState.cursorSE = tostring(systemState.audioConfigValues.cursorSE or "")

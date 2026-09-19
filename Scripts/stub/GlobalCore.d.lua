@@ -784,6 +784,30 @@ function GameMapBase:_lateUpdateActors(deltaTime) end
 ---@param fixedDelta number
 ---@return nil
 function GameMapBase:_fixedUpdateActors(fixedDelta) end
+--- @brief Enable tile-only disconnected-region hiding on ordinary maps.
+---@param enabled boolean
+---@return nil
+function GameMapBase:setHideDisconnectedRegions(enabled) end
+--- @brief Override the observation cell for previews; nil follows the
+--- player.
+---@param position? sf.Vector2i|nil
+---@return nil
+function GameMapBase:setVisibilityObserver(position) end
+--- @brief Query current map presentation without changing gameplay
+--- visibility.
+---@param position sf.Vector2i
+---@return boolean
+function GameMapBase:isCellVisible(position) end
+--- @brief Include the actor's own visibility and every ancestor's map cell.
+---@param actor Engine.Actor
+---@return boolean
+function GameMapBase:isActorVisibleOnMap(actor) end
+--- @brief Revision of terrain and the observed connected region, refreshed
+--- on query.
+---@return integer
+function GameMapBase:getVisibilityRevision() end
+---@return boolean
+function GameMapBase:getHideDisconnectedRegions() end
 GlobalCore.GameMapBase = GameMapBase
 
 --- @brief Pathfinding result in all runtime path formats
