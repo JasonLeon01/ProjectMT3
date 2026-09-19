@@ -370,7 +370,7 @@
           null,
           7,
           null,
-          253,
+          7,
           7,
           null,
           null
@@ -379,8 +379,8 @@
           null,
           null,
           7,
-          7,
           null,
+          7,
           null,
           null,
           null,
@@ -791,7 +791,7 @@
         "bp": "Data.Blueprints.Actors.BP_SWall",
         "tag": "Actors_BP_SWall_default_4_4",
         "position": [
-          4,
+          3,
           4
         ]
       },
