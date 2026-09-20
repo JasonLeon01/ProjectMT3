@@ -105,6 +105,10 @@ sf.Angle.wrapUnsigned = function() end
 --- Predefined 0 degree angle value
 ---@type sf.Angle
 sf.Angle.Zero = nil
+---@type fun(self: sf.Angle): sf.Angle
+sf.Angle.copy = function() end
+---@type fun(self: sf.Angle): sf.Angle
+sf.Angle.deepcopy = function() end
 --- @brief Construct an angle value from a number of degrees
 ---
 --- @param angle Number of degrees
@@ -196,6 +200,11 @@ sf.FileInputStream.tell = function() end
 sf.FileInputStream.getSize = function() end
 --- @brief Open the stream from a file path
 ---
+--- On OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`
+--- explicitly addresses the HAP rawfile directory. A relative path is
+--- first opened from the application filesystem and then, if that fails,
+--- from rawfile. `SFML::Main` initializes the native resource manager
+--- before application code starts.
 --- On Android, paths are first opened from the application filesystem.
 --- Relative paths fall back to the packaged asset directory when no
 --- filesystem file exists.
@@ -279,6 +288,10 @@ sf.Time.toDuration = function() end
 --- Predefined "zero" time value
 ---@type sf.Time
 sf.Time.Zero = nil
+---@type fun(self: sf.Time): sf.Time
+sf.Time.copy = function() end
+---@type fun(self: sf.Time): sf.Time
+sf.Time.deepcopy = function() end
 --- @relates Time
 --- @brief Construct a time value from a number of seconds
 ---
@@ -387,8 +400,7 @@ sf.TimeoutWithPredicate = sf.TimeoutWithPredicate or {}
 --- that times out after the given amount of time.
 ---
 --- @param timeout Time to timeout after
----@overload fun(predicate: fun(): boolean, period: sf.Time): sf.TimeoutWithPredicate
----@overload fun(predicate: fun(): boolean): sf.TimeoutWithPredicate
+---@overload fun(predicate: fun(): boolean, period?: sf.Time): sf.TimeoutWithPredicate
 ---@param timeout sf.Time
 ---@return sf.TimeoutWithPredicate
 function sf.TimeoutWithPredicate.new(timeout) end
@@ -474,6 +486,10 @@ sf.Vector2i.unpack = function() end
 
 ---@class sf.Vector2i
 ---@operator eq(sf.Vector2i): boolean
+---@type fun(self: sf.Vector2i): sf.Vector2i
+sf.Vector2i.copy = function() end
+---@type fun(self: sf.Vector2i): sf.Vector2i
+sf.Vector2i.deepcopy = function() end
 --- @brief Class template for manipulating
 --- 2-dimensional vectors
 ---@class sf.Vector2u
@@ -551,6 +567,10 @@ sf.Vector2u.unpack = function() end
 
 ---@class sf.Vector2u
 ---@operator eq(sf.Vector2u): boolean
+---@type fun(self: sf.Vector2u): sf.Vector2u
+sf.Vector2u.copy = function() end
+---@type fun(self: sf.Vector2u): sf.Vector2u
+sf.Vector2u.deepcopy = function() end
 --- @brief Class template for manipulating
 --- 2-dimensional vectors
 ---@class sf.Vector2f
@@ -669,6 +689,10 @@ sf.Vector2f.unpack = function() end
 
 ---@class sf.Vector2f
 ---@operator eq(sf.Vector2f): boolean
+---@type fun(self: sf.Vector2f): sf.Vector2f
+sf.Vector2f.copy = function() end
+---@type fun(self: sf.Vector2f): sf.Vector2f
+sf.Vector2f.deepcopy = function() end
 --- @brief Utility template class for manipulating
 --- 3-dimensional vectors
 ---@class sf.Vector3i
@@ -738,6 +762,10 @@ sf.Vector3i.unpack = function() end
 
 ---@class sf.Vector3i
 ---@operator eq(sf.Vector3i): boolean
+---@type fun(self: sf.Vector3i): sf.Vector3i
+sf.Vector3i.copy = function() end
+---@type fun(self: sf.Vector3i): sf.Vector3i
+sf.Vector3i.deepcopy = function() end
 --- @brief Utility template class for manipulating
 --- 3-dimensional vectors
 ---@class sf.Vector3u
@@ -807,6 +835,10 @@ sf.Vector3u.unpack = function() end
 
 ---@class sf.Vector3u
 ---@operator eq(sf.Vector3u): boolean
+---@type fun(self: sf.Vector3u): sf.Vector3u
+sf.Vector3u.copy = function() end
+---@type fun(self: sf.Vector3u): sf.Vector3u
+sf.Vector3u.deepcopy = function() end
 --- @brief Utility template class for manipulating
 --- 3-dimensional vectors
 ---@class sf.Vector3f
@@ -886,6 +918,10 @@ sf.Vector3f.unpack = function() end
 
 ---@class sf.Vector3f
 ---@operator eq(sf.Vector3f): boolean
+---@type fun(self: sf.Vector3f): sf.Vector3f
+sf.Vector3f.copy = function() end
+---@type fun(self: sf.Vector3f): sf.Vector3f
+sf.Vector3f.deepcopy = function() end
 
 ---@class sf.Version
 --- SFML major version
@@ -973,6 +1009,10 @@ sf.ContextSettings.new = function() end
 --- Debug attribute
 ---@field Debug integer
 sf.ContextSettings.Attribute = sf.ContextSettings.Attribute or {}
+---@type fun(self: sf.ContextSettings): sf.ContextSettings
+sf.ContextSettings.copy = function() end
+---@type fun(self: sf.ContextSettings): sf.ContextSettings
+sf.ContextSettings.deepcopy = function() end
 ---@alias sf.GlFunctionPointer sf.void (*)()
 --- @brief Class holding a valid drawing context
 ---@class sf.Context
@@ -1967,38 +2007,66 @@ sf.Sensor.getValue = function() end
 sf.Event_Closed = sf.Event_Closed or {}
 ---@type fun(): sf.Event_Closed
 sf.Event_Closed.new = function() end
+---@type fun(self: sf.Event_Closed): sf.Event_Closed
+sf.Event_Closed.copy = function() end
+---@type fun(self: sf.Event_Closed): sf.Event_Closed
+sf.Event_Closed.deepcopy = function() end
 
 ---@class sf.Event_FocusLost
 sf.Event_FocusLost = sf.Event_FocusLost or {}
 ---@type fun(): sf.Event_FocusLost
 sf.Event_FocusLost.new = function() end
+---@type fun(self: sf.Event_FocusLost): sf.Event_FocusLost
+sf.Event_FocusLost.copy = function() end
+---@type fun(self: sf.Event_FocusLost): sf.Event_FocusLost
+sf.Event_FocusLost.deepcopy = function() end
 
 ---@class sf.Event_FocusGained
 sf.Event_FocusGained = sf.Event_FocusGained or {}
 ---@type fun(): sf.Event_FocusGained
 sf.Event_FocusGained.new = function() end
+---@type fun(self: sf.Event_FocusGained): sf.Event_FocusGained
+sf.Event_FocusGained.copy = function() end
+---@type fun(self: sf.Event_FocusGained): sf.Event_FocusGained
+sf.Event_FocusGained.deepcopy = function() end
 
 ---@class sf.Event_MouseEntered
 sf.Event_MouseEntered = sf.Event_MouseEntered or {}
 ---@type fun(): sf.Event_MouseEntered
 sf.Event_MouseEntered.new = function() end
+---@type fun(self: sf.Event_MouseEntered): sf.Event_MouseEntered
+sf.Event_MouseEntered.copy = function() end
+---@type fun(self: sf.Event_MouseEntered): sf.Event_MouseEntered
+sf.Event_MouseEntered.deepcopy = function() end
 
 ---@class sf.Event_MouseLeft
 sf.Event_MouseLeft = sf.Event_MouseLeft or {}
 ---@type fun(): sf.Event_MouseLeft
 sf.Event_MouseLeft.new = function() end
+---@type fun(self: sf.Event_MouseLeft): sf.Event_MouseLeft
+sf.Event_MouseLeft.copy = function() end
+---@type fun(self: sf.Event_MouseLeft): sf.Event_MouseLeft
+sf.Event_MouseLeft.deepcopy = function() end
 
 ---@class sf.Event_Resized
 ---@field size sf.Vector2u
 sf.Event_Resized = sf.Event_Resized or {}
 ---@type fun(): sf.Event_Resized
 sf.Event_Resized.new = function() end
+---@type fun(self: sf.Event_Resized): sf.Event_Resized
+sf.Event_Resized.copy = function() end
+---@type fun(self: sf.Event_Resized): sf.Event_Resized
+sf.Event_Resized.deepcopy = function() end
 
 ---@class sf.Event_TextEntered
 ---@field unicode integer
 sf.Event_TextEntered = sf.Event_TextEntered or {}
 ---@type fun(): sf.Event_TextEntered
 sf.Event_TextEntered.new = function() end
+---@type fun(self: sf.Event_TextEntered): sf.Event_TextEntered
+sf.Event_TextEntered.copy = function() end
+---@type fun(self: sf.Event_TextEntered): sf.Event_TextEntered
+sf.Event_TextEntered.deepcopy = function() end
 
 ---@class sf.Event_KeyPressed
 ---@field code sf.Keyboard.Key
@@ -2010,6 +2078,10 @@ sf.Event_TextEntered.new = function() end
 sf.Event_KeyPressed = sf.Event_KeyPressed or {}
 ---@type fun(): sf.Event_KeyPressed
 sf.Event_KeyPressed.new = function() end
+---@type fun(self: sf.Event_KeyPressed): sf.Event_KeyPressed
+sf.Event_KeyPressed.copy = function() end
+---@type fun(self: sf.Event_KeyPressed): sf.Event_KeyPressed
+sf.Event_KeyPressed.deepcopy = function() end
 
 ---@class sf.Event_KeyReleased
 ---@field code sf.Keyboard.Key
@@ -2021,6 +2093,10 @@ sf.Event_KeyPressed.new = function() end
 sf.Event_KeyReleased = sf.Event_KeyReleased or {}
 ---@type fun(): sf.Event_KeyReleased
 sf.Event_KeyReleased.new = function() end
+---@type fun(self: sf.Event_KeyReleased): sf.Event_KeyReleased
+sf.Event_KeyReleased.copy = function() end
+---@type fun(self: sf.Event_KeyReleased): sf.Event_KeyReleased
+sf.Event_KeyReleased.deepcopy = function() end
 
 ---@class sf.Event_MouseWheelScrolled
 ---@field wheel sf.Mouse.Wheel
@@ -2029,6 +2105,10 @@ sf.Event_KeyReleased.new = function() end
 sf.Event_MouseWheelScrolled = sf.Event_MouseWheelScrolled or {}
 ---@type fun(): sf.Event_MouseWheelScrolled
 sf.Event_MouseWheelScrolled.new = function() end
+---@type fun(self: sf.Event_MouseWheelScrolled): sf.Event_MouseWheelScrolled
+sf.Event_MouseWheelScrolled.copy = function() end
+---@type fun(self: sf.Event_MouseWheelScrolled): sf.Event_MouseWheelScrolled
+sf.Event_MouseWheelScrolled.deepcopy = function() end
 
 ---@class sf.Event_MouseButtonPressed
 ---@field button sf.Mouse.Button
@@ -2036,6 +2116,10 @@ sf.Event_MouseWheelScrolled.new = function() end
 sf.Event_MouseButtonPressed = sf.Event_MouseButtonPressed or {}
 ---@type fun(): sf.Event_MouseButtonPressed
 sf.Event_MouseButtonPressed.new = function() end
+---@type fun(self: sf.Event_MouseButtonPressed): sf.Event_MouseButtonPressed
+sf.Event_MouseButtonPressed.copy = function() end
+---@type fun(self: sf.Event_MouseButtonPressed): sf.Event_MouseButtonPressed
+sf.Event_MouseButtonPressed.deepcopy = function() end
 
 ---@class sf.Event_MouseButtonReleased
 ---@field button sf.Mouse.Button
@@ -2043,18 +2127,30 @@ sf.Event_MouseButtonPressed.new = function() end
 sf.Event_MouseButtonReleased = sf.Event_MouseButtonReleased or {}
 ---@type fun(): sf.Event_MouseButtonReleased
 sf.Event_MouseButtonReleased.new = function() end
+---@type fun(self: sf.Event_MouseButtonReleased): sf.Event_MouseButtonReleased
+sf.Event_MouseButtonReleased.copy = function() end
+---@type fun(self: sf.Event_MouseButtonReleased): sf.Event_MouseButtonReleased
+sf.Event_MouseButtonReleased.deepcopy = function() end
 
 ---@class sf.Event_MouseMoved
 ---@field position sf.Vector2i
 sf.Event_MouseMoved = sf.Event_MouseMoved or {}
 ---@type fun(): sf.Event_MouseMoved
 sf.Event_MouseMoved.new = function() end
+---@type fun(self: sf.Event_MouseMoved): sf.Event_MouseMoved
+sf.Event_MouseMoved.copy = function() end
+---@type fun(self: sf.Event_MouseMoved): sf.Event_MouseMoved
+sf.Event_MouseMoved.deepcopy = function() end
 
 ---@class sf.Event_MouseMovedRaw
 ---@field delta sf.Vector2i
 sf.Event_MouseMovedRaw = sf.Event_MouseMovedRaw or {}
 ---@type fun(): sf.Event_MouseMovedRaw
 sf.Event_MouseMovedRaw.new = function() end
+---@type fun(self: sf.Event_MouseMovedRaw): sf.Event_MouseMovedRaw
+sf.Event_MouseMovedRaw.copy = function() end
+---@type fun(self: sf.Event_MouseMovedRaw): sf.Event_MouseMovedRaw
+sf.Event_MouseMovedRaw.deepcopy = function() end
 
 ---@class sf.Event_JoystickButtonPressed
 ---@field joystickId integer
@@ -2062,6 +2158,10 @@ sf.Event_MouseMovedRaw.new = function() end
 sf.Event_JoystickButtonPressed = sf.Event_JoystickButtonPressed or {}
 ---@type fun(): sf.Event_JoystickButtonPressed
 sf.Event_JoystickButtonPressed.new = function() end
+---@type fun(self: sf.Event_JoystickButtonPressed): sf.Event_JoystickButtonPressed
+sf.Event_JoystickButtonPressed.copy = function() end
+---@type fun(self: sf.Event_JoystickButtonPressed): sf.Event_JoystickButtonPressed
+sf.Event_JoystickButtonPressed.deepcopy = function() end
 
 ---@class sf.Event_JoystickButtonReleased
 ---@field joystickId integer
@@ -2069,6 +2169,10 @@ sf.Event_JoystickButtonPressed.new = function() end
 sf.Event_JoystickButtonReleased = sf.Event_JoystickButtonReleased or {}
 ---@type fun(): sf.Event_JoystickButtonReleased
 sf.Event_JoystickButtonReleased.new = function() end
+---@type fun(self: sf.Event_JoystickButtonReleased): sf.Event_JoystickButtonReleased
+sf.Event_JoystickButtonReleased.copy = function() end
+---@type fun(self: sf.Event_JoystickButtonReleased): sf.Event_JoystickButtonReleased
+sf.Event_JoystickButtonReleased.deepcopy = function() end
 
 ---@class sf.Event_JoystickMoved
 ---@field joystickId integer
@@ -2077,18 +2181,30 @@ sf.Event_JoystickButtonReleased.new = function() end
 sf.Event_JoystickMoved = sf.Event_JoystickMoved or {}
 ---@type fun(): sf.Event_JoystickMoved
 sf.Event_JoystickMoved.new = function() end
+---@type fun(self: sf.Event_JoystickMoved): sf.Event_JoystickMoved
+sf.Event_JoystickMoved.copy = function() end
+---@type fun(self: sf.Event_JoystickMoved): sf.Event_JoystickMoved
+sf.Event_JoystickMoved.deepcopy = function() end
 
 ---@class sf.Event_JoystickConnected
 ---@field joystickId integer
 sf.Event_JoystickConnected = sf.Event_JoystickConnected or {}
 ---@type fun(): sf.Event_JoystickConnected
 sf.Event_JoystickConnected.new = function() end
+---@type fun(self: sf.Event_JoystickConnected): sf.Event_JoystickConnected
+sf.Event_JoystickConnected.copy = function() end
+---@type fun(self: sf.Event_JoystickConnected): sf.Event_JoystickConnected
+sf.Event_JoystickConnected.deepcopy = function() end
 
 ---@class sf.Event_JoystickDisconnected
 ---@field joystickId integer
 sf.Event_JoystickDisconnected = sf.Event_JoystickDisconnected or {}
 ---@type fun(): sf.Event_JoystickDisconnected
 sf.Event_JoystickDisconnected.new = function() end
+---@type fun(self: sf.Event_JoystickDisconnected): sf.Event_JoystickDisconnected
+sf.Event_JoystickDisconnected.copy = function() end
+---@type fun(self: sf.Event_JoystickDisconnected): sf.Event_JoystickDisconnected
+sf.Event_JoystickDisconnected.deepcopy = function() end
 
 ---@class sf.Event_TouchBegan
 ---@field finger integer
@@ -2096,6 +2212,10 @@ sf.Event_JoystickDisconnected.new = function() end
 sf.Event_TouchBegan = sf.Event_TouchBegan or {}
 ---@type fun(): sf.Event_TouchBegan
 sf.Event_TouchBegan.new = function() end
+---@type fun(self: sf.Event_TouchBegan): sf.Event_TouchBegan
+sf.Event_TouchBegan.copy = function() end
+---@type fun(self: sf.Event_TouchBegan): sf.Event_TouchBegan
+sf.Event_TouchBegan.deepcopy = function() end
 
 ---@class sf.Event_TouchMoved
 ---@field finger integer
@@ -2103,6 +2223,10 @@ sf.Event_TouchBegan.new = function() end
 sf.Event_TouchMoved = sf.Event_TouchMoved or {}
 ---@type fun(): sf.Event_TouchMoved
 sf.Event_TouchMoved.new = function() end
+---@type fun(self: sf.Event_TouchMoved): sf.Event_TouchMoved
+sf.Event_TouchMoved.copy = function() end
+---@type fun(self: sf.Event_TouchMoved): sf.Event_TouchMoved
+sf.Event_TouchMoved.deepcopy = function() end
 
 ---@class sf.Event_TouchEnded
 ---@field finger integer
@@ -2110,6 +2234,10 @@ sf.Event_TouchMoved.new = function() end
 sf.Event_TouchEnded = sf.Event_TouchEnded or {}
 ---@type fun(): sf.Event_TouchEnded
 sf.Event_TouchEnded.new = function() end
+---@type fun(self: sf.Event_TouchEnded): sf.Event_TouchEnded
+sf.Event_TouchEnded.copy = function() end
+---@type fun(self: sf.Event_TouchEnded): sf.Event_TouchEnded
+sf.Event_TouchEnded.deepcopy = function() end
 
 ---@class sf.Event_SensorChanged
 ---@field type sf.Sensor.Type
@@ -2117,6 +2245,10 @@ sf.Event_TouchEnded.new = function() end
 sf.Event_SensorChanged = sf.Event_SensorChanged or {}
 ---@type fun(): sf.Event_SensorChanged
 sf.Event_SensorChanged.new = function() end
+---@type fun(self: sf.Event_SensorChanged): sf.Event_SensorChanged
+sf.Event_SensorChanged.copy = function() end
+---@type fun(self: sf.Event_SensorChanged): sf.Event_SensorChanged
+sf.Event_SensorChanged.deepcopy = function() end
 
 ---@class sf.Event
 sf.Event = sf.Event or {}
@@ -2145,6 +2277,10 @@ sf.Event = sf.Event or {}
 ---@param value sf.Event_Closed
 ---@return sf.Event
 function sf.Event.new(value) end
+---@type fun(self: sf.Event): sf.Event
+sf.Event.copy = function() end
+---@type fun(self: sf.Event): sf.Event
+sf.Event.deepcopy = function() end
 ---@type fun(self: sf.Event): string
 sf.Event.type = function() end
 ---@type fun(self: sf.Event): any
@@ -2278,10 +2414,9 @@ sf.VideoMode = sf.VideoMode or {}
 ---
 --- @param modeSize         Width and height in pixels
 --- @param modeBitsPerPixel Pixel depths in bits per pixel
----@overload fun(modeSize: sf.Vector2u): sf.VideoMode
 ---@overload fun(): sf.VideoMode
 ---@param modeSize sf.Vector2u
----@param modeBitsPerPixel integer
+---@param modeBitsPerPixel? integer
 ---@return sf.VideoMode
 function sf.VideoMode.new(modeSize, modeBitsPerPixel) end
 --- @brief Get the current desktop video mode
@@ -2311,6 +2446,10 @@ sf.VideoMode.getFullscreenModes = function() end
 --- @return `true` if the video mode is valid for fullscreen mode
 ---@type fun(self: sf.VideoMode): boolean
 sf.VideoMode.isValid = function() end
+---@type fun(self: sf.VideoMode): sf.VideoMode
+sf.VideoMode.copy = function() end
+---@type fun(self: sf.VideoMode): sf.VideoMode
+sf.VideoMode.deepcopy = function() end
 sf.Style = sf.Style or {}
 --- No border / title bar (this flag and all others are mutually exclusive)
 ---@type integer
@@ -2351,15 +2490,13 @@ sf.WindowBase = sf.WindowBase or {}
 --- @param title Title of the window
 --- @param style %Window style, a bitwise OR combination of `sf::Style` enumerators
 --- @param state %Window state
----@overload fun(mode: sf.VideoMode, title: string, style: integer): sf.WindowBase
 ---@overload fun(mode: sf.VideoMode, title: string, state: sf.State): sf.WindowBase
----@overload fun(mode: sf.VideoMode, title: string): sf.WindowBase
 ---@overload fun(handle: sf.WindowHandle): sf.WindowBase
 ---@overload fun(): sf.WindowBase
 ---@param mode sf.VideoMode
 ---@param title string
----@param style integer
----@param state sf.State
+---@param style? integer
+---@param state? sf.State
 ---@return sf.WindowBase
 function sf.WindowBase.new(mode, title, style, state) end
 --- @brief Create (or recreate) the window
@@ -2372,15 +2509,13 @@ function sf.WindowBase.new(mode, title, style, state) end
 --- @param title Title of the window
 --- @param style %Window style, a bitwise OR combination of `sf::Style` enumerators
 --- @param state %Window state
----@overload fun(self: sf.WindowBase, mode: sf.VideoMode, title: string, style: integer)
 ---@overload fun(self: sf.WindowBase, mode: sf.VideoMode, title: string, state: sf.State)
----@overload fun(self: sf.WindowBase, mode: sf.VideoMode, title: string)
 ---@overload fun(self: sf.WindowBase, handle: sf.WindowHandle)
 ---@param self sf.WindowBase
 ---@param mode sf.VideoMode
 ---@param title string
----@param style integer
----@param state sf.State
+---@param style? integer
+---@param state? sf.State
 function sf.WindowBase.create(self, mode, title, style, state) end
 --- @brief Close the window and destroy all the attached resources
 ---
@@ -2440,11 +2575,8 @@ sf.WindowBase.pollEvent = function() end
 --- @return The event, otherwise `std::nullopt` on timeout or if window was closed
 ---
 --- @see `pollEvent`, `handleEvents`
----@overload fun(self: sf.WindowBase): sf.Event|nil
----@param self sf.WindowBase
----@param timeout sf.Time
----@return sf.Event|nil
-function sf.WindowBase.waitEvent(self, timeout) end
+---@type fun(self: sf.WindowBase, timeout?: sf.Time): sf.Event|nil
+sf.WindowBase.waitEvent = function() end
 --- @brief Get the position of the window
 ---
 --- @return Position of the window, in pixels
@@ -2634,19 +2766,14 @@ sf.Window = sf.Window or {}
 --- @param style    %Window style, a bitwise OR combination of `sf::Style` enumerators
 --- @param state    %Window state
 --- @param settings Additional settings for the underlying OpenGL context
----@overload fun(mode: sf.VideoMode, title: string, style: integer, state: sf.State): sf.Window
----@overload fun(mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings): sf.Window
----@overload fun(mode: sf.VideoMode, title: string, style: integer): sf.Window
----@overload fun(mode: sf.VideoMode, title: string, state: sf.State): sf.Window
----@overload fun(mode: sf.VideoMode, title: string): sf.Window
----@overload fun(handle: sf.WindowHandle, settings: sf.ContextSettings): sf.Window
----@overload fun(handle: sf.WindowHandle): sf.Window
+---@overload fun(mode: sf.VideoMode, title: string, state: sf.State, settings?: sf.ContextSettings): sf.Window
+---@overload fun(handle: sf.WindowHandle, settings?: sf.ContextSettings): sf.Window
 ---@overload fun(): sf.Window
 ---@param mode sf.VideoMode
 ---@param title string
----@param style integer
----@param state sf.State
----@param settings sf.ContextSettings
+---@param style? integer
+---@param state? sf.State
+---@param settings? sf.ContextSettings
 ---@return sf.Window
 function sf.Window.new(mode, title, style, state, settings) end
 --- @brief Create (or recreate) the window
@@ -2663,11 +2790,9 @@ function sf.Window.new(mode, title, style, state, settings) end
 --- @param style    %Window style, a bitwise OR combination of `sf::Style` enumerators
 --- @param state    %Window state
 --- @param settings Additional settings for the underlying OpenGL context
----@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, style: integer, state: sf.State)
+---@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, style?: integer, state?: sf.State)
 ---@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings)
----@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, style: integer)
 ---@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, state: sf.State)
----@overload fun(self: sf.Window, mode: sf.VideoMode, title: string)
 ---@overload fun(self: sf.Window, handle: sf.WindowHandle, settings: sf.ContextSettings)
 ---@overload fun(self: sf.Window, handle: sf.WindowHandle)
 ---@param self sf.Window
@@ -2735,11 +2860,8 @@ sf.Window.pollEvent = function() end
 --- @return The event, otherwise `std::nullopt` on timeout or if window was closed
 ---
 --- @see `pollEvent`, `handleEvents`
----@overload fun(self: sf.Window): sf.Event|nil
----@param self sf.Window
----@param timeout sf.Time
----@return sf.Event|nil
-function sf.Window.waitEvent(self, timeout) end
+---@type fun(self: sf.Window, timeout?: sf.Time): sf.Event|nil
+sf.Window.waitEvent = function() end
 --- @brief Get the position of the window
 ---
 --- @return Position of the window, in pixels
@@ -2957,11 +3079,8 @@ sf.Window.setFramerateLimit = function() end
 --- @param active `true` to activate, `false` to deactivate
 ---
 --- @return `true` if operation was successful, `false` otherwise
----@overload fun(self: sf.Window): boolean
----@param self sf.Window
----@param active boolean
----@return boolean
-function sf.Window.setActive(self, active) end
+---@type fun(self: sf.Window, active?: boolean): boolean
+sf.Window.setActive = function() end
 --- @brief Display on screen what has been rendered to the window so far
 ---
 --- This function is typically called after all OpenGL rendering
@@ -2992,8 +3111,7 @@ sf.BlendMode = sf.BlendMode or {}
 --- @param alphaSourceFactor      Specifies how to compute the source factor.
 --- @param alphaDestinationFactor Specifies how to compute the destination factor.
 --- @param alphaBlendEquation     Specifies how to combine the source and destination alphas.
----@overload fun(sourceFactor: sf.BlendMode.Factor, destinationFactor: sf.BlendMode.Factor, blendEquation: sf.BlendMode.Equation): sf.BlendMode
----@overload fun(sourceFactor: sf.BlendMode.Factor, destinationFactor: sf.BlendMode.Factor): sf.BlendMode
+---@overload fun(sourceFactor: sf.BlendMode.Factor, destinationFactor: sf.BlendMode.Factor, blendEquation?: sf.BlendMode.Equation): sf.BlendMode
 ---@overload fun(): sf.BlendMode
 ---@param colorSourceFactor sf.BlendMode.Factor
 ---@param colorDestinationFactor sf.BlendMode.Factor
@@ -3080,13 +3198,12 @@ sf.Color = sf.Color or {}
 --- @param green Green component (in the range [0, 255])
 --- @param blue  Blue component (in the range [0, 255])
 --- @param alpha Alpha (opacity) component (in the range [0, 255])
----@overload fun(red: integer, green: integer, blue: integer): sf.Color
 ---@overload fun(color: integer): sf.Color
 ---@overload fun(): sf.Color
 ---@param red integer
 ---@param green integer
 ---@param blue integer
----@param alpha integer
+---@param alpha? integer
 ---@return sf.Color
 function sf.Color.new(red, green, blue, alpha) end
 --- @brief Retrieve the color as a 32-bit unsigned integer
@@ -3121,6 +3238,10 @@ sf.Color.Cyan = nil
 --- Transparent (black) predefined color
 ---@type sf.Color
 sf.Color.Transparent = nil
+---@type fun(self: sf.Color): sf.Color
+sf.Color.copy = function() end
+---@type fun(self: sf.Color): sf.Color
+sf.Color.deepcopy = function() end
 --- @ingroup graphics
 --- @brief Types of texture coordinates that can be used for rendering
 ---
@@ -3138,25 +3259,23 @@ sf.Image = sf.Image or {}
 ---
 --- @param size  Width and height of the image
 --- @param color Fill color
----@overload fun(size: sf.Vector2u): sf.Image
 ---@overload fun(filename: string): sf.Image
 ---@overload fun(stream: sf.InputStream): sf.Image
 ---@overload fun(): sf.Image
 ---@overload fun(size: sf.Vector2u, pixels: any): sf.Image
 ---@overload fun(data: any): sf.Image
 ---@param size sf.Vector2u
----@param color sf.Color
+---@param color? sf.Color
 ---@return sf.Image
 function sf.Image.new(size, color) end
 --- @brief Resize the image and fill it with a unique color
 ---
 --- @param size  Width and height of the image
 --- @param color Fill color
----@overload fun(self: sf.Image, size: sf.Vector2u)
 ---@overload fun(self: sf.Image, size: sf.Vector2u, pixels: any)
 ---@param self sf.Image
 ---@param size sf.Vector2u
----@param color sf.Color
+---@param color? sf.Color
 function sf.Image.resize(self, size, color) end
 --- @brief Load the image from a file on disk
 ---
@@ -3243,11 +3362,8 @@ sf.Image.getSize = function() end
 ---
 --- @param color Color to make transparent
 --- @param alpha Alpha value to assign to transparent pixels
----@overload fun(self: sf.Image, color: sf.Color)
----@param self sf.Image
----@param color sf.Color
----@param alpha integer
-function sf.Image.createMaskFromColor(self, color, alpha) end
+---@type fun(self: sf.Image, color: sf.Color, alpha?: integer)
+sf.Image.createMaskFromColor = function() end
 --- @brief Copy pixels from another image onto this one
 ---
 --- This function does a slow pixel copy and should not be
@@ -3277,15 +3393,8 @@ function sf.Image.createMaskFromColor(self, color, alpha) end
 --- @param applyAlpha Should the copy take into account the source transparency?
 ---
 --- @return `true` if the operation was successful, `false` otherwise
----@overload fun(self: sf.Image, source: sf.Image, dest: sf.Vector2u, sourceRect: sf.IntRect): boolean
----@overload fun(self: sf.Image, source: sf.Image, dest: sf.Vector2u): boolean
----@param self sf.Image
----@param source sf.Image
----@param dest sf.Vector2u
----@param sourceRect sf.IntRect
----@param applyAlpha boolean
----@return boolean
-function sf.Image.copy(self, source, dest, sourceRect, applyAlpha) end
+---@type fun(self: sf.Image, source: sf.Image, dest: sf.Vector2u, sourceRect?: sf.IntRect, applyAlpha?: boolean): boolean
+sf.Image.copy = function() end
 --- @brief Change the color of a pixel
 ---
 --- This function doesn't check the validity of the pixel
@@ -3398,6 +3507,10 @@ sf.IntRect.getCenter = function() end
 
 ---@class sf.IntRect
 ---@operator eq(sf.IntRect): boolean
+---@type fun(self: sf.IntRect): sf.IntRect
+sf.IntRect.copy = function() end
+---@type fun(self: sf.IntRect): sf.IntRect
+sf.IntRect.deepcopy = function() end
 --- @brief Utility class for manipulating 2D axis aligned rectangles
 ---@class sf.FloatRect
 --- Position of the top-left corner of the rectangle
@@ -3447,6 +3560,10 @@ sf.FloatRect.getCenter = function() end
 
 ---@class sf.FloatRect
 ---@operator eq(sf.FloatRect): boolean
+---@type fun(self: sf.FloatRect): sf.FloatRect
+sf.FloatRect.copy = function() end
+---@type fun(self: sf.FloatRect): sf.FloatRect
+sf.FloatRect.deepcopy = function() end
 --- @brief Structure describing a glyph
 ---@class sf.Glyph
 --- Offset to move horizontally to the next character
@@ -3777,18 +3894,13 @@ sf.Texture = sf.Texture or {}
 --- @see `loadFromFile`, `loadFromMemory`, `loadFromStream`, `loadFromImage`
 ---@overload fun(stream: sf.InputStream, sRgb: boolean, area: sf.IntRect): sf.Texture
 ---@overload fun(image: sf.Image, sRgb: boolean, area: sf.IntRect): sf.Texture
----@overload fun(filename: string, sRgb: boolean): sf.Texture
----@overload fun(stream: sf.InputStream, sRgb: boolean): sf.Texture
----@overload fun(image: sf.Image, sRgb: boolean): sf.Texture
----@overload fun(size: sf.Vector2u, sRgb: boolean): sf.Texture
----@overload fun(filename: string): sf.Texture
----@overload fun(stream: sf.InputStream): sf.Texture
----@overload fun(image: sf.Image): sf.Texture
----@overload fun(size: sf.Vector2u): sf.Texture
+---@overload fun(filename: string, sRgb?: boolean): sf.Texture
+---@overload fun(stream: sf.InputStream, sRgb?: boolean): sf.Texture
+---@overload fun(image: sf.Image, sRgb?: boolean): sf.Texture
+---@overload fun(size: sf.Vector2u, sRgb?: boolean): sf.Texture
 ---@overload fun(): sf.Texture
 ---@overload fun(data: any, sRgb: boolean, area: sf.IntRect): sf.Texture
----@overload fun(data: any, sRgb: boolean): sf.Texture
----@overload fun(data: any): sf.Texture
+---@overload fun(data: any, sRgb?: boolean): sf.Texture
 ---@param filename string
 ---@param sRgb boolean
 ---@param area sf.IntRect
@@ -3802,12 +3914,8 @@ function sf.Texture.new(filename, sRgb, area) end
 --- @param sRgb `true` to enable sRGB conversion, `false` to disable it
 ---
 --- @return `true` if resizing was successful, `false` if it failed
----@overload fun(self: sf.Texture, size: sf.Vector2u): boolean
----@param self sf.Texture
----@param size sf.Vector2u
----@param sRgb boolean
----@return boolean
-function sf.Texture.resize(self, size, sRgb) end
+---@type fun(self: sf.Texture, size: sf.Vector2u, sRgb?: boolean): boolean
+sf.Texture.resize = function() end
 --- @brief Load the texture from a file on disk
 ---
 --- The `area` argument can be used to load only a sub-rectangle
@@ -3828,14 +3936,8 @@ function sf.Texture.resize(self, size, sRgb) end
 --- @return `true` if loading was successful, `false` if it failed
 ---
 --- @see `loadFromMemory`, `loadFromStream`, `loadFromImage`
----@overload fun(self: sf.Texture, filename: string, sRgb: boolean): boolean
----@overload fun(self: sf.Texture, filename: string): boolean
----@param self sf.Texture
----@param filename string
----@param sRgb boolean
----@param area sf.IntRect
----@return boolean
-function sf.Texture.loadFromFile(self, filename, sRgb, area) end
+---@type fun(self: sf.Texture, filename: string, sRgb?: boolean, area?: sf.IntRect): boolean
+sf.Texture.loadFromFile = function() end
 --- @brief Load the texture from a file in memory
 ---
 --- The `area` argument can be used to load only a sub-rectangle
@@ -3857,14 +3959,8 @@ function sf.Texture.loadFromFile(self, filename, sRgb, area) end
 --- @return `true` if loading was successful, `false` if it failed
 ---
 --- @see `loadFromFile`, `loadFromStream`, `loadFromImage`
----@overload fun(self: sf.Texture, data: any, sRgb: boolean): boolean
----@overload fun(self: sf.Texture, data: any): boolean
----@param self sf.Texture
----@param data any
----@param sRgb boolean
----@param area sf.IntRect
----@return boolean
-function sf.Texture.loadFromMemory(self, data, sRgb, area) end
+---@type fun(self: sf.Texture, data: any, sRgb?: boolean, area?: sf.IntRect): boolean
+sf.Texture.loadFromMemory = function() end
 --- @brief Load the texture from a custom stream
 ---
 --- The `area` argument can be used to load only a sub-rectangle
@@ -3885,14 +3981,8 @@ function sf.Texture.loadFromMemory(self, data, sRgb, area) end
 --- @return `true` if loading was successful, `false` if it failed
 ---
 --- @see `loadFromFile`, `loadFromMemory`, `loadFromImage`
----@overload fun(self: sf.Texture, stream: sf.InputStream, sRgb: boolean): boolean
----@overload fun(self: sf.Texture, stream: sf.InputStream): boolean
----@param self sf.Texture
----@param stream sf.InputStream
----@param sRgb boolean
----@param area sf.IntRect
----@return boolean
-function sf.Texture.loadFromStream(self, stream, sRgb, area) end
+---@type fun(self: sf.Texture, stream: sf.InputStream, sRgb?: boolean, area?: sf.IntRect): boolean
+sf.Texture.loadFromStream = function() end
 --- @brief Load the texture from an image
 ---
 --- The `area` argument can be used to load only a sub-rectangle
@@ -3913,14 +4003,8 @@ function sf.Texture.loadFromStream(self, stream, sRgb, area) end
 --- @return `true` if loading was successful, `false` if it failed
 ---
 --- @see `loadFromFile`, `loadFromMemory`
----@overload fun(self: sf.Texture, image: sf.Image, sRgb: boolean): boolean
----@overload fun(self: sf.Texture, image: sf.Image): boolean
----@param self sf.Texture
----@param image sf.Image
----@param sRgb boolean
----@param area sf.IntRect
----@return boolean
-function sf.Texture.loadFromImage(self, image, sRgb, area) end
+---@type fun(self: sf.Texture, image: sf.Image, sRgb?: boolean, area?: sf.IntRect): boolean
+sf.Texture.loadFromImage = function() end
 --- @brief Return the size of the texture
 ---
 --- @return Size in pixels
@@ -4191,14 +4275,8 @@ sf.Font.getInfo = function() end
 --- @param outlineThickness Thickness of outline (when != 0 the glyph will not be filled)
 ---
 --- @return The glyph corresponding to `id` and `characterSize`
----@overload fun(self: sf.Font, id: integer, characterSize: integer, bold: boolean): sf.Glyph
----@param self sf.Font
----@param id integer
----@param characterSize integer
----@param bold boolean
----@param outlineThickness number
----@return sf.Glyph
-function sf.Font.getGlyphById(self, id, characterSize, bold, outlineThickness) end
+---@type fun(self: sf.Font, id: integer, characterSize: integer, bold: boolean, outlineThickness?: number): sf.Glyph
+sf.Font.getGlyphById = function() end
 --- @brief Retrieve a glyph of the font
 ---
 --- If the font is a bitmap font, not all character sizes
@@ -4218,14 +4296,8 @@ function sf.Font.getGlyphById(self, id, characterSize, bold, outlineThickness) e
 --- @param outlineThickness Thickness of outline (when != 0 the glyph will not be filled)
 ---
 --- @return The glyph corresponding to `codePoint` and `characterSize`
----@overload fun(self: sf.Font, codePoint: integer, characterSize: integer, bold: boolean): sf.Glyph
----@param self sf.Font
----@param codePoint integer
----@param characterSize integer
----@param bold boolean
----@param outlineThickness number
----@return sf.Glyph
-function sf.Font.getGlyph(self, codePoint, characterSize, bold, outlineThickness) end
+---@type fun(self: sf.Font, codePoint: integer, characterSize: integer, bold: boolean, outlineThickness?: number): sf.Glyph
+sf.Font.getGlyph = function() end
 --- @brief Determine if this font has a glyph representing the requested code point
 ---
 --- Most fonts only include a very limited selection of glyphs from
@@ -4257,14 +4329,12 @@ sf.Font.hasGlyph = function() end
 --- @param bold          Retrieve the bold version or the regular one?
 ---
 --- @return Kerning value for `first` and `second`, in pixels
----@overload fun(self: sf.Font, first: integer, second: integer, characterSize: integer, bold: boolean): number
----@overload fun(self: sf.Font, first: integer, second: integer, characterSize: integer): number
----@overload fun(self: sf.Font, first: integer, second: integer, characterSize: integer): number
+---@overload fun(self: sf.Font, first: integer, second: integer, characterSize: integer, bold?: boolean): number
 ---@param self sf.Font
 ---@param first integer
 ---@param second integer
 ---@param characterSize integer
----@param bold boolean
+---@param bold? boolean
 ---@return number
 function sf.Font.getKerning(self, first, second, characterSize, bold) end
 --- @brief Get the ascent
@@ -4536,6 +4606,10 @@ function sf.Transform.scale(self, factors, center) end
 --- The identity transform (does nothing)
 ---@type sf.Transform
 sf.Transform.Identity = nil
+---@type fun(self: sf.Transform): sf.Transform
+sf.Transform.copy = function() end
+---@type fun(self: sf.Transform): sf.Transform
+sf.Transform.deepcopy = function() end
 ---@type sf.Vector2f
 sf.Vec2 = nil
 ---@type sf.Vector2i
@@ -4562,6 +4636,10 @@ sf.Vector2b.unpack = function() end
 
 ---@class sf.Vector2b
 ---@operator eq(sf.Vector2b): boolean
+---@type fun(self: sf.Vector2b): sf.Vector2b
+sf.Vector2b.copy = function() end
+---@type fun(self: sf.Vector2b): sf.Vector2b
+sf.Vector2b.deepcopy = function() end
 ---@type sf.Vector2b
 sf.Bvec2 = nil
 ---@type sf.Vector3f
@@ -4594,6 +4672,10 @@ sf.Vector3b.unpack = function() end
 
 ---@class sf.Vector3b
 ---@operator eq(sf.Vector3b): boolean
+---@type fun(self: sf.Vector3b): sf.Vector3b
+sf.Vector3b.copy = function() end
+---@type fun(self: sf.Vector3b): sf.Vector3b
+sf.Vector3b.deepcopy = function() end
 ---@type sf.Vector3b
 sf.Bvec3 = nil
 --- @brief 4D vector type, used to set uniforms in GLSL
@@ -4623,6 +4705,10 @@ sf.Vector4f = sf.Vector4f or {}
 function sf.Vector4f.new(x, y, z, w) end
 ---@type fun(self: sf.Vector4f): number, number, number, number
 sf.Vector4f.unpack = function() end
+---@type fun(self: sf.Vector4f): sf.Vector4f
+sf.Vector4f.copy = function() end
+---@type fun(self: sf.Vector4f): sf.Vector4f
+sf.Vector4f.deepcopy = function() end
 ---@type sf.Vector4f
 sf.Vec4 = nil
 --- @brief 4D vector type, used to set uniforms in GLSL
@@ -4652,6 +4738,10 @@ sf.Vector4i = sf.Vector4i or {}
 function sf.Vector4i.new(x, y, z, w) end
 ---@type fun(self: sf.Vector4i): integer, integer, integer, integer
 sf.Vector4i.unpack = function() end
+---@type fun(self: sf.Vector4i): sf.Vector4i
+sf.Vector4i.copy = function() end
+---@type fun(self: sf.Vector4i): sf.Vector4i
+sf.Vector4i.deepcopy = function() end
 ---@type sf.Vector4i
 sf.Ivec4 = nil
 --- @brief 4D vector type, used to set uniforms in GLSL
@@ -4675,6 +4765,10 @@ sf.Vector4b = sf.Vector4b or {}
 function sf.Vector4b.new(x, y, z, w) end
 ---@type fun(self: sf.Vector4b): boolean, boolean, boolean, boolean
 sf.Vector4b.unpack = function() end
+---@type fun(self: sf.Vector4b): sf.Vector4b
+sf.Vector4b.copy = function() end
+---@type fun(self: sf.Vector4b): sf.Vector4b
+sf.Vector4b.deepcopy = function() end
 ---@type sf.Vector4b
 sf.Bvec4 = nil
 --- @brief Matrix type, used to set uniforms in GLSL
@@ -4694,6 +4788,10 @@ sf.Mat3 = sf.Mat3 or {}
 function sf.Mat3.new(transform) end
 ---@type fun(source: sf.Transform, dest: sf.Mat3)
 sf.Mat3.copyMatrix = function() end
+---@type fun(self: sf.Mat3): sf.Mat3
+sf.Mat3.copy = function() end
+---@type fun(self: sf.Mat3): sf.Mat3
+sf.Mat3.deepcopy = function() end
 --- @brief Matrix type, used to set uniforms in GLSL
 ---@class sf.Mat4
 --- Array holding matrix data
@@ -4711,6 +4809,10 @@ sf.Mat4 = sf.Mat4 or {}
 function sf.Mat4.new(transform) end
 ---@type fun(source: sf.Transform, dest: sf.Mat4)
 sf.Mat4.copyMatrix = function() end
+---@type fun(self: sf.Mat4): sf.Mat4
+sf.Mat4.copy = function() end
+---@type fun(self: sf.Mat4): sf.Mat4
+sf.Mat4.deepcopy = function() end
 --- @brief Define the states used for drawing to a `RenderTarget`
 ---@class sf.RenderStates
 --- Blending mode
@@ -5073,11 +5175,8 @@ sf.Shape.getInverseTransform = function() end
 --- @param resetRect Should the texture rect be reset to the size of the new texture?
 ---
 --- @see `getTexture`, `setTextureRect`
----@overload fun(self: sf.Shape, texture: sf.Texture)
----@param self sf.Shape
----@param texture sf.Texture
----@param resetRect boolean
-function sf.Shape.setTexture(self, texture, resetRect) end
+---@type fun(self: sf.Shape, texture: sf.Texture, resetRect?: boolean)
+sf.Shape.setTexture = function() end
 --- @brief Set the sub-rectangle of the texture that the shape will display
 ---
 --- The texture rect is useful when you don't want to display
@@ -5264,12 +5363,8 @@ sf.CircleShape = sf.CircleShape or {}
 ---
 --- @param radius     Radius of the circle
 --- @param pointCount Number of points composing the circle
----@overload fun(radius: number): sf.CircleShape
----@overload fun(): sf.CircleShape
----@param radius number
----@param pointCount integer
----@return sf.CircleShape
-function sf.CircleShape.new(radius, pointCount) end
+---@type fun(radius?: number, pointCount?: integer): sf.CircleShape
+sf.CircleShape.new = function() end
 --- @brief set the position of the object
 ---
 --- This function completely overwrites the previous position.
@@ -5435,11 +5530,8 @@ sf.CircleShape.getInverseTransform = function() end
 --- @param resetRect Should the texture rect be reset to the size of the new texture?
 ---
 --- @see `getTexture`, `setTextureRect`
----@overload fun(self: sf.CircleShape, texture: sf.Texture)
----@param self sf.CircleShape
----@param texture sf.Texture
----@param resetRect boolean
-function sf.CircleShape.setTexture(self, texture, resetRect) end
+---@type fun(self: sf.CircleShape, texture: sf.Texture, resetRect?: boolean)
+sf.CircleShape.setTexture = function() end
 --- @brief Set the sub-rectangle of the texture that the shape will display
 ---
 --- The texture rect is useful when you don't want to display
@@ -5644,10 +5736,8 @@ sf.ConvexShape = sf.ConvexShape or {}
 --- @brief Default constructor
 ---
 --- @param pointCount Number of points of the polygon
----@overload fun(): sf.ConvexShape
----@param pointCount integer
----@return sf.ConvexShape
-function sf.ConvexShape.new(pointCount) end
+---@type fun(pointCount?: integer): sf.ConvexShape
+sf.ConvexShape.new = function() end
 --- @brief set the position of the object
 ---
 --- This function completely overwrites the previous position.
@@ -5813,11 +5903,8 @@ sf.ConvexShape.getInverseTransform = function() end
 --- @param resetRect Should the texture rect be reset to the size of the new texture?
 ---
 --- @see `getTexture`, `setTextureRect`
----@overload fun(self: sf.ConvexShape, texture: sf.Texture)
----@param self sf.ConvexShape
----@param texture sf.Texture
----@param resetRect boolean
-function sf.ConvexShape.setTexture(self, texture, resetRect) end
+---@type fun(self: sf.ConvexShape, texture: sf.Texture, resetRect?: boolean)
+sf.ConvexShape.setTexture = function() end
 --- @brief Set the sub-rectangle of the texture that the shape will display
 ---
 --- The texture rect is useful when you don't want to display
@@ -6030,10 +6117,8 @@ sf.RectangleShape = sf.RectangleShape or {}
 --- @brief Default constructor
 ---
 --- @param size Size of the rectangle
----@overload fun(): sf.RectangleShape
----@param size sf.Vector2f
----@return sf.RectangleShape
-function sf.RectangleShape.new(size) end
+---@type fun(size?: sf.Vector2f): sf.RectangleShape
+sf.RectangleShape.new = function() end
 --- @brief set the position of the object
 ---
 --- This function completely overwrites the previous position.
@@ -6199,11 +6284,8 @@ sf.RectangleShape.getInverseTransform = function() end
 --- @param resetRect Should the texture rect be reset to the size of the new texture?
 ---
 --- @see `getTexture`, `setTextureRect`
----@overload fun(self: sf.RectangleShape, texture: sf.Texture)
----@param self sf.RectangleShape
----@param texture sf.Texture
----@param resetRect boolean
-function sf.RectangleShape.setTexture(self, texture, resetRect) end
+---@type fun(self: sf.RectangleShape, texture: sf.Texture, resetRect?: boolean)
+sf.RectangleShape.setTexture = function() end
 --- @brief Set the sub-rectangle of the texture that the shape will display
 ---
 --- The texture rect is useful when you don't want to display
@@ -6573,11 +6655,8 @@ sf.Sprite.getInverseTransform = function() end
 --- @param resetRect Should the texture rect be reset to the size of the new texture?
 ---
 --- @see `getTexture`, `setTextureRect`
----@overload fun(self: sf.Sprite, texture: sf.Texture)
----@param self sf.Sprite
----@param texture sf.Texture
----@param resetRect boolean
-function sf.Sprite.setTexture(self, texture, resetRect) end
+---@type fun(self: sf.Sprite, texture: sf.Texture, resetRect?: boolean)
+sf.Sprite.setTexture = function() end
 --- @brief Set the sub-rectangle of the texture that the sprite will display
 ---
 --- The texture rect is useful when you don't want to display
@@ -6660,6 +6739,10 @@ sf.Sprite.getGlobalBounds = function() end
 sf.Vertex = sf.Vertex or {}
 ---@type fun(): sf.Vertex
 sf.Vertex.new = function() end
+---@type fun(self: sf.Vertex): sf.Vertex
+sf.Vertex.copy = function() end
+---@type fun(self: sf.Vertex): sf.Vertex
+sf.Vertex.deepcopy = function() end
 --- @brief Set of one or more 2D primitives
 ---@class sf.VertexArray : sf.Drawable
 sf.VertexArray = sf.VertexArray or {}
@@ -6667,10 +6750,9 @@ sf.VertexArray = sf.VertexArray or {}
 ---
 --- @param type        Type of primitives
 --- @param vertexCount Initial number of vertices in the array
----@overload fun(type: sf.PrimitiveType): sf.VertexArray
 ---@overload fun(): sf.VertexArray
 ---@param type sf.PrimitiveType
----@param vertexCount integer
+---@param vertexCount? integer
 ---@return sf.VertexArray
 function sf.VertexArray.new(type, vertexCount) end
 --- @brief Return the vertex count
@@ -6751,13 +6833,8 @@ sf.Text = sf.Text or {}
 --- @param string         Text assigned to the string
 --- @param font           Font used to draw the string
 --- @param characterSize  Base size of characters, in pixels
----@overload fun(font: sf.Font, string: string): sf.Text
----@overload fun(font: sf.Font): sf.Text
----@param font sf.Font
----@param string string
----@param characterSize integer
----@return sf.Text
-function sf.Text.new(font, string, characterSize) end
+---@type fun(font: sf.Font, string?: string, characterSize?: integer): sf.Text
+sf.Text.new = function() end
 --- @brief set the position of the object
 ---
 --- This function completely overwrites the previous position.
@@ -7793,8 +7870,7 @@ sf.RenderTarget = sf.RenderTarget or {}
 ---
 --- @param color        Fill color to use to clear the render target
 --- @param stencilValue Stencil value to clear to
----@overload fun(self: sf.RenderTarget, color: sf.Color)
----@overload fun(self: sf.RenderTarget)
+---@overload fun(self: sf.RenderTarget, color?: sf.Color)
 ---@param self sf.RenderTarget
 ---@param color sf.Color
 ---@param stencilValue sf.StencilValue
@@ -7932,18 +8008,14 @@ function sf.RenderTarget.mapCoordsToPixel(self, point, view) end
 --- @param firstVertex  Index of the first vertex to render
 --- @param vertexCount  Number of vertices to render
 --- @param states       Render states to use for drawing
----@overload fun(self: sf.RenderTarget, vertexBuffer: sf.VertexBuffer, firstVertex: integer, vertexCount: integer)
----@overload fun(self: sf.RenderTarget, drawable: sf.Drawable, states: sf.RenderStates)
----@overload fun(self: sf.RenderTarget, vertexBuffer: sf.VertexBuffer, states: sf.RenderStates)
----@overload fun(self: sf.RenderTarget, drawable: sf.Drawable)
----@overload fun(self: sf.RenderTarget, vertexBuffer: sf.VertexBuffer)
----@overload fun(self: sf.RenderTarget, vertices: any, type: sf.PrimitiveType, states: sf.RenderStates)
----@overload fun(self: sf.RenderTarget, vertices: any, type: sf.PrimitiveType)
+---@overload fun(self: sf.RenderTarget, drawable: sf.Drawable, states?: sf.RenderStates)
+---@overload fun(self: sf.RenderTarget, vertexBuffer: sf.VertexBuffer, states?: sf.RenderStates)
+---@overload fun(self: sf.RenderTarget, vertices: any, type: sf.PrimitiveType, states?: sf.RenderStates)
 ---@param self sf.RenderTarget
 ---@param vertexBuffer sf.VertexBuffer
 ---@param firstVertex integer
 ---@param vertexCount integer
----@param states sf.RenderStates
+---@param states? sf.RenderStates
 function sf.RenderTarget.draw(self, vertexBuffer, firstVertex, vertexCount, states) end
 --- @brief Return the size of the rendering region of the target
 ---
@@ -7972,11 +8044,8 @@ sf.RenderTarget.isSrgb = function() end
 --- @param active `true` to activate, `false` to deactivate
 ---
 --- @return `true` if operation was successful, `false` otherwise
----@overload fun(self: sf.RenderTarget): boolean
----@param self sf.RenderTarget
----@param active boolean
----@return boolean
-function sf.RenderTarget.setActive(self, active) end
+---@type fun(self: sf.RenderTarget, active?: boolean): boolean
+sf.RenderTarget.setActive = function() end
 --- @brief Save the OpenGL render states modified by SFML
 ---
 --- This function can be used when you mix SFML drawing
@@ -8052,10 +8121,9 @@ sf.RenderTexture = sf.RenderTexture or {}
 --- @param settings Additional settings for the underlying OpenGL texture and context
 ---
 --- @throws sf::Exception if creation was unsuccessful
----@overload fun(size: sf.Vector2u): sf.RenderTexture
 ---@overload fun(): sf.RenderTexture
 ---@param size sf.Vector2u
----@param settings sf.ContextSettings
+---@param settings? sf.ContextSettings
 ---@return sf.RenderTexture
 function sf.RenderTexture.new(size, settings) end
 --- @brief Clear the entire target with a single color and stencil value
@@ -8065,8 +8133,7 @@ function sf.RenderTexture.new(size, settings) end
 ---
 --- @param color        Fill color to use to clear the render target
 --- @param stencilValue Stencil value to clear to
----@overload fun(self: sf.RenderTexture, color: sf.Color)
----@overload fun(self: sf.RenderTexture)
+---@overload fun(self: sf.RenderTexture, color?: sf.Color)
 ---@param self sf.RenderTexture
 ---@param color sf.Color
 ---@param stencilValue sf.StencilValue
@@ -8204,18 +8271,14 @@ function sf.RenderTexture.mapCoordsToPixel(self, point, view) end
 --- @param firstVertex  Index of the first vertex to render
 --- @param vertexCount  Number of vertices to render
 --- @param states       Render states to use for drawing
----@overload fun(self: sf.RenderTexture, vertexBuffer: sf.VertexBuffer, firstVertex: integer, vertexCount: integer)
----@overload fun(self: sf.RenderTexture, drawable: sf.Drawable, states: sf.RenderStates)
----@overload fun(self: sf.RenderTexture, vertexBuffer: sf.VertexBuffer, states: sf.RenderStates)
----@overload fun(self: sf.RenderTexture, drawable: sf.Drawable)
----@overload fun(self: sf.RenderTexture, vertexBuffer: sf.VertexBuffer)
----@overload fun(self: sf.RenderTexture, vertices: any, type: sf.PrimitiveType, states: sf.RenderStates)
----@overload fun(self: sf.RenderTexture, vertices: any, type: sf.PrimitiveType)
+---@overload fun(self: sf.RenderTexture, drawable: sf.Drawable, states?: sf.RenderStates)
+---@overload fun(self: sf.RenderTexture, vertexBuffer: sf.VertexBuffer, states?: sf.RenderStates)
+---@overload fun(self: sf.RenderTexture, vertices: any, type: sf.PrimitiveType, states?: sf.RenderStates)
 ---@param self sf.RenderTexture
 ---@param vertexBuffer sf.VertexBuffer
 ---@param firstVertex integer
 ---@param vertexCount integer
----@param states sf.RenderStates
+---@param states? sf.RenderStates
 function sf.RenderTexture.draw(self, vertexBuffer, firstVertex, vertexCount, states) end
 --- @brief Return the size of the rendering region of the texture
 ---
@@ -8245,11 +8308,8 @@ sf.RenderTexture.isSrgb = function() end
 --- @param active `true` to activate, `false` to deactivate
 ---
 --- @return `true` if operation was successful, `false` otherwise
----@overload fun(self: sf.RenderTexture): boolean
----@param self sf.RenderTexture
----@param active boolean
----@return boolean
-function sf.RenderTexture.setActive(self, active) end
+---@type fun(self: sf.RenderTexture, active?: boolean): boolean
+sf.RenderTexture.setActive = function() end
 --- @brief Save the OpenGL render states modified by SFML
 ---
 --- This function can be used when you mix SFML drawing
@@ -8322,12 +8382,8 @@ sf.RenderTexture.resetGLStates = function() end
 --- @param settings Additional settings for the underlying OpenGL texture and context
 ---
 --- @return `true` if resizing has been successful, `false` if it failed
----@overload fun(self: sf.RenderTexture, size: sf.Vector2u): boolean
----@param self sf.RenderTexture
----@param size sf.Vector2u
----@param settings sf.ContextSettings
----@return boolean
-function sf.RenderTexture.resize(self, size, settings) end
+---@type fun(self: sf.RenderTexture, size: sf.Vector2u, settings?: sf.ContextSettings): boolean
+sf.RenderTexture.resize = function() end
 --- @brief Get the maximum anti-aliasing level supported by the system
 ---
 --- @return The maximum anti-aliasing level supported by the system
@@ -8421,19 +8477,14 @@ sf.RenderWindow = sf.RenderWindow or {}
 --- @param style    %Window style, a bitwise OR combination of `sf::Style` enumerators
 --- @param state    %Window state
 --- @param settings Additional settings for the underlying OpenGL context
----@overload fun(mode: sf.VideoMode, title: string, style: integer, state: sf.State): sf.RenderWindow
----@overload fun(mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings): sf.RenderWindow
----@overload fun(mode: sf.VideoMode, title: string, style: integer): sf.RenderWindow
----@overload fun(mode: sf.VideoMode, title: string, state: sf.State): sf.RenderWindow
----@overload fun(mode: sf.VideoMode, title: string): sf.RenderWindow
----@overload fun(handle: sf.WindowHandle, settings: sf.ContextSettings): sf.RenderWindow
----@overload fun(handle: sf.WindowHandle): sf.RenderWindow
+---@overload fun(mode: sf.VideoMode, title: string, state: sf.State, settings?: sf.ContextSettings): sf.RenderWindow
+---@overload fun(handle: sf.WindowHandle, settings?: sf.ContextSettings): sf.RenderWindow
 ---@overload fun(): sf.RenderWindow
 ---@param mode sf.VideoMode
 ---@param title string
----@param style integer
----@param state sf.State
----@param settings sf.ContextSettings
+---@param style? integer
+---@param state? sf.State
+---@param settings? sf.ContextSettings
 ---@return sf.RenderWindow
 function sf.RenderWindow.new(mode, title, style, state, settings) end
 --- @brief Create (or recreate) the window
@@ -8450,11 +8501,9 @@ function sf.RenderWindow.new(mode, title, style, state, settings) end
 --- @param style    %Window style, a bitwise OR combination of `sf::Style` enumerators
 --- @param state    %Window state
 --- @param settings Additional settings for the underlying OpenGL context
----@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style: integer, state: sf.State)
+---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style?: integer, state?: sf.State)
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings)
----@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style: integer)
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State)
----@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string)
 ---@overload fun(self: sf.RenderWindow, handle: sf.WindowHandle, settings: sf.ContextSettings)
 ---@overload fun(self: sf.RenderWindow, handle: sf.WindowHandle)
 ---@param self sf.RenderWindow
@@ -8522,11 +8571,8 @@ sf.RenderWindow.pollEvent = function() end
 --- @return The event, otherwise `std::nullopt` on timeout or if window was closed
 ---
 --- @see `pollEvent`, `handleEvents`
----@overload fun(self: sf.RenderWindow): sf.Event|nil
----@param self sf.RenderWindow
----@param timeout sf.Time
----@return sf.Event|nil
-function sf.RenderWindow.waitEvent(self, timeout) end
+---@type fun(self: sf.RenderWindow, timeout?: sf.Time): sf.Event|nil
+sf.RenderWindow.waitEvent = function() end
 --- @brief Get the position of the window
 ---
 --- @return Position of the window, in pixels
@@ -8738,9 +8784,9 @@ sf.RenderWindow.setFramerateLimit = function() end
 --- @param active `true` to activate, `false` to deactivate
 ---
 --- @return `true` if operation was successful, `false` otherwise
----@overload fun(self: sf.RenderWindow): boolean
+---@overload fun(self: sf.RenderWindow, active?: boolean): boolean
 ---@param self sf.RenderWindow
----@param active boolean
+---@param active? boolean
 ---@return boolean
 function sf.RenderWindow.setActive(self, active) end
 --- @brief Display on screen what has been rendered to the window so far
@@ -8757,8 +8803,7 @@ sf.RenderWindow.display = function() end
 ---
 --- @param color        Fill color to use to clear the render target
 --- @param stencilValue Stencil value to clear to
----@overload fun(self: sf.RenderWindow, color: sf.Color)
----@overload fun(self: sf.RenderWindow)
+---@overload fun(self: sf.RenderWindow, color?: sf.Color)
 ---@param self sf.RenderWindow
 ---@param color sf.Color
 ---@param stencilValue sf.StencilValue
@@ -8896,18 +8941,14 @@ function sf.RenderWindow.mapCoordsToPixel(self, point, view) end
 --- @param firstVertex  Index of the first vertex to render
 --- @param vertexCount  Number of vertices to render
 --- @param states       Render states to use for drawing
----@overload fun(self: sf.RenderWindow, vertexBuffer: sf.VertexBuffer, firstVertex: integer, vertexCount: integer)
----@overload fun(self: sf.RenderWindow, drawable: sf.Drawable, states: sf.RenderStates)
----@overload fun(self: sf.RenderWindow, vertexBuffer: sf.VertexBuffer, states: sf.RenderStates)
----@overload fun(self: sf.RenderWindow, drawable: sf.Drawable)
----@overload fun(self: sf.RenderWindow, vertexBuffer: sf.VertexBuffer)
----@overload fun(self: sf.RenderWindow, vertices: any, type: sf.PrimitiveType, states: sf.RenderStates)
----@overload fun(self: sf.RenderWindow, vertices: any, type: sf.PrimitiveType)
+---@overload fun(self: sf.RenderWindow, drawable: sf.Drawable, states?: sf.RenderStates)
+---@overload fun(self: sf.RenderWindow, vertexBuffer: sf.VertexBuffer, states?: sf.RenderStates)
+---@overload fun(self: sf.RenderWindow, vertices: any, type: sf.PrimitiveType, states?: sf.RenderStates)
 ---@param self sf.RenderWindow
 ---@param vertexBuffer sf.VertexBuffer
 ---@param firstVertex integer
 ---@param vertexCount integer
----@param states sf.RenderStates
+---@param states? sf.RenderStates
 function sf.RenderWindow.draw(self, vertexBuffer, firstVertex, vertexCount, states) end
 --- @brief Tell if the window will use sRGB encoding when drawing on it
 ---
@@ -9681,11 +9722,8 @@ sf.SoundRecorder = sf.SoundRecorder or {}
 --- @return `true`, if start of capture was successful
 ---
 --- @see `stop`, `getAvailableDevices`
----@overload fun(self: sf.SoundRecorder): boolean
----@param self sf.SoundRecorder
----@param sampleRate integer
----@return boolean
-function sf.SoundRecorder.start(self, sampleRate) end
+---@type fun(self: sf.SoundRecorder, sampleRate?: integer): boolean
+sf.SoundRecorder.start = function() end
 --- @brief Stop the capture
 ---
 --- @see `start`
@@ -9801,11 +9839,8 @@ sf.SoundBufferRecorder.new = function() end
 --- @return `true`, if start of capture was successful
 ---
 --- @see `stop`, `getAvailableDevices`
----@overload fun(self: sf.SoundBufferRecorder): boolean
----@param self sf.SoundBufferRecorder
----@param sampleRate integer
----@return boolean
-function sf.SoundBufferRecorder.start(self, sampleRate) end
+---@type fun(self: sf.SoundBufferRecorder, sampleRate?: integer): boolean
+sf.SoundBufferRecorder.start = function() end
 --- @brief Stop the capture
 ---
 --- @see `start`
@@ -11731,6 +11766,10 @@ sf.Music.setLoopPoints = function() end
 sf.Music.TimeSpan = sf.Music.TimeSpan or {}
 ---@type fun(): sf.Music.TimeSpan
 sf.Music.TimeSpan.new = function() end
+---@type fun(self: sf.Music.TimeSpan): sf.Music.TimeSpan
+sf.Music.TimeSpan.copy = function() end
+---@type fun(self: sf.Music.TimeSpan): sf.Music.TimeSpan
+sf.Music.TimeSpan.deepcopy = function() end
 --- @brief Encapsulate an IPv4 network address
 ---@class sf.IpAddress
 sf.IpAddress = sf.IpAddress or {}
@@ -11869,10 +11908,8 @@ sf.IpAddress.isV6 = function() end
 --- @return Local IP address of the computer on success, `std::nullopt` otherwise
 ---
 --- @see `getPublicAddress`
----@overload fun(): sf.IpAddress|nil
----@param type sf.IpAddress.Type
----@return sf.IpAddress|nil
-function sf.IpAddress.getLocalAddress(type) end
+---@type fun(type?: sf.IpAddress.Type): sf.IpAddress|nil
+sf.IpAddress.getLocalAddress = function() end
 --- @brief Get the computer's public address
 ---
 --- The public address is the address of the computer from the
@@ -11902,12 +11939,8 @@ function sf.IpAddress.getLocalAddress(type) end
 --- @return Public IP address of the computer on success, `std::nullopt` otherwise
 ---
 --- @see `getLocalAddress`
----@overload fun(): sf.IpAddress|nil
----@overload fun(timeout: sf.Time, type: sf.IpAddress.Type|nil, secure: boolean): sf.IpAddress|nil
----@overload fun(timeout: sf.Time, type: sf.IpAddress.Type|nil): sf.IpAddress|nil
----@param timeout sf.Time
----@return sf.IpAddress|nil
-function sf.IpAddress.getPublicAddress(timeout) end
+---@type fun(timeout?: sf.Time, type?: sf.IpAddress.Type|nil, secure?: boolean): sf.IpAddress|nil
+sf.IpAddress.getPublicAddress = function() end
 --- @brief Type of IP address
 ---@class sf.IpAddress.Type
 --- IPv4 address
@@ -11939,6 +11972,10 @@ sf.IpAddress.AnyV6 = nil
 --- The "localhost" IPv6 address (for connecting a computer to itself locally)
 ---@type sf.IpAddress
 sf.IpAddress.LocalHostV6 = nil
+---@type fun(self: sf.IpAddress): sf.IpAddress
+sf.IpAddress.copy = function() end
+---@type fun(self: sf.IpAddress): sf.IpAddress
+sf.IpAddress.deepcopy = function() end
 --- @brief A DNS MX record
 ---@class sf.Dns.MxRecord
 --- Host willing to act as mail exchange
@@ -11969,11 +12006,8 @@ sf.Dns.SrvRecord.new = function() end
 --- @param timeout  Query timeout if using a provided list of servers, `std::nullopt` to wait forever
 ---
 --- @return List of IP addresses the given hostname resolves to, `std::nullopt` is returned if name resolution fails, an empty list is returned if the hostname could not be resolved to any address
----@overload fun(hostname: string, servers: sf.IpAddress[]): sf.IpAddress[]|nil
----@overload fun(hostname: string, servers: sf.IpAddress[], timeout: sf.Time|nil): sf.IpAddress[]|nil
----@param hostname string
----@return sf.IpAddress[]|nil
-function sf.Dns.resolve(hostname) end
+---@type fun(hostname: string, servers?: sf.IpAddress[], timeout?: sf.Time|nil): sf.IpAddress[]|nil
+sf.Dns.resolve = function() end
 --- @brief Query NS records for a hostname
 ---
 --- @param hostname Hostname to query NS records for
@@ -11981,11 +12015,8 @@ function sf.Dns.resolve(hostname) end
 --- @param timeout  Query timeout if using a provided list of servers, `std::nullopt` to wait forever
 ---
 --- @return List of NS record strings, an empty list is returned if there are no NS records for the hostname
----@overload fun(hostname: string, servers: sf.IpAddress[]): string[]
----@overload fun(hostname: string, servers: sf.IpAddress[], timeout: sf.Time|nil): string[]
----@param hostname string
----@return string[]
-function sf.Dns.queryNs(hostname) end
+---@type fun(hostname: string, servers?: sf.IpAddress[], timeout?: sf.Time|nil): string[]
+sf.Dns.queryNs = function() end
 --- @brief Query MX records for a hostname
 ---
 --- @param hostname Hostname to query MX records for
@@ -11993,11 +12024,8 @@ function sf.Dns.queryNs(hostname) end
 --- @param timeout  Query timeout if using a provided list of servers, `std::nullopt` to wait forever
 ---
 --- @return List of MX records, an empty list is returned if there are no MX records for the hostname
----@overload fun(hostname: string, servers: sf.IpAddress[]): sf.Dns.MxRecord[]
----@overload fun(hostname: string, servers: sf.IpAddress[], timeout: sf.Time|nil): sf.Dns.MxRecord[]
----@param hostname string
----@return sf.Dns.MxRecord[]
-function sf.Dns.queryMx(hostname) end
+---@type fun(hostname: string, servers?: sf.IpAddress[], timeout?: sf.Time|nil): sf.Dns.MxRecord[]
+sf.Dns.queryMx = function() end
 --- @brief Query SRV records for a hostname
 ---
 --- @param hostname Hostname to query SRV records for
@@ -12005,11 +12033,8 @@ function sf.Dns.queryMx(hostname) end
 --- @param timeout  Query timeout if using a provided list of servers, `std::nullopt` to wait forever
 ---
 --- @return List of SRV records, an empty list is returned if there are no SRV records for the hostname
----@overload fun(hostname: string, servers: sf.IpAddress[]): sf.Dns.SrvRecord[]
----@overload fun(hostname: string, servers: sf.IpAddress[], timeout: sf.Time|nil): sf.Dns.SrvRecord[]
----@param hostname string
----@return sf.Dns.SrvRecord[]
-function sf.Dns.querySrv(hostname) end
+---@type fun(hostname: string, servers?: sf.IpAddress[], timeout?: sf.Time|nil): sf.Dns.SrvRecord[]
+sf.Dns.querySrv = function() end
 --- @brief Query TXT records for a hostname
 ---
 --- @param hostname Hostname to query TXT records for
@@ -12017,11 +12042,8 @@ function sf.Dns.querySrv(hostname) end
 --- @param timeout  Query timeout if using a provided list of servers, `std::nullopt` to wait forever
 ---
 --- @return List of TXT record string lists, an empty list is returned if there are no TXT records for the hostname
----@overload fun(hostname: string, servers: sf.IpAddress[]): string[][]
----@overload fun(hostname: string, servers: sf.IpAddress[], timeout: sf.Time|nil): string[][]
----@param hostname string
----@return string[][]
-function sf.Dns.queryTxt(hostname) end
+---@type fun(hostname: string, servers?: sf.IpAddress[], timeout?: sf.Time|nil): string[][]
+sf.Dns.queryTxt = function() end
 --- @brief Get the computer's public address via DNS
 ---
 --- The public address is the address of the computer from the
@@ -12047,10 +12069,8 @@ function sf.Dns.queryTxt(hostname) end
 --- @param type    The type of public address to get
 ---
 --- @return Public IP address of the computer on success, `std::nullopt` otherwise
----@overload fun(timeout: sf.Time|nil, type: sf.IpAddress.Type): sf.IpAddress|nil
----@overload fun(timeout: sf.Time|nil): sf.IpAddress|nil
----@return sf.IpAddress|nil
-function sf.Dns.getPublicAddress() end
+---@type fun(timeout?: sf.Time|nil, type?: sf.IpAddress.Type): sf.IpAddress|nil
+sf.Dns.getPublicAddress = function() end
 --- @brief A FTP client
 ---
 --- @deprecated Use `sf::Sftp` if possible.
@@ -12077,14 +12097,8 @@ sf.Ftp.new = function() end
 --- @return Server response to the request
 ---
 --- @see `disconnect`
----@overload fun(self: sf.Ftp, server: sf.IpAddress, port: integer): sf.Ftp.Response
----@overload fun(self: sf.Ftp, server: sf.IpAddress): sf.Ftp.Response
----@param self sf.Ftp
----@param server sf.IpAddress
----@param port integer
----@param timeout sf.Time
----@return sf.Ftp.Response
-function sf.Ftp.connect(self, server, port, timeout) end
+---@type fun(self: sf.Ftp, server: sf.IpAddress, port?: integer, timeout?: sf.Time): sf.Ftp.Response
+sf.Ftp.connect = function() end
 --- @brief Close the connection with the server
 ---
 --- @return Server response to the request
@@ -12137,11 +12151,8 @@ sf.Ftp.getWorkingDirectory = function() end
 --- @return Server response to the request
 ---
 --- @see `getWorkingDirectory`, `changeDirectory`, `parentDirectory`
----@overload fun(self: sf.Ftp): sf.Ftp.ListingResponse
----@param self sf.Ftp
----@param directory string
----@return sf.Ftp.ListingResponse
-function sf.Ftp.getDirectoryListing(self, directory) end
+---@type fun(self: sf.Ftp, directory?: string): sf.Ftp.ListingResponse
+sf.Ftp.getDirectoryListing = function() end
 --- @brief Change the current working directory
 ---
 --- The new directory must be relative to the current one.
@@ -12230,13 +12241,8 @@ sf.Ftp.deleteFile = function() end
 --- @return Server response to the request
 ---
 --- @see `upload`
----@overload fun(self: sf.Ftp, remoteFile: string, localPath: string): sf.Ftp.Response
----@param self sf.Ftp
----@param remoteFile string
----@param localPath string
----@param mode sf.Ftp.TransferMode
----@return sf.Ftp.Response
-function sf.Ftp.download(self, remoteFile, localPath, mode) end
+---@type fun(self: sf.Ftp, remoteFile: string, localPath: string, mode?: sf.Ftp.TransferMode): sf.Ftp.Response
+sf.Ftp.download = function() end
 --- @brief Upload a file to the server
 ---
 --- The name of the local file is relative to the current
@@ -12255,15 +12261,8 @@ function sf.Ftp.download(self, remoteFile, localPath, mode) end
 --- @return Server response to the request
 ---
 --- @see `download`
----@overload fun(self: sf.Ftp, localFile: string, remotePath: string, mode: sf.Ftp.TransferMode): sf.Ftp.Response
----@overload fun(self: sf.Ftp, localFile: string, remotePath: string): sf.Ftp.Response
----@param self sf.Ftp
----@param localFile string
----@param remotePath string
----@param mode sf.Ftp.TransferMode
----@param append boolean
----@return sf.Ftp.Response
-function sf.Ftp.upload(self, localFile, remotePath, mode, append) end
+---@type fun(self: sf.Ftp, localFile: string, remotePath: string, mode?: sf.Ftp.TransferMode, append?: boolean): sf.Ftp.Response
+sf.Ftp.upload = function() end
 --- @brief Send a command to the FTP server
 ---
 --- While the most often used commands are provided as member
@@ -12277,12 +12276,8 @@ function sf.Ftp.upload(self, localFile, remotePath, mode, append) end
 --- @param parameter Command parameter
 ---
 --- @return Server response to the request
----@overload fun(self: sf.Ftp, command: string): sf.Ftp.Response
----@param self sf.Ftp
----@param command string
----@param parameter string
----@return sf.Ftp.Response
-function sf.Ftp.sendCommand(self, command, parameter) end
+---@type fun(self: sf.Ftp, command: string, parameter?: string): sf.Ftp.Response
+sf.Ftp.sendCommand = function() end
 --- @brief Enumeration of transfer modes
 ---@class sf.Ftp.TransferMode
 --- Binary mode (file is transferred as a sequence of bytes)
@@ -12302,12 +12297,8 @@ sf.Ftp.Response = sf.Ftp.Response or {}
 ---
 --- @param code    Response status code
 --- @param message Response message
----@overload fun(code: sf.Ftp.Response.Status): sf.Ftp.Response
----@overload fun(): sf.Ftp.Response
----@param code sf.Ftp.Response.Status
----@param message string
----@return sf.Ftp.Response
-function sf.Ftp.Response.new(code, message) end
+---@type fun(code?: sf.Ftp.Response.Status, message?: string): sf.Ftp.Response
+sf.Ftp.Response.new = function() end
 --- @brief Check if the status code means a success
 ---
 --- This function is defined for convenience, it is
@@ -12482,25 +12473,10 @@ sf.Ftp.ListingResponse.getListing = function() end
 --- @brief A HTTP client
 ---@class sf.Http
 sf.Http = sf.Http or {}
---- @brief Construct the HTTP client with the target host
----
---- This is equivalent to calling `setHost(host, port)`.
---- The port has a default value of 0, which means that the
---- HTTP client will use the right port according to the
---- protocol used (80 for HTTP). You should leave it like
---- this unless you really need a port other than the
---- standard one, or use an unknown protocol.
----
---- @param host        Web server to connect to
---- @param port        Port to use for the connection
---- @param addressType Address type to use for the connection, `std::nullopt` to specify no preference
----@overload fun(host: string): sf.Http
----@overload fun(): sf.Http
----@overload fun(host: string, port: integer, addressType: sf.IpAddress.Type|nil): sf.Http
----@param host string
----@param port integer
+--- @brief Default constructor
+---@overload fun(host: string, port?: integer, addressType?: sf.IpAddress.Type|nil): sf.Http
 ---@return sf.Http
-function sf.Http.new(host, port) end
+function sf.Http.new() end
 --- @brief Set the target host
 ---
 --- This function just stores the host address and port, it
@@ -12517,13 +12493,8 @@ function sf.Http.new(host, port) end
 --- @param addressType Address type to use for the connection, `std::nullopt` to specify no preference
 ---
 --- @return `true` if the host has been resolved and is valid, `false` otherwise
----@overload fun(self: sf.Http, host: string): boolean
----@overload fun(self: sf.Http, host: string, port: integer, addressType: sf.IpAddress.Type|nil): boolean
----@param self sf.Http
----@param host string
----@param port integer
----@return boolean
-function sf.Http.setHost(self, host, port) end
+---@type fun(self: sf.Http, host: string, port?: integer, addressType?: sf.IpAddress.Type|nil): boolean
+sf.Http.setHost = function() end
 --- @brief Send a HTTP request and return the server's response.
 ---
 --- You must have a valid host before sending a request (see `setHost`).
@@ -12540,14 +12511,8 @@ function sf.Http.setHost(self, host, port) end
 --- @param verifyServer Verify the server if using HTTPS
 ---
 --- @return Server's response
----@overload fun(self: sf.Http, request: sf.Http.Request, timeout: sf.Time): sf.Http.Response
----@overload fun(self: sf.Http, request: sf.Http.Request): sf.Http.Response
----@param self sf.Http
----@param request sf.Http.Request
----@param timeout sf.Time
----@param verifyServer boolean
----@return sf.Http.Response
-function sf.Http.sendRequest(self, request, timeout, verifyServer) end
+---@type fun(self: sf.Http, request: sf.Http.Request, timeout?: sf.Time, verifyServer?: boolean): sf.Http.Response
+sf.Http.sendRequest = function() end
 --- @brief HTTP request
 ---@class sf.Http.Request
 sf.Http.Request = sf.Http.Request or {}
@@ -12559,14 +12524,8 @@ sf.Http.Request = sf.Http.Request or {}
 --- @param uri    Target URI
 --- @param method Method to use for the request
 --- @param body   Content of the request's body
----@overload fun(uri: string, method: sf.Http.Request.Method): sf.Http.Request
----@overload fun(uri: string): sf.Http.Request
----@overload fun(): sf.Http.Request
----@param uri string
----@param method sf.Http.Request.Method
----@param body string
----@return sf.Http.Request
-function sf.Http.Request.new(uri, method, body) end
+---@type fun(uri?: string, method?: sf.Http.Request.Method, body?: string): sf.Http.Request
+sf.Http.Request.new = function() end
 --- @brief Set the value of a field
 ---
 --- The field is created if it doesn't exist. The name of
@@ -12879,14 +12838,8 @@ sf.Sftp.new = function() end
 --- @return Result of the connection attempt
 ---
 --- @see `disconnect`
----@overload fun(self: sf.Sftp, server: sf.IpAddress, port: integer): sf.Sftp.Result
----@overload fun(self: sf.Sftp, server: sf.IpAddress): sf.Sftp.Result
----@param self sf.Sftp
----@param server sf.IpAddress
----@param port integer
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.connect(self, server, port, timeout) end
+---@type fun(self: sf.Sftp, server: sf.IpAddress, port?: integer, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.connect = function() end
 --- @brief Disconnect the connection with the server
 ---
 --- @param timeout Maximum time to wait, optionally a predicate can be provided for more fine-grained control
@@ -12894,11 +12847,8 @@ function sf.Sftp.connect(self, server, port, timeout) end
 --- @return Result of disconnecting the connection with the server
 ---
 --- @see `connect`
----@overload fun(self: sf.Sftp): sf.Sftp.Result
----@param self sf.Sftp
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.disconnect(self, timeout) end
+---@type fun(self: sf.Sftp, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.disconnect = function() end
 --- @brief Get SSH session information
 ---
 --- After connecting to the server and before actually
@@ -12960,21 +12910,16 @@ sf.Sftp.getSessionInfo = function() end
 --- @param timeout              Maximum time to wait, optionally a predicate can be provided for more fine-grained control
 ---
 --- @return Result of attempting to log in to the server
----@overload fun(self: sf.Sftp, name: string, publicKeyData: string, publicKeyLength: integer, privateKeyData: string, privateKeyLength: integer, privateKeyPassphrase: string): sf.Sftp.Result
----@overload fun(self: sf.Sftp, name: string, publicKeyData: string, publicKeyLength: integer, privateKeyData: string, privateKeyLength: integer): sf.Sftp.Result
----@overload fun(self: sf.Sftp, name: string, publicKeyData: string, privateKeyData: string, privateKeyPassphrase: string, timeout: sf.TimeoutWithPredicate): sf.Sftp.Result
----@overload fun(self: sf.Sftp, name: string, publicKeyData: string, privateKeyData: string, privateKeyPassphrase: string): sf.Sftp.Result
----@overload fun(self: sf.Sftp, name: string, password: string, timeout: sf.TimeoutWithPredicate): sf.Sftp.Result
----@overload fun(self: sf.Sftp, name: string, publicKeyData: string, privateKeyData: string): sf.Sftp.Result
----@overload fun(self: sf.Sftp, name: string, password: string): sf.Sftp.Result
+---@overload fun(self: sf.Sftp, name: string, publicKeyData: string, privateKeyData: string, privateKeyPassphrase?: string, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+---@overload fun(self: sf.Sftp, name: string, password: string, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
 ---@param self sf.Sftp
 ---@param name string
 ---@param publicKeyData string
 ---@param publicKeyLength integer
 ---@param privateKeyData string
 ---@param privateKeyLength integer
----@param privateKeyPassphrase string
----@param timeout sf.TimeoutWithPredicate
+---@param privateKeyPassphrase? string
+---@param timeout? sf.TimeoutWithPredicate
 ---@return sf.Sftp.Result
 function sf.Sftp.login(self, name, publicKeyData, publicKeyLength, privateKeyData, privateKeyLength, privateKeyPassphrase, timeout) end
 --- @brief Resolve a remote path into an absolute remote path
@@ -12996,12 +12941,8 @@ function sf.Sftp.login(self, name, publicKeyData, publicKeyLength, privateKeyDat
 --- @return Result of converting the path into an absolute path
 ---
 --- @see `getWorkingDirectory`
----@overload fun(self: sf.Sftp, path: string): sf.Sftp.PathResult
----@param self sf.Sftp
----@param path string
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.PathResult
-function sf.Sftp.resolvePath(self, path, timeout) end
+---@type fun(self: sf.Sftp, path: string, timeout?: sf.TimeoutWithPredicate): sf.Sftp.PathResult
+sf.Sftp.resolvePath = function() end
 --- @brief Get the current working directory on the server
 ---
 --- This is an alias for calling `resolvePath(".")`.
@@ -13011,11 +12952,8 @@ function sf.Sftp.resolvePath(self, path, timeout) end
 --- @return Result of getting the current working directory
 ---
 --- @see `resolvePath`
----@overload fun(self: sf.Sftp): sf.Sftp.PathResult
----@param self sf.Sftp
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.PathResult
-function sf.Sftp.getWorkingDirectory(self, timeout) end
+---@type fun(self: sf.Sftp, timeout?: sf.TimeoutWithPredicate): sf.Sftp.PathResult
+sf.Sftp.getWorkingDirectory = function() end
 --- @brief Get the attributes of a remote file or directory
 ---
 --- Depending on whether `path` refers to a file or directory,
@@ -13033,14 +12971,8 @@ function sf.Sftp.getWorkingDirectory(self, timeout) end
 --- @return Result of getting the attributes
 ---
 --- @see `getDirectoryListing`
----@overload fun(self: sf.Sftp, path: string, followLinks: boolean): sf.Sftp.AttributesResult
----@overload fun(self: sf.Sftp, path: string): sf.Sftp.AttributesResult
----@param self sf.Sftp
----@param path string
----@param followLinks boolean
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.AttributesResult
-function sf.Sftp.getAttributes(self, path, followLinks, timeout) end
+---@type fun(self: sf.Sftp, path: string, followLinks?: boolean, timeout?: sf.TimeoutWithPredicate): sf.Sftp.AttributesResult
+sf.Sftp.getAttributes = function() end
 --- @brief Get the contents of the given directory
 ---
 --- This function retrieves the sub-directories and files
@@ -13052,12 +12984,8 @@ function sf.Sftp.getAttributes(self, path, followLinks, timeout) end
 --- @return Result of getting the contents of the given directory
 ---
 --- @see `getAttributes`
----@overload fun(self: sf.Sftp, path: string): sf.Sftp.ListingResult
----@param self sf.Sftp
----@param path string
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.ListingResult
-function sf.Sftp.getDirectoryListing(self, path, timeout) end
+---@type fun(self: sf.Sftp, path: string, timeout?: sf.TimeoutWithPredicate): sf.Sftp.ListingResult
+sf.Sftp.getDirectoryListing = function() end
 --- @brief Create a new directory
 ---
 --- The new directory is created as a child of the current
@@ -13073,14 +13001,8 @@ function sf.Sftp.getDirectoryListing(self, path, timeout) end
 --- @return Result of creating the directory
 ---
 --- @see `deleteDirectory`, `rename`
----@overload fun(self: sf.Sftp, path: string, permissions: any): sf.Sftp.Result
----@overload fun(self: sf.Sftp, path: string): sf.Sftp.Result
----@param self sf.Sftp
----@param path string
----@param permissions any
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.createDirectory(self, path, permissions, timeout) end
+---@type fun(self: sf.Sftp, path: string, permissions?: any, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.createDirectory = function() end
 --- @brief Remove an existing directory
 ---
 --- Use this function with caution, the directory will
@@ -13092,12 +13014,8 @@ function sf.Sftp.createDirectory(self, path, permissions, timeout) end
 --- @return Result of removing the directory
 ---
 --- @see `createDirectory`, `rename`
----@overload fun(self: sf.Sftp, path: string): sf.Sftp.Result
----@param self sf.Sftp
----@param path string
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.deleteDirectory(self, path, timeout) end
+---@type fun(self: sf.Sftp, path: string, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.deleteDirectory = function() end
 --- @brief Rename an existing file or directory
 ---
 --- In POSIX renaming and moving and synonymous. If you want
@@ -13117,15 +13035,8 @@ function sf.Sftp.deleteDirectory(self, path, timeout) end
 --- @param timeout   Maximum time to wait, optionally a predicate can be provided for more fine-grained control
 ---
 --- @return Result of the operation
----@overload fun(self: sf.Sftp, oldPath: string, newPath: string, overwrite: boolean): sf.Sftp.Result
----@overload fun(self: sf.Sftp, oldPath: string, newPath: string): sf.Sftp.Result
----@param self sf.Sftp
----@param oldPath string
----@param newPath string
----@param overwrite boolean
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.rename(self, oldPath, newPath, overwrite, timeout) end
+---@type fun(self: sf.Sftp, oldPath: string, newPath: string, overwrite?: boolean, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.rename = function() end
 --- @brief Remove an existing file
 ---
 --- Use this function with caution, the file will be
@@ -13137,12 +13048,8 @@ function sf.Sftp.rename(self, oldPath, newPath, overwrite, timeout) end
 --- @return Result of removing the file
 ---
 --- @see `rename`
----@overload fun(self: sf.Sftp, path: string): sf.Sftp.Result
----@param self sf.Sftp
----@param path string
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.deleteFile(self, path, timeout) end
+---@type fun(self: sf.Sftp, path: string, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.deleteFile = function() end
 --- @brief Download a file from the server
 ---
 --- This function retrieves the data in the file at the
@@ -13176,15 +13083,8 @@ function sf.Sftp.deleteFile(self, path, timeout) end
 --- @return Result of downloading the file
 ---
 --- @see `upload`
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(data: string, size: integer): boolean, offset: integer): sf.Sftp.Result
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(data: string, size: integer): boolean): sf.Sftp.Result
----@param self sf.Sftp
----@param remotePath string
----@param callback fun(data: string, size: integer): boolean
----@param offset integer
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.download(self, remotePath, callback, offset, timeout) end
+---@type fun(self: sf.Sftp, remotePath: string, callback: fun(data: string, size: integer): boolean, offset?: integer, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.download = function() end
 --- @brief Upload a file to the server
 ---
 --- This function writes data into a file at the remote path.
@@ -13237,21 +13137,8 @@ function sf.Sftp.download(self, remotePath, callback, offset, timeout) end
 --- @return Result of uploading the file
 ---
 --- @see `download`
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil, permissions: any, truncate: boolean, append: boolean, offset: integer): sf.Sftp.Result
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil, permissions: any, truncate: boolean, append: boolean): sf.Sftp.Result
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil, permissions: any, truncate: boolean): sf.Sftp.Result
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil, permissions: any): sf.Sftp.Result
----@overload fun(self: sf.Sftp, remotePath: string, callback: fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil): sf.Sftp.Result
----@param self sf.Sftp
----@param remotePath string
----@param callback fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil
----@param permissions any
----@param truncate boolean
----@param append boolean
----@param offset integer
----@param timeout sf.TimeoutWithPredicate
----@return sf.Sftp.Result
-function sf.Sftp.upload(self, remotePath, callback, permissions, truncate, append, offset, timeout) end
+---@type fun(self: sf.Sftp, remotePath: string, callback: fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil, permissions?: any, truncate?: boolean, append?: boolean, offset?: integer, timeout?: sf.TimeoutWithPredicate): sf.Sftp.Result
+sf.Sftp.upload = function() end
 --- @brief SFTP result
 ---@class sf.Sftp.Result
 sf.Sftp.Result = sf.Sftp.Result or {}
@@ -13262,11 +13149,8 @@ sf.Sftp.Result = sf.Sftp.Result or {}
 ---
 --- @param value   Result value
 --- @param message Result message
----@overload fun(value: sf.Sftp.Result.Value): sf.Sftp.Result
----@param value sf.Sftp.Result.Value
----@param message string
----@return sf.Sftp.Result
-function sf.Sftp.Result.new(value, message) end
+---@type fun(value: sf.Sftp.Result.Value, message?: string): sf.Sftp.Result
+sf.Sftp.Result.new = function() end
 --- @brief Check if the result is a success
 ---
 --- This function is defined for convenience, it is
@@ -13696,13 +13580,8 @@ sf.SocketSelector.new = function() end
 --- @return `true` if the socket was added successfully, `false` otherwise
 ---
 --- @see `remove`, `clear`
----@overload fun(self: sf.SocketSelector, socket: sf.Socket): boolean
----@overload fun(self: sf.SocketSelector, socket: sf.Socket, readinessType: integer, readyCallback: fun(arg1: sf.SocketSelector.ReadinessType)): boolean
----@param self sf.SocketSelector
----@param socket sf.Socket
----@param readinessType integer
----@return boolean
-function sf.SocketSelector.add(self, socket, readinessType) end
+---@type fun(self: sf.SocketSelector, socket: sf.Socket, readinessType?: integer, readyCallback?: fun(arg1: sf.SocketSelector.ReadinessType)): boolean
+sf.SocketSelector.add = function() end
 --- @brief Remove a socket from the selector
 ---
 --- This function doesn't destroy the socket, it simply
@@ -13738,11 +13617,8 @@ sf.SocketSelector.clear = function() end
 --- @return `true` if there are sockets ready, `false` otherwise
 ---
 --- @see `isReady`, `dispatchReadyCallbacks`
----@overload fun(self: sf.SocketSelector): boolean
----@param self sf.SocketSelector
----@param timeout sf.Time
----@return boolean
-function sf.SocketSelector.wait(self, timeout) end
+---@type fun(self: sf.SocketSelector, timeout?: sf.Time): boolean
+sf.SocketSelector.wait = function() end
 --- @brief Test a socket to know if it is ready to receive or send data
 ---
 --- This function must be used after a call to `wait`, to know
@@ -13758,12 +13634,8 @@ function sf.SocketSelector.wait(self, timeout) end
 --- @return `true` if the socket is ready to read, `false` otherwise
 ---
 --- @see `wait`
----@overload fun(self: sf.SocketSelector, socket: sf.Socket): boolean
----@param self sf.SocketSelector
----@param socket sf.Socket
----@param readinessType integer
----@return boolean
-function sf.SocketSelector.isReady(self, socket, readinessType) end
+---@type fun(self: sf.SocketSelector, socket: sf.Socket, readinessType?: integer): boolean
+sf.SocketSelector.isReady = function() end
 --- @brief Dispatch callbacks of ready sockets
 ---
 --- After calling `wait` returns `true`, at least one socket
@@ -13846,12 +13718,8 @@ sf.TcpListener.getLocalPort = function() end
 --- @return Status code
 ---
 --- @see `accept`, `close`
----@overload fun(self: sf.TcpListener, port: integer): sf.Socket.Status
----@param self sf.TcpListener
----@param port integer
----@param address sf.IpAddress
----@return sf.Socket.Status
-function sf.TcpListener.listen(self, port, address) end
+---@type fun(self: sf.TcpListener, port: integer, address?: sf.IpAddress): sf.Socket.Status
+sf.TcpListener.listen = function() end
 --- @brief Stop listening and close the socket
 ---
 --- This function gracefully stops the listener. If the
@@ -13945,13 +13813,8 @@ sf.TcpSocket.getRemotePort = function() end
 --- @return Status code
 ---
 --- @see `disconnect`
----@overload fun(self: sf.TcpSocket, remoteAddress: sf.IpAddress, remotePort: integer): sf.Socket.Status
----@param self sf.TcpSocket
----@param remoteAddress sf.IpAddress
----@param remotePort integer
----@param timeout sf.Time
----@return sf.Socket.Status
-function sf.TcpSocket.connect(self, remoteAddress, remotePort, timeout) end
+---@type fun(self: sf.TcpSocket, remoteAddress: sf.IpAddress, remotePort: integer, timeout?: sf.Time): sf.Socket.Status
+sf.TcpSocket.connect = function() end
 --- @brief Disconnect the socket from its remote peer
 ---
 --- This function gracefully closes the connection. If the
@@ -14010,11 +13873,10 @@ sf.TcpSocket.disconnect = function() end
 ---
 --- @see `setupTlsServer`
 ---@overload fun(self: sf.TcpSocket, hostname: string, certificateChainData: string): sf.TcpSocket.TlsStatus
----@overload fun(self: sf.TcpSocket, hostname: string): sf.TcpSocket.TlsStatus
 ---@overload fun(self: sf.TcpSocket, hostname: string, certificateChainData: any): sf.TcpSocket.TlsStatus
 ---@param self sf.TcpSocket
 ---@param hostname string
----@param verifyPeer boolean
+---@param verifyPeer? boolean
 ---@return sf.TcpSocket.TlsStatus
 function sf.TcpSocket.setupTlsClient(self, hostname, verifyPeer) end
 --- @brief Set up transport layer security as a server
@@ -14058,12 +13920,11 @@ function sf.TcpSocket.setupTlsClient(self, hostname, verifyPeer) end
 --- @return TLS status code
 ---
 --- @see `setupTlsClient`
----@overload fun(self: sf.TcpSocket, certificateChainData: string, privateKeyData: string): sf.TcpSocket.TlsStatus
 ---@overload fun(self: sf.TcpSocket, certificateChainData: any, privateKeyData: any, privateKeyPasswordData: any): sf.TcpSocket.TlsStatus
 ---@param self sf.TcpSocket
 ---@param certificateChainData string
 ---@param privateKeyData string
----@param privateKeyPasswordData string
+---@param privateKeyPasswordData? string
 ---@return sf.TcpSocket.TlsStatus
 function sf.TcpSocket.setupTlsServer(self, certificateChainData, privateKeyData, privateKeyPasswordData) end
 --- @brief Get the name of the TLS ciphersuite currently in use
@@ -14181,12 +14042,8 @@ sf.UdpSocket.getLocalPort = function() end
 --- @return Status code
 ---
 --- @see `unbind`, `getLocalPort`
----@overload fun(self: sf.UdpSocket, port: integer): sf.Socket.Status
----@param self sf.UdpSocket
----@param port integer
----@param address sf.IpAddress
----@return sf.Socket.Status
-function sf.UdpSocket.bind(self, port, address) end
+---@type fun(self: sf.UdpSocket, port: integer, address?: sf.IpAddress): sf.Socket.Status
+sf.UdpSocket.bind = function() end
 --- @brief Unbind the socket from the local port to which it is bound
 ---
 --- The port that the socket was previously bound to is immediately

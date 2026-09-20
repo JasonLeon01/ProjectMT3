@@ -2,5 +2,6 @@
 
 #include <SFML/Graphics/BlendMode.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_BlendMode(sol::state_view lua);
+void bind_BlendMode(lua_glue::StateView lua);

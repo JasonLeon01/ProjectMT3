@@ -6,5 +6,6 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector3.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Sound(sol::state_view lua);
+void bind_Sound(lua_glue::StateView lua);

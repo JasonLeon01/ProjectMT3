@@ -2,5 +2,6 @@
 
 #include <SFML/Audio/SoundChannel.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_SoundChannel(sol::state_view lua);
+void bind_SoundChannel(lua_glue::StateView lua);

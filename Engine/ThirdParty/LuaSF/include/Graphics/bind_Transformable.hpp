@@ -5,5 +5,6 @@
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Transformable(sol::state_view lua);
+void bind_Transformable(lua_glue::StateView lua);

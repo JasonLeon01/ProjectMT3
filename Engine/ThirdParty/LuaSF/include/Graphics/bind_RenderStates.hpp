@@ -8,5 +8,6 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Transform.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_RenderStates(sol::state_view lua);
+void bind_RenderStates(lua_glue::StateView lua);

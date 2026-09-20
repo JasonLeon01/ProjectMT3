@@ -2,5 +2,6 @@
 
 #include <SFML/Audio/PlaybackDevice.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_PlaybackDevice(sol::state_view lua);
+void bind_PlaybackDevice(lua_glue::StateView lua);

@@ -1,6 +1,8 @@
 #include "Network/bind_Packet.hpp"
 
 #include <algorithm>
+#include <array>
+#include <string_view>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
@@ -9,326 +11,373 @@
 #include <utility>
 #include <vector>
 
-void bind_Packet(sol::state_view lua) {
-    sol::table sf = lua_sf::sf_table(lua);
-    auto type_sf__Packet = sf.new_usertype<sf::Packet>("Packet", sol::no_constructor);
-    sol::table table_sf__Packet = sf["Packet"].get<sol::table>();
+namespace { constexpr std::array<std::string_view, 10> docs = {
+    "\\brief Utility class to build blocks of data to transfer\nover the network",
+    "\\brief Default constructor\n\nCreates an empty packet.",
+    "\\brief Append data to the end of the packet\n\n\\param data        Pointer to the sequence of bytes to append\n\\param sizeInBytes Number of bytes to append\n\n\\see `clear`\n\\see `getReadPosition`",
+    "\\brief Get the current reading position in the packet\n\nThe next read operation will read data from this position\n\n\\return The byte offset of the current read position\n\n\\see `append`",
+    "\\brief Clear the packet\n\nAfter calling Clear, the packet is empty.\n\n\\see `append`",
+    "\\brief Get a pointer to the data contained in the packet\n\nWarning: the returned pointer may become invalid after\nyou append data to the packet, therefore it should never\nbe stored.\nThe return pointer is a `nullptr` if the packet is empty.\n\n\\return Pointer to the data\n\n\\see `getDataSize`",
+    "\\brief Get the size of the data contained in the packet\n\nThis function returns the number of bytes pointed to by\nwhat `getData` returns.\n\n\\return Data size, in bytes\n\n\\see `getData`",
+    "\\brief Tell if the reading position has reached the\nend of the packet\n\nThis function is useful to know if there is some data\nleft to be read, without actually reading it.\n\n\\return `true` if all data was read, `false` otherwise\n\n\\see `operator` bool",
+    "Overload of `operator<<` to write data into the packet",
+    "\\overload",
+}; }
+
+void bind_Packet(lua_glue::StateView lua) {
+    lua_glue::Table sf = lua_sf::sf_table(lua);
+    auto type_sf__Packet = lua_glue::BindClass<sf::Packet>(sf, "Packet");
+    lua_glue::Table table_sf__Packet = sf["Packet"].get<lua_glue::Table>();
     lua_sf::mark_shared_usertype<sf::Packet>(lua);
-    LUASF_STUB_DOC("\\brief Utility class to build blocks of data to transfer\nover the network");
+    LUASF_STUB_DOC(docs[0]);
     LUASF_STUB_CLASS("sf.Packet");
-    LUASF_STUB_DOC("\\brief Default constructor\n\nCreates an empty packet.");
+    LUASF_STUB_DOC(docs[1]);
     LUASF_STUB_FUNCTION("sf.Packet", "new", "fun(): sf.Packet");
-    type_sf__Packet.set_function("new", sol::factories(
+    lua_glue::BindCallable(type_sf__Packet, "new",
         []() {
             return lua_sf::makeLuaSharedObject<sf::Packet>();
-        }
-    ));
-    LUASF_STUB_DOC("\\brief Append data to the end of the packet\n\n\\param data        Pointer to the sequence of bytes to append\n\\param sizeInBytes Number of bytes to append\n\n\\see `clear`\n\\see `getReadPosition`");
+        },
+        docs[1]
+    );
+    LUASF_STUB_DOC(docs[2]);
     LUASF_STUB_FUNCTION("sf.Packet", "append", "fun(self: sf.Packet, data: any)");
-    type_sf__Packet.set_function("append",
-        [](sf::Packet& self, sol::object data) {
+    lua_glue::BindCallable(type_sf__Packet, "append",
+        [](sf::Packet& self, lua_glue::Object data) {
             auto data_buffer = lua_sf::array_from_object<std::byte>(data);
             self.append(data_buffer.data(), static_cast<std::size_t>(data_buffer.size()));
-        }
+        },
+        docs[2]
     );
-    LUASF_STUB_DOC("\\brief Get the current reading position in the packet\n\nThe next read operation will read data from this position\n\n\\return The byte offset of the current read position\n\n\\see `append`");
+    LUASF_STUB_DOC(docs[3]);
     LUASF_STUB_FUNCTION("sf.Packet", "getReadPosition", "fun(self: sf.Packet): integer");
-    type_sf__Packet.set_function("getReadPosition",
-        [](sf::Packet& self) -> std::size_t {
+    lua_glue::BindCallable(type_sf__Packet, "getReadPosition",
+        [](const sf::Packet& self) -> std::size_t {
             return self.getReadPosition();
-        }
+        },
+        docs[3]
     );
-    LUASF_STUB_DOC("\\brief Clear the packet\n\nAfter calling Clear, the packet is empty.\n\n\\see `append`");
+    LUASF_STUB_DOC(docs[4]);
     LUASF_STUB_FUNCTION("sf.Packet", "clear", "fun(self: sf.Packet)");
-    type_sf__Packet.set_function("clear",
+    lua_glue::BindCallable(type_sf__Packet, "clear",
         [](sf::Packet& self) {
             self.clear();
-        }
+        },
+        docs[4]
     );
-    LUASF_STUB_DOC("\\brief Get a pointer to the data contained in the packet\n\nWarning: the returned pointer may become invalid after\nyou append data to the packet, therefore it should never\nbe stored.\nThe return pointer is a `nullptr` if the packet is empty.\n\n\\return Pointer to the data\n\n\\see `getDataSize`");
+    LUASF_STUB_DOC(docs[5]);
     LUASF_STUB_FUNCTION("sf.Packet", "getData", "fun(self: sf.Packet): nil");
-    type_sf__Packet.set_function("getData",
-        [](sf::Packet& self) -> const void* {
+    lua_glue::BindCallable(type_sf__Packet, "getData",
+        [](const sf::Packet& self) -> const void* {
             return self.getData();
-        }
+        },
+        docs[5]
     );
-    LUASF_STUB_DOC("\\brief Get the size of the data contained in the packet\n\nThis function returns the number of bytes pointed to by\nwhat `getData` returns.\n\n\\return Data size, in bytes\n\n\\see `getData`");
+    LUASF_STUB_DOC(docs[6]);
     LUASF_STUB_FUNCTION("sf.Packet", "getDataSize", "fun(self: sf.Packet): integer");
-    type_sf__Packet.set_function("getDataSize",
-        [](sf::Packet& self) -> std::size_t {
+    lua_glue::BindCallable(type_sf__Packet, "getDataSize",
+        [](const sf::Packet& self) -> std::size_t {
             return self.getDataSize();
-        }
+        },
+        docs[6]
     );
-    LUASF_STUB_DOC("\\brief Tell if the reading position has reached the\nend of the packet\n\nThis function is useful to know if there is some data\nleft to be read, without actually reading it.\n\n\\return `true` if all data was read, `false` otherwise\n\n\\see `operator` bool");
+    LUASF_STUB_DOC(docs[7]);
     LUASF_STUB_FUNCTION("sf.Packet", "endOfPacket", "fun(self: sf.Packet): boolean");
-    type_sf__Packet.set_function("endOfPacket",
-        [](sf::Packet& self) -> bool {
+    lua_glue::BindCallable(type_sf__Packet, "endOfPacket",
+        [](const sf::Packet& self) -> bool {
             return self.endOfPacket();
-        }
+        },
+        docs[7]
     );
-    type_sf__Packet[sol::meta_function::bitwise_left_shift] =
-        sol::policies(
-            sol::overload(
-                [](sf::Packet& self, bool data) {
-                    return std::ref(self.operator<<(data));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::int8_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::uint8_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::int16_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::uint16_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::int32_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::uint32_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::int64_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, lua_sf::LuaIntegral<std::uint64_t> data) {
-                    return std::ref(self.operator<<(data.value()));
-                },
-                [](sf::Packet& self, float data) {
-                    return std::ref(self.operator<<(data));
-                },
-                [](sf::Packet& self, double data) {
-                    return std::ref(self.operator<<(data));
-                },
-                [](sf::Packet& self, std::string data) {
-                    return std::ref(self.operator<<(data.c_str()));
-                }
-            ),
-            sol::self_dependency{}
-        )
-    ;
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, bool data) {
+            return std::ref(self.operator<<(data));
+        },
+        docs[8],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int8_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint8_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int16_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint16_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int32_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint32_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int64_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint64_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, float data) {
+            return std::ref(self.operator<<(data));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, double data) {
+            return std::ref(self.operator<<(data));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
+    lua_glue::BindMetamethod(type_sf__Packet, "__shl",
+        [](sf::Packet& self, std::string data) {
+            return std::ref(self.operator<<(data.c_str()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
+    );
     LUASF_STUB_OPERATOR("sf.Packet", "shl(any): sf.Packet");
     LUASF_STUB_FUNCTION("sf.Packet", "writeBool", "fun(self: sf.Packet, data: boolean): sf.Packet");
-    type_sf__Packet.set_function("writeBool",
-        sol::policies(
-            [](sf::Packet& self, bool data) {
-                return std::ref(self.operator<<(data));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeBool",
+        [](sf::Packet& self, bool data) {
+            return std::ref(self.operator<<(data));
+        },
+        docs[8],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeInt8", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeInt8",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::int8_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeInt8",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int8_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeUInt8", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeUInt8",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::uint8_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeUInt8",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint8_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeInt16", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeInt16",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::int16_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeInt16",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int16_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeUInt16", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeUInt16",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::uint16_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeUInt16",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint16_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeInt32", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeInt32",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::int32_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeInt32",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int32_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeUInt32", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeUInt32",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::uint32_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeUInt32",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint32_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeInt64", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeInt64",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::int64_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeInt64",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::int64_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeUInt64", "fun(self: sf.Packet, data: integer): sf.Packet");
-    type_sf__Packet.set_function("writeUInt64",
-        sol::policies(
-            [](sf::Packet& self, lua_sf::LuaIntegral<std::uint64_t> data) {
-                return std::ref(self.operator<<(data.value()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeUInt64",
+        [](sf::Packet& self, lua_sf::LuaIntegral<std::uint64_t> data) {
+            return std::ref(self.operator<<(data.value()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeFloat", "fun(self: sf.Packet, data: number): sf.Packet");
-    type_sf__Packet.set_function("writeFloat",
-        sol::policies(
-            [](sf::Packet& self, float data) {
-                return std::ref(self.operator<<(data));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeFloat",
+        [](sf::Packet& self, float data) {
+            return std::ref(self.operator<<(data));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeDouble", "fun(self: sf.Packet, data: number): sf.Packet");
-    type_sf__Packet.set_function("writeDouble",
-        sol::policies(
-            [](sf::Packet& self, double data) {
-                return std::ref(self.operator<<(data));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeDouble",
+        [](sf::Packet& self, double data) {
+            return std::ref(self.operator<<(data));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeString", "fun(self: sf.Packet, data: string): sf.Packet");
-    type_sf__Packet.set_function("writeString",
-        sol::policies(
-            [](sf::Packet& self, std::string data) {
-                return std::ref(self.operator<<(data.c_str()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeString",
+        [](sf::Packet& self, std::string data) {
+            return std::ref(self.operator<<(data.c_str()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeWideString", "fun(self: sf.Packet, data: string): sf.Packet");
-    type_sf__Packet.set_function("writeWideString",
-        sol::policies(
-            [](sf::Packet& self, std::string data) {
-                const std::wstring data_wide = lua_sf::to_sf_string(data).toWideString();
-                return std::ref(self.operator<<(data_wide.c_str()));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeWideString",
+        [](sf::Packet& self, std::string data) {
+            const std::wstring data_wide = lua_sf::to_sf_string(data).toWideString();
+            return std::ref(self.operator<<(data_wide.c_str()));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
     LUASF_STUB_FUNCTION("sf.Packet", "writeSfString", "fun(self: sf.Packet, data: string): sf.Packet");
-    type_sf__Packet.set_function("writeSfString",
-        sol::policies(
-            [](sf::Packet& self, std::string data) {
-                return std::ref(self.operator<<(lua_sf::to_sf_string(data)));
-            },
-            sol::self_dependency{}
-        )
+    lua_glue::BindCallable(type_sf__Packet, "writeSfString",
+        [](sf::Packet& self, std::string data) {
+            return std::ref(self.operator<<(lua_sf::to_sf_string(data)));
+        },
+        docs[9],
+        lua_glue::ReturnPolicy::ReferenceInternal
     );
-    auto read_operator_sf__Packet = [](sol::this_state state, sf::Packet& self, std::string type) -> sol::object {
+    auto read_operator_sf__Packet = [](lua_glue::ThisState state, sf::Packet& self, std::string type) -> lua_glue::Object {
         if (type == "bool" || type == "boolean")
         {
             bool value{};
             self.operator>>(value);
-            return sol::make_object(state, value);
+            return lua_glue::MakeObject(state.value, value);
         }
         if (type == "int8")
         {
             std::int8_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<int>(value));
+            return lua_glue::MakeObject(state.value, static_cast<int>(value));
         }
         if (type == "uint8")
         {
             std::uint8_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<unsigned int>(value));
+            return lua_glue::MakeObject(state.value, static_cast<unsigned int>(value));
         }
         if (type == "int16")
         {
             std::int16_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<int>(value));
+            return lua_glue::MakeObject(state.value, static_cast<int>(value));
         }
         if (type == "uint16")
         {
             std::uint16_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<unsigned int>(value));
+            return lua_glue::MakeObject(state.value, static_cast<unsigned int>(value));
         }
         if (type == "int32" || type == "int" || type == "integer")
         {
             std::int32_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<int>(value));
+            return lua_glue::MakeObject(state.value, static_cast<int>(value));
         }
         if (type == "uint32" || type == "uint")
         {
             std::uint32_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<unsigned int>(value));
+            return lua_glue::MakeObject(state.value, static_cast<unsigned int>(value));
         }
         if (type == "int64")
         {
             std::int64_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<std::int64_t>(value));
+            return lua_glue::MakeObject(state.value, static_cast<std::int64_t>(value));
         }
         if (type == "uint64")
         {
             std::uint64_t value{};
             self.operator>>(value);
-            return sol::make_object(state, static_cast<std::uint64_t>(value));
+            return lua_glue::MakeObject(state.value, static_cast<std::uint64_t>(value));
         }
         if (type == "float")
         {
             float value{};
             self.operator>>(value);
-            return sol::make_object(state, value);
+            return lua_glue::MakeObject(state.value, value);
         }
         if (type == "double" || type == "number")
         {
             double value{};
             self.operator>>(value);
-            return sol::make_object(state, value);
+            return lua_glue::MakeObject(state.value, value);
         }
         if (type == "string" || type == "std::string")
         {
             std::string value{};
             self.operator>>(value);
-            return sol::make_object(state, value);
+            return lua_glue::MakeObject(state.value, value);
         }
         if (type == "wstring" || type == "wideString")
         {
             std::wstring value{};
             self.operator>>(value);
-            return sol::make_object(state, lua_sf::to_utf8_string(sf::String(value)));
+            return lua_glue::MakeObject(state.value, lua_sf::to_utf8_string(sf::String(value)));
         }
         if (type == "sfString" || type == "sf::String")
         {
             sf::String value{};
             self.operator>>(value);
-            return sol::make_object(state, lua_sf::to_utf8_string(value));
+            return lua_glue::MakeObject(state.value, lua_sf::to_utf8_string(value));
         }
         throw std::runtime_error("sf.Packet: operator>> unknown read type " + type);
     };
-    type_sf__Packet[sol::meta_function::bitwise_right_shift] =
-        [read_operator_sf__Packet](sol::this_state state, sf::Packet& self, std::string type) -> sol::object {
+    lua_glue::BindMetamethod(type_sf__Packet, "__shr",
+        [read_operator_sf__Packet](lua_glue::ThisState state, sf::Packet& self, std::string type) -> lua_glue::Object {
             return read_operator_sf__Packet(state, self, std::move(type));
         }
-    ;
+    );
     LUASF_STUB_OPERATOR("sf.Packet", "shr(string): any");
     LUASF_STUB_FUNCTION("sf.Packet", "readBool", "fun(self: sf.Packet): boolean");
     type_sf__Packet.set_function("readBool",

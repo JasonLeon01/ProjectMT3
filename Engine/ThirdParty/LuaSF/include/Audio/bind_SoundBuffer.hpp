@@ -5,5 +5,6 @@
 #include <SFML/System/InputStream.hpp>
 #include <SFML/System/Time.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_SoundBuffer(sol::state_view lua);
+void bind_SoundBuffer(lua_glue::StateView lua);

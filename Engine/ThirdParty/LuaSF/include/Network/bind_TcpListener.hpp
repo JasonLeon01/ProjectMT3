@@ -5,5 +5,6 @@
 #include <SFML/Network/Socket.hpp>
 #include <SFML/Network/TcpSocket.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_TcpListener(sol::state_view lua);
+void bind_TcpListener(lua_glue::StateView lua);

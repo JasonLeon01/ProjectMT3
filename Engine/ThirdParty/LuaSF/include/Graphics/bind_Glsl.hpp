@@ -6,5 +6,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Glsl(sol::state_view lua);
+void bind_Glsl(lua_glue::StateView lua);

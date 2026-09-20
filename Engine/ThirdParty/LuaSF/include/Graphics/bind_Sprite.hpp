@@ -8,5 +8,6 @@
 #include <SFML/System/Angle.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Sprite(sol::state_view lua);
+void bind_Sprite(lua_glue::StateView lua);

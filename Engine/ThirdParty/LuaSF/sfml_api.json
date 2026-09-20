@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "generator": "extract_sfml_api.py",
-  "platform": "Windows-2022Server-10.0.20348-SP0",
-  "libclang": "C:\\Program Files\\LLVM\\bin\\libclang.dll",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "libclang": "/Library/Developer/CommandLineTools/usr/lib/libclang.dylib",
   "include_dir": "third_party/SFML/include",
   "standard": "c++20",
   "modules": [
@@ -128,7 +128,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -214,7 +214,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -989,7 +989,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -1143,7 +1143,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -1496,7 +1496,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::vector<std::string>",
-                    "canonical": "std::vector<std::basic_string<char>>",
+                    "canonical": "std::vector<std::string>",
                     "kind": "ELABORATED"
                   },
                   "static": false
@@ -1512,7 +1512,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::string>",
-                    "canonical": "std::optional<std::basic_string<char>>",
+                    "canonical": "std::optional<std::string>",
                     "kind": "ELABORATED"
                   },
                   "static": false
@@ -1530,7 +1530,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -1587,7 +1587,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::string>",
-                    "canonical": "std::optional<std::basic_string<char>>",
+                    "canonical": "std::optional<std::string>",
                     "kind": "ELABORATED"
                   },
                   "static": false
@@ -2269,7 +2269,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -2435,7 +2435,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -3461,7 +3461,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::vector<std::string>",
-                    "canonical": "std::vector<std::basic_string<char>>",
+                    "canonical": "std::vector<std::string>",
                     "kind": "ELABORATED"
                   },
                   "static": true,
@@ -3478,7 +3478,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::string",
-                    "canonical": "std::basic_string<char>",
+                    "canonical": "std::string",
                     "kind": "ELABORATED"
                   },
                   "static": true,
@@ -3497,7 +3497,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -3523,7 +3523,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "const std::string &",
-                    "canonical": "const std::basic_string<char> &",
+                    "canonical": "const std::string &",
                     "kind": "LVALUEREFERENCE"
                   },
                   "static": false,
@@ -4771,7 +4771,7 @@
                       "doc": "Number of samples pointed by Samples",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -5606,7 +5606,8 @@
                 "spelling": "const BlendMode",
                 "canonical": "const sf::BlendMode",
                 "kind": "ELABORATED"
-              }
+              },
+              "readonly": true
             },
             {
               "kind": "VAR_DECL",
@@ -5620,7 +5621,8 @@
                 "spelling": "const BlendMode",
                 "canonical": "const sf::BlendMode",
                 "kind": "ELABORATED"
-              }
+              },
+              "readonly": true
             },
             {
               "kind": "VAR_DECL",
@@ -5634,7 +5636,8 @@
                 "spelling": "const BlendMode",
                 "canonical": "const sf::BlendMode",
                 "kind": "ELABORATED"
-              }
+              },
+              "readonly": true
             },
             {
               "kind": "VAR_DECL",
@@ -5648,7 +5651,8 @@
                 "spelling": "const BlendMode",
                 "canonical": "const sf::BlendMode",
                 "kind": "ELABORATED"
-              }
+              },
+              "readonly": true
             },
             {
               "kind": "VAR_DECL",
@@ -5662,7 +5666,8 @@
                 "spelling": "const BlendMode",
                 "canonical": "const sf::BlendMode",
                 "kind": "ELABORATED"
-              }
+              },
+              "readonly": true
             },
             {
               "kind": "VAR_DECL",
@@ -5676,7 +5681,8 @@
                 "spelling": "const BlendMode",
                 "canonical": "const sf::BlendMode",
                 "kind": "ELABORATED"
-              }
+              },
+              "readonly": true
             }
           ]
         }
@@ -5735,7 +5741,7 @@
                       "name": "pointCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": "30",
@@ -5804,7 +5810,7 @@
                       "name": "count",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -5830,7 +5836,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -5849,7 +5855,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -6559,7 +6565,7 @@
                       "name": "pointCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": "0",
@@ -6583,7 +6589,7 @@
                       "name": "count",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -6609,7 +6615,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -6628,7 +6634,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -6666,7 +6672,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -6801,7 +6807,7 @@
                       "doc": "The font family",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -6898,7 +6904,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -6984,7 +6990,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -7828,7 +7834,7 @@
                       "name": "elements",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -7868,7 +7874,7 @@
                       "kind": "non_type",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       }
                     },
@@ -7877,7 +7883,7 @@
                       "kind": "non_type",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       }
                     }
@@ -7941,7 +7947,7 @@
                       "doc": "Array holding matrix data",
                       "type": {
                         "spelling": "std::array<float, Columns * Rows>",
-                        "canonical": "array<float, Columns * Rows>",
+                        "canonical": "array<float, value-parameter-0-0 * value-parameter-0-1>",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -8448,7 +8454,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -8610,7 +8616,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -8694,7 +8700,7 @@
                       "name": "format",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -9469,7 +9475,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -9488,7 +9494,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -10419,7 +10425,7 @@
                       "name": "vertexCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -10515,7 +10521,7 @@
                       "name": "firstVertex",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -10525,7 +10531,7 @@
                       "name": "vertexCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11319,7 +11325,7 @@
                       "name": "handle",
                       "type": {
                         "spelling": "WindowHandle",
-                        "canonical": "HWND__ *",
+                        "canonical": "void *",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11798,7 +11804,7 @@
                       "name": "shader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11832,7 +11838,7 @@
                       "name": "vertexShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11842,7 +11848,7 @@
                       "name": "fragmentShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11866,7 +11872,7 @@
                       "name": "vertexShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11876,7 +11882,7 @@
                       "name": "geometryShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -11886,7 +11892,7 @@
                       "name": "fragmentShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12146,7 +12152,7 @@
                       "name": "shader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12184,7 +12190,7 @@
                       "name": "vertexShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12194,7 +12200,7 @@
                       "name": "fragmentShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12222,7 +12228,7 @@
                       "name": "vertexShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12232,7 +12238,7 @@
                       "name": "geometryShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12242,7 +12248,7 @@
                       "name": "fragmentShader",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -12394,7 +12400,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12432,7 +12438,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12470,7 +12476,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12508,7 +12514,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12546,7 +12552,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12584,7 +12590,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12622,7 +12628,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12660,7 +12666,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12698,7 +12704,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12736,7 +12742,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12774,7 +12780,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12812,7 +12818,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12850,7 +12856,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12888,7 +12894,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12926,7 +12932,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -12964,7 +12970,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13003,7 +13009,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13041,7 +13047,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13061,7 +13067,7 @@
                       "name": "length",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -13089,7 +13095,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13109,7 +13115,7 @@
                       "name": "length",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -13137,7 +13143,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13157,7 +13163,7 @@
                       "name": "length",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -13185,7 +13191,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13205,7 +13211,7 @@
                       "name": "length",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -13233,7 +13239,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13253,7 +13259,7 @@
                       "name": "length",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -13281,7 +13287,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -13301,7 +13307,7 @@
                       "name": "length",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -13727,7 +13733,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -13746,7 +13752,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -14701,9 +14707,9 @@
                   "doc": "\\brief Enumeration of the string drawing styles",
                   "scoped": false,
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "children": [
                     {
@@ -15071,7 +15077,7 @@
                       "doc": "Starting offset of the vertex data belonging to this glyph",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -15086,7 +15092,7 @@
                       "doc": "Count of vertices belonging to this glyph",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -15719,7 +15725,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -16176,7 +16182,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -16220,7 +16226,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -16550,7 +16556,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -18369,7 +18375,7 @@
                       "name": "vertexCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": "0",
@@ -18391,7 +18397,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -18410,7 +18416,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -18438,7 +18444,7 @@
                       "name": "index",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -18483,7 +18489,7 @@
                       "name": "vertexCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -18599,7 +18605,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::vector<Vertex>::iterator",
-                    "canonical": "std::_Vector_iterator<std::_Vector_val<std::_Simple_types<sf::Vertex>>>",
+                    "canonical": "std::__wrap_iter<sf::Vertex *>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -18616,7 +18622,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::vector<Vertex>::const_iterator",
-                    "canonical": "std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<sf::Vertex>>>",
+                    "canonical": "std::__wrap_iter<const sf::Vertex *>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -18633,7 +18639,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::vector<Vertex>::iterator",
-                    "canonical": "std::_Vector_iterator<std::_Vector_val<std::_Simple_types<sf::Vertex>>>",
+                    "canonical": "std::__wrap_iter<sf::Vertex *>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -18650,7 +18656,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::vector<Vertex>::const_iterator",
-                    "canonical": "std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<sf::Vertex>>>",
+                    "canonical": "std::__wrap_iter<const sf::Vertex *>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -18892,7 +18898,7 @@
                       "name": "vertexCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -18918,7 +18924,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -18975,7 +18981,7 @@
                       "name": "vertexCount",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -20691,7 +20697,7 @@
                           "name": "message",
                           "type": {
                             "spelling": "std::string",
-                            "canonical": "std::basic_string<char>",
+                            "canonical": "std::string",
                             "kind": "ELABORATED"
                           },
                           "default": "\"\"",
@@ -20747,7 +20753,7 @@
                       "parameters": [],
                       "return_type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "static": false,
@@ -20855,7 +20861,7 @@
                           "name": "data",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": null,
@@ -20877,7 +20883,7 @@
                       "parameters": [],
                       "return_type": {
                         "spelling": "const std::vector<std::string> &",
-                        "canonical": "const std::vector<std::basic_string<char>> &",
+                        "canonical": "const std::vector<std::string> &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "static": false,
@@ -21063,7 +21069,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -21073,7 +21079,7 @@
                       "name": "password",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -21135,7 +21141,7 @@
                       "name": "directory",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": "\"\"",
@@ -21163,7 +21169,7 @@
                       "name": "directory",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -21208,7 +21214,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -21236,7 +21242,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -21436,7 +21442,7 @@
                       "name": "command",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -21446,7 +21452,7 @@
                       "name": "parameter",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": "\"\"",
@@ -21582,7 +21588,7 @@
                           "name": "uri",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": "\"/\"",
@@ -21602,7 +21608,7 @@
                           "name": "body",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": "\"\"",
@@ -21626,7 +21632,7 @@
                           "name": "field",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": null,
@@ -21636,7 +21642,7 @@
                           "name": "value",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": null,
@@ -21692,7 +21698,7 @@
                           "name": "uri",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": null,
@@ -21758,7 +21764,7 @@
                           "name": "body",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": null,
@@ -22046,7 +22052,7 @@
                           "name": "field",
                           "type": {
                             "spelling": "const std::string &",
-                            "canonical": "const std::basic_string<char> &",
+                            "canonical": "const std::string &",
                             "kind": "LVALUEREFERENCE"
                           },
                           "default": null,
@@ -22055,7 +22061,7 @@
                       ],
                       "return_type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "static": false,
@@ -22123,7 +22129,7 @@
                       "parameters": [],
                       "return_type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "static": false,
@@ -22157,7 +22163,7 @@
                       "name": "host",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -22255,7 +22261,7 @@
                       "name": "host",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -22418,7 +22424,7 @@
                       "name": "address",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -22548,7 +22554,7 @@
                       "name": "address",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -22574,7 +22580,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::string",
-                    "canonical": "std::basic_string<char>",
+                    "canonical": "std::string",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -23098,7 +23104,7 @@
                   "name": "stream",
                   "type": {
                     "spelling": "std::istream &",
-                    "canonical": "std::basic_istream<char> &",
+                    "canonical": "std::istream &",
                     "kind": "LVALUEREFERENCE"
                   },
                   "default": null,
@@ -23117,7 +23123,7 @@
               ],
               "return_type": {
                 "spelling": "std::istream &",
-                "canonical": "std::basic_istream<char> &",
+                "canonical": "std::istream &",
                 "kind": "LVALUEREFERENCE"
               },
               "static": false
@@ -23135,7 +23141,7 @@
                   "name": "stream",
                   "type": {
                     "spelling": "std::ostream &",
-                    "canonical": "std::basic_ostream<char> &",
+                    "canonical": "std::ostream &",
                     "kind": "LVALUEREFERENCE"
                   },
                   "default": null,
@@ -23154,7 +23160,7 @@
               ],
               "return_type": {
                 "spelling": "std::ostream &",
-                "canonical": "std::basic_ostream<char> &",
+                "canonical": "std::ostream &",
                 "kind": "LVALUEREFERENCE"
               },
               "static": false
@@ -23343,7 +23349,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -23369,7 +23375,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -23420,7 +23426,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::size_t",
-                    "canonical": "unsigned long long",
+                    "canonical": "unsigned long",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -23808,7 +23814,7 @@
                       "name": "data",
                       "type": {
                         "spelling": "std::string &",
-                        "canonical": "std::basic_string<char> &",
+                        "canonical": "std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -23864,7 +23870,7 @@
                       "name": "data",
                       "type": {
                         "spelling": "std::wstring &",
-                        "canonical": "std::basic_string<wchar_t> &",
+                        "canonical": "std::wstring &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -24256,7 +24262,7 @@
                       "name": "data",
                       "type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -24312,7 +24318,7 @@
                       "name": "data",
                       "type": {
                         "spelling": "const std::wstring &",
-                        "canonical": "const std::basic_string<wchar_t> &",
+                        "canonical": "const std::wstring &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -25106,7 +25112,7 @@
                           "name": "message",
                           "type": {
                             "spelling": "std::string",
-                            "canonical": "std::basic_string<char>",
+                            "canonical": "std::string",
                             "kind": "ELABORATED"
                           },
                           "default": "\"\"",
@@ -25162,7 +25168,7 @@
                       "parameters": [],
                       "return_type": {
                         "spelling": "const std::string &",
-                        "canonical": "const std::basic_string<char> &",
+                        "canonical": "const std::string &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "static": false,
@@ -25351,7 +25357,7 @@
                       "doc": "Last access time",
                       "type": {
                         "spelling": "std::optional<std::filesystem::file_time_type>",
-                        "canonical": "std::optional<std::chrono::time_point<std::filesystem::_File_time_clock>>",
+                        "canonical": "std::optional<std::chrono::time_point<std::filesystem::_FilesystemClock>>",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25366,7 +25372,7 @@
                       "doc": "Last modification time",
                       "type": {
                         "spelling": "std::optional<std::filesystem::file_time_type>",
-                        "canonical": "std::optional<std::chrono::time_point<std::filesystem::_File_time_clock>>",
+                        "canonical": "std::optional<std::chrono::time_point<std::filesystem::_FilesystemClock>>",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25708,7 +25714,7 @@
                       "doc": "Key exchange algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25723,7 +25729,7 @@
                       "doc": "Host key algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25738,7 +25744,7 @@
                       "doc": "Client to server encryption algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25753,7 +25759,7 @@
                       "doc": "Server to client encryption algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25768,7 +25774,7 @@
                       "doc": "Client to server message authentication code algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25783,7 +25789,7 @@
                       "doc": "Server to client message authentication code algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25798,7 +25804,7 @@
                       "doc": "Client to server compression algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -25813,7 +25819,7 @@
                       "doc": "Server to client compression algorithm used in the session (RFC 4253)",
                       "type": {
                         "spelling": "std::string",
-                        "canonical": "std::basic_string<char>",
+                        "canonical": "std::string",
                         "kind": "ELABORATED"
                       },
                       "readonly": false
@@ -26009,7 +26015,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26019,7 +26025,7 @@
                       "name": "password",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26057,7 +26063,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26077,7 +26083,7 @@
                       "name": "publicKeyLength",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26097,7 +26103,7 @@
                       "name": "privateKeyLength",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26145,7 +26151,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26155,7 +26161,7 @@
                       "name": "publicKeyData",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26165,7 +26171,7 @@
                       "name": "privateKeyData",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -26175,7 +26181,7 @@
                       "name": "privateKeyPassphrase",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": "{ }",
@@ -26557,7 +26563,7 @@
                       "name": "callback",
                       "type": {
                         "spelling": "const std::function<bool (const void *, std::size_t)> &",
-                        "canonical": "const std::function<bool (const void *, unsigned long long)> &",
+                        "canonical": "const std::function<bool (const void *, unsigned long)> &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -26615,7 +26621,7 @@
                       "name": "callback",
                       "type": {
                         "spelling": "const std::function<bool (void *, std::size_t &)> &",
-                        "canonical": "const std::function<bool (void *, unsigned long long &)> &",
+                        "canonical": "const std::function<bool (void *, unsigned long &)> &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -27006,7 +27012,7 @@
                   "kind": "VAR_DECL",
                   "name": "Receive",
                   "displayname": "Receive",
-                  "qualified_name": "sf::SocketSelector::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Network\\SocketSelector.hpp:57:5)::Receive",
+                  "qualified_name": "sf::SocketSelector::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Network/SocketSelector.hpp:57:5)::Receive",
                   "type": {
                     "spelling": "ReadinessType",
                     "canonical": "unsigned int",
@@ -27022,7 +27028,7 @@
                   "kind": "VAR_DECL",
                   "name": "Send",
                   "displayname": "Send",
-                  "qualified_name": "sf::SocketSelector::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Network\\SocketSelector.hpp:57:5)::Send",
+                  "qualified_name": "sf::SocketSelector::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Network/SocketSelector.hpp:57:5)::Send",
                   "type": {
                     "spelling": "ReadinessType",
                     "canonical": "unsigned int",
@@ -27945,7 +27951,7 @@
                       "name": "certificateChainSize",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -27983,7 +27989,7 @@
                       "name": "certificateChainData",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28021,7 +28027,7 @@
                       "name": "certificateChainSize",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28041,7 +28047,7 @@
                       "name": "privateKeySize",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28061,7 +28067,7 @@
                       "name": "privateKeyPasswordSize",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28089,7 +28095,7 @@
                       "name": "certificateChainData",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28099,7 +28105,7 @@
                       "name": "privateKeyData",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28109,7 +28115,7 @@
                       "name": "privateKeyPasswordData",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": "{ }",
@@ -28135,7 +28141,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::string>",
-                    "canonical": "std::optional<std::basic_string<char>>",
+                    "canonical": "std::optional<std::string>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -28164,7 +28170,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28202,7 +28208,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28212,7 +28218,7 @@
                       "name": "sent",
                       "type": {
                         "spelling": "std::size_t &",
-                        "canonical": "unsigned long long &",
+                        "canonical": "unsigned long &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -28250,7 +28256,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28260,7 +28266,7 @@
                       "name": "received",
                       "type": {
                         "spelling": "std::size_t &",
-                        "canonical": "unsigned long long &",
+                        "canonical": "unsigned long &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -28377,7 +28383,7 @@
                   "doc": "The maximum number of bytes that can be sent in a single UDP datagram",
                   "type": {
                     "spelling": "const std::size_t",
-                    "canonical": "const unsigned long long",
+                    "canonical": "const unsigned long",
                     "kind": "ELABORATED"
                   },
                   "readonly": true
@@ -28490,7 +28496,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28548,7 +28554,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -28558,7 +28564,7 @@
                       "name": "received",
                       "type": {
                         "spelling": "std::size_t &",
-                        "canonical": "unsigned long long &",
+                        "canonical": "unsigned long &",
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
@@ -29851,7 +29857,7 @@
           "displayname": "sf",
           "qualified_name": "sf",
           "access": null,
-          "line": 50,
+          "line": 57,
           "doc": "\\brief Perform Domain Name System queries to lookup\nDNS records for various purposes",
           "children": [
             {
@@ -29860,13 +29866,13 @@
               "displayname": "FileInputStream",
               "qualified_name": "sf::FileInputStream",
               "access": null,
-              "line": 56,
+              "line": 63,
               "doc": "\\brief Implementation of input stream based on a file",
               "base_classes": [
                 {
                   "name": "InputStream",
                   "access": "public",
-                  "line": 56
+                  "line": 63
                 }
               ],
               "abstract": false,
@@ -29877,7 +29883,7 @@
                   "displayname": "FileInputStream()",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 66,
+                  "line": 73,
                   "doc": "\\brief Default constructor\n\nConstruct a file input stream that is not associated\nwith a file to read.",
                   "parameters": [],
                   "static": false,
@@ -29890,7 +29896,7 @@
                   "displayname": "~FileInputStream()",
                   "qualified_name": "sf::FileInputStream::~FileInputStream",
                   "access": "public",
-                  "line": 72,
+                  "line": 79,
                   "doc": "\\brief Default destructor",
                   "parameters": [],
                   "return_type": {
@@ -29906,7 +29912,7 @@
                   "displayname": "FileInputStream(const FileInputStream &)",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 78,
+                  "line": 85,
                   "doc": "\\brief Deleted copy constructor",
                   "parameters": [
                     {
@@ -29917,7 +29923,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 78
+                      "line": 85
                     }
                   ],
                   "static": false,
@@ -29931,7 +29937,7 @@
                   "displayname": "operator=(const FileInputStream &)",
                   "qualified_name": "sf::FileInputStream::operator=",
                   "access": "public",
-                  "line": 84,
+                  "line": 91,
                   "doc": "\\brief Deleted copy assignment",
                   "parameters": [
                     {
@@ -29942,7 +29948,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 84
+                      "line": 91
                     }
                   ],
                   "return_type": {
@@ -29960,7 +29966,7 @@
                   "displayname": "FileInputStream(FileInputStream &&)",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 90,
+                  "line": 97,
                   "doc": "\\brief Move constructor",
                   "parameters": [
                     {
@@ -29971,7 +29977,7 @@
                         "kind": "RVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 90
+                      "line": 97
                     }
                   ],
                   "static": false,
@@ -29984,7 +29990,7 @@
                   "displayname": "operator=(FileInputStream &&)",
                   "qualified_name": "sf::FileInputStream::operator=",
                   "access": "public",
-                  "line": 96,
+                  "line": 103,
                   "doc": "\\brief Move assignment",
                   "parameters": [
                     {
@@ -29995,7 +30001,7 @@
                         "kind": "RVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 96
+                      "line": 103
                     }
                   ],
                   "return_type": {
@@ -30012,7 +30018,7 @@
                   "displayname": "FileInputStream(const std::filesystem::path &)",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 106,
+                  "line": 113,
                   "doc": "\\brief Construct the stream from a file path\n\n\\param filename Name of the file to open\n\n\\throws sf::Exception on error",
                   "parameters": [
                     {
@@ -30023,7 +30029,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 106
+                      "line": 113
                     }
                   ],
                   "static": false,
@@ -30036,8 +30042,8 @@
                   "displayname": "open(const std::filesystem::path &)",
                   "qualified_name": "sf::FileInputStream::open",
                   "access": "public",
-                  "line": 120,
-                  "doc": "\\brief Open the stream from a file path\n\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error",
+                  "line": 132,
+                  "doc": "\\brief Open the stream from a file path\n\nOn OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`\nexplicitly addresses the HAP rawfile directory. A relative path is\nfirst opened from the application filesystem and then, if that fails,\nfrom rawfile. `SFML::Main` initializes the native resource manager\nbefore application code starts.\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error",
                   "parameters": [
                     {
                       "name": "filename",
@@ -30047,7 +30053,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 120
+                      "line": 132
                     }
                   ],
                   "return_type": {
@@ -30064,7 +30070,7 @@
                   "displayname": "read(void *, std::size_t)",
                   "qualified_name": "sf::FileInputStream::read",
                   "access": "public",
-                  "line": 134,
+                  "line": 146,
                   "doc": "\\brief Read data from the stream\n\nAfter reading, the stream's reading position must be\nadvanced by the amount of bytes read.\n\n\\param data Buffer where to copy the read data\n\\param size Desired number of bytes to read\n\n\\return The number of bytes actually read, or `std::nullopt` on error",
                   "parameters": [
                     {
@@ -30075,22 +30081,22 @@
                         "kind": "POINTER"
                       },
                       "default": null,
-                      "line": 134
+                      "line": 146
                     },
                     {
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
-                      "line": 134
+                      "line": 146
                     }
                   ],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30102,23 +30108,23 @@
                   "displayname": "seek(std::size_t)",
                   "qualified_name": "sf::FileInputStream::seek",
                   "access": "public",
-                  "line": 144,
+                  "line": 156,
                   "doc": "\\brief Change the current reading position\n\n\\param position The position to seek to, from the beginning\n\n\\return The position actually sought to, or `std::nullopt` on error",
                   "parameters": [
                     {
                       "name": "position",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
-                      "line": 144
+                      "line": 156
                     }
                   ],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30130,12 +30136,12 @@
                   "displayname": "tell()",
                   "qualified_name": "sf::FileInputStream::tell",
                   "access": "public",
-                  "line": 152,
+                  "line": 164,
                   "doc": "\\brief Get the current reading position in the stream\n\n\\return The current position, or `std::nullopt` on error.",
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30147,12 +30153,12 @@
                   "displayname": "getSize()",
                   "qualified_name": "sf::FileInputStream::getSize",
                   "access": "public",
-                  "line": 160,
+                  "line": 172,
                   "doc": "\\brief Return the size of the stream\n\n\\return The total number of bytes available in the stream, or `std::nullopt` on error",
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30227,7 +30233,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -30236,7 +30242,7 @@
                   ],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30255,7 +30261,7 @@
                       "name": "position",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -30264,7 +30270,7 @@
                   ],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30281,7 +30287,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30298,7 +30304,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30363,7 +30369,7 @@
                       "name": "sizeInBytes",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -30397,7 +30403,7 @@
                       "name": "size",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -30406,7 +30412,7 @@
                   ],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30425,7 +30431,7 @@
                       "name": "position",
                       "type": {
                         "spelling": "std::size_t",
-                        "canonical": "unsigned long long",
+                        "canonical": "unsigned long",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -30434,7 +30440,7 @@
                   ],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30451,7 +30457,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -30468,7 +30474,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "std::optional<std::size_t>",
-                    "canonical": "std::optional<unsigned long long>",
+                    "canonical": "std::optional<unsigned long>",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -33750,7 +33756,7 @@
                   "doc": "String representation of the SFML version, e.g. 3.1.0 or 3.1.0-dev",
                   "type": {
                     "spelling": "const std::string_view",
-                    "canonical": "const std::basic_string_view<char>",
+                    "canonical": "const std::string_view",
                     "kind": "ELABORATED"
                   },
                   "readonly": true
@@ -34092,7 +34098,7 @@
                       "name": "name",
                       "type": {
                         "spelling": "std::string_view",
-                        "canonical": "std::basic_string_view<char>",
+                        "canonical": "std::string_view",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -34243,9 +34249,9 @@
                   "doc": "\\brief Enumeration of the context attribute flags",
                   "scoped": false,
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "children": [
                     {
@@ -39293,7 +39299,7 @@
                       "name": "handle",
                       "type": {
                         "spelling": "WindowHandle",
-                        "canonical": "HWND__ *",
+                        "canonical": "void *",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -39681,7 +39687,7 @@
                       "name": "handle",
                       "type": {
                         "spelling": "WindowHandle",
-                        "canonical": "HWND__ *",
+                        "canonical": "void *",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -39709,7 +39715,7 @@
                       "name": "handle",
                       "type": {
                         "spelling": "WindowHandle",
-                        "canonical": "HWND__ *",
+                        "canonical": "void *",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -40031,7 +40037,7 @@
                       "name": "handle",
                       "type": {
                         "spelling": "WindowHandle",
-                        "canonical": "HWND__ *",
+                        "canonical": "void *",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -40283,7 +40289,7 @@
                       "name": "handle",
                       "type": {
                         "spelling": "WindowHandle",
-                        "canonical": "HWND__ *",
+                        "canonical": "void *",
                         "kind": "ELABORATED"
                       },
                       "default": null,
@@ -40835,7 +40841,7 @@
                   "parameters": [],
                   "return_type": {
                     "spelling": "WindowHandle",
-                    "canonical": "HWND__ *",
+                    "canonical": "void *",
                     "kind": "ELABORATED"
                   },
                   "static": false,
@@ -40920,11 +40926,11 @@
                   "kind": "VAR_DECL",
                   "name": "None",
                   "displayname": "None",
-                  "qualified_name": "sf::Style::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Window\\WindowEnums.hpp:42:1)::None",
+                  "qualified_name": "sf::Style::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Window/WindowEnums.hpp:42:1)::None",
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "value": 0,
                   "access": null,
@@ -40936,11 +40942,11 @@
                   "kind": "VAR_DECL",
                   "name": "Titlebar",
                   "displayname": "Titlebar",
-                  "qualified_name": "sf::Style::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Window\\WindowEnums.hpp:42:1)::Titlebar",
+                  "qualified_name": "sf::Style::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Window/WindowEnums.hpp:42:1)::Titlebar",
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "value": 1,
                   "access": null,
@@ -40952,11 +40958,11 @@
                   "kind": "VAR_DECL",
                   "name": "Resize",
                   "displayname": "Resize",
-                  "qualified_name": "sf::Style::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Window\\WindowEnums.hpp:42:1)::Resize",
+                  "qualified_name": "sf::Style::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Window/WindowEnums.hpp:42:1)::Resize",
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "value": 2,
                   "access": null,
@@ -40968,11 +40974,11 @@
                   "kind": "VAR_DECL",
                   "name": "Close",
                   "displayname": "Close",
-                  "qualified_name": "sf::Style::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Window\\WindowEnums.hpp:42:1)::Close",
+                  "qualified_name": "sf::Style::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Window/WindowEnums.hpp:42:1)::Close",
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "value": 4,
                   "access": null,
@@ -40984,11 +40990,11 @@
                   "kind": "VAR_DECL",
                   "name": "Default",
                   "displayname": "Default",
-                  "qualified_name": "sf::Style::(unnamed enum at D:\\a\\LuaSF-AutoGenerator\\LuaSF-AutoGenerator\\third_party\\SFML\\include\\SFML\\Window\\WindowEnums.hpp:42:1)::Default",
+                  "qualified_name": "sf::Style::(unnamed enum at /Users/fengmingliu/Dev/LuaSF-AutoGenerator/third_party/SFML/include/SFML/Window/WindowEnums.hpp:42:1)::Default",
                   "type": {
-                    "spelling": "int",
-                    "canonical": "int",
-                    "kind": "INT"
+                    "spelling": "unsigned int",
+                    "canonical": "unsigned int",
+                    "kind": "UINT"
                   },
                   "value": 7,
                   "access": null,
@@ -41058,10 +41064,10 @@
               "displayname": "WindowHandle",
               "qualified_name": "sf::WindowHandle",
               "access": null,
-              "line": 42,
+              "line": 53,
               "type": {
-                "spelling": "HWND__ *",
-                "canonical": "HWND__ *",
+                "spelling": "void *",
+                "canonical": "void *",
                 "kind": "POINTER"
               }
             }

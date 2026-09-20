@@ -11,5 +11,6 @@
 #include <SFML/Graphics/View.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_RenderTarget(sol::state_view lua);
+void bind_RenderTarget(lua_glue::StateView lua);

@@ -4,5 +4,6 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Vector2.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Vertex(sol::state_view lua);
+void bind_Vertex(lua_glue::StateView lua);

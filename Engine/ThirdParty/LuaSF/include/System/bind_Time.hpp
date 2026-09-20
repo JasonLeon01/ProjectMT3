@@ -2,5 +2,6 @@
 
 #include <SFML/System/Time.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Time(sol::state_view lua);
+void bind_Time(lua_glue::StateView lua);

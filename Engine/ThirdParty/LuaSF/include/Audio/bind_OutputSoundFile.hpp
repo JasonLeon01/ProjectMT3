@@ -3,5 +3,6 @@
 #include <SFML/Audio/OutputSoundFile.hpp>
 #include <SFML/Audio/SoundChannel.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_OutputSoundFile(sol::state_view lua);
+void bind_OutputSoundFile(lua_glue::StateView lua);

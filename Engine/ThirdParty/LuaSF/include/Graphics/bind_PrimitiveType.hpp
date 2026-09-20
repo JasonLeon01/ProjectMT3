@@ -2,5 +2,6 @@
 
 #include <SFML/Graphics/PrimitiveType.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_PrimitiveType(sol::state_view lua);
+void bind_PrimitiveType(lua_glue::StateView lua);

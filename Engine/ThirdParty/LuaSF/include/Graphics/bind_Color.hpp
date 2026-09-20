@@ -2,5 +2,6 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Color(sol::state_view lua);
+void bind_Color(lua_glue::StateView lua);

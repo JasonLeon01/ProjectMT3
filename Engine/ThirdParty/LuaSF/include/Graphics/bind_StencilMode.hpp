@@ -2,5 +2,6 @@
 
 #include <SFML/Graphics/StencilMode.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_StencilMode(sol::state_view lua);
+void bind_StencilMode(lua_glue::StateView lua);

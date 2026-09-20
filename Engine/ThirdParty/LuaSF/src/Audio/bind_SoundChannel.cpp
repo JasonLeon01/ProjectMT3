@@ -1,6 +1,8 @@
 #include "Audio/bind_SoundChannel.hpp"
 
 #include <algorithm>
+#include <array>
+#include <string_view>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
@@ -9,9 +11,13 @@
 #include <utility>
 #include <vector>
 
-void bind_SoundChannel(sol::state_view lua) {
-    sol::table sf = lua_sf::sf_table(lua);
-    LUASF_STUB_DOC("\\ingroup audio\n\\brief Types of sound channels that can be read/written from sound buffers/files\n\nIn multi-channel audio, each sound channel can be\nassigned a position. The position of the channel is\nused to determine where to place a sound when it\nis spatialized. Assigning an incorrect sound channel\nwill result in multi-channel audio being positioned\nincorrectly when using spatialization.");
+namespace { constexpr std::array<std::string_view, 1> docs = {
+    "\\ingroup audio\n\\brief Types of sound channels that can be read/written from sound buffers/files\n\nIn multi-channel audio, each sound channel can be\nassigned a position. The position of the channel is\nused to determine where to place a sound when it\nis spatialized. Assigning an incorrect sound channel\nwill result in multi-channel audio being positioned\nincorrectly when using spatialization.",
+}; }
+
+void bind_SoundChannel(lua_glue::StateView lua) {
+    lua_glue::Table sf = lua_sf::sf_table(lua);
+    LUASF_STUB_DOC(docs[0]);
     LUASF_STUB_CLASS("sf.SoundChannel");
     LUASF_STUB_FIELD("Unspecified", "sf.SoundChannel");
     LUASF_STUB_FIELD("Mono", "sf.SoundChannel");
@@ -33,26 +39,26 @@ void bind_SoundChannel(sol::state_view lua) {
     LUASF_STUB_FIELD("TopBackLeft", "sf.SoundChannel");
     LUASF_STUB_FIELD("TopBackRight", "sf.SoundChannel");
     LUASF_STUB_FIELD("TopBackCenter", "sf.SoundChannel");
-    sf.new_enum("SoundChannel",
-        "Unspecified", sf::SoundChannel::Unspecified,
-        "Mono", sf::SoundChannel::Mono,
-        "FrontLeft", sf::SoundChannel::FrontLeft,
-        "FrontRight", sf::SoundChannel::FrontRight,
-        "FrontCenter", sf::SoundChannel::FrontCenter,
-        "FrontLeftOfCenter", sf::SoundChannel::FrontLeftOfCenter,
-        "FrontRightOfCenter", sf::SoundChannel::FrontRightOfCenter,
-        "LowFrequencyEffects", sf::SoundChannel::LowFrequencyEffects,
-        "BackLeft", sf::SoundChannel::BackLeft,
-        "BackRight", sf::SoundChannel::BackRight,
-        "BackCenter", sf::SoundChannel::BackCenter,
-        "SideLeft", sf::SoundChannel::SideLeft,
-        "SideRight", sf::SoundChannel::SideRight,
-        "TopCenter", sf::SoundChannel::TopCenter,
-        "TopFrontLeft", sf::SoundChannel::TopFrontLeft,
-        "TopFrontRight", sf::SoundChannel::TopFrontRight,
-        "TopFrontCenter", sf::SoundChannel::TopFrontCenter,
-        "TopBackLeft", sf::SoundChannel::TopBackLeft,
-        "TopBackRight", sf::SoundChannel::TopBackRight,
-        "TopBackCenter", sf::SoundChannel::TopBackCenter
-    );
+    lua_glue::BindEnum<sf::SoundChannel>(sf, "SoundChannel", {
+        {"Unspecified", sf::SoundChannel::Unspecified},
+        {"Mono", sf::SoundChannel::Mono},
+        {"FrontLeft", sf::SoundChannel::FrontLeft},
+        {"FrontRight", sf::SoundChannel::FrontRight},
+        {"FrontCenter", sf::SoundChannel::FrontCenter},
+        {"FrontLeftOfCenter", sf::SoundChannel::FrontLeftOfCenter},
+        {"FrontRightOfCenter", sf::SoundChannel::FrontRightOfCenter},
+        {"LowFrequencyEffects", sf::SoundChannel::LowFrequencyEffects},
+        {"BackLeft", sf::SoundChannel::BackLeft},
+        {"BackRight", sf::SoundChannel::BackRight},
+        {"BackCenter", sf::SoundChannel::BackCenter},
+        {"SideLeft", sf::SoundChannel::SideLeft},
+        {"SideRight", sf::SoundChannel::SideRight},
+        {"TopCenter", sf::SoundChannel::TopCenter},
+        {"TopFrontLeft", sf::SoundChannel::TopFrontLeft},
+        {"TopFrontRight", sf::SoundChannel::TopFrontRight},
+        {"TopFrontCenter", sf::SoundChannel::TopFrontCenter},
+        {"TopBackLeft", sf::SoundChannel::TopBackLeft},
+        {"TopBackRight", sf::SoundChannel::TopBackRight},
+        {"TopBackCenter", sf::SoundChannel::TopBackCenter}
+    });
 }

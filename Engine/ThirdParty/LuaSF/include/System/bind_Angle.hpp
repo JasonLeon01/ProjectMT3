@@ -2,5 +2,6 @@
 
 #include <SFML/System/Angle.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Angle(sol::state_view lua);
+void bind_Angle(lua_glue::StateView lua);

@@ -7,5 +7,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/System/Vector3.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Shader(sol::state_view lua);
+void bind_Shader(lua_glue::StateView lua);

@@ -9,5 +9,6 @@
 #include <SFML/Window/WindowBase.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Window(sol::state_view lua);
+void bind_Window(lua_glue::StateView lua);

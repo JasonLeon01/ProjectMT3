@@ -5,5 +5,6 @@
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/Vertex.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_VertexArray(sol::state_view lua);
+void bind_VertexArray(lua_glue::StateView lua);

@@ -2,5 +2,6 @@
 
 #include <SFML/Graphics/Rect.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Rect(sol::state_view lua);
+void bind_Rect(lua_glue::StateView lua);

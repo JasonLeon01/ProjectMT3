@@ -6,5 +6,6 @@
 #include <SFML/Network/Socket.hpp>
 #include <SFML/System/Time.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_TcpSocket(sol::state_view lua);
+void bind_TcpSocket(lua_glue::StateView lua);

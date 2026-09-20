@@ -2,5 +2,6 @@
 
 #include <SFML/Window/WindowEnums.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_WindowEnums(sol::state_view lua);
+void bind_WindowEnums(lua_glue::StateView lua);

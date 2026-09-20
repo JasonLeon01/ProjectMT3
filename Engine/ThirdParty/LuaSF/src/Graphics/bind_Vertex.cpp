@@ -1,6 +1,8 @@
 #include "Graphics/bind_Vertex.hpp"
 
 #include <algorithm>
+#include <array>
+#include <string_view>
 #include <memory>
 #include <sstream>
 #include <stdexcept>
@@ -9,26 +11,34 @@
 #include <utility>
 #include <vector>
 
-void bind_Vertex(sol::state_view lua) {
-    sol::table sf = lua_sf::sf_table(lua);
-    auto type_sf__Vertex = sf.new_usertype<sf::Vertex>("Vertex", sol::no_constructor);
-    sol::table table_sf__Vertex = sf["Vertex"].get<sol::table>();
-    lua_sf::mark_shared_usertype<sf::Vertex>(lua);
-    LUASF_STUB_DOC("\\brief Point with color and texture coordinates\n\nBy default, the vertex color is white and texture coordinates are (0, 0).");
+namespace { constexpr std::array<std::string_view, 4> docs = {
+    "\\brief Point with color and texture coordinates\n\nBy default, the vertex color is white and texture coordinates are (0, 0).",
+    "2D position of the vertex",
+    "Color of the vertex",
+    "Coordinates of the texture's pixel to map to the vertex NOLINT(readability-redundant-member-init)",
+}; }
+
+void bind_Vertex(lua_glue::StateView lua) {
+    lua_glue::Table sf = lua_sf::sf_table(lua);
+    auto type_sf__Vertex = lua_glue::BindStruct<sf::Vertex>(sf, "Vertex");
+    lua_glue::Table table_sf__Vertex = sf["Vertex"].get<lua_glue::Table>();
+    LUASF_STUB_DOC(docs[0]);
     LUASF_STUB_CLASS("sf.Vertex");
-    LUASF_STUB_DOC("2D position of the vertex");
+    LUASF_STUB_DOC(docs[1]);
     LUASF_STUB_FIELD("position", "sf.Vector2f");
-    LUASF_STUB_DOC("Color of the vertex");
+    LUASF_STUB_DOC(docs[2]);
     LUASF_STUB_FIELD("color", "sf.Color");
-    LUASF_STUB_DOC("Coordinates of the texture's pixel to map to the vertex NOLINT(readability-redundant-member-init)");
+    LUASF_STUB_DOC(docs[3]);
     LUASF_STUB_FIELD("texCoords", "sf.Vector2f");
     LUASF_STUB_FUNCTION("sf.Vertex", "new", "fun(): sf.Vertex");
-    type_sf__Vertex.set_function("new", sol::factories(
+    lua_glue::BindCallable(type_sf__Vertex, "new",
         []() {
-            return lua_sf::makeLuaSharedObject<sf::Vertex>();
+            return sf::Vertex{};
         }
-    ));
-    type_sf__Vertex["position"] = sol::policies(&sf::Vertex::position, sol::self_dependency{});
-    type_sf__Vertex["color"] = sol::policies(&sf::Vertex::color, sol::self_dependency{});
-    type_sf__Vertex["texCoords"] = sol::policies(&sf::Vertex::texCoords, sol::self_dependency{});
+    );
+    lua_glue::BindAttr<sf::Vector2f>(type_sf__Vertex, "position", &sf::Vertex::position);
+    lua_glue::BindAttr<sf::Color>(type_sf__Vertex, "color", &sf::Vertex::color);
+    lua_glue::BindAttr<sf::Vector2f>(type_sf__Vertex, "texCoords", &sf::Vertex::texCoords);
+    LUASF_STUB_FUNCTION("sf.Vertex", "copy", "fun(self: sf.Vertex): sf.Vertex");
+    LUASF_STUB_FUNCTION("sf.Vertex", "deepcopy", "fun(self: sf.Vertex): sf.Vertex");
 }

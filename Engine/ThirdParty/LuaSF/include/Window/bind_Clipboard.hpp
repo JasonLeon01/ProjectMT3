@@ -2,5 +2,6 @@
 
 #include <SFML/Window/Clipboard.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Clipboard(sol::state_view lua);
+void bind_Clipboard(lua_glue::StateView lua);

@@ -20,5 +20,6 @@
 #include <SFML/Window/WindowBase.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_RenderWindow(sol::state_view lua);
+void bind_RenderWindow(lua_glue::StateView lua);

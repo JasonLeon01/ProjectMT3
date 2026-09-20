@@ -8,5 +8,6 @@
 #include <SFML/System/Time.hpp>
 #include <SFML/System/Vector3.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Music(sol::state_view lua);
+void bind_Music(lua_glue::StateView lua);

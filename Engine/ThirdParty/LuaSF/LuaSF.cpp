@@ -2,7 +2,9 @@
 
 #include "LuaSF.hpp"
 
-#include <sol2/sol.hpp>
+#include <LuaGlue/LuaGlue.hpp>
+#include <cstdio>
+#include <exception>
 
 #include "lua_stub.hpp"
 
@@ -106,9 +108,11 @@ extern "C" LUASF_API int LuaSF_register(lua_State* state)
         return 1;
     }
 
-    sol::state_view lua(state);
-    sol::table sf = lua["sf"].get_or_create<sol::table>();
-    (void)sf;
+    try
+    {
+        lua_glue::StateView lua(state);
+        lua_glue::Table sf = lua["sf"].get_or_create<lua_glue::Table>();
+        (void)sf;
 
     bind_Drawable(lua);
     bind_Handle(lua);
@@ -193,7 +197,18 @@ extern "C" LUASF_API int LuaSF_register(lua_State* state)
     bind_TcpSocket(lua);
     bind_UdpSocket(lua);
 
-    return 0;
+        return 0;
+    }
+    catch (const std::exception& error)
+    {
+        std::fprintf(stderr, "LuaSF registration failed: %s\n", error.what());
+        return 1;
+    }
+    catch (...)
+    {
+        std::fprintf(stderr, "LuaSF registration failed: unknown C++ exception\n");
+        return 1;
+    }
 }
 
 extern "C" LUASF_API int LuaSF_write_stub(lua_State* state,

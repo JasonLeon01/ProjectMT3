@@ -7,5 +7,6 @@
 #include <SFML/System/Vector2.hpp>
 #include <SFML/Window/Window.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_Texture(sol::state_view lua);
+void bind_Texture(lua_glue::StateView lua);

@@ -2,5 +2,6 @@
 
 #include <SFML/System/InputStream.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_InputStream(sol::state_view lua);
+void bind_InputStream(lua_glue::StateView lua);

@@ -4,5 +4,6 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 #include <SFML/Audio/SoundChannel.hpp>
 #include "utils.hpp"
+#include "LuaSFValueTraits.hpp"
 
-void bind_SoundBufferRecorder(sol::state_view lua);
+void bind_SoundBufferRecorder(lua_glue::StateView lua);
