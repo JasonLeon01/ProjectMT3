@@ -66,6 +66,7 @@
 ---@field ParticleSystem Engine.ParticleSystem
 ---@field TextParticle Engine.TextParticle
 ---@field ResourceFileConstants Engine.ResourceFileConstants
+---@field RuntimeProviders Engine.RuntimeProviders
 ---@field SavePreviewReader Engine.SavePreviewReader
 ---@field Button Engine.Button
 ---@field Canvas Engine.Canvas
@@ -130,7 +131,6 @@
 ---@field RuntimeData Engine.RuntimeData
 ---@field RuntimeIdentity Engine.RuntimeIdentity
 ---@field RuntimeObject Engine.RuntimeObject
----@field RuntimeProviders Engine.RuntimeProviders
 ---@field RuntimeValue Engine.RuntimeValue
 ---@field ImageDrawAs Engine.ImageDrawAs
 ---@field getAnimationVisualDuration fun(animationData: Engine.AnimationSourceData): number
@@ -2678,6 +2678,22 @@ ResourceFileConstants.ANIMATION_CACHE_SUFFIX = nil
 ResourceFileConstants.ENCRYPTED_ANIMATION_CACHE_SUFFIX = nil
 Engine.ResourceFileConstants = ResourceFileConstants
 
+---@class Engine.RuntimeProviders
+local RuntimeProviders = {}
+---@param curveResolver fun(arg1: string): Engine.Curve|nil
+---@param plainTextConfigResolver fun(arg1: string): Engine.PlainTextConfig|nil
+---@return nil
+function RuntimeProviders.installData(curveResolver, plainTextConfigResolver) end
+---@param classDataByPath any
+---@param compileGraph any
+---@param instantiateGraphTemplate any
+---@return nil
+function RuntimeProviders.installBlueprint(classDataByPath, compileGraph, instantiateGraphTemplate) end
+---@param configResolver any
+---@return nil
+function RuntimeProviders.installConfig(configResolver) end
+Engine.RuntimeProviders = RuntimeProviders
+
 --- Background save metadata and thumbnail reader. Call public methods on the
 --- game thread.
 ---@class Engine.SavePreviewReader
@@ -4572,7 +4588,7 @@ function BPBase.IsBlueprintEventEmpty(object, eventName) end
 ---@param eventName string
 ---@return boolean
 function BPBase._classHasBlueprintEvent(classType, eventName) end
----@param graph any|nil
+---@param graph Engine.Graph|nil
 ---@param eventName string
 ---@return boolean
 function BPBase._graphHasExecutableEvent(graph, eventName) end
@@ -4589,7 +4605,7 @@ function BPBase._graphDataHasExecutableEvent(graphData, eventName) end
 ---@param onComplete? any
 ---@return boolean
 function BPBase.ExecuteParentEvent(object, classType, eventName, arguments, keywordArguments, localGraph, onComplete) end
----@param graph any
+---@param graph Engine.Graph|nil
 ---@param eventName string
 ---@param keywordArguments? any
 ---@param localGraph? any
@@ -4728,7 +4744,7 @@ function ClassDict:get(classPath, root) end
 function ClassDict:getData(classPath) end
 ---@param classPath string
 ---@param parent any|nil
----@return any
+---@return Engine.Graph|nil
 function ClassDict:instantiateGraph(classPath, parent) end
 ---@param classPath string
 ---@return boolean
@@ -4929,22 +4945,6 @@ Engine.RuntimeIdentity = RuntimeIdentity
 ---@class Engine.RuntimeObject
 local RuntimeObject = {}
 Engine.RuntimeObject = RuntimeObject
-
----@class Engine.RuntimeProviders
-local RuntimeProviders = {}
----@param curveResolver any
----@param plainTextConfigResolver any
----@return nil
-function RuntimeProviders.installData(curveResolver, plainTextConfigResolver) end
----@param classDataByPath any
----@param compileGraph any
----@param instantiateGraphTemplate any
----@return nil
-function RuntimeProviders.installBlueprint(classDataByPath, compileGraph, instantiateGraphTemplate) end
----@param configResolver any
----@return nil
-function RuntimeProviders.installConfig(configResolver) end
-Engine.RuntimeProviders = RuntimeProviders
 
 ---@class Engine.RuntimeValue
 local RuntimeValue = {}
