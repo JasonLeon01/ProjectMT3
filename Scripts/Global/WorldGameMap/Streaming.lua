@@ -17,7 +17,7 @@ function WorldGameMapStreaming.SyncStreamingCamera(self)
     end
     self._camera:syncFollowTarget()
     local position = self._camera:getViewPosition()
-    self._worldStreamingCameraPosition = position ~= nil and copy(position) or nil
+    self._worldStreamingCameraPosition = position ~= nil and position:copy() or nil
 end
 
 ---@return Global.WorldGeometry.CellRect

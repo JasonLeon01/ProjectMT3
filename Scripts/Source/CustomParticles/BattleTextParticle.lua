@@ -8,7 +8,7 @@ local HEALING_RISE = 16
 function BattleTextParticle.Emit(system, position, delta)
     local healing = delta > 0
     local config = Data.GetPlainTextConfig(healing and "Global/HealingText" or "Global/DamageText")
-    local startPosition = copy(position)
+    local startPosition = position:copy()
     local function update(_deltaTime, countTime, particle)
         ---@cast particle Engine.TextParticle
         if countTime >= DURATION then

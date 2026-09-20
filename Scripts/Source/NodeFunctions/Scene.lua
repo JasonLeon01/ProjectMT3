@@ -263,7 +263,7 @@ function Scene.ConvertSWallToYellowDoor(position)
     local wallTag = wall:getMapTag()
     assert(bool(wallTag), "SWall requires a non-empty map-placement tag")
     ---@cast wallTag string
-    local doorPosition = copy(wall:getMapPosition())
+    local doorPosition = wall:getMapPosition():copy()
     scene:recordDestroyedActor(wall)
     wall:destroy()
     local doorTag = reserveDoorTag(gameMap, wallTag .. "_DoorY")
