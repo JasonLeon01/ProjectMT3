@@ -1,0 +1,107 @@
+name: Package Windows
+
+on:
+  schedule:
+    # 16:30 UTC+8
+    - cron: '30 8 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: package-windows
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check package inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      should_build: ${{ steps.project.outputs.should_build }}
+      project_sha: ${{ steps.project.outputs.project_sha }}
+      ludork_sha: ${{ steps.ludork.outputs.ludork_sha }}
+      ludork_run_id: ${{ steps.ludork.outputs.ludork_run_id }}
+      ludork_artifact_id: ${{ steps.ludork.outputs.ludork_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Compare with last successful package
+        id: project
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const ci = require('./.github/scripts/package-windows.cjs');
+            await ci.checkProject({ github, context, core });
+
+      - name: Select latest successful Ludork Windows artifact
+        id: ludork
+        if: steps.project.outputs.should_build == 'true'
+        uses: actions/github-script@v8
+        env:
+          LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+        with:
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          script: |
+            if (!process.env.LUDORK_ACTIONS_TOKEN) {
+              throw new Error('Set LUDORK_ACTIONS_TOKEN with Actions read access to JasonLeon01/Ludork.');
+            }
+            const ci = require('./.github/scripts/package-windows.cjs');
+            await ci.selectLudork({ github, core });
+
+  package:
+    # Used by the history lookup; keep this name stable.
+    name: Package Windows
+    needs: check
+    if: needs.check.outputs.should_build == 'true'
+    runs-on: windows-2022
+    timeout-minutes: 180
+    env:
+      CMAKE_GENERATOR: Ninja
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+
+      - name: Set up MSVC x64
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+
+      - name: Download Ludork tools
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.ludork_run_id }}
+          artifact-ids: ${{ needs.check.outputs.ludork_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+          path: ${{ runner.temp }}/ludork
+          merge-multiple: true
+
+      - name: Build and validate Windows package
+        shell: pwsh
+        env:
+          PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+          LUDORK_SHA: ${{ needs.check.outputs.ludork_sha }}
+          LUDORK_RUN_ID: ${{ needs.check.outputs.ludork_run_id }}
+          LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.ludork_artifact_id }}
+        run: |
+          & ./.github/scripts/package-windows.ps1 `
+            -ProjectDirectory $env:GITHUB_WORKSPACE `
+            -LudorkDirectory (Join-Path $env:RUNNER_TEMP 'ludork') `
+            -OutputDirectory (Join-Path $env:RUNNER_TEMP 'projectmt3-package')
+
+      - name: Upload Windows package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-windows-x64-${{ needs.check.outputs.project_sha }}
+          path: ${{ runner.temp }}/projectmt3-package/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 7

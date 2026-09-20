@@ -196,11 +196,6 @@ sf.FileInputStream.tell = function() end
 sf.FileInputStream.getSize = function() end
 --- @brief Open the stream from a file path
 ---
---- On OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`
---- explicitly addresses the HAP rawfile directory. A relative path is
---- first opened from the application filesystem and then, if that fails,
---- from rawfile. `SFML::Main` initializes the native resource manager
---- before application code starts.
 --- On Android, paths are first opened from the application filesystem.
 --- Relative paths fall back to the packaged asset directory when no
 --- filesystem file exists.
@@ -2974,7 +2969,6 @@ function sf.Window.setActive(self, active) end
 --- it on screen.
 ---@type fun(self: sf.Window)
 sf.Window.display = function() end
----@alias sf.WindowHandle sf.HWND__*
 --- @brief Blending modes for drawing
 ---@class sf.BlendMode
 --- Source blending factor for the color channels
