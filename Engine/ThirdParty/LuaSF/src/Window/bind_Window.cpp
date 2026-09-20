@@ -30,8 +30,8 @@ void bind_Window(sol::state_view lua) {
     LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(mode: sf.VideoMode, title: string, style: integer): sf.Window");
     LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(mode: sf.VideoMode, title: string, state: sf.State): sf.Window");
     LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(mode: sf.VideoMode, title: string): sf.Window");
-    LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(handle: nil, settings: sf.ContextSettings): sf.Window");
-    LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(handle: nil): sf.Window");
+    LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(handle: sf.WindowHandle, settings: sf.ContextSettings): sf.Window");
+    LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(handle: sf.WindowHandle): sf.Window");
     LUASF_STUB_OVERLOAD("sf.Window", "new", "fun(): sf.Window");
     type_sf__Window.set_function("new", sol::factories(
         [](sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state, const sf::ContextSettings& settings) {
@@ -69,8 +69,8 @@ void bind_Window(sol::state_view lua) {
     LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, mode: sf.VideoMode, title: string, style: integer)");
     LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, mode: sf.VideoMode, title: string, state: sf.State)");
     LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, mode: sf.VideoMode, title: string)");
-    LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, handle: nil, settings: sf.ContextSettings)");
-    LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, handle: nil)");
+    LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, handle: sf.WindowHandle, settings: sf.ContextSettings)");
+    LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, handle: sf.WindowHandle)");
     type_sf__Window.set_function("create",
         sol::overload(
             [](sf::Window& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state, const sf::ContextSettings& settings) {

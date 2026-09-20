@@ -302,14 +302,14 @@ file(CONFIGURE
 )
 
 set(LUASF_BINDING_HEADERS
-    "include/LuaCallbackCodec.hpp"
-    "include/LuaStateLifecycle.hpp"
     "include/bind_ClassSupport.hpp"
     "include/bind_Drawable.hpp"
     "include/bind_Event.hpp"
     "include/bind_Handle.hpp"
     "include/lua_stub.hpp"
+    "include/LuaCallbackCodec.hpp"
     "include/luasf_sol.hpp"
+    "include/LuaStateLifecycle.hpp"
     "include/utils.hpp"
     "include/utils.inl"
     "include/System/bind_Angle.hpp"

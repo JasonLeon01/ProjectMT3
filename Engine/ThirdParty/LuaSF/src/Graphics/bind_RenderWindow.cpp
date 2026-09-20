@@ -30,8 +30,8 @@ void bind_RenderWindow(sol::state_view lua) {
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(mode: sf.VideoMode, title: string, style: integer): sf.RenderWindow");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(mode: sf.VideoMode, title: string, state: sf.State): sf.RenderWindow");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(mode: sf.VideoMode, title: string): sf.RenderWindow");
-    LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(handle: nil, settings: sf.ContextSettings): sf.RenderWindow");
-    LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(handle: nil): sf.RenderWindow");
+    LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(handle: sf.WindowHandle, settings: sf.ContextSettings): sf.RenderWindow");
+    LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(handle: sf.WindowHandle): sf.RenderWindow");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "new", "fun(): sf.RenderWindow");
     type_sf__RenderWindow.set_function("new", sol::factories(
         [](sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state, const sf::ContextSettings& settings) {
@@ -69,8 +69,8 @@ void bind_RenderWindow(sol::state_view lua) {
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style: integer)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string)");
-    LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, handle: nil, settings: sf.ContextSettings)");
-    LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, handle: nil)");
+    LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, handle: sf.WindowHandle, settings: sf.ContextSettings)");
+    LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, handle: sf.WindowHandle)");
     type_sf__RenderWindow.set_function("create",
         sol::overload(
             [](sf::RenderWindow& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state, const sf::ContextSettings& settings) {

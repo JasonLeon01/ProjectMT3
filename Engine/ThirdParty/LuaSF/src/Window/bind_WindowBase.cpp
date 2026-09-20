@@ -22,7 +22,7 @@ void bind_WindowBase(sol::state_view lua) {
     LUASF_STUB_OVERLOAD("sf.WindowBase", "new", "fun(mode: sf.VideoMode, title: string, style: integer): sf.WindowBase");
     LUASF_STUB_OVERLOAD("sf.WindowBase", "new", "fun(mode: sf.VideoMode, title: string, state: sf.State): sf.WindowBase");
     LUASF_STUB_OVERLOAD("sf.WindowBase", "new", "fun(mode: sf.VideoMode, title: string): sf.WindowBase");
-    LUASF_STUB_OVERLOAD("sf.WindowBase", "new", "fun(handle: nil): sf.WindowBase");
+    LUASF_STUB_OVERLOAD("sf.WindowBase", "new", "fun(handle: sf.WindowHandle): sf.WindowBase");
     LUASF_STUB_OVERLOAD("sf.WindowBase", "new", "fun(): sf.WindowBase");
     type_sf__WindowBase.set_function("new", sol::factories(
         [](sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state) {
@@ -49,7 +49,7 @@ void bind_WindowBase(sol::state_view lua) {
     LUASF_STUB_OVERLOAD("sf.WindowBase", "create", "fun(self: sf.WindowBase, mode: sf.VideoMode, title: string, style: integer)");
     LUASF_STUB_OVERLOAD("sf.WindowBase", "create", "fun(self: sf.WindowBase, mode: sf.VideoMode, title: string, state: sf.State)");
     LUASF_STUB_OVERLOAD("sf.WindowBase", "create", "fun(self: sf.WindowBase, mode: sf.VideoMode, title: string)");
-    LUASF_STUB_OVERLOAD("sf.WindowBase", "create", "fun(self: sf.WindowBase, handle: nil)");
+    LUASF_STUB_OVERLOAD("sf.WindowBase", "create", "fun(self: sf.WindowBase, handle: sf.WindowHandle)");
     type_sf__WindowBase.set_function("create",
         sol::overload(
             [](sf::WindowBase& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state) {
