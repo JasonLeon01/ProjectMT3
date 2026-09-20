@@ -43,14 +43,9 @@ jobs:
         id: ludork
         if: steps.project.outputs.should_build == 'true'
         uses: actions/github-script@v8
-        env:
-          LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
         with:
           github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           script: |
-            if (!process.env.LUDORK_ACTIONS_TOKEN) {
-              throw new Error('Set LUDORK_ACTIONS_TOKEN with Actions read access to JasonLeon01/Ludork.');
-            }
             const ci = require('./.github/scripts/package-windows.cjs');
             await ci.selectLudork({ github, core });
 
@@ -80,7 +75,7 @@ jobs:
           repository: JasonLeon01/Ludork
           run-id: ${{ needs.check.outputs.ludork_run_id }}
           artifact-ids: ${{ needs.check.outputs.ludork_artifact_id }}
-          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           path: ${{ runner.temp }}/ludork
           merge-multiple: true
 

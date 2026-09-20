@@ -4,7 +4,9 @@
 
 ## 启用
 
-在本仓库 **Settings → Secrets and variables → Actions** 添加 Secret `LUDORK_ACTIONS_TOKEN`：使用能访问 `JasonLeon01/Ludork`、具有 **Actions: Read-only** 权限的 fine-grained token。本仓库历史查询使用自动提供的 `GITHUB_TOKEN`，不需要内容写权限。
+默认使用 GitHub 自动提供的 `GITHUB_TOKEN` 查询和下载公开的 Ludork 产物，不因未配置自定义 Secret 而提前终止。本仓库历史查询也使用该 token，不需要内容写权限。
+
+如果实际下载返回权限错误，可在本仓库 **Settings → Secrets and variables → Actions** 添加可选 Secret `LUDORK_ACTIONS_TOKEN`：使用能访问 `JasonLeon01/Ludork`、具有 **Actions: Read-only** 权限的 fine-grained token。配置后，上游查询与下载均优先使用它。公开产物列表可匿名读取，但下载接口仍需要认证；自动 token 的跨仓库下载需由实际 CI 验证。
 
 ## 打包和去重
 
