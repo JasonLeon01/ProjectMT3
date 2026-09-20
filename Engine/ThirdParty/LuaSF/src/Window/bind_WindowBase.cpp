@@ -38,7 +38,7 @@ void bind_WindowBase(sol::state_view lua) {
             return lua_sf::makeLuaSharedObject<sf::WindowBase>(mode, lua_sf::to_sf_string(title));
         },
         [](const lua_sf::WindowHandle& handle) {
-            return lua_sf::makeLuaSharedObject<sf::WindowBase>(handle.native());
+            return lua_sf::makeLuaSharedObject<sf::WindowBase>(handle.getHandle());
         },
         []() {
             return lua_sf::makeLuaSharedObject<sf::WindowBase>();
@@ -65,7 +65,7 @@ void bind_WindowBase(sol::state_view lua) {
                 self.create(mode, lua_sf::to_sf_string(title));
             },
             [](sf::WindowBase& self, const lua_sf::WindowHandle& handle) {
-                self.create(handle.native());
+                self.create(handle.getHandle());
             }
         )
     );

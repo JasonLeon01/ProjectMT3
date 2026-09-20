@@ -29851,7 +29851,7 @@
           "displayname": "sf",
           "qualified_name": "sf",
           "access": null,
-          "line": 57,
+          "line": 50,
           "doc": "\\brief Perform Domain Name System queries to lookup\nDNS records for various purposes",
           "children": [
             {
@@ -29860,13 +29860,13 @@
               "displayname": "FileInputStream",
               "qualified_name": "sf::FileInputStream",
               "access": null,
-              "line": 63,
+              "line": 56,
               "doc": "\\brief Implementation of input stream based on a file",
               "base_classes": [
                 {
                   "name": "InputStream",
                   "access": "public",
-                  "line": 63
+                  "line": 56
                 }
               ],
               "abstract": false,
@@ -29877,7 +29877,7 @@
                   "displayname": "FileInputStream()",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 73,
+                  "line": 66,
                   "doc": "\\brief Default constructor\n\nConstruct a file input stream that is not associated\nwith a file to read.",
                   "parameters": [],
                   "static": false,
@@ -29890,7 +29890,7 @@
                   "displayname": "~FileInputStream()",
                   "qualified_name": "sf::FileInputStream::~FileInputStream",
                   "access": "public",
-                  "line": 79,
+                  "line": 72,
                   "doc": "\\brief Default destructor",
                   "parameters": [],
                   "return_type": {
@@ -29906,7 +29906,7 @@
                   "displayname": "FileInputStream(const FileInputStream &)",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 85,
+                  "line": 78,
                   "doc": "\\brief Deleted copy constructor",
                   "parameters": [
                     {
@@ -29917,7 +29917,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 85
+                      "line": 78
                     }
                   ],
                   "static": false,
@@ -29931,7 +29931,7 @@
                   "displayname": "operator=(const FileInputStream &)",
                   "qualified_name": "sf::FileInputStream::operator=",
                   "access": "public",
-                  "line": 91,
+                  "line": 84,
                   "doc": "\\brief Deleted copy assignment",
                   "parameters": [
                     {
@@ -29942,7 +29942,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 91
+                      "line": 84
                     }
                   ],
                   "return_type": {
@@ -29960,7 +29960,7 @@
                   "displayname": "FileInputStream(FileInputStream &&)",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 97,
+                  "line": 90,
                   "doc": "\\brief Move constructor",
                   "parameters": [
                     {
@@ -29971,7 +29971,7 @@
                         "kind": "RVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 97
+                      "line": 90
                     }
                   ],
                   "static": false,
@@ -29984,7 +29984,7 @@
                   "displayname": "operator=(FileInputStream &&)",
                   "qualified_name": "sf::FileInputStream::operator=",
                   "access": "public",
-                  "line": 103,
+                  "line": 96,
                   "doc": "\\brief Move assignment",
                   "parameters": [
                     {
@@ -29995,7 +29995,7 @@
                         "kind": "RVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 103
+                      "line": 96
                     }
                   ],
                   "return_type": {
@@ -30012,7 +30012,7 @@
                   "displayname": "FileInputStream(const std::filesystem::path &)",
                   "qualified_name": "sf::FileInputStream::FileInputStream",
                   "access": "public",
-                  "line": 113,
+                  "line": 106,
                   "doc": "\\brief Construct the stream from a file path\n\n\\param filename Name of the file to open\n\n\\throws sf::Exception on error",
                   "parameters": [
                     {
@@ -30023,7 +30023,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 113
+                      "line": 106
                     }
                   ],
                   "static": false,
@@ -30036,8 +30036,8 @@
                   "displayname": "open(const std::filesystem::path &)",
                   "qualified_name": "sf::FileInputStream::open",
                   "access": "public",
-                  "line": 132,
-                  "doc": "\\brief Open the stream from a file path\n\nOn OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`\nexplicitly addresses the HAP rawfile directory. A relative path is\nfirst opened from the application filesystem and then, if that fails,\nfrom rawfile. `SFML::Main` initializes the native resource manager\nbefore application code starts.\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error",
+                  "line": 120,
+                  "doc": "\\brief Open the stream from a file path\n\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error",
                   "parameters": [
                     {
                       "name": "filename",
@@ -30047,7 +30047,7 @@
                         "kind": "LVALUEREFERENCE"
                       },
                       "default": null,
-                      "line": 132
+                      "line": 120
                     }
                   ],
                   "return_type": {
@@ -30064,7 +30064,7 @@
                   "displayname": "read(void *, std::size_t)",
                   "qualified_name": "sf::FileInputStream::read",
                   "access": "public",
-                  "line": 146,
+                  "line": 134,
                   "doc": "\\brief Read data from the stream\n\nAfter reading, the stream's reading position must be\nadvanced by the amount of bytes read.\n\n\\param data Buffer where to copy the read data\n\\param size Desired number of bytes to read\n\n\\return The number of bytes actually read, or `std::nullopt` on error",
                   "parameters": [
                     {
@@ -30075,7 +30075,7 @@
                         "kind": "POINTER"
                       },
                       "default": null,
-                      "line": 146
+                      "line": 134
                     },
                     {
                       "name": "size",
@@ -30085,7 +30085,7 @@
                         "kind": "ELABORATED"
                       },
                       "default": null,
-                      "line": 146
+                      "line": 134
                     }
                   ],
                   "return_type": {
@@ -30102,7 +30102,7 @@
                   "displayname": "seek(std::size_t)",
                   "qualified_name": "sf::FileInputStream::seek",
                   "access": "public",
-                  "line": 156,
+                  "line": 144,
                   "doc": "\\brief Change the current reading position\n\n\\param position The position to seek to, from the beginning\n\n\\return The position actually sought to, or `std::nullopt` on error",
                   "parameters": [
                     {
@@ -30113,7 +30113,7 @@
                         "kind": "ELABORATED"
                       },
                       "default": null,
-                      "line": 156
+                      "line": 144
                     }
                   ],
                   "return_type": {
@@ -30130,7 +30130,7 @@
                   "displayname": "tell()",
                   "qualified_name": "sf::FileInputStream::tell",
                   "access": "public",
-                  "line": 164,
+                  "line": 152,
                   "doc": "\\brief Get the current reading position in the stream\n\n\\return The current position, or `std::nullopt` on error.",
                   "parameters": [],
                   "return_type": {
@@ -30147,7 +30147,7 @@
                   "displayname": "getSize()",
                   "qualified_name": "sf::FileInputStream::getSize",
                   "access": "public",
-                  "line": 172,
+                  "line": 160,
                   "doc": "\\brief Return the size of the stream\n\n\\return The total number of bytes available in the stream, or `std::nullopt` on error",
                   "parameters": [],
                   "return_type": {

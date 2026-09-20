@@ -73,7 +73,7 @@ void bind_FileInputStream(sol::state_view lua) {
             return lua_sf::optional_to_object(lua, self.getSize());
         }
     );
-    LUASF_STUB_DOC("\\brief Open the stream from a file path\n\nOn OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`\nexplicitly addresses the HAP rawfile directory. A relative path is\nfirst opened from the application filesystem and then, if that fails,\nfrom rawfile. `SFML::Main` initializes the native resource manager\nbefore application code starts.\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error");
+    LUASF_STUB_DOC("\\brief Open the stream from a file path\n\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error");
     LUASF_STUB_FUNCTION("sf.FileInputStream", "open", "fun(self: sf.FileInputStream, filename: string): boolean");
     type_sf__FileInputStream.set_function("open",
         [](sf::FileInputStream& self, std::string filename) -> bool {

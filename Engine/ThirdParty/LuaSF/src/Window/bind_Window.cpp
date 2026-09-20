@@ -53,10 +53,10 @@ void bind_Window(sol::state_view lua) {
             return lua_sf::makeLuaSharedObject<sf::Window>(mode, lua_sf::to_sf_string(title));
         },
         [](const lua_sf::WindowHandle& handle, const sf::ContextSettings& settings) {
-            return lua_sf::makeLuaSharedObject<sf::Window>(handle.native(), settings);
+            return lua_sf::makeLuaSharedObject<sf::Window>(handle.getHandle(), settings);
         },
         [](const lua_sf::WindowHandle& handle) {
-            return lua_sf::makeLuaSharedObject<sf::Window>(handle.native());
+            return lua_sf::makeLuaSharedObject<sf::Window>(handle.getHandle());
         },
         []() {
             return lua_sf::makeLuaSharedObject<sf::Window>();
@@ -92,10 +92,10 @@ void bind_Window(sol::state_view lua) {
                 self.create(mode, lua_sf::to_sf_string(title));
             },
             [](sf::Window& self, const lua_sf::WindowHandle& handle, const sf::ContextSettings& settings) {
-                self.create(handle.native(), settings);
+                self.create(handle.getHandle(), settings);
             },
             [](sf::Window& self, const lua_sf::WindowHandle& handle) {
-                self.create(handle.native());
+                self.create(handle.getHandle());
             }
         )
     );
