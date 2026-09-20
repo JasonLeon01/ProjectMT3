@@ -2359,7 +2359,7 @@ sf.WindowBase = sf.WindowBase or {}
 ---@overload fun(mode: sf.VideoMode, title: string, style: integer): sf.WindowBase
 ---@overload fun(mode: sf.VideoMode, title: string, state: sf.State): sf.WindowBase
 ---@overload fun(mode: sf.VideoMode, title: string): sf.WindowBase
----@overload fun(handle: nil): sf.WindowBase
+---@overload fun(handle: sf.WindowHandle): sf.WindowBase
 ---@overload fun(): sf.WindowBase
 ---@param mode sf.VideoMode
 ---@param title string
@@ -2380,7 +2380,7 @@ function sf.WindowBase.new(mode, title, style, state) end
 ---@overload fun(self: sf.WindowBase, mode: sf.VideoMode, title: string, style: integer)
 ---@overload fun(self: sf.WindowBase, mode: sf.VideoMode, title: string, state: sf.State)
 ---@overload fun(self: sf.WindowBase, mode: sf.VideoMode, title: string)
----@overload fun(self: sf.WindowBase, handle: nil)
+---@overload fun(self: sf.WindowBase, handle: sf.WindowHandle)
 ---@param self sf.WindowBase
 ---@param mode sf.VideoMode
 ---@param title string
@@ -2644,8 +2644,8 @@ sf.Window = sf.Window or {}
 ---@overload fun(mode: sf.VideoMode, title: string, style: integer): sf.Window
 ---@overload fun(mode: sf.VideoMode, title: string, state: sf.State): sf.Window
 ---@overload fun(mode: sf.VideoMode, title: string): sf.Window
----@overload fun(handle: nil, settings: sf.ContextSettings): sf.Window
----@overload fun(handle: nil): sf.Window
+---@overload fun(handle: sf.WindowHandle, settings: sf.ContextSettings): sf.Window
+---@overload fun(handle: sf.WindowHandle): sf.Window
 ---@overload fun(): sf.Window
 ---@param mode sf.VideoMode
 ---@param title string
@@ -2673,8 +2673,8 @@ function sf.Window.new(mode, title, style, state, settings) end
 ---@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, style: integer)
 ---@overload fun(self: sf.Window, mode: sf.VideoMode, title: string, state: sf.State)
 ---@overload fun(self: sf.Window, mode: sf.VideoMode, title: string)
----@overload fun(self: sf.Window, handle: nil, settings: sf.ContextSettings)
----@overload fun(self: sf.Window, handle: nil)
+---@overload fun(self: sf.Window, handle: sf.WindowHandle, settings: sf.ContextSettings)
+---@overload fun(self: sf.Window, handle: sf.WindowHandle)
 ---@param self sf.Window
 ---@param mode sf.VideoMode
 ---@param title string
@@ -2974,7 +2974,7 @@ function sf.Window.setActive(self, active) end
 --- it on screen.
 ---@type fun(self: sf.Window)
 sf.Window.display = function() end
----@alias sf.WindowHandle sf.void*
+---@alias sf.WindowHandle sf.HWND__*
 --- @brief Blending modes for drawing
 ---@class sf.BlendMode
 --- Source blending factor for the color channels
@@ -8432,8 +8432,8 @@ sf.RenderWindow = sf.RenderWindow or {}
 ---@overload fun(mode: sf.VideoMode, title: string, style: integer): sf.RenderWindow
 ---@overload fun(mode: sf.VideoMode, title: string, state: sf.State): sf.RenderWindow
 ---@overload fun(mode: sf.VideoMode, title: string): sf.RenderWindow
----@overload fun(handle: nil, settings: sf.ContextSettings): sf.RenderWindow
----@overload fun(handle: nil): sf.RenderWindow
+---@overload fun(handle: sf.WindowHandle, settings: sf.ContextSettings): sf.RenderWindow
+---@overload fun(handle: sf.WindowHandle): sf.RenderWindow
 ---@overload fun(): sf.RenderWindow
 ---@param mode sf.VideoMode
 ---@param title string
@@ -8461,8 +8461,8 @@ function sf.RenderWindow.new(mode, title, style, state, settings) end
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style: integer)
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State)
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string)
----@overload fun(self: sf.RenderWindow, handle: nil, settings: sf.ContextSettings)
----@overload fun(self: sf.RenderWindow, handle: nil)
+---@overload fun(self: sf.RenderWindow, handle: sf.WindowHandle, settings: sf.ContextSettings)
+---@overload fun(self: sf.RenderWindow, handle: sf.WindowHandle)
 ---@param self sf.RenderWindow
 ---@param mode sf.VideoMode
 ---@param title string
