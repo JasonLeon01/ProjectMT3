@@ -99,7 +99,7 @@
       "GOLD": 0,
       "LEVEL": 1,
       "breath": 0,
-      "breathLimit": 120,
+      "breathLimit": 150,
       "MAGIC": 0,
       "ANIMATION_KEY": "02_jian",
       "CritAnimationKey": "03_jian2"
@@ -116,7 +116,7 @@
       "GOLD": 0,
       "LEVEL": 1,
       "breath": 0,
-      "breathLimit": 120,
+      "breathLimit": 180,
       "MAGIC": 0,
       "ANIMATION_KEY": "19_2jian",
       "CritAnimationKey": "58_huangzhe"

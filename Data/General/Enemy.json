@@ -74,197 +74,6 @@
     }
   },
   "members": {
-    "Skeleton": {
-      "name": "{SKELETON_SODIER}",
-      "desc": "{SKELETON_SODIER_DESC}",
-      "MAXHP": 100,
-      "ATK": 70,
-      "DEF": 0,
-      "EXP": 1,
-      "GOLD": 2,
-      "breathLimit": 0,
-      "drops": {},
-      "special": {
-        "Poisoning": 1,
-        "First": ""
-      },
-      "ANIMATION_KEY": "attack",
-      "CritAnimationKey": "attack"
-    },
-    "Slime": {
-      "name": "{SLIME}",
-      "desc": "{SLIME_DESC}",
-      "MAXHP": 60,
-      "ATK": 15,
-      "DEF": 2,
-      "EXP": 1000,
-      "GOLD": 1000,
-      "breathLimit": 0,
-      "drops": {},
-      "special": {
-        "Weaken": 2
-      },
-      "ANIMATION_KEY": "attack",
-      "CritAnimationKey": "attack"
-    },
-    "Rock": {
-      "name": "{ROCK}",
-      "desc": "{ROCK_DESC}",
-      "MAXHP": 10,
-      "ATK": 15,
-      "DEF": 10,
-      "EXP": 1,
-      "GOLD": 3,
-      "drops": {},
-      "special": {
-        "Hard": ""
-      },
-      "ANIMATION_KEY": "attack",
-      "breathLimit": 0,
-      "CritAnimationKey": "attack"
-    },
-    "Mage": {
-      "name": "{MAGE}",
-      "desc": "{MAGE_DESC}",
-      "MAXHP": 100,
-      "ATK": 10,
-      "DEF": 12,
-      "EXP": 3,
-      "GOLD": 3,
-      "drops": {},
-      "special": {
-        "Magic": ""
-      },
-      "ANIMATION_KEY": "waterspread",
-      "breathLimit": 0,
-      "CritAnimationKey": "waterspread"
-    },
-    "Bat": {
-      "name": "{BAT}",
-      "desc": "{BAT_DESC}",
-      "MAXHP": 100,
-      "ATK": 20,
-      "DEF": 5,
-      "EXP": 4,
-      "GOLD": 4,
-      "drops": {},
-      "special": {
-        "Vampire": 0.1
-      },
-      "ANIMATION_KEY": "attack",
-      "breathLimit": 0,
-      "CritAnimationKey": "attack"
-    },
-    "Knight": {
-      "name": "{KNIGHT}",
-      "desc": "{KNIGHT_DESC}",
-      "MAXHP": 66,
-      "ATK": 13,
-      "DEF": 5,
-      "EXP": 3,
-      "GOLD": 6,
-      "drops": {},
-      "special": {
-        "Compete": ""
-      },
-      "ANIMATION_KEY": "attack",
-      "breathLimit": 0,
-      "CritAnimationKey": "attack"
-    },
-    "Wizard": {
-      "name": "{WIZARD}",
-      "desc": "{WIZARD_DESC}",
-      "MAXHP": 500,
-      "ATK": 60,
-      "DEF": 30,
-      "EXP": 5,
-      "GOLD": 8,
-      "drops": {},
-      "special": {
-        "Magic": "",
-        "Domain": 2,
-        "FixDmg": 100
-      },
-      "ANIMATION_KEY": "waterspread",
-      "breathLimit": 0,
-      "CritAnimationKey": "waterspread"
-    },
-    "WhiteKing": {
-      "name": "{WHITE_KING}",
-      "desc": "{WHITE_KING_DESC}",
-      "MAXHP": 600,
-      "ATK": 120,
-      "DEF": 50,
-      "EXP": 20,
-      "GOLD": 60,
-      "drops": {},
-      "special": {
-        "Flank": "",
-        "FixDmg": "{mHP}*0.3"
-      },
-      "ANIMATION_KEY": "watershot",
-      "breathLimit": 0,
-      "CritAnimationKey": "watershot"
-    },
-    "BigWizard": {
-      "name": "{BIG_WIZARD}",
-      "desc": "{BIG_WIZARD_DESC}",
-      "MAXHP": 700,
-      "ATK": 90,
-      "DEF": 30,
-      "EXP": 8,
-      "GOLD": 8,
-      "drops": {},
-      "special": {
-        "Magic": "",
-        "Blockade": ""
-      },
-      "ANIMATION_KEY": "watershot",
-      "breathLimit": 0,
-      "CritAnimationKey": "watershot"
-    },
-    "GreatIron": {
-      "name": "{GREATIRON}",
-      "desc": "{GREATIRON_DESC}",
-      "MAXHP": 1000,
-      "ATK": 20,
-      "DEF": 0,
-      "EXP": 3,
-      "GOLD": 6,
-      "drops": {
-        "Data.Blueprints.Items.BP_Item_Key_B3": [
-          0,
-          0
-        ],
-        "Data.Blueprints.Items.BP_Item_Key_R3": [
-          0,
-          0
-        ]
-      },
-      "special": {
-        "MultiHit": 8,
-        "Hard": ""
-      },
-      "ANIMATION_KEY": "attack",
-      "breathLimit": 0,
-      "CritAnimationKey": "attack"
-    },
-    "GhostSoldier": {
-      "name": "{GHOST_SOLDIER}",
-      "desc": "{GHOST_SOLDIER_DESC}",
-      "MAXHP": 75,
-      "ATK": 50,
-      "DEF": 10,
-      "EXP": 3,
-      "GOLD": 3,
-      "drops": {},
-      "special": {
-        "Reborn": "Data.Blueprints.Enemies.BP_Enemy_Skeleton_01"
-      },
-      "ANIMATION_KEY": "attack",
-      "breathLimit": 0,
-      "CritAnimationKey": "attack"
-    },
     "E00_shilaimu": {
       "name": "{E00_SHILAIMU}",
       "desc": "{E00_SHILAIMU_DESC}",
@@ -434,8 +243,8 @@
       "MAXHP": 15,
       "ATK": 65,
       "DEF": 70,
-      "EXP": 1,
-      "GOLD": 5,
+      "EXP": 2,
+      "GOLD": 6,
       "breathLimit": 35,
       "drops": {},
       "special": {},
@@ -448,8 +257,8 @@
       "MAXHP": 200,
       "ATK": 100,
       "DEF": 35,
-      "EXP": 1,
-      "GOLD": 4,
+      "EXP": 2,
+      "GOLD": 7,
       "breathLimit": 31,
       "drops": {},
       "special": {
@@ -464,8 +273,8 @@
       "MAXHP": 155,
       "ATK": 115,
       "DEF": 60,
-      "EXP": 1,
-      "GOLD": 5,
+      "EXP": 2,
+      "GOLD": 8,
       "breathLimit": 42,
       "drops": {},
       "special": {
@@ -481,7 +290,7 @@
       "ATK": 175,
       "DEF": 35,
       "EXP": 2,
-      "GOLD": 7,
+      "GOLD": 10,
       "breathLimit": 50,
       "drops": {},
       "special": {
@@ -496,8 +305,8 @@
       "MAXHP": 200,
       "ATK": 130,
       "DEF": 80,
-      "EXP": 1,
-      "GOLD": 8,
+      "EXP": 3,
+      "GOLD": 7,
       "breathLimit": 33,
       "drops": {},
       "special": {},
@@ -507,11 +316,11 @@
     "E16_zhongjishouwei": {
       "name": "{E16_ZHONGJISHOUWEI}",
       "desc": "{E16_ZHONGJISHOUWEI_DESC}",
-      "MAXHP": 240,
-      "ATK": 140,
-      "DEF": 120,
-      "EXP": 2,
-      "GOLD": 10,
+      "MAXHP": 255,
+      "ATK": 120,
+      "DEF": 100,
+      "EXP": 3,
+      "GOLD": 12,
       "breathLimit": 36,
       "drops": {},
       "special": {},
@@ -521,11 +330,11 @@
     "E17_tieqishi": {
       "name": "{E17_TIEQISHI}",
       "desc": "{E17_TIEQISHI_DESC}",
-      "MAXHP": 215,
+      "MAXHP": 235,
       "ATK": 155,
-      "DEF": 90,
+      "DEF": 65,
       "EXP": 3,
-      "GOLD": 10,
+      "GOLD": 14,
       "breathLimit": 27,
       "drops": {},
       "special": {
@@ -537,11 +346,11 @@
     "E18_hongbianfu": {
       "name": "{E18_HONGBIANFU}",
       "desc": "{E18_HONGBIANFU_DESC}",
-      "MAXHP": 240,
-      "ATK": 150,
-      "DEF": 85,
+      "MAXHP": 245,
+      "ATK": 140,
+      "DEF": 80,
       "EXP": 4,
-      "GOLD": 11,
+      "GOLD": 15,
       "breathLimit": 60,
       "drops": {},
       "special": {
@@ -555,9 +364,9 @@
       "desc": "{E19_ZHANGYUZAI_DESC}",
       "MAXHP": 300,
       "ATK": 150,
-      "DEF": 110,
-      "EXP": 3,
-      "GOLD": 14,
+      "DEF": 90,
+      "EXP": 4,
+      "GOLD": 16,
       "breathLimit": 37,
       "drops": {},
       "special": {},
@@ -567,15 +376,16 @@
     "E20_shilaimukuangren": {
       "name": "{E20_SHILAIMUKUANGREN}",
       "desc": "{E20_SHILAIMUKUANGREN_DESC}",
-      "MAXHP": 320,
-      "ATK": 170,
-      "DEF": 115,
+      "MAXHP": 330,
+      "ATK": 185,
+      "DEF": 105,
       "EXP": 5,
       "GOLD": 20,
       "breathLimit": 52,
       "drops": {},
       "special": {
-        "MultiHit": 2
+        "MultiHit": 2,
+        "Mucus": 2
       },
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
@@ -583,11 +393,11 @@
     "E21_shilaimuwang": {
       "name": "{E21_SHILAIMUWANG}",
       "desc": "{E21_SHILAIMUWANG_DESC}",
-      "MAXHP": 280,
+      "MAXHP": 200,
       "ATK": 140,
-      "DEF": 105,
+      "DEF": 85,
       "EXP": 3,
-      "GOLD": 12,
+      "GOLD": 14,
       "breathLimit": 25,
       "drops": {},
       "special": {},
@@ -599,9 +409,9 @@
       "desc": "{E22_YANSHUSHI_DESC}",
       "MAXHP": 300,
       "ATK": 100,
-      "DEF": 130,
+      "DEF": 100,
       "EXP": 5,
-      "GOLD": 17,
+      "GOLD": 22,
       "breathLimit": 90,
       "drops": {},
       "special": {
@@ -614,11 +424,11 @@
     "E23_sangshijianshi": {
       "name": "{E23_SANGSHIJIANSHI}",
       "desc": "{E23_SANGSHIJIANSHI_DESC}",
-      "MAXHP": 280,
+      "MAXHP": 290,
       "ATK": 210,
-      "DEF": 165,
+      "DEF": 125,
       "EXP": 4,
-      "GOLD": 15,
+      "GOLD": 25,
       "breathLimit": 30,
       "drops": {},
       "special": {
@@ -630,15 +440,16 @@
     "E24_gongbing": {
       "name": "{E24_GONGBING}",
       "desc": "{E24_GONGBING_DESC}",
-      "MAXHP": 200,
+      "MAXHP": 150,
       "ATK": 160,
-      "DEF": 160,
-      "EXP": 7,
-      "GOLD": 19,
+      "DEF": 135,
+      "EXP": 6,
+      "GOLD": 21,
       "breathLimit": 60,
       "drops": {},
       "special": {
-        "Ambush": ""
+        "Ambush": "",
+        "First": ""
       },
       "ANIMATION_KEY": "24_gongjian",
       "CritAnimationKey": "25_gongjian2"
@@ -647,10 +458,10 @@
       "name": "{E25_MOYUSHILAIMU}",
       "desc": "{E25_MOYUSHILAIMU_DESC}",
       "MAXHP": 500,
-      "ATK": 400,
-      "DEF": 185,
-      "EXP": 6,
-      "GOLD": 22,
+      "ATK": 350,
+      "DEF": 180,
+      "EXP": 7,
+      "GOLD": 24,
       "breathLimit": 45,
       "drops": {},
       "special": {
@@ -665,9 +476,9 @@
       "desc": "{E26_SHIXUEBIANFU_DESC}",
       "MAXHP": 270,
       "ATK": 240,
-      "DEF": 180,
+      "DEF": 170,
       "EXP": 5,
-      "GOLD": 18,
+      "GOLD": 21,
       "breathLimit": 55,
       "drops": {},
       "special": {
@@ -680,11 +491,11 @@
     "E27_kulouxiaoduizhang": {
       "name": "{E27_KULOUXIAODUIZHANG}",
       "desc": "{E27_KULOUXIAODUIZHANG_DESC}",
-      "MAXHP": 250,
-      "ATK": 300,
-      "DEF": 180,
+      "MAXHP": 300,
+      "ATK": 400,
+      "DEF": 100,
       "EXP": 4,
-      "GOLD": 12,
+      "GOLD": 22,
       "breathLimit": 50,
       "drops": {},
       "special": {
@@ -699,8 +510,8 @@
       "MAXHP": 320,
       "ATK": 150,
       "DEF": 220,
-      "EXP": 5,
-      "GOLD": 14,
+      "EXP": 8,
+      "GOLD": 23,
       "breathLimit": 90,
       "drops": {},
       "special": {
@@ -731,9 +542,9 @@
       "desc": "{E30_BAIYIWEI_DESC}",
       "MAXHP": 340,
       "ATK": 120,
-      "DEF": 210,
+      "DEF": 200,
       "EXP": 6,
-      "GOLD": 18,
+      "GOLD": 22,
       "breathLimit": 130,
       "drops": {},
       "special": {
@@ -749,9 +560,9 @@
       "desc": "{E31_HUIQISHI_DESC}",
       "MAXHP": 380,
       "ATK": 320,
-      "DEF": 200,
-      "EXP": 8,
-      "GOLD": 19,
+      "DEF": 180,
+      "EXP": 7,
+      "GOLD": 22,
       "breathLimit": 35,
       "drops": {},
       "special": {

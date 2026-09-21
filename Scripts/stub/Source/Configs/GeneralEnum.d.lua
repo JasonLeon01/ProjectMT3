@@ -23,8 +23,6 @@ local Class = {}
 
 --- @brief Enemy member keys.
 ---@class Source.Configs.GeneralEnum.Enemy
----@field Bat string
----@field BigWizard string
 ---@field E00_shilaimu string
 ---@field E01_hongseshilaimu string
 ---@field E02_bianfu string
@@ -118,15 +116,6 @@ local Class = {}
 ---@field E90_jianshenshashi string
 ---@field E91_moshenxieduo string
 ---@field E92_yonghengzhiyao string
----@field GhostSoldier string
----@field GreatIron string
----@field Knight string
----@field Mage string
----@field Rock string
----@field Skeleton string
----@field Slime string
----@field WhiteKing string
----@field Wizard string
 ---@type Source.Configs.GeneralEnum.Enemy
 local Enemy = {}
 

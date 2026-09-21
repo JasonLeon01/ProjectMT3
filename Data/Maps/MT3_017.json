@@ -4,7 +4,8 @@
   "height": 11,
   "layerOrder": [
     "floor",
-    "default"
+    "default",
+    "hide"
   ],
   "layers": {
     "floor": {
@@ -598,6 +599,302 @@
       ],
       "shaderPath": "",
       "actors": []
+    },
+    "hide": {
+      "layerName": "hide",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "autoTiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "shaderPath": "",
+      "actors": []
     }
   },
   "actors": {
@@ -797,59 +1094,11 @@
         ]
       },
       {
-        "tag": "MT3_017.BP_Enemy_E20_shilaimukuangren_default_5_1",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E20_shilaimukuangren",
-        "position": [
-          5,
-          1
-        ]
-      },
-      {
-        "tag": "MT3_017.BP_Enemy_E20_shilaimukuangren_default_7_4",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E20_shilaimukuangren",
-        "position": [
-          7,
-          4
-        ]
-      },
-      {
-        "tag": "MT3_017.BP_Enemy_E19_zhangyuzai_default_7_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E19_zhangyuzai",
-        "position": [
-          7,
-          8
-        ]
-      },
-      {
-        "tag": "MT3_017.BP_Enemy_E19_zhangyuzai_default_2_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E19_zhangyuzai",
-        "position": [
-          2,
-          6
-        ]
-      },
-      {
         "tag": "MT3_017.BP_Enemy_E18_hongbianfu_default_4_5",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E18_hongbianfu",
         "position": [
           4,
           5
-        ]
-      },
-      {
-        "tag": "MT3_017.BP_Enemy_E18_hongbianfu_default_1_7",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E18_hongbianfu",
-        "position": [
-          1,
-          7
-        ]
-      },
-      {
-        "tag": "MT3_017.BP_Enemy_E17_tieqishi_default_9_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E17_tieqishi",
-        "position": [
-          9,
-          9
         ]
       },
       {
@@ -987,6 +1236,56 @@
           4,
           10
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E17_tieqishi",
+        "tag": "Enemies_BP_Enemy_E17_tieqishi_default_9_9",
+        "position": [
+          9,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_7_4",
+        "position": [
+          7,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "tag": "Enemies_BP_Enemy_E26_shixuebianfu_default_2_6",
+        "position": [
+          2,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "tag": "Enemies_BP_Enemy_E28_fengwushi_default_1_7",
+        "position": [
+          1,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_5_1",
+        "position": [
+          5,
+          1
+        ]
+      }
+    ],
+    "hide": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_HideFloor",
+        "tag": "Actors_BP_HideFloor_default_7_1",
+        "position": [
+          7,
+          1
+        ]
       }
     ]
   },
@@ -1007,6 +1306,12 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {},
+  "BPClassVarChanged": {
+    "Actors_BP_HideFloor_default_7_1": {
+      "conditionVariable": "floor25Phase",
+      "conditionOperator": "\u003E=",
+      "conditionValue": 2
+    }
+  },
   "type": "map"
 }

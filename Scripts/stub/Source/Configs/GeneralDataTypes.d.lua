@@ -40,6 +40,8 @@ local EnemyAttributeSet = {}
 ---@field slot            string
 ---@field attrPlus        table<string, integer>
 ---@field AnimationKey    string
+---@field fatiguePlus     integer
+---@field breathMinus     integer
 ---@type Source.Configs.GeneralDataTypes.EquipAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.EquipAttributeSet>
 local EquipAttributeSet = {}
 

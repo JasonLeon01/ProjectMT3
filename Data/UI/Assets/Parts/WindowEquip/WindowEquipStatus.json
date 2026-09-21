@@ -94,7 +94,7 @@
         "children": []
       },
       {
-        "name": "Description",
+        "name": "FatiguePlus",
         "controlId": "Engine.PlainText",
         "properties": {
           "characterSize": 14,
@@ -123,6 +123,78 @@
           ],
           "autoSize": true,
           "zOrder": 2
+        },
+        "editor": {
+          "previewText": "Fatigue +15"
+        },
+        "children": []
+      },
+      {
+        "name": "BreathMinus",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 14,
+          "text": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 118.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 3
+        },
+        "editor": {
+          "previewText": "Breath -1"
+        },
+        "children": []
+      },
+      {
+        "name": "Description",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 14,
+          "text": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 136.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 4
         },
         "editor": {
           "previewText": "Equipment description"

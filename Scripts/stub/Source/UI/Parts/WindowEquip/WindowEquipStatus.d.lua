@@ -2,8 +2,10 @@
 ---@meta Source.UI.Parts.WindowEquip.WindowEquipStatus
 
 ---@class Source.UIBase.GeneratedControls.Parts.WindowEquip.WindowEquipStatus
+---@field BreathMinus Engine.PlainText
 ---@field ChangeList  Engine.ListView
 ---@field Description Engine.PlainText
+---@field FatiguePlus Engine.PlainText
 ---@field ItemName    Engine.PlainText
 ---@field Root        Engine.Canvas
 

@@ -661,14 +661,6 @@
         ]
       },
       {
-        "tag": "MT3_016.BP_Enemy_E26_shixuebianfu_default_1_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
-        "position": [
-          1,
-          5
-        ]
-      },
-      {
         "tag": "MT3_016.BP_Enemy_E25_moyushilaimu_default_8_6",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
         "position": [
@@ -704,40 +696,16 @@
         "tag": "MT3_016.BP_Enemy_E23_sangshijianshi_default_3_6",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E23_sangshijianshi",
         "position": [
-          3,
-          6
+          4,
+          5
         ]
       },
       {
         "tag": "MT3_016.BP_Enemy_E20_shilaimukuangren_default_2_0",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E20_shilaimukuangren",
         "position": [
-          2,
-          0
-        ]
-      },
-      {
-        "tag": "MT3_016.BP_Enemy_E19_zhangyuzai_default_4_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E19_zhangyuzai",
-        "position": [
-          4,
+          1,
           5
-        ]
-      },
-      {
-        "tag": "MT3_016.BP_Enemy_E17_tieqishi_default_10_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E17_tieqishi",
-        "position": [
-          10,
-          5
-        ]
-      },
-      {
-        "tag": "MT3_016.BP_Enemy_E16_zhongjishouwei_default_3_2",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E16_zhongjishouwei",
-        "position": [
-          3,
-          2
         ]
       },
       {
@@ -745,14 +713,6 @@
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E22_yanshushi",
         "position": [
           10,
-          9
-        ]
-      },
-      {
-        "tag": "MT3_016.BP_Enemy_E16_zhongjishouwei_default_6_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E16_zhongjishouwei",
-        "position": [
-          6,
           9
         ]
       },
@@ -784,16 +744,8 @@
         "tag": "MT3_016.BP_Enemy_E22_yanshushi_default_5_3",
         "bp": "Data.Blueprints.Enemies.BP_Enemy_E22_yanshushi",
         "position": [
-          5,
-          3
-        ]
-      },
-      {
-        "tag": "MT3_016.BP_Enemy_E18_hongbianfu_default_7_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E18_hongbianfu",
-        "position": [
-          7,
-          3
+          3,
+          6
         ]
       },
       {
@@ -987,6 +939,70 @@
           6,
           1
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_7_3",
+        "position": [
+          7,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_6_9",
+        "position": [
+          6,
+          9
+        ]
+      },
+      {
+        "tag": "Consumables_Bottle_400_default_5_5",
+        "bp": "Data.Blueprints.Consumables.Bottle_400",
+        "position": [
+          5,
+          5
+        ]
+      },
+      {
+        "tag": "Consumables_Bottle_400_default_8_5",
+        "bp": "Data.Blueprints.Consumables.Bottle_400",
+        "position": [
+          8,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "tag": "Enemies_BP_Enemy_E31_huiqishi_default_4_5",
+        "position": [
+          4,
+          3
+        ]
+      },
+      {
+        "tag": "Enemies_BP_Enemy_E26_shixuebianfu_default_10_5",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "position": [
+          10,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_2_0",
+        "position": [
+          2,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "tag": "Enemies_BP_Enemy_E24_gongbing_default_3_1",
+        "position": [
+          3,
+          1
+        ]
       }
     ]
   },
@@ -1007,19 +1023,6 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {
-    "MT3_016.Gem_GOLD_default_10_10": {
-      "plus": 200
-    },
-    "MT3_016.Gem_EXP_default_9_10": {
-      "plus": 5
-    },
-    "MT3_016.Gem_EXP_default_2_10": {
-      "plus": 5
-    },
-    "MT3_016.Gem_GOLD_default_1_1": {
-      "plus": 200
-    }
-  },
+  "BPClassVarChanged": {},
   "type": "map"
 }

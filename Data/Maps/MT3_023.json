@@ -311,14 +311,6 @@
   "actors": {
     "floor": [
       {
-        "bp": "Data.Blueprints.Teleportations.BP_Transfer_23",
-        "tag": "Teleportations_BP_Transfer_23_default_2_8",
-        "position": [
-          2,
-          8
-        ]
-      },
-      {
         "bp": "Data.Blueprints.Actors.BP_Fire_Left",
         "tag": "Actors_BP_Fire_Left_default_6_5",
         "position": [
@@ -437,14 +429,6 @@
         "bp": "Data.Blueprints.Consumables.Gem_2_2",
         "position": [
           2,
-          7
-        ]
-      },
-      {
-        "tag": "MT3_023.BP_SWall_default_2_8",
-        "bp": "Data.Blueprints.Actors.BP_SWall",
-        "position": [
-          2,
           8
         ]
       },
@@ -527,6 +511,14 @@
           8,
           6
         ]
+      },
+      {
+        "tag": "Actors_BP_Barrier_50_default_2_7",
+        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "position": [
+          2,
+          7
+        ]
       }
     ]
   },
@@ -547,13 +539,6 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {
-    "MT3_023.Gem_Level_default_4_8": {
-      "plus": 1
-    },
-    "MT3_023.Gem_GOLD_default_2_3": {
-      "plus": 100
-    }
-  },
+  "BPClassVarChanged": {},
   "type": "map"
 }

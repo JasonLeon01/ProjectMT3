@@ -1088,21 +1088,6 @@
   "fogDistort": 0,
   "panorama": "",
   "BPClassVarChanged": {
-    "MT3_008.Gem_EXP_default_3_7": {
-      "plus": 5
-    },
-    "MT3_008.Gem_EXP_default_5_4": {
-      "plus": 5
-    },
-    "MT3_008.Gem_Breath_default_1_4": {
-      "plus": -12
-    },
-    "MT3_008.Gem_Breath_default_0_6": {
-      "plus": -12
-    },
-    "Consumables_Gem_GOLD_default_10_6": {
-      "plus": 200
-    },
     "Actors_BP_Fire_default_4_8": {
       "defaultTranslation": [
         -0.43359375,

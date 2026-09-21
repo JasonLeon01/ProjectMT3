@@ -739,13 +739,6 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {
-    "MT3_020.Gem_EXP_default_0_4": {
-      "plus": 5
-    },
-    "MT3_020.Gem_EXP_default_2_4": {
-      "plus": 5
-    }
-  },
+  "BPClassVarChanged": {},
   "type": "map"
 }

@@ -90,6 +90,8 @@
 ---@field slot         string
 ---@field attrPlus     table<string, integer>
 ---@field AnimationKey string
+---@field fatiguePlus  integer
+---@field breathMinus  integer
 
 ---@class Source.Data.GeneralEnemyData: Source.Data.GeneralMemberData
 ---@field MAXHP         integer

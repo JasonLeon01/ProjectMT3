@@ -1103,16 +1103,6 @@
   "fogOy": 0,
   "fogDistort": 0,
   "panorama": "",
-  "BPClassVarChanged": {
-    "MT3_014.KeyBox_default_10_0": {
-      "plus": 1
-    },
-    "MT3_014.Gem_EXP_default_0_6": {
-      "plus": 5
-    },
-    "MT3_014.Gem_EXP_default_7_0": {
-      "plus": 5
-    }
-  },
+  "BPClassVarChanged": {},
   "type": "map"
 }

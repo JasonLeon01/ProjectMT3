@@ -35,6 +35,10 @@
 ---@field CritAnimationKey string
 ---@field attackSkillAnimationKey string
 ---@field defenseSkillAnimationKey string
+---@field attackSkillFatiguePlus integer
+---@field defenseSkillFatiguePlus integer
+---@field attackSkillBreathMinus integer
+---@field defenseSkillBreathMinus integer
 ---@field isPlayer         boolean
 ---@field crit             fun(damage: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
 ---@field attackSkill      Source.Configs.Battle.Skill | nil
@@ -98,11 +102,13 @@ function Controller:schedule(delay, action) end
 ---@return integer base
 function Controller:calculateDamage(attacker, defender, critical, attackSkill) end
 ---@param state Source.Windows.WindowBattle.BattlerState
+---@param units? integer
 ---@return integer
-function Controller:skillBreathCost(state) end
+function Controller:skillBreathCost(state, units) end
 ---@param state Source.Windows.WindowBattle.BattlerState
+---@param cost  integer
 ---@return boolean
-function Controller:canAffordSkill(state) end
+function Controller:canAffordSkill(state, cost) end
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
 ---@return boolean

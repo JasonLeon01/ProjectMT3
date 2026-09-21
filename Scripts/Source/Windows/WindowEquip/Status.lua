@@ -16,6 +16,8 @@ local _SLOT_DESC_NAME_Y = 0
 local _SLOT_DESC_TEXT_Y = 24
 local _EQUIP_DESC_NAME_Y = 76
 local _EQUIP_DESC_TEXT_Y = 100
+local _STATS_OFFSET_Y = 24
+local _STATS_LINE_HEIGHT = 18
 
 local _ATTR_ORDER = { "MAXHP", "HP", "ATK", "DEF", "EXP", "GOLD" }
 
@@ -28,8 +30,12 @@ function Controller:init(player)
     self._player = player
     self._descriptionName = ""
     self._descriptionText = ""
+    self._fatiguePlusText = ""
+    self._breathMinusText = ""
+    self._showSkillStats = false
     self._descriptionNameY = _EQUIP_DESC_NAME_Y
     self._descriptionTextY = _EQUIP_DESC_TEXT_Y
+    self._skillStatsY = _EQUIP_DESC_NAME_Y + _STATS_OFFSET_Y
     self._logicalSize = nil
     self._changeRows = self:createCollection(
         self.ui.assets["StatusAsset"].controls["ChangeList"], EquipStatusRowController
@@ -43,6 +49,8 @@ end
 
 function Controller:refresh()
     self.ui.assets["StatusAsset"].instance:setText("ItemName", self._descriptionName)
+    self.ui.assets["StatusAsset"].instance:setText("FatiguePlus", self._fatiguePlusText)
+    self.ui.assets["StatusAsset"].instance:setText("BreathMinus", self._breathMinusText)
     self.ui.assets["StatusAsset"].instance:setText("Description", self._descriptionText)
 end
 
@@ -71,6 +79,7 @@ function Controller:refreshForEquip(slotKey, candidateEquipID, showUnequip)
     local candidateAttrs = showUnequip and {} or self:getAttrPlus(candidateEquipID)
     self:refreshChangeRows(currentAttrs, candidateAttrs)
     self._descriptionNameY = _EQUIP_DESC_NAME_Y
+    self._skillStatsY = _EQUIP_DESC_NAME_Y + _STATS_OFFSET_Y
     self._descriptionTextY = _EQUIP_DESC_TEXT_Y
     self:refreshDescription(candidateEquipID, showUnequip)
 end
@@ -79,6 +88,7 @@ function Controller:refreshForSlot(slotKey)
     self:_refreshLogicalSize()
     self:clearChangeTexts()
     self._descriptionNameY = _SLOT_DESC_NAME_Y
+    self._skillStatsY = _SLOT_DESC_NAME_Y + _STATS_OFFSET_Y
     self._descriptionTextY = _SLOT_DESC_TEXT_Y
     local currentEquipID = self._player:getEquipInfo(slotKey)
     self:refreshDescription(bool(currentEquipID) and currentEquipID or nil, false)
@@ -108,6 +118,9 @@ end
 
 function Controller:refreshDescription(candidateEquipID, showUnequip)
     local descMaxWidth = math.max(1, math.floor(self.host.content:getSize().x))
+    self._fatiguePlusText = ""
+    self._breathMinusText = ""
+    self._showSkillStats = false
     if showUnequip then
         self._descriptionName = LOC("EQUIP_UNEQUIP")
         self._descriptionText = TextLayout.wrapPlainText(
@@ -123,6 +136,10 @@ function Controller:refreshDescription(candidateEquipID, showUnequip)
         self._descriptionText = TextLayout.wrapPlainText(
             LOC(equipInfo.desc or ""), descMaxWidth, self.ui.assets["StatusAsset"].controls["Description"]
         )
+        self._fatiguePlusText = LOC("BATTLE_FATIGUE") .. " +" .. tostring(equipInfo.fatiguePlus or 0)
+        self._breathMinusText = LOC("BREATH") .. " -" .. tostring(equipInfo.breathMinus or 0)
+        self._showSkillStats = true
+        self._descriptionTextY = self._skillStatsY + _STATS_LINE_HEIGHT * 2
     end
     self:refresh()
     self.ui.assets["StatusAsset"].instance:reflow(self._logicalSize)
@@ -134,8 +151,13 @@ function Controller:clearChangeTexts()
 end
 
 function Controller:_applyDescriptionPosition()
-    self.ui.assets["StatusAsset"].controls["ItemName"]:setPosition(sf.Vector2f.new(0.0, self._descriptionNameY))
-    self.ui.assets["StatusAsset"].controls["Description"]:setPosition(sf.Vector2f.new(0.0, self._descriptionTextY))
+    local status = self.ui.assets["StatusAsset"]
+    status.controls["ItemName"]:setPosition(sf.Vector2f.new(0.0, self._descriptionNameY))
+    status.controls["FatiguePlus"]:setPosition(sf.Vector2f.new(0.0, self._skillStatsY))
+    status.controls["BreathMinus"]:setPosition(sf.Vector2f.new(0.0, self._skillStatsY + _STATS_LINE_HEIGHT))
+    status.controls["FatiguePlus"]:setVisible(self._showSkillStats)
+    status.controls["BreathMinus"]:setVisible(self._showSkillStats)
+    status.controls["Description"]:setPosition(sf.Vector2f.new(0.0, self._descriptionTextY))
 end
 
 ---@diagnostic disable-next-line: unused

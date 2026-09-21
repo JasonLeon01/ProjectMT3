@@ -1056,12 +1056,6 @@
   "fogDistort": 0,
   "panorama": "",
   "BPClassVarChanged": {
-    "MT3_004.KeyBox_default_0_6": {
-      "plus": 1
-    },
-    "Consumables_Gem_Level_default_9_1": {
-      "plus": 1
-    },
     "Actors_BP_Fire_Right_default_9_4_2": {
       "defaultTranslation": [
         8,

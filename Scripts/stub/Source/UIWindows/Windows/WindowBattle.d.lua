@@ -37,8 +37,9 @@ function Window:bind() end
 function Window:calculateDamage(attacker, defender, critical, attackSkill) end
 
 ---@param state Source.Windows.WindowBattle.BattlerState
+---@param cost  integer
 ---@return boolean
-function Window:canAffordSkill(state) end
+function Window:canAffordSkill(state, cost) end
 
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
@@ -153,8 +154,9 @@ function Window:setBattleText(name, text) end
 ---@param actor Engine.Actor
 function Window:setPortrait(name, actor) end
 
----@param state Source.Windows.WindowBattle.BattlerState
+---@param state  Source.Windows.WindowBattle.BattlerState
+---@param units? integer
 ---@return integer
-function Window:skillBreathCost(state) end
+function Window:skillBreathCost(state, units) end
 
 return Window

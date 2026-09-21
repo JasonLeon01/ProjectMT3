@@ -28,18 +28,21 @@ Controller.windowOptions = { hidden = true, focusable = true }
 ---@param skills table<string, Source.Configs.Battle.Skill | nil>
 ---@return Source.Configs.Battle.Skill | nil
 ---@return string
+---@return integer
+---@return integer
 local function resolveEquipSkill(actor, slot, skills)
     local equipID = actor:getEquipInfo(slot)
     if not bool(equipID) then
-        return nil, ""
+        return nil, "", 0, 0
     end
     ---@cast equipID string
     local skill = skills[equipID]
     if skill == nil then
-        return nil, ""
+        return nil, "", 0, 0
     end
-    local animationKey = Data.GetGeneralEquipData(equipID).AnimationKey
-    return skill, bool(animationKey) and animationKey or ""
+    local equipData = Data.GetGeneralEquipData(equipID)
+    local animationKey = equipData.AnimationKey
+    return skill, bool(animationKey) and animationKey or "", equipData.fatiguePlus or 0, equipData.breathMinus or 0
 end
 
 ---@param actor  Source.Player.Player | Source.Enemy
@@ -58,10 +61,16 @@ local function createState(actor, player)
     local defenseSkill = nil
     local attackSkillAnimationKey = ""
     local defenseSkillAnimationKey = ""
+    local attackSkillFatiguePlus = 0
+    local defenseSkillFatiguePlus = 0
+    local attackSkillBreathMinus = 0
+    local defenseSkillBreathMinus = 0
     if player then
         ---@cast actor Source.Player.Player
-        attackSkill, attackSkillAnimationKey = resolveEquipSkill(actor, "weapon", Battle.attackSkills)
-        defenseSkill, defenseSkillAnimationKey = resolveEquipSkill(actor, "shield", Battle.defenseSkills)
+        attackSkill, attackSkillAnimationKey, attackSkillFatiguePlus, attackSkillBreathMinus =
+            resolveEquipSkill(actor, "weapon", Battle.attackSkills)
+        defenseSkill, defenseSkillAnimationKey, defenseSkillFatiguePlus, defenseSkillBreathMinus =
+            resolveEquipSkill(actor, "shield", Battle.defenseSkills)
     end
     return {
         HP = player and attributes.HP or attributes.MAXHP,
@@ -77,6 +86,10 @@ local function createState(actor, player)
         CritAnimationKey = attributes.CritAnimationKey,
         attackSkillAnimationKey = attackSkillAnimationKey,
         defenseSkillAnimationKey = defenseSkillAnimationKey,
+        attackSkillFatiguePlus = attackSkillFatiguePlus,
+        defenseSkillFatiguePlus = defenseSkillFatiguePlus,
+        attackSkillBreathMinus = attackSkillBreathMinus,
+        defenseSkillBreathMinus = defenseSkillBreathMinus,
         crit = rule.crit,
         attackSkill = attackSkill,
         defenseSkill = defenseSkill,
@@ -321,27 +334,28 @@ function Controller:calculateDamage(attacker, defender, critical, attackSkill)
     return damage, base
 end
 
-function Controller:skillBreathCost(state)
-    return math.floor(state.breathLimit / 6)
+function Controller:skillBreathCost(state, units)
+    return math.floor(state.breathLimit / 6) * (units or 1)
 end
 
-function Controller:canAffordSkill(state)
-    local cost = self:skillBreathCost(state)
+function Controller:canAffordSkill(state, cost)
     return cost > 0 and state.breath >= cost
 end
 
 function Controller:canCritical(attacker, defender)
     local cost = attacker.isPlayer and self:skillBreathCost(attacker) or attacker.breathLimit
-    return cost > 0 and attacker.breath >= cost and self:calculateDamage(attacker, defender, true) > 0
+    return self:canAffordSkill(attacker, cost) and self:calculateDamage(attacker, defender, true) > 0
 end
 
 function Controller:canAttackSkill(attacker, defender)
-    return attacker.isPlayer and attacker.attackSkill ~= nil and self:canAffordSkill(attacker)
+    return attacker.isPlayer and attacker.attackSkill ~= nil
+        and self:canAffordSkill(attacker, self:skillBreathCost(attacker, attacker.attackSkillBreathMinus))
         and self:calculateDamage(attacker, defender, false, true) > 0
 end
 
 function Controller:canDefenseSkill(state)
-    return state.isPlayer and state.defenseSkill ~= nil and self:canAffordSkill(state)
+    return state.isPlayer and state.defenseSkill ~= nil
+        and self:canAffordSkill(state, self:skillBreathCost(state, state.defenseSkillBreathMinus))
 end
 
 function Controller:requestCritical()
@@ -515,15 +529,15 @@ end
 
 function Controller:receiveAttack(attacker, defender, damage, critical, attackSkill, defenseSkill)
     if defenseSkill and defender.isPlayer then
-        local skill = assert(defender.defenseSkill, "Defense skill is missing")
-        defender.breath = defender.breath - self:skillBreathCost(defender)
-        defender.fatigue = defender.fatigue + skill.fatigue
+        assert(defender.defenseSkill, "Defense skill is missing")
+        defender.breath = defender.breath - self:skillBreathCost(defender, defender.defenseSkillBreathMinus)
+        defender.fatigue = defender.fatigue + defender.defenseSkillFatiguePlus
     end
     if damage > 0 then
         if attackSkill then
-            local skill = assert(attacker.attackSkill, "Attack skill is missing")
-            attacker.breath = attacker.breath - self:skillBreathCost(attacker)
-            attacker.fatigue = attacker.fatigue + skill.fatigue
+            assert(attacker.attackSkill, "Attack skill is missing")
+            attacker.breath = attacker.breath - self:skillBreathCost(attacker, attacker.attackSkillBreathMinus)
+            attacker.fatigue = attacker.fatigue + attacker.attackSkillFatiguePlus
         elseif critical then
             attacker.breath = attacker.isPlayer and attacker.breath - self:skillBreathCost(attacker) or 0
             attacker.fatigue = attacker.fatigue + Battle.criticalFatigue
@@ -540,7 +554,8 @@ function Controller:receiveAttack(attacker, defender, damage, critical, attackSk
             local gain = player.ATK > 0 and math.round(defense / player.ATK * 6) or 0
             self:addBreath(attacker, gain)
         end
-        if not (attacker.thunder > 0 and defender.isPlayer) then
+        -- Defense skill remaining damage does not grant breath to the skill user.
+        if not defenseSkill and not (attacker.thunder > 0 and defender.isPlayer) then
             self:addBreath(defender, math.round(damage / (defender.isPlayer and 10 or 3)))
         end
     end

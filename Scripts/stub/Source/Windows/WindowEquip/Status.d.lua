@@ -7,9 +7,17 @@
 ---@class Source.Windows.WindowEquipStatus.Controller: Source.UIBase.UiController
 ---@field host         Source.Windows.WindowEquipStatus
 ---@field ui           Source.UI.Parts.WindowEquip.WindowEquipStatusPane
----@field _logicalSize sf.Vector2u | nil
----@field _player      Source.Player.Player
----@field _changeRows  Source.UIBase.UiCollection<Source.Windows.WindowEquip.EquipStatusRow.Controller>
+---@field _logicalSize      sf.Vector2u | nil
+---@field _player           Source.Player.Player
+---@field _changeRows       Source.UIBase.UiCollection<Source.Windows.WindowEquip.EquipStatusRow.Controller>
+---@field _descriptionName  string
+---@field _descriptionText  string
+---@field _fatiguePlusText  string
+---@field _breathMinusText  string
+---@field _showSkillStats   boolean
+---@field _descriptionNameY number
+---@field _descriptionTextY number
+---@field _skillStatsY      number
 local Controller = {}
 
 ---@brief Construct the equipment status window.

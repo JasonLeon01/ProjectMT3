@@ -11,8 +11,10 @@ View.designSize = sf.Vector2f.new(224, 320)
 function View:init(instance)
     UiView.init(self, instance)
     local controls = {
+        BreathMinus = assert(self.instance:requireControl("BreathMinus")),
         ChangeList = assert(self.instance:requireControl("ChangeList")),
         Description = assert(self.instance:requireControl("Description")),
+        FatiguePlus = assert(self.instance:requireControl("FatiguePlus")),
         ItemName = assert(self.instance:requireControl("ItemName")),
         Root = assert(self.instance:requireControl("Root"))
     }

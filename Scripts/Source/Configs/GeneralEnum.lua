@@ -16,8 +16,6 @@ local Class = {
 }
 
 local Enemy = {
-    Bat = "Bat",
-    BigWizard = "BigWizard",
     E00_shilaimu = "E00_shilaimu",
     E01_hongseshilaimu = "E01_hongseshilaimu",
     E02_bianfu = "E02_bianfu",
@@ -111,15 +109,6 @@ local Enemy = {
     E90_jianshenshashi = "E90_jianshenshashi",
     E91_moshenxieduo = "E91_moshenxieduo",
     E92_yonghengzhiyao = "E92_yonghengzhiyao",
-    GhostSoldier = "GhostSoldier",
-    GreatIron = "GreatIron",
-    Knight = "Knight",
-    Mage = "Mage",
-    Rock = "Rock",
-    Skeleton = "Skeleton",
-    Slime = "Slime",
-    WhiteKing = "WhiteKing",
-    Wizard = "Wizard",
 }
 
 local Equip = {

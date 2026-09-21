@@ -4,11 +4,9 @@ local Battle = {}
 ---@field crit fun(damage: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
 
 ---@class Source.Configs.Battle.Skill
----@field fatigue integer
 ---@field apply fun(value: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
 
-Battle.princessCritDirectCap = 100
-Battle.princessCritMagicScale = 100
+Battle.huiRenMultiplierCeil = 2
 
 ---@type table<string, Source.Configs.Battle.Rule | nil>
 Battle.players = {
@@ -18,10 +16,13 @@ Battle.players = {
         end
     },
     Princess = {
-        crit = function (damage, attacker, defender)
-            local magic = math.max(0, attacker.MAGIC)
-            local extra = defender.DEF * magic / (Battle.princessCritMagicScale + magic)
-            return damage + math.min(damage, Battle.princessCritDirectCap) + extra
+        crit = function (damage, attacker, _defender)
+            damage = math.max(0, damage)
+            local k = 12
+            local basic = 1.75
+            local X = k * (attacker.MAGIC / attacker.ATK) * (_defender.DEF / attacker.ATK)
+            local extra = 1.25 * X / (1 + X)
+            return math.floor(damage * (basic + extra))
         end
     }
 }
@@ -41,12 +42,13 @@ Battle.enemy = {
 ---@type table<string, Source.Configs.Battle.Skill | nil>
 Battle.attackSkills = {
     HuiRen = {
-        fatigue = 6,
-        apply = function (base, attacker, _defender)
-            local magic = math.max(0, attacker.MAGIC)
-            ---@type number
-            local strike = math.max(0, base)
-            return math.round(strike * (1 + (magic + strike) / math.max(1, strike - magic)))
+        apply = function (damage, attacker, _defender)
+            damage = math.max(0, damage)
+            local k = 13
+            local basic = 1.85
+            local X = k * (attacker.MAGIC / attacker.ATK) * ((attacker.ATK - _defender.DEF) / attacker.ATK)
+            local extra = 2.15 * X / (1 + X)
+            return math.floor(damage * (basic + extra))
         end
     }
 }
@@ -54,15 +56,16 @@ Battle.attackSkills = {
 ---@type table<string, Source.Configs.Battle.Skill | nil>
 Battle.defenseSkills = {
     HuiMu = {
-        fatigue = 5,
-        apply = function (incoming, _attacker, defender)
-            local magic = math.max(0, defender.MAGIC)
-            ---@type number
-            local damage = math.max(0, incoming)
-            if damage <= 0 then
+        apply = function (damage, _attacker, defender)
+            damage = math.max(0, damage)
+            if damage == 0 then
                 return 0
             end
-            return math.round(damage * math.max(0, damage - magic) / (damage + magic))
+            local basic = 0.2
+            local k = 15
+            local X = k * (defender.MAGIC / defender.DEF) * ((_attacker.ATK - defender.DEF) / _attacker.ATK)
+            local extra = 0.2 * X / (1 + X)
+            return math.round(damage * (1 - (basic + extra)))
         end
     }
 }

@@ -20,7 +20,8 @@
     "/Game/Assets/Animations/WaterSpread_15.png",
     "/Game/Assets/Animations/WaterSpread_16.png",
     "/Game/Assets/Animations/WaterSpread_17.png",
-    "/Game/Assets/Sounds/waterspread.wav"
+    "/Game/Assets/Sounds/mting-54.wav",
+    "/Game/Assets/Sounds/mting-45.wav"
   ],
   "timeLines": [
     {
@@ -555,7 +556,7 @@
           "type": "sound",
           "asset": 18,
           "startFrame": {
-            "time": 0.26666666666666666,
+            "time": 0.3,
             "position": [
               0,
               0
@@ -567,7 +568,7 @@
             ]
           },
           "endFrame": {
-            "time": 2.2666666666666666,
+            "time": 1.2404081,
             "position": [
               0,
               0
@@ -578,7 +579,40 @@
               1
             ]
           },
-          "originalDuration": 2
+          "originalDuration": 0.9404081
+        }
+      ]
+    },
+    {
+      "timeSegments": [
+        {
+          "type": "sound",
+          "asset": 19,
+          "startFrame": {
+            "time": 0,
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "endFrame": {
+            "time": 0.7053061,
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "originalDuration": 0.7053061
         }
       ]
     }
