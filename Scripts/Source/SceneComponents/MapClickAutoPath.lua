@@ -9,7 +9,7 @@ local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 local Input = Engine.Input
 local Actor = Engine.Actor
-local System = GlobalCore.System
+local Display = GlobalCore.Display
 local NEIGHBOUR_OFFSET_DOWN = sf.Vector2i.new(0, 1)
 local NEIGHBOUR_OFFSET_UP = sf.Vector2i.new(0, -1)
 local NEIGHBOUR_OFFSET_RIGHT = sf.Vector2i.new(1, 0)
@@ -407,7 +407,7 @@ end
 ---@param positionY number
 ---@return sf.Vector2i | nil
 function MapClickAutoPath:_getInputMapPosition(positionX, positionY)
-    local scale = System.getScale()
+    local scale = Display.getScale()
     if scale > 0.0 then
         positionX = math.floor(positionX / scale)
         positionY = math.floor(positionY / scale)

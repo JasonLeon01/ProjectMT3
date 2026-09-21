@@ -37,6 +37,7 @@
 ---@field AnimationPlayingSound GlobalCore.AnimationPlayingSound
 ---@field Camera GlobalCore.Camera
 ---@field CommonTipController GlobalCore.CommonTipController
+---@field Display GlobalCore.Display
 ---@field FocusGroup GlobalCore.FocusGroup
 ---@field FocusManager GlobalCore.FocusManager
 ---@field FocusNeighbor GlobalCore.FocusNeighbor
@@ -57,6 +58,7 @@
 ---@field GameplayEffectSpec GlobalCore.GameplayEffectSpec
 ---@field GameplayEventData GlobalCore.GameplayEventData
 ---@field GameplayModifier GlobalCore.GameplayModifier
+---@field Graphics GlobalCore.Graphics
 ---@field Light GlobalCore.Light
 ---@field LightOcclusionInput GlobalCore.LightOcclusionInput
 ---@field LightOcclusionResult GlobalCore.LightOcclusionResult
@@ -69,9 +71,12 @@
 ---@field TimerEntry GlobalCore.TimerEntry
 ---@field MapPanoramaSettings GlobalCore.MapPanoramaSettings
 ---@field PanoramaController GlobalCore.PanoramaController
+---@field RuntimeDiagnostics GlobalCore.RuntimeDiagnostics
 ---@field SceneBase GlobalCore.SceneBase
+---@field SceneManager GlobalCore.SceneManager
+---@field ScreenEffects GlobalCore.ScreenEffects
 ---@field System GlobalCore.System
----@field SystemConfigBase GlobalCore.SystemConfigBase
+---@field Transition GlobalCore.Transition
 ---@field UIManager GlobalCore.UIManager
 ---@field WeatherController GlobalCore.WeatherController
 ---@field WorldStreamingState GlobalCore.WorldStreamingState
@@ -387,6 +392,105 @@ function CommonTipController:addTip(text) end
 ---@return nil
 function CommonTipController:onTick(deltaTime) end
 GlobalCore.CommonTipController = CommonTipController
+
+---@class GlobalCore.Display
+local Display = {}
+---@param title string
+---@param gameSize sf.Vector2u
+---@param iconPath string
+---@param cursorPath string
+---@return nil
+function Display.initializeDisplay(title, gameSize, iconPath, cursorPath) end
+--- @brief Get the current positive display scale
+---
+--- - @return The actual scale used by rendering and input mapping
+---
+---@return number
+function Display.getScale() end
+--- @brief Get the configured display scale
+---
+--- Zero selects borderless fullscreen on desktop. Non-finite and negative
+--- values are normalised to one.
+---
+--- - @return The configured value, including zero
+---
+---@return number
+function Display.getConfiguredScale() end
+--- @brief Get the largest configurable display scale
+---
+--- Desktop uses the current window's display work area when available,
+--- otherwise the primary display. A configurable mobile host uses its
+--- host-reported maximum windowed dimensions. Embedded and
+--- non-configurable mobile displays return no value.
+---
+--- - @param gameSize Non-zero logical game size
+--- - @return Maximum scale, or no value when display size is unavailable
+---
+---@param gameSize sf.Vector2u
+---@return number|nil
+function Display.getMaximumWindowedScale(gameSize) end
+--- @brief Apply and save a display scale
+---
+--- The display change is applied between complete frames.
+---
+--- - @param value Scale preference; zero selects desktop fullscreen
+---
+---@param value number
+---@return nil
+function Display.setScale(value) end
+--- @brief Apply a display scale without saving it
+---
+--- - @param value Scale preference; zero selects desktop fullscreen
+---
+---@param value number
+---@return nil
+function Display.applyScale(value) end
+--- @brief Save a display scale without applying it
+---
+--- - @param value Scale preference; zero selects desktop fullscreen
+---
+---@param value number
+---@return nil
+function Display.saveScale(value) end
+--- @brief Check whether the current host can apply display scale changes
+---
+--- Standalone desktop windows support scale changes. Embedded displays and
+--- ordinary mobile hosts do not; a mobile host may register support.
+---
+--- - @return True when display scale changes can be applied
+---
+---@return boolean
+function Display.isDisplayScaleConfigurable() end
+---@return integer
+function Display.getFrameRate() end
+---@param value integer
+---@return nil
+function Display.setFrameRate(value) end
+---@param value integer
+---@return nil
+function Display.saveFrameRate(value) end
+---@return integer
+function Display.getAntiAliasingLevel() end
+---@param value integer
+---@return nil
+function Display.setAntiAliasingLevel(value) end
+---@param value integer
+---@return nil
+function Display.saveAntiAliasingLevel(value) end
+---@return boolean
+function Display.getVerticalSync() end
+---@param value boolean
+---@return nil
+function Display.setVerticalSync(value) end
+---@param value boolean
+---@return nil
+function Display.saveVerticalSync(value) end
+---@return sf.Vector2u
+function Display.getGameSize() end
+---@param disabled boolean
+---@return nil
+function Display.setInputMethodDisabled(disabled) end
+GlobalCore.Display = Display
 
 ---@class GlobalCore.FocusGroup : Engine.RuntimeObject
 ---@field name string
@@ -1160,6 +1264,83 @@ function GameplayModifier.new(values) end
 function GameplayModifier.init(self, values) end
 GlobalCore.GameplayModifier = GameplayModifier
 
+---@class GlobalCore.Graphics
+local Graphics = {}
+--- @brief Get the configured maximum render scale
+---
+--- Zero leaves the internal render scale uncapped. A positive value caps
+--- the actual surface-fit scale without changing the window size.
+---
+--- - @return The configured maximum scale, including zero
+---
+---@return number
+function Graphics.getMaximumRenderScale() end
+--- @brief Apply and save a maximum render scale
+---
+--- The render-target change is applied between complete frames.
+---
+--- - @param value Maximum scale; zero leaves rendering uncapped
+---
+---@param value number
+---@return nil
+function Graphics.setMaximumRenderScale(value) end
+--- @brief Save a maximum render scale without applying it
+---
+--- - @param value Maximum scale; zero leaves rendering uncapped
+---
+---@param value number
+---@return nil
+function Graphics.saveMaximumRenderScale(value) end
+--- @brief Get the configured lighting render scale
+---
+--- The supported values are 0.5, 0.75 and 1.0. Other values are
+--- normalised to one.
+---
+--- - @return The configured lighting render scale
+---
+---@return number
+function Graphics.getLightingRenderScale() end
+--- @brief Apply and save a lighting render scale
+---
+--- The lighting targets are rebuilt on the next map render.
+---
+--- - @param value Lighting render scale
+---
+---@param value number
+---@return nil
+function Graphics.setLightingRenderScale(value) end
+--- @brief Save a lighting render scale without applying it
+---
+--- - @param value Lighting render scale
+---
+---@param value number
+---@return nil
+function Graphics.saveLightingRenderScale(value) end
+---@param rect sf.IntRect
+---@return nil
+function Graphics.setWindowMapView(rect) end
+---@return nil
+function Graphics.setWindowDefaultView() end
+---@return sf.RenderTexture
+function Graphics.getCanvas() end
+---@param drawable sf.Drawable
+---@param shader? sf.Shader
+---@return nil
+function Graphics.draw(drawable, shader) end
+---@param shader sf.Shader|nil
+---@param uniforms? table<string, number|integer|boolean|sf.Vector2f|sf.Vector3f|sf.Glsl.Vec4|sf.Vector2i|sf.Vector3i|sf.Glsl.Ivec4|sf.Color|sf.Texture|nil|number[]|sf.Vector2f[]|sf.Vector3f[]|sf.Glsl.Vec4[]>
+---@return nil
+function Graphics.addGraphicsShader(shader, uniforms) end
+---@param shader sf.Shader|nil
+---@return nil
+function Graphics.removeGraphicsShader(shader) end
+---@return nil
+function Graphics.removeAllGraphicsShaders() end
+---@param index integer
+---@return nil
+function Graphics.removeGraphicsShaderAt(index) end
+GlobalCore.Graphics = Graphics
+
 --- @brief Light source with position, colour, radius, and intensity
 ---
 ---@class GlobalCore.Light
@@ -1237,6 +1418,54 @@ GlobalCore.AudioEffectControl = AudioEffectControl
 
 ---@class GlobalCore.AudioManager
 local AudioManager = {}
+---@return boolean
+function AudioManager.getMusicOn() end
+---@param value boolean
+---@return nil
+function AudioManager.setMusicOn(value) end
+---@param value boolean
+---@return nil
+function AudioManager.saveMusicOn(value) end
+---@return boolean
+function AudioManager.getSoundOn() end
+---@param value boolean
+---@return nil
+function AudioManager.setSoundOn(value) end
+---@param value boolean
+---@return nil
+function AudioManager.saveSoundOn(value) end
+---@return boolean
+function AudioManager.getVoiceOn() end
+---@param value boolean
+---@return nil
+function AudioManager.setVoiceOn(value) end
+---@param value boolean
+---@return nil
+function AudioManager.saveVoiceOn(value) end
+---@return number
+function AudioManager.getMusicVolume() end
+---@param value number
+---@return nil
+function AudioManager.setMusicVolume(value) end
+---@param value number
+---@return nil
+function AudioManager.saveMusicVolume(value) end
+---@return number
+function AudioManager.getSoundVolume() end
+---@param value number
+---@return nil
+function AudioManager.setSoundVolume(value) end
+---@param value number
+---@return nil
+function AudioManager.saveSoundVolume(value) end
+---@return number
+function AudioManager.getVoiceVolume() end
+---@param value number
+---@return nil
+function AudioManager.setVoiceVolume(value) end
+---@param value number
+---@return nil
+function AudioManager.saveVoiceVolume(value) end
 ---@param filePath string
 ---@return sf.SoundBuffer|nil
 function AudioManager.loadSound(filePath) end
@@ -1428,6 +1657,23 @@ function PanoramaController.isActive() end
 function PanoramaController.drawUnderlay(camera, ambientLight) end
 GlobalCore.PanoramaController = PanoramaController
 
+---@class GlobalCore.RuntimeDiagnostics
+local RuntimeDiagnostics = {}
+---@return boolean
+function RuntimeDiagnostics.isPerformanceProfilerEnabled() end
+---@param queueDepth integer
+---@param reading integer
+---@param prepared integer
+---@param active integer
+---@param dormant integer
+---@param cacheBytes integer
+---@param publishMilliseconds number
+---@param visibleTileChunks integer
+---@param activeActors integer
+---@return nil
+function RuntimeDiagnostics.recordWorldStreamingPerformance(queueDepth, reading, prepared, active, dormant, cacheBytes, publishMilliseconds, visibleTileChunks, activeActors) end
+GlobalCore.RuntimeDiagnostics = RuntimeDiagnostics
+
 ---@class GlobalCore.SceneBase
 local SceneBase = {}
 ---@return GlobalCore.SceneBase
@@ -1467,18 +1713,67 @@ function SceneBase:clearAnims() end
 function SceneBase:addCommonTip(text) end
 GlobalCore.SceneBase = SceneBase
 
----@class GlobalCore.System : GlobalCore.SystemConfigBase
+---@class GlobalCore.SceneManager
+local SceneManager = {}
+---@return SceneRuntime|nil
+function SceneManager.getScene() end
+---@return SceneRuntime|nil
+function SceneManager.requireScene() end
+---@return GlobalCore.__ArrayElement_471fc5a82793[]
+function SceneManager.getSceneList() end
+---@param scene SceneRuntime|nil
+---@return nil
+function SceneManager.setScene(scene) end
+---@param scene SceneRuntime|nil
+---@return nil
+function SceneManager.pushScene(scene) end
+---@return nil
+function SceneManager.popScene() end
+GlobalCore.SceneManager = SceneManager
+
+---@class GlobalCore.ScreenEffects
+local ScreenEffects = {}
+---@param color? sf.Color|nil
+---@param duration? number
+---@return nil
+function ScreenEffects.flashScreen(color, duration) end
+---@return nil
+function ScreenEffects.stopFlash() end
+---@return boolean
+function ScreenEffects.isFlashing() end
+---@param red? number
+---@param green? number
+---@param blue? number
+---@param gray? number
+---@param duration? number
+---@return nil
+function ScreenEffects.changeScreenTone(red, green, blue, gray, duration) end
+---@param duration? number
+---@return nil
+function ScreenEffects.clearScreenTone(duration) end
+---@return nil
+function ScreenEffects.stopScreenTone() end
+---@return boolean
+function ScreenEffects.isScreenToneActive() end
+---@return boolean
+function ScreenEffects.isScreenToneTransitionComplete() end
+---@param power? number
+---@param speed? number
+---@param duration? number
+---@return nil
+function ScreenEffects.startShake(power, speed, duration) end
+---@return nil
+function ScreenEffects.stopShake() end
+---@return boolean
+function ScreenEffects.isShaking() end
+GlobalCore.ScreenEffects = ScreenEffects
+
+---@class GlobalCore.System
 local System = {}
 ---@param data ConfigParser
 ---@param dataFilePath string
 ---@return nil
 function System.init(data, dataFilePath) end
----@param title string
----@param gameSize sf.Vector2u
----@param iconPath string
----@param cursorPath string
----@return nil
-function System.initializeDisplay(title, gameSize, iconPath, cursorPath) end
 ---@return string
 function System.getScript() end
 ---@param value string
@@ -1495,502 +1790,39 @@ function System.setLanguage(value) end
 ---@param value string
 ---@return nil
 function System.saveLanguage(value) end
---- @brief Get the current positive display scale
----
---- - @return The actual scale used by rendering and input mapping
----
----@return number
-function System.getScale() end
---- @brief Get the configured display scale
----
---- Zero selects borderless fullscreen on desktop. Non-finite and negative
---- values are normalised to one.
----
---- - @return The configured value, including zero
----
----@return number
-function System.getConfiguredScale() end
---- @brief Get the largest configurable display scale
----
---- Desktop uses the current window's display work area when available,
---- otherwise the primary display. A configurable mobile host uses its
---- host-reported maximum windowed dimensions. Embedded and
---- non-configurable mobile displays return no value.
----
---- - @param gameSize Non-zero logical game size
---- - @return Maximum scale, or no value when display size is unavailable
----
----@param gameSize sf.Vector2u
----@return number|nil
-function System.getMaximumWindowedScale(gameSize) end
---- @brief Apply and save a display scale
----
---- The display change is applied between complete frames.
----
---- - @param value Scale preference; zero selects desktop fullscreen
----
----@param value number
----@return nil
-function System.setScale(value) end
---- @brief Apply a display scale without saving it
----
---- - @param value Scale preference; zero selects desktop fullscreen
----
----@param value number
----@return nil
-function System.applyScale(value) end
---- @brief Save a display scale without applying it
----
---- - @param value Scale preference; zero selects desktop fullscreen
----
----@param value number
----@return nil
-function System.saveScale(value) end
---- @brief Get the configured maximum render scale
----
---- Zero leaves the internal render scale uncapped. A positive value caps
---- the actual surface-fit scale without changing the window size.
----
---- - @return The configured maximum scale, including zero
----
----@return number
-function System.getMaximumRenderScale() end
---- @brief Apply and save a maximum render scale
----
---- The render-target change is applied between complete frames.
----
---- - @param value Maximum scale; zero leaves rendering uncapped
----
----@param value number
----@return nil
-function System.setMaximumRenderScale(value) end
---- @brief Save a maximum render scale without applying it
----
---- - @param value Maximum scale; zero leaves rendering uncapped
----
----@param value number
----@return nil
-function System.saveMaximumRenderScale(value) end
---- @brief Get the configured lighting render scale
----
---- The supported values are 0.5, 0.75 and 1.0. Other values are
---- normalised to one.
----
---- - @return The configured lighting render scale
----
----@return number
-function System.getLightingRenderScale() end
---- @brief Apply and save a lighting render scale
----
---- The lighting targets are rebuilt on the next map render.
----
---- - @param value Lighting render scale
----
----@param value number
----@return nil
-function System.setLightingRenderScale(value) end
---- @brief Save a lighting render scale without applying it
----
---- - @param value Lighting render scale
----
----@param value number
----@return nil
-function System.saveLightingRenderScale(value) end
---- @brief Check whether the current host can apply display scale changes
----
---- Standalone desktop windows support scale changes. Embedded displays and
---- ordinary mobile hosts do not; a mobile host may register support.
----
---- - @return True when display scale changes can be applied
----
----@return boolean
-function System.isDisplayScaleConfigurable() end
----@return integer
-function System.getFrameRate() end
----@param value integer
----@return nil
-function System.setFrameRate(value) end
----@param value integer
----@return nil
-function System.saveFrameRate(value) end
----@return integer
-function System.getAntiAliasingLevel() end
----@param value integer
----@return nil
-function System.setAntiAliasingLevel(value) end
----@param value integer
----@return nil
-function System.saveAntiAliasingLevel(value) end
----@return boolean
-function System.getVerticalSync() end
----@param value boolean
----@return nil
-function System.setVerticalSync(value) end
----@param value boolean
----@return nil
-function System.saveVerticalSync(value) end
----@return boolean
-function System.getMusicOn() end
----@param value boolean
----@return nil
-function System.setMusicOn(value) end
----@param value boolean
----@return nil
-function System.saveMusicOn(value) end
----@return boolean
-function System.getSoundOn() end
----@param value boolean
----@return nil
-function System.setSoundOn(value) end
----@param value boolean
----@return nil
-function System.saveSoundOn(value) end
----@return boolean
-function System.getVoiceOn() end
----@param value boolean
----@return nil
-function System.setVoiceOn(value) end
----@param value boolean
----@return nil
-function System.saveVoiceOn(value) end
----@return number
-function System.getMusicVolume() end
----@param value number
----@return nil
-function System.setMusicVolume(value) end
----@param value number
----@return nil
-function System.saveMusicVolume(value) end
----@return number
-function System.getSoundVolume() end
----@param value number
----@return nil
-function System.setSoundVolume(value) end
----@param value number
----@return nil
-function System.saveSoundVolume(value) end
----@return number
-function System.getVoiceVolume() end
----@param value number
----@return nil
-function System.setVoiceVolume(value) end
----@param value number
----@return nil
-function System.saveVoiceVolume(value) end
 ---@return boolean
 function System.isDebugMode() end
----@return sf.Vector2u
-function System.getGameSize() end
----@param disabled boolean
----@return nil
-function System.setInputMethodDisabled(disabled) end
----@param rect sf.IntRect
----@return nil
-function System.setWindowMapView(rect) end
----@return nil
-function System.setWindowDefaultView() end
----@return sf.RenderTexture
-function System.getCanvas() end
----@param weatherType GlobalCore.WeatherType
----@param power number
----@param maxCount integer
----@return nil
-function System.setWeather(weatherType, power, maxCount) end
----@return nil
-function System.clearWeather() end
----@return nil
-function System.clearFog() end
----@param mapData GlobalCore.MapFogSettings
----@return nil
-function System.applyFogFromMapData(mapData) end
----@return nil
-function System.clearPanorama() end
----@param mapData GlobalCore.MapPanoramaSettings
----@return nil
-function System.applyPanoramaFromMapData(mapData) end
----@return boolean
-function System.isPerformanceProfilerEnabled() end
----@param queueDepth integer
----@param reading integer
----@param prepared integer
----@param active integer
----@param dormant integer
----@param cacheBytes integer
----@param publishMilliseconds number
----@param visibleTileChunks integer
----@param activeActors integer
----@return nil
-function System.recordWorldStreamingPerformance(queueDepth, reading, prepared, active, dormant, cacheBytes, publishMilliseconds, visibleTileChunks, activeActors) end
----@param drawable sf.Drawable
----@param shader? sf.Shader
----@return nil
-function System.draw(drawable, shader) end
----@param shader sf.Shader|nil
----@param uniforms? table<string, number|integer|boolean|sf.Vector2f|sf.Vector3f|sf.Glsl.Vec4|sf.Vector2i|sf.Vector3i|sf.Glsl.Ivec4|sf.Color|sf.Texture|nil|number[]|sf.Vector2f[]|sf.Vector3f[]|sf.Glsl.Vec4[]>
----@return nil
-function System.addGraphicsShader(shader, uniforms) end
----@param shader sf.Shader|nil
----@return nil
-function System.removeGraphicsShader(shader) end
----@return nil
-function System.removeAllGraphicsShaders() end
----@param index integer
----@return nil
-function System.removeGraphicsShaderAt(index) end
----@param color? sf.Color|nil
----@param duration? number
----@return nil
-function System.flashScreen(color, duration) end
----@return nil
-function System.stopFlash() end
----@return boolean
-function System.isFlashing() end
----@param red? number
----@param green? number
----@param blue? number
----@param gray? number
----@param duration? number
----@return nil
-function System.changeScreenTone(red, green, blue, gray, duration) end
----@param duration? number
----@return nil
-function System.clearScreenTone(duration) end
----@return nil
-function System.stopScreenTone() end
----@return boolean
-function System.isScreenToneActive() end
----@return boolean
-function System.isScreenToneTransitionComplete() end
----@param power? number
----@param speed? number
----@param duration? number
----@return nil
-function System.startShake(power, speed, duration) end
----@return nil
-function System.stopShake() end
----@return boolean
-function System.isShaking() end
----@param transitionResource? sf.Texture|nil
----@param transitionTime? number
----@return nil
-function System.setTransition(transitionResource, transitionTime) end
----@return nil
-function System.freezeTransitionBackground() end
----@return boolean
-function System.isTransitionBackgroundFrozen() end
----@return boolean
-function System.isTransitionBackgroundFreezePending() end
----@return nil
-function System.cancelTransitionBackgroundFreeze() end
----@param transitionName? string|nil
----@param transitionTime? number
----@return nil
-function System.requestTransition(transitionName, transitionTime) end
----@return nil
-function System.cancelPendingTransition() end
----@return boolean
-function System.isTransitionPending() end
----@return boolean
-function System.isInTransition() end
----@return SceneRuntime|nil
-function System.getScene() end
----@return SceneRuntime|nil
-function System.requireScene() end
----@return GlobalCore.__ArrayElement_471fc5a82793[]
-function System.getSceneList() end
----@param scene SceneRuntime|nil
----@return nil
-function System.setScene(scene) end
----@param scene SceneRuntime|nil
----@return nil
-function System.pushScene(scene) end
----@return nil
-function System.popScene() end
 ---@return nil
 function System.exit() end
 ---@return nil
 function System.run() end
 GlobalCore.System = System
 
----@class GlobalCore.SystemConfigBase
-local SystemConfigBase = {}
----@param data ConfigParser
----@param dataFilePath string
+---@class GlobalCore.Transition
+local Transition = {}
+---@param transitionResource? sf.Texture|nil
+---@param transitionTime? number
 ---@return nil
-function SystemConfigBase.init(data, dataFilePath) end
----@return string
-function SystemConfigBase.getScript() end
----@param value string
+function Transition.setTransition(transitionResource, transitionTime) end
 ---@return nil
-function SystemConfigBase.setScript(value) end
----@param value string
----@return nil
-function SystemConfigBase.saveScript(value) end
----@return string
-function SystemConfigBase.getLanguage() end
----@param value string
----@return nil
-function SystemConfigBase.setLanguage(value) end
----@param value string
----@return nil
-function SystemConfigBase.saveLanguage(value) end
---- @brief Get the current positive display scale
----
---- - @return The actual scale used by rendering and input mapping
----
----@return number
-function SystemConfigBase.getScale() end
---- @brief Get the configured display scale
----
---- Zero selects borderless fullscreen on desktop. Non-finite and negative
---- values are normalised to one.
----
---- - @return The configured value, including zero
----
----@return number
-function SystemConfigBase.getConfiguredScale() end
---- @brief Apply and save a display scale
----
---- The display change is applied between complete frames.
----
---- - @param value Scale preference; zero selects desktop fullscreen
----
----@param value number
----@return nil
-function SystemConfigBase.setScale(value) end
---- @brief Apply a display scale without saving it
----
---- - @param value Scale preference; zero selects desktop fullscreen
----
----@param value number
----@return nil
-function SystemConfigBase.applyScale(value) end
---- @brief Save a display scale without applying it
----
---- - @param value Scale preference; zero selects desktop fullscreen
----
----@param value number
----@return nil
-function SystemConfigBase.saveScale(value) end
---- @brief Get the configured maximum render scale
----
---- Zero leaves the internal render scale uncapped. A positive value caps
---- the actual surface-fit scale without changing the window size.
----
---- - @return The configured maximum scale, including zero
----
----@return number
-function SystemConfigBase.getMaximumRenderScale() end
---- @brief Apply and save a maximum render scale
----
---- - @param value Maximum scale; zero leaves rendering uncapped
----
----@param value number
----@return nil
-function SystemConfigBase.setMaximumRenderScale(value) end
---- @brief Save a maximum render scale without applying it
----
---- - @param value Maximum scale; zero leaves rendering uncapped
----
----@param value number
----@return nil
-function SystemConfigBase.saveMaximumRenderScale(value) end
---- @brief Get the configured lighting render scale
----
---- The supported values are 0.5, 0.75 and 1.0. Other values are
---- normalised to one.
----
---- - @return The configured lighting render scale
----
----@return number
-function SystemConfigBase.getLightingRenderScale() end
---- @brief Apply and save a lighting render scale
----
---- - @param value Lighting render scale
----
----@param value number
----@return nil
-function SystemConfigBase.setLightingRenderScale(value) end
---- @brief Save a lighting render scale without applying it
----
---- - @param value Lighting render scale
----
----@param value number
----@return nil
-function SystemConfigBase.saveLightingRenderScale(value) end
----@return integer
-function SystemConfigBase.getFrameRate() end
----@param value integer
----@return nil
-function SystemConfigBase.setFrameRate(value) end
----@param value integer
----@return nil
-function SystemConfigBase.saveFrameRate(value) end
----@return integer
-function SystemConfigBase.getAntiAliasingLevel() end
----@param value integer
----@return nil
-function SystemConfigBase.setAntiAliasingLevel(value) end
----@param value integer
----@return nil
-function SystemConfigBase.saveAntiAliasingLevel(value) end
+function Transition.freezeTransitionBackground() end
 ---@return boolean
-function SystemConfigBase.getVerticalSync() end
----@param value boolean
----@return nil
-function SystemConfigBase.setVerticalSync(value) end
----@param value boolean
----@return nil
-function SystemConfigBase.saveVerticalSync(value) end
+function Transition.isTransitionBackgroundFrozen() end
 ---@return boolean
-function SystemConfigBase.getMusicOn() end
----@param value boolean
+function Transition.isTransitionBackgroundFreezePending() end
 ---@return nil
-function SystemConfigBase.setMusicOn(value) end
----@param value boolean
+function Transition.cancelTransitionBackgroundFreeze() end
+---@param transitionName? string|nil
+---@param transitionTime? number
 ---@return nil
-function SystemConfigBase.saveMusicOn(value) end
+function Transition.requestTransition(transitionName, transitionTime) end
+---@return nil
+function Transition.cancelPendingTransition() end
 ---@return boolean
-function SystemConfigBase.getSoundOn() end
----@param value boolean
----@return nil
-function SystemConfigBase.setSoundOn(value) end
----@param value boolean
----@return nil
-function SystemConfigBase.saveSoundOn(value) end
+function Transition.isTransitionPending() end
 ---@return boolean
-function SystemConfigBase.getVoiceOn() end
----@param value boolean
----@return nil
-function SystemConfigBase.setVoiceOn(value) end
----@param value boolean
----@return nil
-function SystemConfigBase.saveVoiceOn(value) end
----@return number
-function SystemConfigBase.getMusicVolume() end
----@param value number
----@return nil
-function SystemConfigBase.setMusicVolume(value) end
----@param value number
----@return nil
-function SystemConfigBase.saveMusicVolume(value) end
----@return number
-function SystemConfigBase.getSoundVolume() end
----@param value number
----@return nil
-function SystemConfigBase.setSoundVolume(value) end
----@param value number
----@return nil
-function SystemConfigBase.saveSoundVolume(value) end
----@return number
-function SystemConfigBase.getVoiceVolume() end
----@param value number
----@return nil
-function SystemConfigBase.setVoiceVolume(value) end
----@param value number
----@return nil
-function SystemConfigBase.saveVoiceVolume(value) end
-GlobalCore.SystemConfigBase = SystemConfigBase
+function Transition.isInTransition() end
+GlobalCore.Transition = Transition
 
 ---@class GlobalCore.UIManager
 local UIManager = {}

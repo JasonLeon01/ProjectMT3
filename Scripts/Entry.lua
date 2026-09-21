@@ -7,6 +7,7 @@ local Locale = require("Source.Locale.Core")
 local LiveDebug = require("Source.LiveDebug")
 
 local NodeGraphFunctions = GlobalFunctions.NodeGraph
+local SceneManager = GlobalCore.SceneManager
 local GlobalSystem = GlobalCore.System
 
 local APP_NAME = "ProjectMT3"
@@ -28,7 +29,7 @@ local function entry()
     Data.InitializeRuntime()
     SourceSystem.InstallRuntimeProviders()
     LiveDebug.Install()
-    GlobalSystem.setScene(SceneInit.new())
+    SceneManager.setScene(SceneInit.new())
     SourceSystem.Init()
     GlobalSystem.run()
     LiveDebug.Uninstall()

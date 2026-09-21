@@ -422,7 +422,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.System.ScreenShake",
+            "nodeFunction": "NodeFunctions.ScreenEffects.ScreenShake",
             "params": [
               32.0,
               64.0,
@@ -445,7 +445,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.System.PlayVideo",
+            "nodeFunction": "NodeFunctions.Video.PlayVideo",
             "params": [
               "/Game/Assets/Videos/sample-5mb.mp4",
               false,

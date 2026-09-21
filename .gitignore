@@ -13,3 +13,4 @@ Main.ini
 /Tools/
 *.DS_Store
 /bin/
+*.log

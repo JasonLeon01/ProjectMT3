@@ -293,6 +293,126 @@ local _METADATA = {
             ["return"] = {},
         },
     },
+    Display = {
+        attrs = {},
+        getScale = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        getConfiguredScale = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        getMaximumWindowedScale = {
+            type = "function",
+            parameters = { "gameSize", gameSize = "sf.Vector2u" },
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+            Pure = true,
+        },
+        setScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        applyScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        saveScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        isDisplayScaleConfigurable = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getFrameRate = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        setFrameRate = {
+            type = "function",
+            parameters = { "value", value = "int" },
+            ["return"] = {},
+        },
+        saveFrameRate = {
+            type = "function",
+            parameters = { "value", value = "int" },
+            ["return"] = {},
+        },
+        getAntiAliasingLevel = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "int",
+            },
+        },
+        setAntiAliasingLevel = {
+            type = "function",
+            parameters = { "value", value = "int" },
+            ["return"] = {},
+        },
+        saveAntiAliasingLevel = {
+            type = "function",
+            parameters = { "value", value = "int" },
+            ["return"] = {},
+        },
+        getVerticalSync = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        setVerticalSync = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        saveVerticalSync = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        getGameSize = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2u",
+            },
+            Pure = true,
+        },
+        setInputMethodDisabled = {
+            type = "function",
+            parameters = { "disabled", disabled = "bool" },
+            ["return"] = {},
+        },
+    },
     FocusGroup = {
         attrs = { "name", "activeOwner" },
         name = {
@@ -1203,6 +1323,121 @@ local _METADATA = {
             },
         },
     },
+    Graphics = {
+        attrs = {},
+        getMaximumRenderScale = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        setMaximumRenderScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        saveMaximumRenderScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        getLightingRenderScale = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        setLightingRenderScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        saveLightingRenderScale = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        setWindowMapView = {
+            type = "function",
+            parameters = { "rect", rect = "sf.IntRect" },
+            ["return"] = {},
+        },
+        setWindowDefaultView = {
+            type = "function",
+            parameters = {},
+            ["return"] = {},
+        },
+        getCanvas = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "sf.RenderTexture",
+            },
+            Pure = true,
+        },
+        draw = {
+            type = "function",
+            parameters = { "drawable", "shader", drawable = "sf.Drawable", shader = "sf.Shader" },
+            default = {  },
+            defaultUnset = { "shader" },
+            ["return"] = {},
+        },
+        addGraphicsShader = {
+            type = "function",
+            parameters = { "shader", "uniforms", shader = "sf.Shader", uniforms = {
+                dict = {
+                    union = {
+                        "float",
+                        "int",
+                        "bool",
+                        "sf.Vector2f",
+                        "sf.Vector3f",
+                        "sf.Glsl.Vec4",
+                        "sf.Vector2i",
+                        "sf.Vector3i",
+                        "sf.Glsl.Ivec4",
+                        "sf.Color",
+                        "sf.Texture",
+                        {
+                            list = "float",
+                        },
+                        {
+                            list = "sf.Vector2f",
+                        },
+                        {
+                            list = "sf.Vector3f",
+                        },
+                        {
+                            list = "sf.Glsl.Vec4",
+                        },
+                    },
+                },
+            } },
+            default = {  },
+            defaultUnset = { "uniforms" },
+            ["return"] = {},
+        },
+        removeGraphicsShader = {
+            type = "function",
+            parameters = { "shader", shader = "sf.Shader" },
+            ["return"] = {},
+        },
+        removeAllGraphicsShaders = {
+            type = "function",
+            parameters = {},
+            ["return"] = {},
+        },
+        removeGraphicsShaderAt = {
+            type = "function",
+            parameters = { "index", index = "int" },
+            ["return"] = {},
+        },
+    },
     Light = {
         attrs = { "position", "colour", "radius", "intensity" },
         position = {
@@ -1267,6 +1502,114 @@ local _METADATA = {
     },
     AudioManager = {
         attrs = {},
+        getMusicOn = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        setMusicOn = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        saveMusicOn = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        getSoundOn = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        setSoundOn = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        saveSoundOn = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        getVoiceOn = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        setVoiceOn = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        saveVoiceOn = {
+            type = "function",
+            parameters = { "value", value = "bool" },
+            ["return"] = {},
+        },
+        getMusicVolume = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        setMusicVolume = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        saveMusicVolume = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        getSoundVolume = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        setSoundVolume = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        saveSoundVolume = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        getVoiceVolume = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "float",
+            },
+        },
+        setVoiceVolume = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
+        saveVoiceVolume = {
+            type = "function",
+            parameters = { "value", value = "float" },
+            ["return"] = {},
+        },
         loadSound = {
             type = "function",
             parameters = { "filePath", filePath = "string" },
@@ -1726,425 +2069,55 @@ local _METADATA = {
             ["return"] = {},
         },
     },
-    System = {
+    SceneManager = {
         attrs = {},
-        init = {
-            type = "function",
-            parameters = { "data", "dataFilePath", data = "ConfigParser", dataFilePath = "string" },
-            ["return"] = {},
-        },
-        getScript = {
+        getScene = {
             type = "function",
             parameters = {},
             ["return"] = {
                 "return",
-                ["return"] = "string",
-            },
-        },
-        setScript = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        saveScript = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        getLanguage = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-        },
-        setLanguage = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        saveLanguage = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        getScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        getConfiguredScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        getMaximumWindowedScale = {
-            type = "function",
-            parameters = { "gameSize", gameSize = "sf.Vector2u" },
-            ["return"] = {
-                "return",
-                ["return"] = "float",
+                ["return"] = "SceneRuntime",
             },
             Pure = true,
         },
-        setScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        applyScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getMaximumRenderScale = {
+        requireScene = {
             type = "function",
             parameters = {},
             ["return"] = {
                 "return",
-                ["return"] = "float",
-            },
-        },
-        setMaximumRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveMaximumRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getLightingRenderScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setLightingRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveLightingRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        isDisplayScaleConfigurable = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
+                ["return"] = "SceneRuntime",
             },
             Pure = true,
         },
-        getFrameRate = {
+        getSceneList = {
             type = "function",
             parameters = {},
             ["return"] = {
                 "return",
-                ["return"] = "int",
+                ["return"] = {
+                list = "SceneRuntime",
             },
-        },
-        setFrameRate = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        saveFrameRate = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        getAntiAliasingLevel = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        setAntiAliasingLevel = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        saveAntiAliasingLevel = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        getVerticalSync = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setVerticalSync = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveVerticalSync = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getMusicOn = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setMusicOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveMusicOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getSoundOn = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setSoundOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveSoundOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getVoiceOn = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setVoiceOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveVoiceOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getMusicVolume = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setMusicVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveMusicVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getSoundVolume = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setSoundVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveSoundVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getVoiceVolume = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setVoiceVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveVoiceVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        isDebugMode = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
             },
             Pure = true,
         },
-        getGameSize = {
+        setScene = {
             type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Vector2u",
-            },
-            Pure = true,
-        },
-        setInputMethodDisabled = {
-            type = "function",
-            parameters = { "disabled", disabled = "bool" },
+            parameters = { "scene", scene = "SceneRuntime" },
             ["return"] = {},
         },
-        setWindowMapView = {
+        pushScene = {
             type = "function",
-            parameters = { "rect", rect = "sf.IntRect" },
+            parameters = { "scene", scene = "SceneRuntime" },
             ["return"] = {},
         },
-        setWindowDefaultView = {
+        popScene = {
             type = "function",
             parameters = {},
             ["return"] = {},
         },
-        getCanvas = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.RenderTexture",
-            },
-            Pure = true,
-        },
-        setWeather = {
-            type = "function",
-            parameters = { "weatherType", "power", "maxCount", weatherType = "int", power = "float", maxCount = "int" },
-            ["return"] = {},
-        },
-        clearWeather = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        clearFog = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        applyFogFromMapData = {
-            type = "function",
-            parameters = { "mapData", mapData = { "GlobalCore", "MapFogSettings" } },
-            ["return"] = {},
-        },
-        clearPanorama = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        applyPanoramaFromMapData = {
-            type = "function",
-            parameters = { "mapData", mapData = { "GlobalCore", "MapPanoramaSettings" } },
-            ["return"] = {},
-        },
-        draw = {
-            type = "function",
-            parameters = { "drawable", "shader", drawable = "sf.Drawable", shader = "sf.Shader" },
-            default = {  },
-            defaultUnset = { "shader" },
-            ["return"] = {},
-        },
-        addGraphicsShader = {
-            type = "function",
-            parameters = { "shader", "uniforms", shader = "sf.Shader", uniforms = {
-                dict = {
-                    union = {
-                        "float",
-                        "int",
-                        "bool",
-                        "sf.Vector2f",
-                        "sf.Vector3f",
-                        "sf.Glsl.Vec4",
-                        "sf.Vector2i",
-                        "sf.Vector3i",
-                        "sf.Glsl.Ivec4",
-                        "sf.Color",
-                        "sf.Texture",
-                        {
-                            list = "float",
-                        },
-                        {
-                            list = "sf.Vector2f",
-                        },
-                        {
-                            list = "sf.Vector3f",
-                        },
-                        {
-                            list = "sf.Glsl.Vec4",
-                        },
-                    },
-                },
-            } },
-            default = {  },
-            defaultUnset = { "uniforms" },
-            ["return"] = {},
-        },
-        removeGraphicsShader = {
-            type = "function",
-            parameters = { "shader", shader = "sf.Shader" },
-            ["return"] = {},
-        },
-        removeAllGraphicsShaders = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        removeGraphicsShaderAt = {
-            type = "function",
-            parameters = { "index", index = "int" },
-            ["return"] = {},
-        },
+    },
+    ScreenEffects = {
+        attrs = {},
         flashScreen = {
             type = "function",
             parameters = { "color", "duration", color = "sf.Color", duration = "float" },
@@ -2221,6 +2194,67 @@ local _METADATA = {
             },
             Pure = true,
         },
+    },
+    System = {
+        attrs = {},
+        init = {
+            type = "function",
+            parameters = { "data", "dataFilePath", data = "ConfigParser", dataFilePath = "string" },
+            ["return"] = {},
+        },
+        getScript = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+        },
+        setScript = {
+            type = "function",
+            parameters = { "value", value = "string" },
+            ["return"] = {},
+        },
+        saveScript = {
+            type = "function",
+            parameters = { "value", value = "string" },
+            ["return"] = {},
+        },
+        getLanguage = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "string",
+            },
+        },
+        setLanguage = {
+            type = "function",
+            parameters = { "value", value = "string" },
+            ["return"] = {},
+        },
+        saveLanguage = {
+            type = "function",
+            parameters = { "value", value = "string" },
+            ["return"] = {},
+        },
+        isDebugMode = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        exit = {
+            type = "function",
+            parameters = {},
+            ["return"] = {},
+        },
+    },
+    Transition = {
+        attrs = {},
         setTransition = {
             type = "function",
             parameters = { "transitionResource", "transitionTime", transitionResource = "sf.Texture", transitionTime = "float" },
@@ -2285,328 +2319,6 @@ local _METADATA = {
                 ["return"] = "bool",
             },
             Pure = true,
-        },
-        getScene = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "SceneRuntime",
-            },
-            Pure = true,
-        },
-        requireScene = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "SceneRuntime",
-            },
-            Pure = true,
-        },
-        getSceneList = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = "SceneRuntime",
-            },
-            },
-            Pure = true,
-        },
-        setScene = {
-            type = "function",
-            parameters = { "scene", scene = "SceneRuntime" },
-            ["return"] = {},
-        },
-        pushScene = {
-            type = "function",
-            parameters = { "scene", scene = "SceneRuntime" },
-            ["return"] = {},
-        },
-        popScene = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-        exit = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-    },
-    SystemConfigBase = {
-        attrs = {},
-        init = {
-            type = "function",
-            parameters = { "data", "dataFilePath", data = "ConfigParser", dataFilePath = "string" },
-            ["return"] = {},
-        },
-        getScript = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-        },
-        setScript = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        saveScript = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        getLanguage = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-        },
-        setLanguage = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        saveLanguage = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        getScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        getConfiguredScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        applyScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getMaximumRenderScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setMaximumRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveMaximumRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getLightingRenderScale = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setLightingRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveLightingRenderScale = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getFrameRate = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        setFrameRate = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        saveFrameRate = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        getAntiAliasingLevel = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "int",
-            },
-        },
-        setAntiAliasingLevel = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        saveAntiAliasingLevel = {
-            type = "function",
-            parameters = { "value", value = "int" },
-            ["return"] = {},
-        },
-        getVerticalSync = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setVerticalSync = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveVerticalSync = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getMusicOn = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setMusicOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveMusicOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getSoundOn = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setSoundOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveSoundOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getVoiceOn = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "bool",
-            },
-        },
-        setVoiceOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        saveVoiceOn = {
-            type = "function",
-            parameters = { "value", value = "bool" },
-            ["return"] = {},
-        },
-        getMusicVolume = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setMusicVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveMusicVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getSoundVolume = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setSoundVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveSoundVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        getVoiceVolume = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "float",
-            },
-        },
-        setVoiceVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
-        },
-        saveVoiceVolume = {
-            type = "function",
-            parameters = { "value", value = "float" },
-            ["return"] = {},
         },
     },
     UIManager = {

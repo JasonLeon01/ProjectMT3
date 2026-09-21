@@ -15,7 +15,7 @@ local WindowTransition = require("Source.UIBase.WindowTransition")
 local WindowSaveSlot = require("Source.Windows.WindowSaveLoad.Slot")
 
 local Node = Engine.Node
-local GlobalSystem = GlobalCore.System
+local Transition = GlobalCore.Transition
 ---@type fun(value: string): string
 local LOC = LocaleCore.ApplyStringLocaleFormat
 
@@ -89,8 +89,8 @@ local function menuIsVisible(self)
     return menu ~= nil and menu:getVisible()
 end
 
----@param self             Source.Scenes.SceneMap.SceneMap
----@param previousEnabled  boolean
+---@param self            Source.Scenes.SceneMap.SceneMap
+---@param previousEnabled boolean
 local function restoreHotkeyOverlayMove(self, previousEnabled)
     if menuIsVisible(self) then
         return
@@ -544,13 +544,13 @@ function Scene.RequestTeleporterTransfer(self, targetMap, targetPosition, moveEn
         findNearest = findNearest,
         record = record
     }
-    GlobalSystem.freezeTransitionBackground()
+    Transition.freezeTransitionBackground()
     return true
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap
 function Scene.ProcessPendingTeleporterTransfer(self)
-    if self._pendingTeleporterTransfer == nil or not GlobalSystem.isTransitionBackgroundFrozen() then
+    if self._pendingTeleporterTransfer == nil or not Transition.isTransitionBackgroundFrozen() then
         return
     end
     local transferData = self._pendingTeleporterTransfer
@@ -595,8 +595,8 @@ end
 ---@param self        Source.Scenes.SceneMap.SceneMap
 function Scene.CancelTeleporterTransfer(self, moveEnabled)
     self.player:setMoveEnabled(moveEnabled)
-    GlobalSystem.cancelTransitionBackgroundFreeze()
-    GlobalSystem.cancelPendingTransition()
+    Transition.cancelTransitionBackgroundFreeze()
+    Transition.cancelPendingTransition()
 end
 
 ---@param targetMap       string
@@ -617,7 +617,7 @@ function Scene.ApplyMapDestination(self, targetMap, targetPosition, blockTransit
         self:_updateWorldEnvironment(0, true)
     end
     if not blockTransition then
-        GlobalSystem.requestTransition(MAP_TRANSITION_NAME, MAP_TRANSITION_TIME)
+        Transition.requestTransition(MAP_TRANSITION_NAME, MAP_TRANSITION_TIME)
     end
 end
 
@@ -631,12 +631,12 @@ function Scene.QueueWorldTransfer(self, targetMap, targetPosition)
     )
     self._pendingWorldTransfer = { targetMap = targetMap, targetPosition = targetPosition }
     self._mapTransferInProgress = true
-    GlobalSystem.freezeTransitionBackground()
+    Transition.freezeTransitionBackground()
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap
 function Scene.ProcessPendingWorldTransfer(self)
-    if self._pendingWorldTransfer == nil or not GlobalSystem.isTransitionBackgroundFrozen() then
+    if self._pendingWorldTransfer == nil or not Transition.isTransitionBackgroundFrozen() then
         return
     end
     local transferData = self._pendingWorldTransfer
@@ -699,7 +699,7 @@ function Scene.GotoMapAndPos(self, mapPath, pos, blockTransition)
     end
     ---@cast targetMap string
     local isWorldTarget = bool(targetMap) and os.path.basename(targetMap) == MapConstants.WORLD_MANIFEST_FILE
-    if isWorldTarget and not blockTransition and not GlobalSystem.isTransitionBackgroundFrozen() then
+    if isWorldTarget and not blockTransition and not Transition.isTransitionBackgroundFrozen() then
         assert(targetPosition ~= nil, "World map transfer requires a resolved target position: " .. targetMap)
         self:_queueWorldTransfer(targetMap, targetPosition)
         return
@@ -764,7 +764,7 @@ function Scene.TryAdjacentFloorSamePos(self, step)
         self:gotoMapAndPos(sourceMap, sourcePosition, true)
         return false
     end
-    GlobalSystem.requestTransition(MAP_TRANSITION_NAME, MAP_TRANSITION_TIME)
+    Transition.requestTransition(MAP_TRANSITION_NAME, MAP_TRANSITION_TIME)
     return true
 end
 

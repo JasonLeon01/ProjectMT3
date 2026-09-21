@@ -18,7 +18,13 @@ local PlayerAttrHUD = require("Source.Windows.HUDPlayerAttr")
 local SceneMapWindows = require("Source.Scenes.SceneMap.Windows")
 
 local Input = Engine.Input
-local GlobalSystem = GlobalCore.System
+local Display = GlobalCore.Display
+local FogController = GlobalCore.FogController
+local Graphics = GlobalCore.Graphics
+local PanoramaController = GlobalCore.PanoramaController
+local SceneManager = GlobalCore.SceneManager
+local Transition = GlobalCore.Transition
+local WeatherController = GlobalCore.WeatherController
 local ManagerFunctions = GlobalFunctions.Manager
 
 local WORLD_AMBIENT_TRANSITION_TIME = 0.5
@@ -39,7 +45,7 @@ local Scene = {}
 
 ---@diagnostic disable-next-line: unused
 function Scene:onEnter()
-    GlobalSystem.setTransition()
+    Transition.setTransition()
 end
 
 function Scene:setInst(inst)
@@ -66,7 +72,7 @@ function Scene:onCreate()
     end)
     self._dialogueLocaleSource = nil
     SceneMapWindows.Create(self)
-    self._regionTitleUI = RegionTitleController.new(GlobalSystem.getGameSize())
+    self._regionTitleUI = RegionTitleController.new(Display.getGameSize())
     self._regionTitleUI:prepare()
     self._regionTitleText = self._regionTitleUI:getText()
     self._playerHUD:mount(uiManager)
@@ -101,9 +107,9 @@ function Scene:onQuit()
     self:cancelBattle()
     ManagerFunctions.stopVoice()
     self._mapAudio:stopMapAudio()
-    GlobalSystem.clearWeather()
-    GlobalSystem.clearFog()
-    GlobalSystem.clearPanorama()
+    WeatherController.clearWeather()
+    FogController.clearFog()
+    PanoramaController.clear()
 end
 
 function Scene:onDestroy()
@@ -302,16 +308,16 @@ function Scene:loadMap(mapPath, initialPosition)
             audioMapData.bgm = "/Game/Assets/Musics/sound-3.mp3"
         end
         self._mapAudio:playMapAudio(audioMapData)
-        GlobalSystem.clearFog()
-        GlobalSystem.applyFogFromMapData(GlobalCore.MapFogSettings.new({
+        FogController.clearFog()
+        FogController.applyFromMapData(GlobalCore.MapFogSettings.new({
                 fog = mapData.fog,
                 fogPower = mapData.fogPower,
                 fogOx = mapData.fogOx,
                 fogOy = mapData.fogOy,
                 fogDistort = mapData.fogDistort
             }))
-        GlobalSystem.clearPanorama()
-        GlobalSystem.applyPanoramaFromMapData(GlobalCore.MapPanoramaSettings.new({
+        PanoramaController.clear()
+        PanoramaController.applyFromMapData(GlobalCore.MapPanoramaSettings.new({
                 panorama = mapData.panorama
             }))
     end
@@ -387,15 +393,15 @@ function Scene:_drawSceneAnims()
         return
     end
     local gameMap = self:getGameMap()
-    GlobalSystem.setWindowMapView(gameMap:getMapViewRect())
+    Graphics.setWindowMapView(gameMap:getMapViewRect())
     for _, anim in ipairs(animSnapshot) do
         local worldPosition = anim:getPosition()
         local drawPosition = gameMap:worldToMapViewPosition(worldPosition)
         anim:setPosition(drawPosition)
-        GlobalSystem.draw(anim)
+        Graphics.draw(anim)
         anim:setPosition(worldPosition)
     end
-    GlobalSystem.setWindowDefaultView()
+    Graphics.setWindowDefaultView()
 end
 
 function Scene:_drawCommonTipOverlay()
@@ -424,7 +430,7 @@ end
 
 function Scene.CaptureScreenSnapshot()
     local clock = sf.Clock.new()
-    local canvas = GlobalSystem.getCanvas()
+    local canvas = Graphics.getCanvas()
     local sourceTexture = canvas:getTexture()
     local sourceSize = sourceTexture:getSize()
     if sourceSize.x == 0 or sourceSize.y == 0 then
@@ -570,7 +576,7 @@ end
 ---@param teleporter Source.Teleporter.Teleporter
 ---@return boolean
 function Scene:_canRequestTeleporterTransfer(teleporter)
-    if not self._gameplayRequestsActive or GlobalSystem.getScene() ~= self or self._mapTransferInProgress
+    if not self._gameplayRequestsActive or SceneManager.getScene() ~= self or self._mapTransferInProgress
         or self._pendingTeleporterTransfer ~= nil or self._pendingWorldTransfer ~= nil or self._gameMap == nil
         or teleporter:isDestroyed() or not teleporter:isVisibleInHierarchy() or teleporter:getMap() ~= self._gameMap then
         return false
@@ -639,7 +645,7 @@ end
 
 function Scene:requestGameOver(player, delay)
     assert(math.isFinite(delay) and delay >= 0, "Game over delay must be finite and non-negative")
-    if not self._gameplayRequestsActive or GlobalSystem.getScene() ~= self
+    if not self._gameplayRequestsActive or SceneManager.getScene() ~= self
         or self._gameMap == nil or player ~= self.player
         or self._gameMap:getPlayer() ~= player or player:isDestroyed()
         or player:getMap() ~= self._gameMap or self._gameOverRequest ~= nil then
@@ -649,7 +655,7 @@ function Scene:requestGameOver(player, delay)
     self._gameOverRequest = request
     local function finishGameOver()
         if not self._gameplayRequestsActive or self._gameOverRequest ~= request
-            or GlobalSystem.getScene() ~= self or self.player ~= request.player
+            or SceneManager.getScene() ~= self or self.player ~= request.player
             or self._gameMap ~= request.gameMap or request.gameMap:getPlayer() ~= request.player
             or request.player:isDestroyed() or request.player:getMap() ~= request.gameMap then
             return
@@ -658,7 +664,7 @@ function Scene:requestGameOver(player, delay)
 
         self._gameplayRequestsActive = false
         self._gameOverRequest = nil
-        GlobalSystem.setScene(SceneGameOver.new())
+        SceneManager.setScene(SceneGameOver.new())
     end
     if delay == 0 then
         finishGameOver()
