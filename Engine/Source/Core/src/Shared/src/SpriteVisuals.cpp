@@ -1,4 +1,4 @@
-#include "SpriteVisuals.hpp"
+#include <CoreShared/SpriteVisuals.hpp>
 
 #include <Runtime/ConcurrentResourceCache.hpp>
 #include <Utils/ShaderLoader.hpp>
