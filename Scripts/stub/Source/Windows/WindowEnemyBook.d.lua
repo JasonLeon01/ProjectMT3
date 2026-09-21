@@ -23,6 +23,7 @@
 ---@field DEF             integer
 ---@field EXP             integer
 ---@field GOLD            integer
+---@field breathLimit     integer
 ---@field damage          integer | string
 ---@field critical        GlobalCore.GameplayAbilityResult
 ---@field hitCount        integer | nil

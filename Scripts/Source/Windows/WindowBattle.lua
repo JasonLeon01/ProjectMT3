@@ -88,7 +88,7 @@ local function createState(actor, player)
         weaken = SpecialAbilities.GetMagnitude(abilitySystem, Special.Weaken) or 0,
         vampire = SpecialAbilities.GetMagnitude(abilitySystem, Special.Vampire) or 0,
         mucus = SpecialAbilities.GetMagnitude(abilitySystem, Special.Mucus) or 0,
-        thunder = tonumber(SpecialAbilities.GetMagnitude(abilitySystem, Special.Thunder)) or 0,
+        thunder = math.trunc(tonumber(SpecialAbilities.GetMagnitude(abilitySystem, Special.Thunder)) or 0),
         sureKill = SpecialAbilities.GetMagnitude(abilitySystem, Special.SureKill) ~= nil,
         berserk = SpecialAbilities.GetMagnitude(abilitySystem, Special.Berserk) ~= nil,
         hard = SpecialAbilities.GetMagnitude(abilitySystem, Special.Hard) ~= nil,
@@ -177,7 +177,8 @@ function Controller:open(player, enemy, onFinished)
     self:cancel()
     self._playerActor, self._enemyActor = player, enemy
     self._player = createState(player, true)
-    self._enemy = createState(enemy, false)
+    local enemyState = createState(enemy, false)
+    self._enemy = enemyState
     self._onFinished = onFinished
     self._criticalSelected = false
     self._attackSkillSelected = false
@@ -205,7 +206,7 @@ function Controller:open(player, enemy, onFinished)
     )
     self:playBreathAnimation()
     self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function ()
-        self:beginTurn(not assert(self._enemy).first)
+        self:beginTurn(not enemyState.first)
     end)
 end
 
@@ -397,15 +398,20 @@ function Controller:beginTurn(playerTurn, remainingHits)
         self:finish("retreat")
         return
     end
-    if playerTurn and assert(self._player).frozenTurns > 0 then
-        self._player.frozenTurns = self._player.frozenTurns - 1
+    local player = self._player
+    local enemy = self._enemy
+    if player == nil or enemy == nil then
+        return
+    end
+    if playerTurn and player.frozenTurns > 0 then
+        player.frozenTurns = player.frozenTurns - 1
         self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function ()
             self:beginTurn(false)
         end)
         return
     end
-    local attacker = assert(playerTurn and self._player or self._enemy)
-    local defender = assert(playerTurn and self._enemy or self._player)
+    local attacker = playerTurn and player or enemy
+    local defender = playerTurn and enemy or player
     local hits = playerTurn and 1 or (remainingHits or attacker.hitCount)
     local attackSkill = false
     local critical = false
@@ -462,10 +468,8 @@ function Controller:performAttack(attacker, defender, critical, remainingHits, a
     else
         key = attacker.animationKey
     end
-    local side = defender.isPlayer and "Player" or "Enemy"
     local animation = Animation.new(Data.GetAnimation(key), false)
-    local portrait = assert(self.ui.controls[side .. "Portrait"])
-    ---@cast portrait Engine.CharacterView
+    local portrait = defender.isPlayer and self.ui.controls.PlayerPortrait or self.ui.controls.EnemyPortrait
     local position = portrait:getGlobalBounds():getCenter()
     animation:setPosition(position)
     self.ui.controls["Content"]:addAnim(animation)
@@ -570,11 +574,22 @@ function Controller:applyAttackStates(attacker, defender)
 end
 
 function Controller:refreshActionButton(name, selected, enabled)
-    local button = self.ui.controls[name]
+    local button
+    local selectedImage
+    if name == "CriticalButton" then
+        button = self.ui.controls.CriticalButton
+        selectedImage = self.ui.controls.CriticalButtonSelected
+    elseif name == "AttackSkillButton" then
+        button = self.ui.controls.AttackSkillButton
+        selectedImage = self.ui.controls.AttackSkillButtonSelected
+    else
+        button = self.ui.controls.DefenseSkillButton
+        selectedImage = self.ui.controls.DefenseSkillButtonSelected
+    end
     button:setVisible(not selected)
     button:setActive(enabled == true)
     button:setColour(enabled and sf.Color.White or sf.Color.new(128, 128, 128, 255))
-    self.ui.controls[name .. "Selected"]:setVisible(selected == true)
+    selectedImage:setVisible(selected == true)
 end
 
 function Controller:refreshCritical()
@@ -647,7 +662,7 @@ function Controller:playBreathAnimation()
             local animation = Animation.new(data, false)
             animation:setPosition(sf.Vector2f.new(8, 10))
             canvas:addAnim(animation)
-            local preview = assert(canvas:getChildren()[1])
+            local preview = canvas:getChildren()[1]
             preview:setVisible(false)
         end
     end

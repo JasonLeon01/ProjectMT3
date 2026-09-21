@@ -44,6 +44,7 @@ Battle.attackSkills = {
         fatigue = 6,
         apply = function (base, attacker, _defender)
             local magic = math.max(0, attacker.MAGIC)
+            ---@type number
             local strike = math.max(0, base)
             return math.round(strike * (1 + (magic + strike) / math.max(1, strike - magic)))
         end
@@ -56,6 +57,7 @@ Battle.defenseSkills = {
         fatigue = 5,
         apply = function (incoming, _attacker, defender)
             local magic = math.max(0, defender.MAGIC)
+            ---@type number
             local damage = math.max(0, incoming)
             if damage <= 0 then
                 return 0

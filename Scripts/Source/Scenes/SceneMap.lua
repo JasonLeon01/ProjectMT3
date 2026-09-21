@@ -292,14 +292,14 @@ function Scene:loadMap(mapPath, initialPosition)
     self._worldAmbientTransitionElapsed = 0
     if not gameMap:isWorldMap() then
         ---@cast mapData Source.SceneComponents.MapData
-        local audioMapData = mapData
+        local audioMapData = {
+            bgm = mapData.bgm,
+            bgmFilter = mapData.bgmFilter,
+            bgs = mapData.bgs,
+            bgsFilter = mapData.bgsFilter
+        }
         if MapPath.BasenameWithoutExtension(mapFile) == "MT3_025" and self.inst:getVariable("floor25Phase") >= 2 then
-            audioMapData = {
-                bgm = "/Game/Assets/Musics/sound-3.mp3",
-                bgmFilter = mapData.bgmFilter,
-                bgs = mapData.bgs,
-                bgsFilter = mapData.bgsFilter
-            }
+            audioMapData.bgm = "/Game/Assets/Musics/sound-3.mp3"
         end
         self._mapAudio:playMapAudio(audioMapData)
         GlobalSystem.clearFog()

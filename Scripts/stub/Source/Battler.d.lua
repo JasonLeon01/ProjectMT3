@@ -3,6 +3,7 @@
 ---@class Source.Battler.Battler
 ---@field attributes                      GlobalCore.AttributeSet
 ---@field private _abilitySystemComponent GlobalCore.AbilitySystemComponent
+---@field getLoading?                     fun(self: Source.Battler.Battler): boolean
 local Battler = {}
 
 ---@param attributes GlobalCore.AttributeSet

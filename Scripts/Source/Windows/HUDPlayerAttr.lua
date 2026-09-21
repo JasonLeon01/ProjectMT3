@@ -361,7 +361,7 @@ function Controller:playBreathAnimation()
             local animation = Animation.new(data, false)
             animation:setPosition(sf.Vector2f.new(8, 10))
             canvas:addAnim(animation)
-            local preview = assert(canvas:getChildren()[1])
+            local preview = canvas:getChildren()[1]
             preview:setVisible(false)
         end
     end

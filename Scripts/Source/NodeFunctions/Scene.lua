@@ -249,7 +249,8 @@ function Scene.ConvertSWallToYellowDoor(position)
     end
     local SWall = require("Source.SWall")
 
-    local wall = nil
+    ---@type Engine.Actor | nil
+    local wall
     for _, actor in ipairs(gameMap:getActorsByPosition(position)) do
         if Class.isInstance(actor, SWall) then
             wall = actor

@@ -87,8 +87,9 @@
 ---@field slot table<string, string>
 
 ---@class Source.Data.GeneralEquipData: Source.Data.GeneralMemberData
----@field slot     string
----@field attrPlus table<string, integer>
+---@field slot         string
+---@field attrPlus     table<string, integer>
+---@field AnimationKey string
 
 ---@class Source.Data.GeneralEnemyData: Source.Data.GeneralMemberData
 ---@field MAXHP         integer

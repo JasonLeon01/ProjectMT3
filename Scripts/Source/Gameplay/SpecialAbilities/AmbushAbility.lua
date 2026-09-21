@@ -37,7 +37,7 @@ function AmbushAbility:activate(_abilitySystem, eventData)
         and MovementSpecials.HasClearLine(gameMap, player, playerPosition, enemyPosition)
     local damage = 0
     if active then
-        damage = math.max(0, enemy:getAttr("ATK") - player:getAttr("DEF"))
+        damage = math.trunc(math.max(0, enemy:getAttr("ATK") - player:getAttr("DEF")))
     end
     return assert(GameplayAbilityResult.Success("MovementHazard", {
             active = active,
