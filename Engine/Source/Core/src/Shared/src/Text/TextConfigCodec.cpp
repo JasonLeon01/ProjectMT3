@@ -1,5 +1,5 @@
 #include "TextConfigCodecImpl.hpp"
-#include "TextConfigCodec.hpp"
+#include <CoreShared/TextConfigCodec.hpp>
 #include <Runtime/AssetInputStream.hpp>
 #include <UI/PlainTextConfig.hpp>
 #include <UI/RichText.hpp>
