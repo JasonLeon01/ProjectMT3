@@ -306,6 +306,8 @@ function snapshotBuild({ core }) {
   function visit(directory) {
     for (const entry of fs.readdirSync(projectPath(directory), { withFileTypes: true })) {
       const relative = `${directory}/${entry.name}`;
+      // Only regular files need timestamps; never follow dependency symlinks.
+      if (entry.isSymbolicLink()) continue;
       if (entry.isDirectory()) visit(relative);
       else if (entry.isFile()) outputs.push(fileStamp(relative));
       else throw new Error(`Unsupported build output: ${relative}`);
