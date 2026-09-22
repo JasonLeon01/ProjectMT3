@@ -106,27 +106,29 @@ function changedScripts(base, head, repository) {
 }
 
 async function selectArtifact(github, head) {
-  let selected;
-  for await (const run of successfulRuns(github, upstream, 'export-editor.yml', { head_sha: head })) {
-    if (run.head_sha !== head) continue;
-    const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
-      ...upstream, run_id: run.id, filter: 'latest', per_page: 100,
-    });
-    if (jobs.some(job => job.name === 'Windows x64' && job.conclusion === 'success')) {
-      selected = run;
-      break;
+  // Scheduled exports can skip Windows entirely. Prefer the checked HEAD, then
+  // walk earlier successful runs until an actual downloadable package is found.
+  const inspected = new Set();
+  for (const filter of [{ head_sha: head }, {}]) {
+    for await (const run of successfulRuns(github, upstream, 'export-editor.yml', filter)) {
+      if ((filter.head_sha && run.head_sha !== head) || inspected.has(run.id)) continue;
+      inspected.add(run.id);
+      const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+        ...upstream, run_id: run.id, filter: 'latest', per_page: 100,
+      });
+      if (!jobs.some(job => job.name === 'Windows x64' && job.conclusion === 'success')) continue;
+      const name = `Ludork-windows-x64-${requireSha(run.head_sha)}`;
+      const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
+        ...upstream, run_id: run.id, per_page: 100,
+      });
+      const matches = artifacts.filter(artifact => artifact.name === name);
+      if (matches.length !== 1 || matches[0].expired || !(Date.parse(matches[0].expires_at) > Date.now())) continue;
+      return {
+        ludork_sha: run.head_sha, ludork_run_id: String(run.id), ludork_artifact_id: String(matches[0].id),
+      };
     }
   }
-  if (!selected) throw new Error(`Ludork main ${head} has no successful Windows package. Retry after it is available.`);
-  const name = `Ludork-windows-x64-${head}`;
-  const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
-    ...upstream, run_id: selected.id, per_page: 100,
-  });
-  const matches = artifacts.filter(artifact => artifact.name === name);
-  if (matches.length !== 1 || matches[0].expired || !(Date.parse(matches[0].expires_at) > Date.now())) {
-    throw new Error(`Ludork main ${head} has no unique, unexpired ${name} artifact. Retry after it is available.`);
-  }
-  return { ludork_sha: head, ludork_run_id: String(selected.id), ludork_artifact_id: String(matches[0].id) };
+  throw new Error(`No successful Ludork Windows run on main has a unique, unexpired package (checked HEAD ${head} and earlier runs).`);
 }
 
 async function selectLudork({ github, core }) {
@@ -144,10 +146,19 @@ async function selectLudork({ github, core }) {
       'https://github.com/JasonLeon01/Ludork.git', previous.ludork_sha, head]);
     scripts = changedScripts(previous.ludork_sha, head, repository);
   }
-  const reuse = Boolean(cached && scripts.length === 0);
-  const reason = !cached ? 'Tool cache missing or invalid'
+  let reuse = Boolean(cached && scripts.length === 0);
+  let reason = !cached ? 'Tool cache missing or invalid'
     : scripts.length ? `Upstream scripts changed (${scripts.length} paths)` : 'No upstream script changes';
   const selected = reuse ? previous : await selectArtifact(github, head);
+  if (!reuse && selected.ludork_sha !== head) {
+    reason += `; no available HEAD package, selected earlier commit ${selected.ludork_sha}`;
+  }
+  if (!reuse && cached && selected.ludork_sha === previous.ludork_sha
+      && selected.ludork_run_id === previous.ludork_run_id
+      && selected.ludork_artifact_id === previous.ludork_artifact_id) {
+    reuse = true;
+    reason += '; selected package already cached';
+  }
   if (!reuse) {
     // This fixed child of RUNNER_TEMP is never the user's project directory.
     fs.rmSync(toolsDirectory(), { recursive: true, force: true });
@@ -157,7 +168,7 @@ async function selectLudork({ github, core }) {
     engine_hash: requireSha(execute('git', ['rev-parse', `${process.env.PROJECT_SHA}:Engine`]).trim()),
     ludork_sha: selected.ludork_sha, ludork_run_id: selected.ludork_run_id,
     ludork_artifact_id: selected.ludork_artifact_id, ludork_checked_sha: head,
-    tools_key: reuse ? previous.tools_key : `${prefix}-tools-${head}-${selected.ludork_artifact_id}`,
+    tools_key: reuse ? previous.tools_key : `${prefix}-tools-${selected.ludork_sha}-${selected.ludork_artifact_id}`,
     tools_cache_hit: reuse, tools_reason: reason,
   };
   writeJson(candidateFile(), candidate);

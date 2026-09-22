@@ -84,7 +84,7 @@ jobs:
             const ci = require('./.github/scripts/package-windows.cjs');
             await ci.selectLudork({ github, core });
 
-      - name: Download Ludork tools for selected HEAD
+      - name: Download selected Ludork Windows package
         if: steps.ludork.outputs.download == 'true'
         uses: actions/download-artifact@v8
         with:
