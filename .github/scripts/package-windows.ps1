@@ -22,7 +22,7 @@ foreach ($relativePath in @(
         throw "Ludork artifact is missing $relativePath"
     }
 }
-foreach ($variable in @('PROJECT_SHA', 'LUDORK_SHA', 'LUDORK_RUN_ID', 'LUDORK_ARTIFACT_ID')) {
+foreach ($variable in @('PROJECT_SHA', 'LUDORK_SHA', 'LUDORK_RUN_ID', 'LUDORK_ARTIFACT_ID', 'PACKAGE_BUILD_INFO')) {
     if (-not [Environment]::GetEnvironmentVariable($variable)) {
         throw "Missing build metadata: $variable"
     }
@@ -54,12 +54,20 @@ if (-not (Get-ChildItem -LiteralPath (Join-Path $gameDirectory 'Binaries') -Filt
     throw 'Game package contains no runtime DLLs.'
 }
 
+$cacheInfo = Get-Content -LiteralPath $env:PACKAGE_BUILD_INFO -Raw | ConvertFrom-Json
 [ordered]@{
     project_commit = $env:PROJECT_SHA
+    engine_tree = $cacheInfo.engine_hash
     ludork_commit = $env:LUDORK_SHA
+    ludork_checked_commit = $cacheInfo.ludork_checked_sha
     ludork_run_id = $env:LUDORK_RUN_ID
     ludork_artifact_id = $env:LUDORK_ARTIFACT_ID
     ludork_run_url = "https://github.com/JasonLeon01/Ludork/actions/runs/$env:LUDORK_RUN_ID"
     configuration = 'Release'
     platform = 'windows-x64'
+    tools_cache_hit = $cacheInfo.tools_cache_hit
+    tools_cache_reason = $cacheInfo.tools_reason
+    build_cache_hit = $cacheInfo.build_cache_hit
+    build_cache_reason = $cacheInfo.build_reason
+    build_environment_hash = $cacheInfo.environment_hash
 } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $OutputDirectory 'build-info.json') -Encoding utf8

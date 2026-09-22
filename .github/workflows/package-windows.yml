@@ -1,13 +1,8 @@
 name: Package Windows
 
 on:
-  schedule:
-    # 06:30 UTC+8
-    - cron: '30 22 * * *'
-    # 14:30 UTC+8
-    - cron: '30 6 * * *'
-    # 22:30 UTC+8
-    - cron: '30 14 * * *'
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -17,6 +12,7 @@ permissions:
 concurrency:
   group: package-windows
   cancel-in-progress: false
+  queue: max
 
 jobs:
   check:
@@ -24,18 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
-      should_build: ${{ steps.project.outputs.should_build }}
       project_sha: ${{ steps.project.outputs.project_sha }}
-      ludork_sha: ${{ steps.ludork.outputs.ludork_sha }}
-      ludork_run_id: ${{ steps.ludork.outputs.ludork_run_id }}
-      ludork_artifact_id: ${{ steps.ludork.outputs.ludork_artifact_id }}
+      previous_state_key: ${{ steps.project.outputs.previous_state_key }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
 
-      - name: Compare with last successful package
+      - name: Find last successful package
         id: project
         uses: actions/github-script@v8
         with:
@@ -43,53 +36,103 @@ jobs:
             const ci = require('./.github/scripts/package-windows.cjs');
             await ci.checkProject({ github, context, core });
 
-      - name: Select latest successful Ludork Windows artifact
-        id: ludork
-        if: steps.project.outputs.should_build == 'true'
-        uses: actions/github-script@v8
-        with:
-          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
-          script: |
-            const ci = require('./.github/scripts/package-windows.cjs');
-            await ci.selectLudork({ github, core });
-
   package:
     # Used by the history lookup; keep this name stable.
     name: Package Windows
     needs: check
-    if: needs.check.outputs.should_build == 'true'
     runs-on: windows-2022
     timeout-minutes: 180
     env:
       CMAKE_GENERATOR: Ninja
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ needs.check.outputs.project_sha }}
           persist-credentials: false
 
+      - name: Restore last successful state
+        if: needs.check.outputs.previous_state_key != ''
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/projectmt3-state/
+          key: ${{ needs.check.outputs.previous_state_key }}
+
+      - name: Read cached tool identity
+        id: state
+        uses: actions/github-script@v8
+        with:
+          script: |
+            require('./.github/scripts/package-windows.cjs').restoreState({ core });
+
+      - name: Restore Ludork tools
+        id: tools_cache
+        if: steps.state.outputs.tools_key != ''
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/ludork/
+          key: ${{ steps.state.outputs.tools_key }}
+
+      - name: Compare cached Ludork with main HEAD
+        id: ludork
+        uses: actions/github-script@v8
+        env:
+          TOOLS_CACHE_HIT: ${{ steps.tools_cache.outputs.cache-hit }}
+        with:
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          script: |
+            const ci = require('./.github/scripts/package-windows.cjs');
+            await ci.selectLudork({ github, core });
+
+      - name: Download Ludork tools for selected HEAD
+        if: steps.ludork.outputs.download == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ steps.ludork.outputs.ludork_run_id }}
+          artifact-ids: ${{ steps.ludork.outputs.ludork_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork
+          merge-multiple: true
+
       - name: Set up MSVC x64
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
 
-      - name: Download Ludork tools
-        uses: actions/download-artifact@v8
+      - name: Check Engine and compiler cache compatibility
+        id: build
+        uses: actions/github-script@v8
         with:
-          repository: JasonLeon01/Ludork
-          run-id: ${{ needs.check.outputs.ludork_run_id }}
-          artifact-ids: ${{ needs.check.outputs.ludork_artifact_id }}
-          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
-          path: ${{ runner.temp }}/ludork
-          merge-multiple: true
+          script: |
+            require('./.github/scripts/package-windows.cjs').selectBuild({ core, context });
+
+      - name: Restore compatible build
+        id: build_cache
+        if: steps.build.outputs.restore_key != ''
+        uses: actions/cache/restore@v5
+        with:
+          path: |
+            build/
+            bin/
+            Intermediate/
+            ${{ runner.temp }}/projectmt3-build-state/
+          key: ${{ steps.build.outputs.restore_key }}
+
+      - name: Validate build cache and restore timestamps
+        uses: actions/github-script@v8
+        env:
+          BUILD_CACHE_HIT: ${{ steps.build_cache.outputs.cache-hit }}
+        with:
+          script: |
+            await require('./.github/scripts/package-windows.cjs').prepareBuild({ core });
 
       - name: Build and validate Windows package
         shell: pwsh
         env:
-          PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
-          LUDORK_SHA: ${{ needs.check.outputs.ludork_sha }}
-          LUDORK_RUN_ID: ${{ needs.check.outputs.ludork_run_id }}
-          LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.ludork_artifact_id }}
+          LUDORK_SHA: ${{ steps.ludork.outputs.ludork_sha }}
+          LUDORK_RUN_ID: ${{ steps.ludork.outputs.ludork_run_id }}
+          LUDORK_ARTIFACT_ID: ${{ steps.ludork.outputs.ludork_artifact_id }}
         run: |
           & ./.github/scripts/package-windows.ps1 `
             -ProjectDirectory $env:GITHUB_WORKSPACE `
@@ -104,3 +147,40 @@ jobs:
           if-no-files-found: error
           include-hidden-files: true
           retention-days: 7
+          overwrite: true
+
+      # Separate saves: failed builds/uploads must never advance the baseline.
+      - name: Save Ludork tools
+        if: steps.ludork.outputs.download == 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/ludork/
+          key: ${{ steps.ludork.outputs.tools_key }}
+
+      - name: Snapshot build inputs and outputs
+        uses: actions/github-script@v8
+        with:
+          script: |
+            require('./.github/scripts/package-windows.cjs').snapshotBuild({ core });
+
+      - name: Save successful build
+        uses: actions/cache/save@v5
+        with:
+          path: |
+            build/
+            bin/
+            Intermediate/
+            ${{ runner.temp }}/projectmt3-build-state/
+          key: ${{ steps.build.outputs.save_key }}
+
+      - name: Publish successful state
+        uses: actions/github-script@v8
+        with:
+          script: |
+            require('./.github/scripts/package-windows.cjs').publishState();
+
+      - name: Save successful state
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/projectmt3-state/
+          key: ${{ steps.build.outputs.state_key }}
