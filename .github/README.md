@@ -12,7 +12,7 @@
 
 - 只比较 ProjectMT3 的提交 hash。找到本工作流最近一次工作流成功、且 `Package Windows` job 实际成功的运行，以其 `head_sha` 为基准；相同则跳过，否则构建。不要随意更改该 job 的显示名称。
 - 跳过、失败和取消不更新基准；首次运行或历史被删除后重新构建。去重不依赖 artifact，因此游戏包过期不会单独触发重建。查询失败直接报错。
-- 需要构建时，选择 Ludork `main` 上最新成功完成的 `export-editor.yml` 运行，排除 PR。下载其 `Ludork-windows-x64-<commit>`；产物缺失、过期或下载失败时报错，不回退到旧运行。
+- 需要构建时，选择 Ludork `main` 上最新成功完成、且 `Windows x64` job 实际成功的 `export-editor.yml` 运行，排除 PR。上游因近期无变化而跳过打包时，工作流仍会成功但没有产物；这类运行会被忽略，继续使用更早的实际 Windows 打包。下载其 `Ludork-windows-x64-<commit>`；这次实际打包的产物缺失、过期或下载失败时报错，不回退到更旧的打包。
 - Ludork 只提供工具。项目的 Engine、Application 和资源直接使用本仓库选定提交，通过随包 `tools/pack_project.bat` 编译 Windows x64 Release；不升级项目，不额外启用 Lua 编译、加密或 ldpak。
 - 成功上传的 `ProjectMT3-windows-x64-<项目hash>` 保留 **7 天**，包含游戏目录与 `build-info.json`。该 JSON 记录项目提交、Ludork 提交及上游运行和产物 ID。
 

@@ -297,18 +297,7 @@ end
 
 ---@diagnostic disable-next-line: unused, Shared Controller action calculation.
 function Controller:calculateDamage(attacker, defender, critical, attackSkill)
-    local atk = attacker.ATK
-    if attacker.compete then
-        atk = math.max(atk, defender.ATK)
-    end
-    local originalDef = defender.DEF
-    local def = attacker.magic and 0 or defender.DEF
-    if attacker.armorBreak then
-        def = math.floor(def / 2)
-    end
-    if defender.hard then
-        def = math.max(def, atk - 1)
-    end
+    local atk, _, _, def = Battle.GetRealAttrInfo(attacker, defender)
     local base = math.max(0, atk - def)
     ---@type number
     local damage = base
@@ -320,7 +309,7 @@ function Controller:calculateDamage(attacker, defender, critical, attackSkill)
         damage = attacker.crit(base, attacker, defender)
         assert(math.isFinite(damage) and damage >= 0, "Battle crit must return finite non-negative damage")
     end
-    if attacker.deathCurse and atk >= originalDef then
+    if attacker.deathCurse and atk >= defender.DEF then
         damage = damage * 2
     end
     if attacker.burn and damage > 0 then
@@ -550,7 +539,7 @@ function Controller:receiveAttack(attacker, defender, damage, critical, attackSk
             end
         else
             local player = assert(self._player)
-            local defense = attacker.isPlayer and defender.DEF or player.DEF
+            local _, _, _, defense = Battle.GetRealAttrInfo(attacker, defender)
             local gain = player.ATK > 0 and math.round(defense / player.ATK * 6) or 0
             self:addBreath(attacker, gain)
         end

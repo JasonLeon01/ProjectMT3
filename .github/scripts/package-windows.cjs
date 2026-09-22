@@ -48,12 +48,25 @@ async function checkProject({ github, context, core }) {
 }
 
 async function selectLudork({ github, core }) {
+  // An unchanged Ludork tree still completes export-editor successfully, with the
+  // Windows job skipped and no artifact. Ignore those runs and use the newest one
+  // that actually packaged Windows. A packaged run with a bad artifact still fails
+  // closed: an older package is not a substitute.
   let selected;
+  let ignoredRuns = 0;
   for await (const run of successfulRuns(github, upstream, 'export-editor.yml')) {
-    selected = run;
-    break;
+    const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
+      ...upstream, run_id: run.id, filter: 'latest', per_page: 100,
+    });
+    if (jobs.some(job => job.name === 'Windows x64' && job.conclusion === 'success')) {
+      selected = run;
+      break;
+    }
+    ignoredRuns += 1;
   }
-  if (!selected) throw new Error('No successful Ludork Export Editor run on main was found.');
+  if (!selected) {
+    throw new Error('No successful Ludork Export Editor run on main produced a Windows package.');
+  }
   const name = `Ludork-windows-x64-${selected.head_sha}`;
   const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
     ...upstream, run_id: selected.id, per_page: 100,
@@ -61,7 +74,7 @@ async function selectLudork({ github, core }) {
   const matches = artifacts.filter(artifact => artifact.name === name);
   if (matches.length !== 1 || matches[0].expired
       || Date.parse(matches[0].expires_at) <= Date.now()) {
-    throw new Error(`Latest successful Ludork run ${selected.id} has no unique, unexpired ${name} artifact. No older run will be used.`);
+    throw new Error(`Latest Ludork Windows package run ${selected.id} has no unique, unexpired ${name} artifact. Older packages will not be used.`);
   }
   const artifact = matches[0];
   core.setOutput('ludork_sha', selected.head_sha);
@@ -73,6 +86,7 @@ async function selectLudork({ github, core }) {
     ['Run', selected.html_url],
     ['Artifact', name],
     ['Artifact ID', String(artifact.id)],
+    ['Ignored runs without a Windows package', String(ignoredRuns)],
   ]).write();
 }
 
