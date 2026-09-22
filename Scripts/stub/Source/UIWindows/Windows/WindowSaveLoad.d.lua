@@ -102,7 +102,8 @@ function Window:onTick(_) end
 --- Selects the latest existing save, or the first slot when none exists.
 ---@param transitionProfile string | nil
 ---@param initialMode       "load" | "save" | nil
-function Window:open(transitionProfile, initialMode) end
+---@param dockPosition      sf.Vector2f | nil
+function Window:open(transitionProfile, initialMode, dockPosition) end
 
 ---@brief Set the visibility of all save/load child windows.
 ---

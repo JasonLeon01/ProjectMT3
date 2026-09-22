@@ -2,8 +2,7 @@
 ---@meta Source.Windows.WindowEquip.Slot
 
 ---@class Source.Windows.WindowEquipSlot: Source.Windows.Base.WindowSelectable, Source.UIBase.Ui.Window
----@field ui         Source.UI.Parts.WindowEquip.WindowEquipSlot
----@field ROW_HEIGHT integer
+---@field ui Source.UI.Parts.WindowEquip.WindowEquipSlot
 local Window = {}
 
 ---@brief Construct the equipped-slot window.
@@ -61,8 +60,6 @@ function Window:onTick(deltaTime) end
 function Window:open() end
 
 function Window:redrawIfVisible() end
-
-function Window:refreshListLayout() end
 
 ---@brief Refresh localised slot and status text without changing the selected slot or equipment candidate.
 function Window:refreshLocale() end

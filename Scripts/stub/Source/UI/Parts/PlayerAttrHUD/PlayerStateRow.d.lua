@@ -2,9 +2,11 @@
 ---@meta Source.UI.Parts.PlayerAttrHUD.PlayerStateRow
 
 ---@class Source.UIBase.GeneratedControls.Parts.PlayerAttrHUD.PlayerStateRow
----@field Icon      Engine.Image
----@field Root      Engine.Canvas
----@field StateName Engine.PlainText
+---@field Icon         Engine.Image
+---@field IconArea     Engine.Canvas
+---@field Root         Engine.Canvas
+---@field StateContent Engine.Canvas
+---@field StateName    Engine.PlainText
 
 ---@class Source.UIBase.GeneratedAssets.Parts.PlayerAttrHUD.PlayerStateRow
 

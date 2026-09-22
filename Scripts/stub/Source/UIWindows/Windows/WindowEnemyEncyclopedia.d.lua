@@ -28,8 +28,7 @@ function Window:addInfoPair(label, value) end
 function Window:buildInfo(entry) end
 
 ---@param entry Source.Windows.WindowEnemyBook.Entry
----@param y     number
-function Window:buildSpecials(entry, y) end
+function Window:buildSpecials(entry) end
 
 function Window:clearEnemyControls() end
 

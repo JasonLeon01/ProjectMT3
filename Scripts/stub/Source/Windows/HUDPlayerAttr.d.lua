@@ -21,6 +21,7 @@
 ---@field _stackSignature        tuple<any> | nil
 ---@field _breathSignature       tuple<any> | nil
 ---@field _breathAnimElapsed     number
+---@field _breathColours         table<string, sf.Color[]>
 ---@field _progressSignature     tuple<any> | nil
 ---@field _keySignature          tuple<any> | nil
 ---@field _states                Source.UIBase.UiCollection<Source.Windows.HUDPlayerAttr.PlayerStateRow.Controller>

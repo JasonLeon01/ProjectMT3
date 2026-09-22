@@ -31,7 +31,8 @@ function Window:getVisible() end
 function Window:hideImmediate() end
 
 ---@param transitionProfile string | nil
-function Window:open(transitionProfile) end
+---@param dockPosition      sf.Vector2f | nil
+function Window:open(transitionProfile, dockPosition) end
 
 function Window:refreshLocale() end
 

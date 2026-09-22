@@ -291,10 +291,10 @@ function Engine.TextConfig.buildRich(data, sourceName) end
 ---@return number
 function Engine.TextLayout.measurePlainText(control, text) end
 
----@param textConfigKey string
+---@param source Engine.RichText
 ---@param text string
 ---@return number
-function Engine.TextLayout.measureRichText(textConfigKey, text) end
+function Engine.TextLayout.measureRichText(source, text) end
 
 ---@param text string
 ---@param maxWidth number
@@ -310,9 +310,9 @@ function Engine.TextLayout.wrapPlainText(text, maxWidth, control) end
 
 ---@param text string
 ---@param maxWidth number
----@param textConfigKey string
+---@param source Engine.RichText
 ---@return string
-function Engine.TextLayout.wrapRichText(text, maxWidth, textConfigKey) end
+function Engine.TextLayout.wrapRichText(text, maxWidth, source) end
 
 ---@param assetKey string
 ---@param logicalSize? sf.Vector2u|nil
@@ -3492,6 +3492,16 @@ function ListView:getOrigin() end
 function ListView:setOrigin(origin) end
 ---@return integer
 function ListView:getColumns() end
+--- Return the column width and authored default row height in logical
+--- pixels.
+---@return sf.Vector2f
+function ListView:getDefaultItemSize() end
+--- Return a zero-based item's cell in list-local logical coordinates.
+--- Variable-height rows use the tallest item in that row. An invalid index
+--- throws.
+---@param index integer
+---@return sf.FloatRect
+function ListView:getItemLayoutRect(index) end
 ---@return sf.Vector2f
 function ListView:getSize() end
 ---@return sf.FloatRect
@@ -4224,6 +4234,13 @@ function AssetInstance:setText(localName, text) end
 ---@param logicalSize? sf.Vector2u|nil
 ---@return nil
 function AssetInstance:reflow(logicalSize) end
+--- Resize an asset-local control and lay out its authored descendants.
+--- Its parent Slot and current position are unchanged; a parent reflow
+--- restores that Slot.
+---@param localName string
+---@param logicalSize sf.Vector2u
+---@return nil
+function AssetInstance:reflowControl(localName, logicalSize) end
 ---@param name string
 ---@param target? string|nil
 ---@return boolean

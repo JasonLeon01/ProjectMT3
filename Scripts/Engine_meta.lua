@@ -5136,6 +5136,26 @@ local _METADATA = {
             },
             Pure = true,
         },
+        getDefaultItemSize = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2f",
+            },
+            Pure = true,
+        },
+        getItemLayoutRect = {
+            type = "function",
+            parameters = { "self", "index", self = { "Engine", "ListView" }, index = "int" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.FloatRect",
+            },
+            Pure = true,
+        },
         getSize = {
             type = "function",
             parameters = { "self", self = { "Engine", "ListView" } },
@@ -6739,6 +6759,12 @@ local _METADATA = {
             parameters = { "self", "logicalSize", self = { "Engine", "AssetInstance" }, logicalSize = "sf.Vector2u" },
             default = { [1] = "self" },
             defaultUnset = { "logicalSize" },
+            ["return"] = {},
+        },
+        reflowControl = {
+            type = "function",
+            parameters = { "self", "localName", "logicalSize", self = { "Engine", "AssetInstance" }, localName = "string", logicalSize = "sf.Vector2u" },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         hasAnimation = {

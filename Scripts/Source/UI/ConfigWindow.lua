@@ -3,6 +3,8 @@ local UiView = require("Source.UIBase.UiView")
 local ChildView1 = require("Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow")
 local ChildView2 = require("Source.UI.Parts.ConfigWindow.ConfigSettingRow")
 local ChildView3 = require("Source.UI.Parts.ConfigWindow.ConfigSliderRow")
+local ChildView4 = require("Source.UI.Parts.Shared.WindowChrome")
+local ChildView5 = require("Source.UI.Parts.Shared.WindowPauseMark")
 
 ---@class Source.UI.ConfigWindow
 local View = {}
@@ -40,7 +42,9 @@ function View:init(instance)
         GraphicsItem5 = self:own(ChildView2.new(assert(self.instance:requireAsset("GraphicsItem5")))),
         GraphicsItem6 = self:own(ChildView1.new(assert(self.instance:requireAsset("GraphicsItem6")))),
         GraphicsItem7 = self:own(ChildView2.new(assert(self.instance:requireAsset("GraphicsItem7")))),
-        LanguageItem1 = self:own(ChildView2.new(assert(self.instance:requireAsset("LanguageItem1"))))
+        LanguageItem1 = self:own(ChildView2.new(assert(self.instance:requireAsset("LanguageItem1")))),
+        WindowChrome = self:own(ChildView4.new(assert(self.instance:requireAsset("WindowChrome")))),
+        WindowPauseMark = self:own(ChildView5.new(assert(self.instance:requireAsset("WindowPauseMark"))))
     }
     ---@cast assets Source.UIBase.GeneratedAssets.ConfigWindow
     self.assets = assets

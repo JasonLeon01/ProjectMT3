@@ -12,6 +12,8 @@
 ---@field TelepointWindowFrame Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowFloorTeleporter.WindowFloorMapPreview
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowFloorTeleporter.WindowFloorMapPreview: Source.UIBase.UiView
 ---@field root     Engine.Canvas

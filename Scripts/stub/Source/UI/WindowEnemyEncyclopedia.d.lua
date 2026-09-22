@@ -4,8 +4,10 @@
 ---@class Source.UIBase.GeneratedControls.WindowEnemyEncyclopedia
 ---@field Content          Engine.Canvas
 ---@field Description      Engine.PlainText
+---@field DescriptionArea  Engine.Canvas
 ---@field InfoLayer        Engine.ListView
 ---@field Name             Engine.FunctionalPlainText
+---@field NameArea         Engine.Canvas
 ---@field Portrait         Engine.CharacterView
 ---@field Root             Engine.Canvas
 ---@field SpecialList      Engine.ListView
@@ -13,17 +15,19 @@
 ---@field WindowFrame      Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowEnemyEncyclopedia
----@field InfoItem1    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem2    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem3    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem4    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem5    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem6    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem7    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field InfoItem8    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field SpecialItem1 Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
----@field SpecialItem2 Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
----@field SpecialItem3 Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
+---@field InfoItem1       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem2       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem3       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem4       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem5       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem6       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem7       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field InfoItem8       Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
+---@field SpecialItem1    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
+---@field SpecialItem2    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
+---@field SpecialItem3    Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowEnemyEncyclopedia: Source.UIBase.UiView
 ---@field root     Engine.Canvas

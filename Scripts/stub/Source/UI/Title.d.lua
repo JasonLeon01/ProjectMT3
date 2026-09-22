@@ -2,19 +2,11 @@
 ---@meta Source.UI.Title
 
 ---@class Source.UIBase.GeneratedControls.Title
----@field Background         Engine.Image
----@field CommandContent     Engine.Canvas
----@field CommandList        Engine.ListView
----@field CommandPanel       Engine.Canvas
----@field CommandScrollBox   Engine.ScrollBox
----@field CommandWindowFrame Engine.Window
----@field Root               Engine.Canvas
+---@field Background Engine.Image
+---@field Root       Engine.Canvas
 
 ---@class Source.UIBase.GeneratedAssets.Title
----@field TitleCommand1 Source.UI.Parts.Shared.CommandRow
----@field TitleCommand2 Source.UI.Parts.Shared.CommandRow
----@field TitleCommand3 Source.UI.Parts.Shared.CommandRow
----@field TitleCommand4 Source.UI.Parts.Shared.CommandRow
+---@field CommandPanel Source.UI.Parts.Title.CommandWindow
 
 ---@class Source.UI.Title: Source.UIBase.UiView
 ---@field root     Engine.Canvas

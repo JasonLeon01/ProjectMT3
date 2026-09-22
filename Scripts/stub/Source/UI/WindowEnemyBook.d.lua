@@ -9,11 +9,13 @@
 ---@field WindowFrame    Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowEnemyBook
----@field EnemyItem1 Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
----@field EnemyItem2 Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
----@field EnemyItem3 Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
----@field EnemyItem4 Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
----@field EnemyItem5 Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field EnemyItem1      Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field EnemyItem2      Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field EnemyItem3      Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field EnemyItem4      Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field EnemyItem5      Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowEnemyBook: Source.UIBase.UiView
 ---@field root     Engine.Canvas

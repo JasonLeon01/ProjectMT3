@@ -4,8 +4,11 @@
 ---@class Source.UIBase.GeneratedControls.WindowMessage
 ---@field ConfirmLayer  Engine.FunctionalImage
 ---@field Content       Engine.Canvas
+---@field DialogBounds  Engine.Canvas
+---@field MessageBody   Engine.Canvas
 ---@field MessageList   Engine.ListView
 ---@field MessageText   Engine.RichText
+---@field NameArea      Engine.Canvas
 ---@field NameText      Engine.PlainText
 ---@field Panel         Engine.Canvas
 ---@field Root          Engine.Canvas
@@ -13,10 +16,12 @@
 ---@field WindowFrame   Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowMessage
----@field SelectionItem1 Source.UI.Parts.WindowMessage.MessageOptionRow
----@field SelectionItem2 Source.UI.Parts.WindowMessage.MessageOptionRow
----@field SelectionItem3 Source.UI.Parts.WindowMessage.MessageOptionRow
----@field SelectionItem4 Source.UI.Parts.WindowMessage.MessageOptionRow
+---@field SelectionItem1  Source.UI.Parts.WindowMessage.MessageOptionRow
+---@field SelectionItem2  Source.UI.Parts.WindowMessage.MessageOptionRow
+---@field SelectionItem3  Source.UI.Parts.WindowMessage.MessageOptionRow
+---@field SelectionItem4  Source.UI.Parts.WindowMessage.MessageOptionRow
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowMessage: Source.UIBase.UiView
 ---@field root     Engine.Canvas

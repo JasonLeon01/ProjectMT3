@@ -2,13 +2,14 @@
 ---@meta Source.UI.WindowItem
 
 ---@class Source.UIBase.GeneratedControls.WindowItem
----@field Content       Engine.Canvas
----@field Description   Engine.PlainText
----@field ItemList      Engine.ListView
----@field ItemName      Engine.PlainText
----@field ItemScrollBox Engine.ScrollBox
----@field Root          Engine.Canvas
----@field WindowFrame   Engine.Window
+---@field Content         Engine.Canvas
+---@field Description     Engine.PlainText
+---@field DescriptionArea Engine.Canvas
+---@field ItemList        Engine.ListView
+---@field ItemName        Engine.PlainText
+---@field ItemScrollBox   Engine.ScrollBox
+---@field Root            Engine.Canvas
+---@field WindowFrame     Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowItem
 ---@field ItemPlaceholder1  Source.UI.Parts.WindowItem.ItemRow
@@ -41,6 +42,8 @@
 ---@field ItemPlaceholder7  Source.UI.Parts.WindowItem.ItemRow
 ---@field ItemPlaceholder8  Source.UI.Parts.WindowItem.ItemRow
 ---@field ItemPlaceholder9  Source.UI.Parts.WindowItem.ItemRow
+---@field WindowChrome      Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark   Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowItem: Source.UIBase.UiView
 ---@field root     Engine.Canvas

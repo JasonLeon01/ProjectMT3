@@ -2,15 +2,18 @@
 ---@meta Source.UI.Parts.WindowShop.WindowShopDetail
 
 ---@class Source.UIBase.GeneratedControls.Parts.WindowShop.WindowShopDetail
----@field Content     Engine.Canvas
----@field Description Engine.PlainText
----@field ItemName    Engine.PlainText
----@field Price       Engine.PlainText
----@field PriceLabel  Engine.PlainText
----@field Root        Engine.Canvas
----@field WindowFrame Engine.Window
+---@field Content         Engine.Canvas
+---@field Description     Engine.PlainText
+---@field DescriptionArea Engine.Canvas
+---@field ItemName        Engine.PlainText
+---@field Price           Engine.PlainText
+---@field PriceLabel      Engine.PlainText
+---@field Root            Engine.Canvas
+---@field WindowFrame     Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowShop.WindowShopDetail
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowShop.WindowShopDetail: Source.UIBase.UiView
 ---@field root     Engine.Canvas

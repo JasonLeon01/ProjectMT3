@@ -14,9 +14,11 @@ function View:init(instance)
         BreathMinus = assert(self.instance:requireControl("BreathMinus")),
         ChangeList = assert(self.instance:requireControl("ChangeList")),
         Description = assert(self.instance:requireControl("Description")),
+        DescriptionArea = assert(self.instance:requireControl("DescriptionArea")),
         FatiguePlus = assert(self.instance:requireControl("FatiguePlus")),
         ItemName = assert(self.instance:requireControl("ItemName")),
-        Root = assert(self.instance:requireControl("Root"))
+        Root = assert(self.instance:requireControl("Root")),
+        SkillStatsArea = assert(self.instance:requireControl("SkillStatsArea"))
     }
     ---@cast controls Source.UIBase.GeneratedControls.Parts.WindowEquip.WindowEquipStatus
     self.controls = controls

@@ -2,29 +2,27 @@
 ---@meta Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell
 
 ---@class Source.UIBase.GeneratedControls.Parts.WindowEnemyBook.WindowEnemyBookCell
----@field ATKLabel     Engine.PlainText
----@field ATKValue     Engine.PlainText
----@field DEFLabel     Engine.PlainText
----@field DEFValue     Engine.PlainText
----@field DamageLabel  Engine.PlainText
----@field DamageValue  Engine.PlainText
----@field EXPLabel     Engine.PlainText
----@field EXPValue     Engine.PlainText
----@field EnemyIcon    Engine.CharacterView
----@field GOLDLabel    Engine.PlainText
----@field GOLDValue    Engine.PlainText
----@field HPLabel      Engine.PlainText
----@field HPValue      Engine.PlainText
----@field Name         Engine.PlainText
----@field Root         Engine.Canvas
----@field SpecialIcon1 Engine.FunctionalImage
----@field SpecialIcon2 Engine.FunctionalImage
----@field SpecialIcon3 Engine.FunctionalImage
----@field SpecialText1 Engine.PlainText
----@field SpecialText2 Engine.PlainText
----@field SpecialText3 Engine.PlainText
+---@field ATKLabel    Engine.PlainText
+---@field ATKValue    Engine.PlainText
+---@field DEFLabel    Engine.PlainText
+---@field DEFValue    Engine.PlainText
+---@field DamageLabel Engine.PlainText
+---@field DamageValue Engine.PlainText
+---@field EXPLabel    Engine.PlainText
+---@field EXPValue    Engine.PlainText
+---@field EnemyIcon   Engine.CharacterView
+---@field GOLDLabel   Engine.PlainText
+---@field GOLDValue   Engine.PlainText
+---@field HPLabel     Engine.PlainText
+---@field HPValue     Engine.PlainText
+---@field Name        Engine.PlainText
+---@field NameArea    Engine.Canvas
+---@field Root        Engine.Canvas
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowEnemyBook.WindowEnemyBookCell
+---@field Special1 Source.UI.Parts.WindowEnemyBook.SpecialDisplay
+---@field Special2 Source.UI.Parts.WindowEnemyBook.SpecialDisplay
+---@field Special3 Source.UI.Parts.WindowEnemyBook.SpecialDisplay
 
 ---@class Source.UI.Parts.WindowEnemyBook.WindowEnemyBookCell: Source.UIBase.UiView
 ---@field root     Engine.Canvas

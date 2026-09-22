@@ -10,6 +10,8 @@
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowSaveLoad.WindowSaveSlot
 ---@field SaveSlotPlaceholder1 Source.UI.Parts.WindowSaveLoad.WindowSaveSlotRow
+---@field WindowChrome         Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark      Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowSaveLoad.WindowSaveSlot: Source.UIBase.UiView
 ---@field root     Engine.Canvas

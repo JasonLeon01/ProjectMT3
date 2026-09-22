@@ -13,11 +13,13 @@
 ---@field WindowFrame      Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowAttrShop
----@field AbilityItem1 Source.UI.Parts.WindowAttrShop.AttrShopRow
----@field AbilityItem2 Source.UI.Parts.WindowAttrShop.AttrShopRow
----@field AbilityItem3 Source.UI.Parts.WindowAttrShop.AttrShopRow
----@field AbilityItem4 Source.UI.Parts.WindowAttrShop.AttrShopRow
----@field AbilityItem5 Source.UI.Parts.WindowAttrShop.AttrShopRow
+---@field AbilityItem1    Source.UI.Parts.WindowAttrShop.AttrShopRow
+---@field AbilityItem2    Source.UI.Parts.WindowAttrShop.AttrShopRow
+---@field AbilityItem3    Source.UI.Parts.WindowAttrShop.AttrShopRow
+---@field AbilityItem4    Source.UI.Parts.WindowAttrShop.AttrShopRow
+---@field AbilityItem5    Source.UI.Parts.WindowAttrShop.AttrShopRow
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowAttrShop: Source.UIBase.UiView
 ---@field root     Engine.Canvas

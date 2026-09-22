@@ -28,19 +28,15 @@ function Window:cancelSelection(index) end
 ---@return boolean
 function Window:confirmMessage() end
 
----@param index     integer
----@param rowHeight number
----@return sf.Vector2f | nil
-function Window:getSelectionPosition(index, rowHeight) end
+---@param index integer
+---@return sf.FloatRect
+function Window:getSelectionLayoutRect(index) end
 
 ---@brief Get the result of a selection dialogue.
 ---
 --- - @return The selected option index, or nil if no selection has been made.
 ---@return integer | nil
 function Window:getSelectionResult() end
-
----@return integer | nil
-function Window:getSelectionWidth() end
 
 ---@brief Check if a plain message dialogue can be advanced by confirm input.
 ---

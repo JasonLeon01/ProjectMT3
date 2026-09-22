@@ -51,9 +51,10 @@ function Window:onTick(deltaTime) end
 
 ---@brief Open the item window, refreshing inventory and selecting its first item.
 ---
---- Defaults to Menu dock + FadeIn_Menu. Pass DEFAULT to center with scale fade.
+--- Defaults to centered scale fade. Menu transitions require the owning menu dock position.
 ---@param transitionProfile string | nil
-function Window:open(transitionProfile) end
+---@param dockPosition      sf.Vector2f | nil
+function Window:open(transitionProfile, dockPosition) end
 
 function Window:refresh() end
 

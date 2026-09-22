@@ -5,13 +5,15 @@ local UiView = require("Source.UIBase.UiView")
 local View = {}
 
 View.assetKey = "Parts/PlayerAttrHUD/PlayerStateRow"
-View.designSize = sf.Vector2f.new(128, 24)
+View.designSize = sf.Vector2f.new(132, 24)
 
 function View:init(instance)
     UiView.init(self, instance)
     local controls = {
         Icon = assert(self.instance:requireControl("Icon")),
+        IconArea = assert(self.instance:requireControl("IconArea")),
         Root = assert(self.instance:requireControl("Root")),
+        StateContent = assert(self.instance:requireControl("StateContent")),
         StateName = assert(self.instance:requireControl("StateName"))
     }
     ---@cast controls Source.UIBase.GeneratedControls.Parts.PlayerAttrHUD.PlayerStateRow

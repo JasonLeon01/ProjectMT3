@@ -13,6 +13,8 @@
 ---@field SlotPlaceholder2 Source.UI.Parts.WindowEquip.EquipSlotRow
 ---@field SlotPlaceholder3 Source.UI.Parts.WindowEquip.EquipSlotRow
 ---@field SlotPlaceholder4 Source.UI.Parts.WindowEquip.EquipSlotRow
+---@field WindowChrome     Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark  Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowEquip.WindowEquipSlot: Source.UIBase.UiView
 ---@field root     Engine.Canvas

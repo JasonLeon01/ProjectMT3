@@ -2,9 +2,11 @@
 ---@meta Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
 
 ---@class Source.UIBase.GeneratedControls.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
----@field Description Engine.PlainText
----@field Name        Engine.PlainText
----@field Root        Engine.Canvas
+---@field Description     Engine.PlainText
+---@field DescriptionArea Engine.Canvas
+---@field Name            Engine.PlainText
+---@field NameArea        Engine.Canvas
+---@field Root            Engine.Canvas
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaSpecialRow
 

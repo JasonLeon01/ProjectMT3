@@ -5,10 +5,13 @@
 ---@field Content       Engine.Canvas
 ---@field Root          Engine.Canvas
 ---@field Thumbnail     Engine.Image
+---@field ThumbnailArea Engine.Canvas
 ---@field TimestampText Engine.FunctionalPlainText
 ---@field WindowFrame   Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowSaveLoad.WindowSaveDetail
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowSaveLoad.WindowSaveDetail: Source.UIBase.UiView
 ---@field root     Engine.Canvas

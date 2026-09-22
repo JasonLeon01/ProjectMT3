@@ -9,11 +9,13 @@
 ---@field WindowFrame   Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowMenu
----@field MenuItem1 Source.UI.Parts.Shared.CommandRow
----@field MenuItem2 Source.UI.Parts.Shared.CommandRow
----@field MenuItem3 Source.UI.Parts.Shared.CommandRow
----@field MenuItem4 Source.UI.Parts.Shared.CommandRow
----@field MenuItem5 Source.UI.Parts.Shared.CommandRow
+---@field MenuItem1       Source.UI.Parts.Shared.CommandRow
+---@field MenuItem2       Source.UI.Parts.Shared.CommandRow
+---@field MenuItem3       Source.UI.Parts.Shared.CommandRow
+---@field MenuItem4       Source.UI.Parts.Shared.CommandRow
+---@field MenuItem5       Source.UI.Parts.Shared.CommandRow
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowMenu: Source.UIBase.UiView
 ---@field root     Engine.Canvas

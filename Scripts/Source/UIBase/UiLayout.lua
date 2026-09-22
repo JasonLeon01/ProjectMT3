@@ -2,7 +2,6 @@ local Engine = require("Engine")
 local GlobalCore = require("GlobalCore")
 
 local Display = GlobalCore.Display
-
 local UiLayout = {}
 
 function UiLayout.GetCenteredRect(width, height)
@@ -12,8 +11,8 @@ function UiLayout.GetCenteredRect(width, height)
     return Engine.ToIntRect(x, y, width, height)
 end
 
-function UiLayout.GetMenuDockPosition()
-    return sf.Vector2f.new(192, 0)
+function UiLayout.GetMenuDockPosition(menu)
+    return menu:getPosition() + sf.Vector2f.new(menu:getSize().x, 0)
 end
 
 function UiLayout.GetCenteredPosition(width, height)

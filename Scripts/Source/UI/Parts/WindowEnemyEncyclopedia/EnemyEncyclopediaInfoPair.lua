@@ -11,8 +11,10 @@ function View:init(instance)
     UiView.init(self, instance)
     local controls = {
         Label = assert(self.instance:requireControl("Label")),
+        LabelArea = assert(self.instance:requireControl("LabelArea")),
         Root = assert(self.instance:requireControl("Root")),
-        Value = assert(self.instance:requireControl("Value"))
+        Value = assert(self.instance:requireControl("Value")),
+        ValueArea = assert(self.instance:requireControl("ValueArea"))
     }
     ---@cast controls Source.UIBase.GeneratedControls.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
     self.controls = controls

@@ -23,6 +23,8 @@
 ---@field ShopItemPlaceholder7  Source.UI.Parts.WindowShop.WindowShopCell
 ---@field ShopItemPlaceholder8  Source.UI.Parts.WindowShop.WindowShopCell
 ---@field ShopItemPlaceholder9  Source.UI.Parts.WindowShop.WindowShopCell
+---@field WindowChrome          Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark       Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowShop.WindowShopItem: Source.UIBase.UiView
 ---@field root     Engine.Canvas

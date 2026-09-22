@@ -5,7 +5,7 @@ local UiView = require("Source.UIBase.UiView")
 local View = {}
 
 View.assetKey = "Parts/WindowEquip/EquipSlotRow"
-View.designSize = sf.Vector2f.new(132, 32)
+View.designSize = sf.Vector2f.new(128, 32)
 
 function View:init(instance)
     UiView.init(self, instance)

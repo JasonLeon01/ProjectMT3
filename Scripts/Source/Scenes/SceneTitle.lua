@@ -6,11 +6,11 @@ local GameInstance = require("Source.GameInstance")
 local SceneTitleController = require("Source.Scenes.SceneTitle.Controller")
 local LazyWindow = require("Source.UIBase.LazyWindow")
 
-local ManagerFunctions = GlobalFunctions.Manager
-local AudioManager = GlobalCore.AudioManager
 local Display = GlobalCore.Display
 local SceneManager = GlobalCore.SceneManager
 local Transition = GlobalCore.Transition
+local ManagerFunctions = GlobalFunctions.Manager
+local AudioManager = GlobalCore.AudioManager
 local GlobalSystem = GlobalCore.System
 local SceneBase = GlobalCore.SceneBase
 
@@ -55,7 +55,6 @@ function Scene:onCreate()
         window:mount(assert(self:getUIManager()))
         return window
     end)
-    uiManager:loadUI(self._windowCommand)
     self._windowCommand:setActive(false)
     self._ui:playAnimation("FadeIn", "CommandPanel", function ()
         self._windowCommand:setActive(true)

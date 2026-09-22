@@ -2,9 +2,11 @@
 ---@meta Source.UI.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
 
 ---@class Source.UIBase.GeneratedControls.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
----@field Label Engine.PlainText
----@field Root  Engine.Canvas
----@field Value Engine.PlainText
+---@field Label     Engine.PlainText
+---@field LabelArea Engine.Canvas
+---@field Root      Engine.Canvas
+---@field Value     Engine.PlainText
+---@field ValueArea Engine.Canvas
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowEnemyEncyclopedia.EnemyEncyclopediaInfoPair
 

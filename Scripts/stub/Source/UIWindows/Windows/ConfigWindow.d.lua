@@ -91,6 +91,10 @@ function Window:getPageCount() end
 ---@return Engine.DropBox | nil
 function Window:getScaleDropBox() end
 
+---@param index integer
+---@return sf.FloatRect
+function Window:getSelectionLayoutRect(index) end
+
 ---@brief Get the sound-enabled CheckBox on the settings list.
 ---
 --- - @return Sound-enabled CheckBox coordinator

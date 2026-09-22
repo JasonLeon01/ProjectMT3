@@ -21,60 +21,152 @@
     "editor": {},
     "children": [
       {
-        "name": "Label",
-        "controlId": "Engine.PlainText",
+        "name": "LabelArea",
+        "controlId": "Engine.Canvas",
         "properties": {
-          "characterSize": 16,
-          "lineAlignment": "left",
-          "text": ""
+          "size": [
+            96,
+            32
+          ]
         },
         "slot": {
           "anchors": {
-            "min": [0.0, 0.0],
-            "max": [0.0, 0.0]
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
           },
           "offsets": {
-            "left": 0.0,
-            "top": 0.0,
-            "right": 0.0,
-            "bottom": 0.0
+            "left": 0,
+            "top": 0,
+            "right": 96,
+            "bottom": 32
           },
-          "alignment": [0.0, 0.0],
-          "autoSize": true,
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
           "zOrder": 0
         },
-        "editor": {
-          "previewText": "HP"
-        },
-        "children": []
+        "editor": {},
+        "children": [
+          {
+            "name": "Label",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "lineAlignment": "left",
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "HP"
+            },
+            "children": []
+          }
+        ]
       },
       {
-        "name": "Value",
-        "controlId": "Engine.PlainText",
+        "name": "ValueArea",
+        "controlId": "Engine.Canvas",
         "properties": {
-          "characterSize": 16,
-          "lineAlignment": "right",
-          "text": ""
+          "size": [
+            104,
+            32
+          ]
         },
         "slot": {
           "anchors": {
-            "min": [0.0, 0.0],
-            "max": [0.0, 0.0]
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
           },
           "offsets": {
-            "left": 176.0,
-            "top": 0.0,
-            "right": 0.0,
-            "bottom": 0.0
+            "left": 72,
+            "top": 0,
+            "right": 104,
+            "bottom": 32
           },
-          "alignment": [1.0, 0.0],
-          "autoSize": true,
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
           "zOrder": 1
         },
-        "editor": {
-          "previewText": "999"
-        },
-        "children": []
+        "editor": {},
+        "children": [
+          {
+            "name": "Value",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "lineAlignment": "right",
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 104,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "999"
+            },
+            "children": []
+          }
+        ]
       }
     ]
   }

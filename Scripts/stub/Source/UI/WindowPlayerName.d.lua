@@ -12,6 +12,8 @@
 ---@field WindowFrame   Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowPlayerName
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowPlayerName: Source.UIBase.UiView
 ---@field root     Engine.Canvas

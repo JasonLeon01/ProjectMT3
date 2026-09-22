@@ -2,9 +2,8 @@
 ---@meta Source.Windows.WindowEquip.Select
 
 ---@class Source.Windows.WindowEquipSelect: Source.Windows.Base.WindowSelectable, Source.UIBase.Ui.Window
----@field ui        Source.UI.Parts.WindowEquip.WindowEquipSelect
----@field CELL_SIZE integer
----@field UNEQUIP   table
+---@field ui      Source.UI.Parts.WindowEquip.WindowEquipSelect
+---@field UNEQUIP table
 local Window = {}
 
 ---@brief Construct the available-equip window.
@@ -37,10 +36,6 @@ function Window.FromView(ui, player, windowEquipSlot, windowEquipStatus, onEquip
 ---@brief Close the available-equip window.
 function Window:close() end
 
----@param contentWidth integer
----@return integer
-function Window:getGridColumns(contentWidth) end
-
 function Window:onConfirmAction() end
 
 function Window:onReturn() end
@@ -59,8 +54,6 @@ function Window:open() end
 --- - @param slotKey The equipment slot identifier to filter by.
 ---@param slotKey string
 function Window:refreshForSlot(slotKey) end
-
-function Window:refreshListLayout() end
 
 ---@brief Return focus to the slot list while keeping this window visible.
 ---

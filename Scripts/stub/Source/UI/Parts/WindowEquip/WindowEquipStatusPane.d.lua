@@ -7,7 +7,9 @@
 ---@field WindowFrame Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowEquip.WindowEquipStatusPane
----@field StatusAsset Source.UI.Parts.WindowEquip.WindowEquipStatus
+---@field StatusAsset     Source.UI.Parts.WindowEquip.WindowEquipStatus
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowEquip.WindowEquipStatusPane: Source.UIBase.UiView
 ---@field root     Engine.Canvas

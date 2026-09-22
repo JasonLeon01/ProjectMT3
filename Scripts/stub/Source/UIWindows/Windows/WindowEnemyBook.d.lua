@@ -63,11 +63,12 @@ function Window:formatName(name) end
 ---@return string
 function Window:formatText(text) end
 
----@return integer
-function Window:getItemWidth() end
-
 ---@return Source.Player.Player
 function Window:getPlayer() end
+
+---@param index integer
+---@return sf.FloatRect
+function Window:getSelectionLayoutRect(index) end
 
 ---@brief Close the handbook through its cancel path.
 function Window:onReturn() end

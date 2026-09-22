@@ -20,11 +20,6 @@ function Window.new(player) end
 ---@return Source.Windows.WindowEquipStatus
 function Window.FromView(ui, player) end
 
----@param attrKey  string
----@param delta    integer
----@param rowIndex integer
-function Window:addChangeRow(attrKey, delta, rowIndex) end
-
 function Window:clearChangeTexts() end
 
 ---@brief Close the detail window.

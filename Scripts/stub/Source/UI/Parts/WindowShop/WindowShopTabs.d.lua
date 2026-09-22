@@ -8,6 +8,8 @@
 ---@field WindowFrame Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.Parts.WindowShop.WindowShopTabs
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowShop.WindowShopTabs: Source.UIBase.UiView
 ---@field root     Engine.Canvas

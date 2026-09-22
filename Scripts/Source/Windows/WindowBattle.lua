@@ -23,8 +23,8 @@ local Animation = GlobalCore.Animation
 local Controller = {}
 Controller.windowOptions = { hidden = true, focusable = true }
 
----@param actor Source.Player.Player
----@param slot  string
+---@param actor  Source.Player.Player
+---@param slot   string
 ---@param skills table<string, Source.Configs.Battle.Skill | nil>
 ---@return Source.Configs.Battle.Skill | nil
 ---@return string
@@ -67,16 +67,19 @@ local function createState(actor, player)
     local defenseSkillBreathMinus = 0
     if player then
         ---@cast actor Source.Player.Player
-        attackSkill, attackSkillAnimationKey, attackSkillFatiguePlus, attackSkillBreathMinus =
-            resolveEquipSkill(actor, "weapon", Battle.attackSkills)
-        defenseSkill, defenseSkillAnimationKey, defenseSkillFatiguePlus, defenseSkillBreathMinus =
-            resolveEquipSkill(actor, "shield", Battle.defenseSkills)
+        attackSkill, attackSkillAnimationKey, attackSkillFatiguePlus, attackSkillBreathMinus = resolveEquipSkill(
+            actor, "weapon", Battle.attackSkills
+        )
+        defenseSkill, defenseSkillAnimationKey, defenseSkillFatiguePlus, defenseSkillBreathMinus = resolveEquipSkill(
+            actor, "shield", Battle.defenseSkills
+        )
     end
     return {
         HP = player and attributes.HP or attributes.MAXHP,
         MAXHP = attributes.MAXHP,
         ATK = (not player and SpecialAbilities.GetMagnitude(abilitySystem, Special.Ambush) ~= nil)
-            and attributes.ATK * 2 or attributes.ATK,
+            and attributes.ATK * 2
+            or attributes.ATK,
         DEF = attributes.DEF,
         MAGIC = player and attributes.MAGIC or 0,
         breath = player and attributes.breath or 0,
@@ -128,6 +131,8 @@ function Controller:init(scene)
     self._defenseSkillSelected = false
     self._retreatRequested = false
     self._watchStops = {}
+    self._actionButtonColours = {}
+    self._breathColours = { Lit = {}, Dim = {} }
     self._particles = self.ui.controls["Content"]:getParticleSystem()
 end
 
@@ -143,12 +148,23 @@ function Controller:bind()
         RetreatButton = retreat
     }) do
         local button = self.ui.controls[name]
-        ---@cast button Engine.FunctionalBase
+        ---@cast button Engine.Button | Engine.FunctionalPlainText
+        self._actionButtonColours[name] = button:getColour():copy()
         button:addClickCallback(action)
         button:addConfirmCallback(action)
         button:addKeyDownCallback(self:bindCallback(Controller.onKeyDown))
     end
-    self.ui.controls["RetreatButton"]:setTouchHitBounds(Engine.ToFloatRect(0, -10, 128, 44))
+    local touchPosition = self.ui.controls["RetreatTouchArea"]:getPosition() - self.ui.controls["RetreatButton"]:getPosition()
+        - self.ui.controls["RetreatButton"]:getLocalBounds().position
+    local touchSize = self.ui.controls["RetreatTouchArea"]:getSize()
+    self.ui.controls["RetreatButton"]:setTouchHitBounds(
+        sf.FloatRect.new(touchPosition, sf.Vector2f.new(touchSize.x, touchSize.y))
+    )
+    for _, kind in ipairs({ "Lit", "Dim" }) do
+        for index = 1, self:getBreathBox(kind):getCount() do
+            self._breathColours[kind][index] = self:getBreathCanvas(kind, index):getColour():copy()
+        end
+    end
     self:watch(self, "_criticalSelected", Controller.refreshCritical)
     self:watch(self, "_attackSkillSelected", Controller.refreshCritical)
     self:watch(self, "_defenseSkillSelected", Controller.refreshCritical)
@@ -164,7 +180,9 @@ function Controller:setBattleText(name, text)
     local control = assert(self.ui.controls[name])
     ---@cast control Engine.PlainText
     if name:match("Name$") then
-        text = Engine.TextLayout.fitPlainText(text, 96, control)
+        local area = assert(self.ui.controls[name .. "Area"])
+        ---@cast area Engine.Canvas
+        text = Engine.TextLayout.fitPlainText(text, area:getSize().x, control)
     end
     self:setText(name, text)
     self.view:reflow()
@@ -366,8 +384,8 @@ function Controller:requestAttackSkill()
 end
 
 function Controller:requestDefenseSkill()
-    if self._running and not self._retreatRequested and not self._defenseSkillSelected
-        and self:canDefenseSkill(assert(self._player)) then
+    if self._running and not self._retreatRequested
+        and not self._defenseSkillSelected and self:canDefenseSkill(assert(self._player)) then
         self._defenseSkillSelected = true
         self._criticalSelected = false
         self._attackSkillSelected = false
@@ -592,7 +610,7 @@ function Controller:refreshActionButton(name, selected, enabled)
     end
     button:setVisible(not selected)
     button:setActive(enabled == true)
-    button:setColour(enabled and sf.Color.White or sf.Color.new(128, 128, 128, 255))
+    button:setColour(enabled and self._actionButtonColours[name] or sf.Color.new(128, 128, 128, 255))
     selectedImage:setVisible(selected == true)
 end
 
@@ -607,18 +625,14 @@ function Controller:refreshCritical()
         return
     end
     self:refreshActionButton(
-        "CriticalButton",
-        self._criticalSelected,
-        not self._criticalSelected and self:canCritical(player, enemy)
+        "CriticalButton", self._criticalSelected, not self._criticalSelected and self:canCritical(player, enemy)
     )
     self:refreshActionButton(
-        "AttackSkillButton",
-        self._attackSkillSelected,
+        "AttackSkillButton", self._attackSkillSelected,
         not self._attackSkillSelected and self:canAttackSkill(player, enemy)
     )
     self:refreshActionButton(
-        "DefenseSkillButton",
-        self._defenseSkillSelected,
+        "DefenseSkillButton", self._defenseSkillSelected,
         not self._defenseSkillSelected and self:canDefenseSkill(player)
     )
     self.ui.controls["RetreatButton"]:setActive(true)
@@ -637,7 +651,7 @@ function Controller:refreshBreath(side, state)
                 local lit = unit > 0 and state.breath >= unit * index
                 local canvas = self:getBreathCanvas(kind, index)
                 canvas:setVisible(true)
-                canvas:setColour((lit == (kind == "Lit")) and sf.Color.White or sf.Color.Transparent)
+                canvas:setColour((lit == (kind == "Lit")) and self._breathColours[kind][index] or sf.Color.Transparent)
             end
         end
     end
@@ -664,9 +678,11 @@ function Controller:playBreathAnimation()
             local canvas = self:getBreathCanvas(kind, index)
             canvas:clearAnims()
             local animation = Animation.new(data, false)
-            animation:setPosition(sf.Vector2f.new(8, 10))
-            canvas:addAnim(animation)
             local preview = canvas:getChildren()[1]
+            ---@cast preview Engine.Image
+            local previewBounds = preview:getTransform():transformRect(preview:getLocalBounds())
+            animation:setPosition(sf.Vector2f.new(previewBounds:getCenter().x, canvas:getSize().y / 2))
+            canvas:addAnim(animation)
             preview:setVisible(false)
         end
     end

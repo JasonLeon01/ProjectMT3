@@ -14,20 +14,22 @@
 ---@field WindowFrame         Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.ConfigWindow
----@field AudioItem1    Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
----@field AudioItem2    Source.UI.Parts.ConfigWindow.ConfigSliderRow
----@field AudioItem3    Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
----@field AudioItem4    Source.UI.Parts.ConfigWindow.ConfigSliderRow
----@field AudioItem5    Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
----@field AudioItem6    Source.UI.Parts.ConfigWindow.ConfigSliderRow
----@field GraphicsItem1 Source.UI.Parts.ConfigWindow.ConfigSettingRow
----@field GraphicsItem2 Source.UI.Parts.ConfigWindow.ConfigSettingRow
----@field GraphicsItem3 Source.UI.Parts.ConfigWindow.ConfigSettingRow
----@field GraphicsItem4 Source.UI.Parts.ConfigWindow.ConfigSettingRow
----@field GraphicsItem5 Source.UI.Parts.ConfigWindow.ConfigSettingRow
----@field GraphicsItem6 Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
----@field GraphicsItem7 Source.UI.Parts.ConfigWindow.ConfigSettingRow
----@field LanguageItem1 Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field AudioItem1      Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
+---@field AudioItem2      Source.UI.Parts.ConfigWindow.ConfigSliderRow
+---@field AudioItem3      Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
+---@field AudioItem4      Source.UI.Parts.ConfigWindow.ConfigSliderRow
+---@field AudioItem5      Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
+---@field AudioItem6      Source.UI.Parts.ConfigWindow.ConfigSliderRow
+---@field GraphicsItem1   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field GraphicsItem2   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field GraphicsItem3   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field GraphicsItem4   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field GraphicsItem5   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field GraphicsItem6   Source.UI.Parts.ConfigWindow.ConfigCheckBoxRow
+---@field GraphicsItem7   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field LanguageItem1   Source.UI.Parts.ConfigWindow.ConfigSettingRow
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.ConfigWindow: Source.UIBase.UiView
 ---@field root     Engine.Canvas

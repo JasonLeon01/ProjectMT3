@@ -142,17 +142,12 @@
             "children": []
           },
           {
-            "name": "EnemyName",
-            "controlId": "Engine.PlainText",
+            "name": "EnemyNameArea",
+            "controlId": "Engine.Canvas",
             "properties": {
-              "text": "",
-              "characterSize": 22,
-              "outlineThickness": 1,
-              "outlineColor": [
-                0,
-                0,
-                0,
-                255
+              "size": [
+                96,
+                24
               ]
             },
             "slot": {
@@ -167,22 +162,64 @@
                 ]
               },
               "offsets": {
-                "left": 72,
+                "left": 24,
                 "top": 0,
-                "right": 160,
+                "right": 96,
                 "bottom": 24
               },
               "alignment": [
-                0.5,
+                0,
                 0
               ],
-              "autoSize": true,
+              "autoSize": false,
               "zOrder": 0
             },
-            "editor": {
-              "previewText": "史莱姆"
-            },
-            "children": []
+            "editor": {},
+            "children": [
+              {
+                "name": "EnemyName",
+                "controlId": "Engine.PlainText",
+                "properties": {
+                  "text": "",
+                  "characterSize": 22,
+                  "outlineThickness": 1,
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ]
+                },
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0.5,
+                      0
+                    ],
+                    "max": [
+                      0.5,
+                      0
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 96,
+                    "bottom": 24
+                  },
+                  "alignment": [
+                    0.5,
+                    0
+                  ],
+                  "autoSize": true,
+                  "zOrder": 0
+                },
+                "editor": {
+                  "previewText": "史莱姆"
+                },
+                "children": []
+              }
+            ]
           },
           {
             "name": "EnemyHPLabel",
@@ -688,17 +725,12 @@
             "children": []
           },
           {
-            "name": "PlayerName",
-            "controlId": "Engine.PlainText",
+            "name": "PlayerNameArea",
+            "controlId": "Engine.Canvas",
             "properties": {
-              "text": "",
-              "characterSize": 22,
-              "outlineThickness": 1,
-              "outlineColor": [
-                0,
-                0,
-                0,
-                255
+              "size": [
+                96,
+                24
               ]
             },
             "slot": {
@@ -713,22 +745,64 @@
                 ]
               },
               "offsets": {
-                "left": 328,
+                "left": 280,
                 "top": 0,
                 "right": 96,
                 "bottom": 24
               },
               "alignment": [
-                0.5,
+                0,
                 0
               ],
-              "autoSize": true,
+              "autoSize": false,
               "zOrder": 0
             },
-            "editor": {
-              "previewText": "勇士"
-            },
-            "children": []
+            "editor": {},
+            "children": [
+              {
+                "name": "PlayerName",
+                "controlId": "Engine.PlainText",
+                "properties": {
+                  "text": "",
+                  "characterSize": 22,
+                  "outlineThickness": 1,
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ]
+                },
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0.5,
+                      0
+                    ],
+                    "max": [
+                      0.5,
+                      0
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 96,
+                    "bottom": 24
+                  },
+                  "alignment": [
+                    0.5,
+                    0
+                  ],
+                  "autoSize": true,
+                  "zOrder": 0
+                },
+                "editor": {
+                  "previewText": "勇士"
+                },
+                "children": []
+              }
+            ]
           },
           {
             "name": "PlayerHPLabel",
@@ -1590,6 +1664,43 @@
             "children": []
           },
           {
+            "name": "RetreatTouchArea",
+            "controlId": "Engine.Canvas",
+            "properties": {
+              "size": [
+                128,
+                44
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 174,
+                "right": 128,
+                "bottom": 44
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
             "name": "RetreatButton",
             "controlId": "Engine.FunctionalPlainText",
             "properties": {
@@ -1637,8 +1748,70 @@
               "previewText": "~撤退~"
             },
             "children": []
+          },
+          {
+            "name": "WindowPauseMark",
+            "controlId": "Project:Parts/Shared/WindowPauseMark",
+            "properties": {},
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.5,
+                  1
+                ],
+                "max": [
+                  0.5,
+                  1
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 4,
+                "right": 16,
+                "bottom": 16
+              },
+              "alignment": [
+                0.5,
+                1
+              ],
+              "autoSize": false,
+              "zOrder": 100
+            },
+            "editor": {},
+            "children": []
           }
         ]
+      },
+      {
+        "name": "WindowChrome",
+        "controlId": "Project:Parts/Shared/WindowChrome",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              1.0,
+              1.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": false,
+          "zOrder": 100
+        },
+        "editor": {},
+        "children": []
       }
     ]
   },

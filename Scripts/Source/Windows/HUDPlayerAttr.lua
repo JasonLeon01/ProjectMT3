@@ -26,8 +26,6 @@ local createSignature = tuple
 ---@cast createStateSignature fun(values: string[]): tuple<string>
 ---@cast createSignature fun(...: any): tuple<any>
 
-local _STATE_ICON_SIZE = 16
-local _STATE_GAP = 4
 local _BREATH_ANIM_DURATION = 1.2
 
 local function getStateSignature(states)
@@ -58,13 +56,7 @@ end
 ---@class Source.Windows.PlayerAttrHUD.Controller
 local Controller = {}
 
-Controller.windowOptions = { position = sf.Vector2f.new(0, 0) }
-
-Controller.refreshEvents = {
-    EventKeys.LocaleChanged,
-    EventKeys.AbilitySystemChanged,
-    EventKeys.PlayerChanged
-}
+Controller.refreshEvents = { EventKeys.LocaleChanged, EventKeys.AbilitySystemChanged, EventKeys.PlayerChanged }
 
 function Controller:init(player, openMenuCallback)
     self._player = player
@@ -82,6 +74,7 @@ function Controller:init(player, openMenuCallback)
     self._stackSignature = nil
     self._breathSignature = nil
     self._breathAnimElapsed = 0
+    self._breathColours = {}
     self._progressSignature = nil
     self._keySignature = nil
     self:_initialiseAvatar(player)
@@ -144,6 +137,13 @@ function Controller:bind()
         self:setProperty("Avatar", "visible", true)
         self.ui.controls["Avatar"]:addClickCallback(self:bindCallback(Controller.openMenu))
     end
+    for _, kind in ipairs({ "Lit", "Dim" }) do
+        local colours = {}
+        for index = 1, self:getBreathBox(kind):getCount() do
+            colours[index] = self:getBreathCanvas(kind, index):getColour():copy()
+        end
+        self._breathColours[kind] = colours
+    end
     self:playBreathAnimation()
 end
 
@@ -154,7 +154,7 @@ function Controller:_rebuildStateRows(states, signature)
     self._stateDisplaySignature = nil
     self._stateSignature = signature
     for _ in ipairs(states) do
-        self._states:add({ iconSize = _STATE_ICON_SIZE, iconTexture = nil, name = "" })
+        self._states:add({ iconTexture = nil, name = "" })
     end
 end
 
@@ -169,8 +169,8 @@ function Controller:_updateStateRows(states)
         row.model.iconTexture = texture
         row.model.name = state.name
         local rowRoot = row:prepare()
-        rowRoot:setPosition(sf.Vector2f.new(x, 0.0))
-        x = x + row:getWidth() + _STATE_GAP
+        rowRoot:setPosition(sf.Vector2f.new(x, rowRoot:getPosition().y))
+        x = x + row:getWidth()
     end
 end
 
@@ -332,7 +332,8 @@ function Controller:refreshBreath()
             local lit = unit > 0 and attributes.breath >= unit * index
             local canvas = self:getBreathCanvas(kind, index)
             canvas:setVisible(true)
-            canvas:setColour((lit == (kind == "Lit")) and sf.Color.White or sf.Color.Transparent)
+            local colour = self._breathColours[kind][index]
+            canvas:setColour((lit == (kind == "Lit")) and colour or sf.Color.Transparent)
         end
     end
 end
@@ -346,7 +347,7 @@ end
 
 function Controller:getBreathCanvas(kind, index)
     local canvas = self:getBreathBox(kind):get(index)
-    assert(Class.isInstance(canvas, Engine.Canvas), "Breath template must be an Engine.Canvas")
+    assert(Class.isInstance(canvas, Canvas), "Breath template must be an Engine.Canvas")
     ---@cast canvas Engine.Canvas
     return canvas
 end
@@ -358,10 +359,11 @@ function Controller:playBreathAnimation()
         for index = 1, self:getBreathBox(kind):getCount() do
             local canvas = self:getBreathCanvas(kind, index)
             canvas:clearAnims()
-            local animation = Animation.new(data, false)
-            animation:setPosition(sf.Vector2f.new(8, 10))
-            canvas:addAnim(animation)
             local preview = canvas:getChildren()[1]
+            local previewCenterX = preview:getTransform():transformRect(preview:getLocalBounds()):getCenter().x
+            local animation = Animation.new(data, false)
+            animation:setPosition(sf.Vector2f.new(previewCenterX, canvas:getSize().y / 2))
+            canvas:addAnim(animation)
             preview:setVisible(false)
         end
     end

@@ -16,6 +16,8 @@
 ---@field MapPlaceholder5 Source.UI.Parts.Shared.CommandRow
 ---@field MapPlaceholder6 Source.UI.Parts.Shared.CommandRow
 ---@field MapPlaceholder7 Source.UI.Parts.Shared.CommandRow
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.Parts.WindowFloorTeleporter.WindowFloorMapCommand: Source.UIBase.UiView
 ---@field root     Engine.Canvas

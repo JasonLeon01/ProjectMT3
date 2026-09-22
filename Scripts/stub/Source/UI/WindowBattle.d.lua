@@ -22,6 +22,7 @@
 ---@field EnemyHPLabel               Engine.PlainText
 ---@field EnemyHPValue               Engine.PlainText
 ---@field EnemyName                  Engine.PlainText
+---@field EnemyNameArea              Engine.Canvas
 ---@field EnemyPortrait              Engine.CharacterView
 ---@field PlayerATKLabel             Engine.PlainText
 ---@field PlayerATKValue             Engine.PlainText
@@ -34,12 +35,16 @@
 ---@field PlayerHPLabel              Engine.PlainText
 ---@field PlayerHPValue              Engine.PlainText
 ---@field PlayerName                 Engine.PlainText
+---@field PlayerNameArea             Engine.Canvas
 ---@field PlayerPortrait             Engine.CharacterView
 ---@field RetreatButton              Engine.FunctionalPlainText
+---@field RetreatTouchArea           Engine.Canvas
 ---@field Root                       Engine.Canvas
 ---@field WindowFrame                Engine.Window
 
 ---@class Source.UIBase.GeneratedAssets.WindowBattle
+---@field WindowChrome    Source.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Source.UI.Parts.Shared.WindowPauseMark
 
 ---@class Source.UI.WindowBattle: Source.UIBase.UiView
 ---@field root     Engine.Canvas
