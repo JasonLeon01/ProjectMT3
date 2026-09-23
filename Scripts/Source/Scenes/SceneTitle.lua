@@ -2,9 +2,8 @@ local GlobalCore = require("GlobalCore")
 local GlobalFunctions = require("GlobalFunctions")
 local Logging = require("Global.Utils.Logging")
 local SourceSystem = require("Source.System")
-local GameInstance = require("Source.GameInstance")
 local SceneTitleController = require("Source.Scenes.SceneTitle.Controller")
-local LazyWindow = require("Source.UIBase.LazyWindow")
+local LazyWindow = require("Internal.UIBase.LazyWindow")
 
 local Display = GlobalCore.Display
 local SceneManager = GlobalCore.SceneManager
@@ -85,12 +84,11 @@ end
 
 ---@diagnostic disable-next-line: unused
 function Scene:startGame()
-    local SceneMap = require("Source.Scenes.SceneMap")
+    local SceneCG = require("Source.Scenes.SceneCG")
 
     AudioManager.playSound(SourceSystem.GetDecisionSE())
     ManagerFunctions.stopMusic("BGM")
-    local nextScene = SceneMap.new()
-    nextScene:setInst(GameInstance.new())
+    local nextScene = SceneCG.new()
     SceneManager.setScene(nextScene)
 end
 

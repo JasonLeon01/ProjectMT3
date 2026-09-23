@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor",
   "attrs": {
     "scriptMixin": false,
     "scriptPath": "",

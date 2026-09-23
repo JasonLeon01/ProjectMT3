@@ -1,5 +1,5 @@
 {
-  "parent": "Source.Teleporter.Teleporter",
+  "parent": "Source.MapActors.Teleporter.Teleporter",
   "attrs": {
     "material": {
       "lightBlock": 0.16,
@@ -47,7 +47,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.MeetPlayer",
+            "nodeFunction": "GlobalFunctions.Player.MeetPlayer",
             "params": [
               []
             ],
@@ -57,7 +57,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.IF",
+            "nodeFunction": "GlobalFunctions.Utils.IF",
             "params": [
               false
             ],
@@ -67,7 +67,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.IsValidValue",
+            "nodeFunction": "GlobalFunctions.Utils.IsValidValue",
             "params": [
               null
             ],
@@ -77,7 +77,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.IF",
+            "nodeFunction": "GlobalFunctions.Utils.IF",
             "params": [
               false
             ],
@@ -87,7 +87,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.GetAttr",
+            "nodeFunction": "GlobalFunctions.Utils.GetAttr",
             "params": [
               null,
               "ID"
@@ -98,7 +98,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Math.EQUALS",
+            "nodeFunction": "GlobalFunctions.Math.EQUALS",
             "params": [
               0,
               "Princess"
@@ -109,7 +109,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessageByTag",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessageByTag",
             "params": [
               "{DN_HERO}",
               "{DC_B_25_27}",

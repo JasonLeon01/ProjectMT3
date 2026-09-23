@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
   "attrs": {
     "animatable": true,
     "material": {
@@ -27,7 +27,7 @@
       "onCollision": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Utils.SELF",
+            "nodeFunction": "GlobalFunctions.Utils.SELF",
             "params": [],
             "pos": [
               -720.0,
@@ -35,7 +35,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_MYSTERY_ELDER}",
               "{DC_NPC04_1}",
@@ -47,7 +47,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC04_2}",
@@ -59,7 +59,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_MYSTERY_ELDER}",
               "{DC_NPC04_3}",
@@ -71,7 +71,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC04_4}",
@@ -83,7 +83,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
               3600,
@@ -91,7 +91,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
+            "nodeFunction": "GlobalFunctions.Utils.SetGameVariable",
             "params": [
               "fly",
               true
@@ -102,7 +102,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
             "params": [],
             "pos": [
               0,

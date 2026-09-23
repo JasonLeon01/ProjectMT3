@@ -1,5 +1,5 @@
 {
-  "parent": "Source.SWall",
+  "parent": "Source.MapActors.SWall",
   "attrs": {
     "material": {
       "lightBlock": 0.64,

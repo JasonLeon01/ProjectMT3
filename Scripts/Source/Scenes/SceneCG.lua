@@ -1,5 +1,5 @@
 local GlobalCore = require("GlobalCore")
-local Video = require("Source.NodeFunctions.Video")
+local Video = require("GlobalFunctions.Video")
 local GameInstance = require("Source.GameInstance")
 
 local SceneManager = GlobalCore.SceneManager

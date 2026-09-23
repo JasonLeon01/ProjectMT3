@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
   "attrs": {
     "animatable": false,
     "material": {
@@ -27,7 +27,7 @@
       "onOverlap": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC12_1}",
@@ -39,7 +39,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_NETHER_MAGE}",
               "{DC_NPC12_2}",
@@ -51,7 +51,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC12_3}",
@@ -63,7 +63,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
               2160.0,
@@ -71,7 +71,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
             "params": [],
             "pos": [
               -720,
@@ -79,7 +79,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.GameMap.GetActorByTag",
+            "nodeFunction": "GlobalFunctions.GameMap.GetActorByTag",
             "params": [
               "YMFS"
             ],

@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor",
   "attrs": {
     "scriptMixin": false,
     "scriptPath": "",
@@ -60,7 +60,7 @@
       "onCollision": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.GameMap.GetActorByTag",
+            "nodeFunction": "GlobalFunctions.GameMap.GetActorByTag",
             "params": [
               "Bravor"
             ],
@@ -70,7 +70,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
             "params": [],
             "pos": [
               720,
@@ -78,7 +78,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.GameMap.GetActorByTag",
+            "nodeFunction": "GlobalFunctions.GameMap.GetActorByTag",
             "params": [
               "Old"
             ],
@@ -88,7 +88,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.GameMap.GetActorByTag",
+            "nodeFunction": "GlobalFunctions.GameMap.GetActorByTag",
             "params": [
               "Thief"
             ],
@@ -98,7 +98,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_1}",
@@ -110,7 +110,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_2}",
@@ -122,7 +122,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_3}",
@@ -134,7 +134,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_4}",
@@ -146,7 +146,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_5}",
@@ -158,7 +158,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_6}",
@@ -170,7 +170,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_7}",
@@ -182,7 +182,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_8}",
@@ -194,7 +194,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_9}",
@@ -206,7 +206,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_10}",
@@ -218,7 +218,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_THIEF}",
               "{DC_T_25_11}",
@@ -230,7 +230,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_THIEF}",
               "{DC_T_25_12}",
@@ -242,7 +242,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_13}",
@@ -254,7 +254,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_14}",
@@ -266,7 +266,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_15}",
@@ -278,7 +278,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_16}",
@@ -290,7 +290,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_17}",
@@ -302,7 +302,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_18}",
@@ -314,7 +314,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_THIEF}",
               "{DC_T_25_19}",
@@ -326,7 +326,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_20}",
@@ -338,7 +338,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_21}",
@@ -350,7 +350,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_THIEF}",
               "{DC_T_25_22}",
@@ -362,7 +362,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_23}",
@@ -374,7 +374,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_O_25_24}",
@@ -386,7 +386,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{BRAVOR}",
               "{DC_B_25_25}",
@@ -398,7 +398,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_P_25_26}",
@@ -410,7 +410,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.SetAttr",
+            "nodeFunction": "GlobalFunctions.Utils.SetAttr",
             "params": [
               null,
               "direction",
@@ -422,7 +422,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.ScreenEffects.ScreenShake",
+            "nodeFunction": "GlobalFunctions.ScreenEffects.ScreenShake",
             "params": [
               32.0,
               64.0,
@@ -434,7 +434,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.AddTimer",
+            "nodeFunction": "GlobalFunctions.Scene.AddTimer",
             "params": [
               1.5,
               true
@@ -445,7 +445,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Video.PlayVideo",
+            "nodeFunction": "GlobalFunctions.Video.PlayVideo",
             "params": [
               "/Game/Assets/Videos/sample-5mb.mp4",
               false,
@@ -457,7 +457,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.GetGameVariableRef",
+            "nodeFunction": "GlobalFunctions.Utils.GetGameVariableRef",
             "params": [
               "floor25Phase",
               0
@@ -468,7 +468,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Math.IADD",
+            "nodeFunction": "GlobalFunctions.Math.IADD",
             "params": [
               null,
               1
@@ -479,7 +479,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.AddPlayerByClass",
+            "nodeFunction": "GlobalFunctions.Utils.AddPlayerByClass",
             "params": [
               "Data.Blueprints.Actors.BP_Actor_Braver",
               "MT3_025.json",
@@ -494,7 +494,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
               23040.0,

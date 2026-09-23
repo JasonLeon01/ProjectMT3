@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
   "attrs": {
     "animatable": true,
     "material": {
@@ -27,7 +27,7 @@
       "onCollision": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Utils.SELF",
+            "nodeFunction": "GlobalFunctions.Utils.SELF",
             "params": [],
             "pos": [
               -720.0,
@@ -35,7 +35,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_HEART_ELDER}",
               "{DC_NPC02_1}",
@@ -47,7 +47,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC02_2}",
@@ -59,7 +59,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_HEART_ELDER}",
               "{DC_NPC02_3}",
@@ -71,7 +71,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC02_4}",
@@ -83,7 +83,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_HEART_ELDER}",
               "{DC_NPC02_5}",
@@ -95,7 +95,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC02_6}",
@@ -107,7 +107,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_HEART_ELDER}",
               "{DC_NPC02_7}",
@@ -119,7 +119,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC02_8}",
@@ -131,7 +131,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
               6480,
@@ -139,7 +139,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
+            "nodeFunction": "GlobalFunctions.Utils.SetGameVariable",
             "params": [
               "mbook",
               true
@@ -150,7 +150,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Player.GetPlayer",
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
             "params": [],
             "pos": [
               0,

@@ -8,10 +8,10 @@ local GeneralDataTypes = require("Source.Configs.GeneralDataTypes")
 local Effects = require("Source.Gameplay.Effects")
 local LocaleCore = require("Source.Locale.Core")
 local NumberFormat = require("Source.Utils.NumberFormat")
-local IconTexture = require("Source.UIBase.IconTexture")
+local IconTexture = require("Internal.UIBase.IconTexture")
 local PlayerStateRowController = require("Source.Windows.HUDPlayerAttr.PlayerStateRow.Controller")
-local Ui = require("Source.UIBase.Ui")
-local View = require("Source.UI.PlayerAttrHUD")
+local Ui = require("Internal.UIBase.Ui")
+local View = require("Internal.UI.PlayerAttrHUD")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 ---@type fun(value: string): string
@@ -111,7 +111,7 @@ function Controller:openMenu()
     end
 end
 
----@param player Source.Player.Player
+---@param player Source.MapActors.Player.Player
 function Controller:_initialiseAvatar(player)
     local texture = player:getTexture()
     if texture == nil then

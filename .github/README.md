@@ -56,7 +56,7 @@
 | 基准文件 | `.github/ludork-engine-sync.json` | `.github/ludork-global-sync.json` |
 | PR 分支 | `codex/sync-ludork-engine` | `codex/sync-ludork-global` |
 
-Global 初始基准记录配置时 **GitHub 上** Ludork `main` 的 `729d6d848b4f5dd4b869b39142ef6b890d62fce7`，初始化不改本地脚本。将工作流、共享脚本、入口脚本和基准文件一起提交到本项目默认分支后，即可手动运行，同步上游此 SHA 之后的 Global 变化。
+Global 的已合并基准记录在 `.github/ludork-global-sync.json`。项目脚本结构已按 Ludork `03f9c469df39b7c750f66d5d7c2bf6cb1e22b555` 的模块路径整理；从前一基准 `58ddbe88d5b51396195e4616daed99d9c0307914` 到此提交，`Game/Scripts/Global/` 没有变化，因此可推进 Global 基准而不覆盖本项目的玩法脚本。新建的 `Scripts/GlobalFunctions/`、`Scripts/Internal/` 和调整过的 `Scripts/Source/` 都不属于该工作流的同步范围。
 
 定时触发只检查最近四小时内是否有 `Game/Scripts/Global/` 的有效提交；仅 Engine 或其他目录变化时跳过。手动触发忽略时间条件。同步始终比较 Ludork 的已合并基准 SHA 与最新 SHA，累计处理新增、修改、删除及重命名，保留上游未改动的项目文件；只更新 Global 自己的基准，不更新 Engine 基准或其他 Scripts 目录。
 

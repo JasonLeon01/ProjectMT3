@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
   "attrs": {
     "animatable": false,
     "material": {
@@ -28,7 +28,7 @@
       "onOverlap": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Utils.SELF",
+            "nodeFunction": "GlobalFunctions.Utils.SELF",
             "params": [],
             "pos": [
               -720.0,
@@ -36,7 +36,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC01_1}",
@@ -48,7 +48,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC01_2}",
@@ -60,7 +60,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC01_3}",
@@ -72,7 +72,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_PRINCESS}",
               "{DC_NPC01_4}",
@@ -84,7 +84,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
               3600.0,

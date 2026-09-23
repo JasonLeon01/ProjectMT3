@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
   "attrs": {
     "animatable": true,
     "material": {
@@ -27,7 +27,7 @@
       "onCollision": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Utils.SELF",
+            "nodeFunction": "GlobalFunctions.Utils.SELF",
             "params": [],
             "pos": [
               -720.0,
@@ -35,7 +35,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.ShowMessage",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
               "{DN_ELDER}",
               "{DC_NPC10_1}",
@@ -47,7 +47,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Scene.SelfRecordAndDestroy",
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
               1440.0,
@@ -55,7 +55,7 @@
             ]
           },
           {
-            "nodeFunction": "NodeFunctions.Utils.SetGameVariable",
+            "nodeFunction": "GlobalFunctions.Utils.SetGameVariable",
             "params": [
               "net1",
               true

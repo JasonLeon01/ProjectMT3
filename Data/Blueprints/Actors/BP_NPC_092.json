@@ -1,5 +1,5 @@
 {
-  "parent": "Source.ConditionalActor.ConditionalActor",
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
   "attrs": {
     "animatable": true,
     "material": {
@@ -29,7 +29,7 @@
       "onCollision": {
         "nodes": [
           {
-            "nodeFunction": "NodeFunctions.Scene.OpenShop",
+            "nodeFunction": "GlobalFunctions.Scene.OpenShop",
             "params": [
               [
                 "SDoor"

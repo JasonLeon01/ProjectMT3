@@ -13,9 +13,7 @@ local AmbushAbility = {}
 function AmbushAbility:init()
     GameplayAbility.init(self, {})
     self.id = GameplayConstants.SPECIAL_PREFIX .. Special.Ambush
-    self.triggerTags = {
-        GameplayConstants.COMBAT_RESOLVE_ATTACK_EVENT, GameplayConstants.MOVEMENT_QUERY_HAZARD_EVENT
-    }
+    self.triggerTags = { GameplayConstants.COMBAT_RESOLVE_ATTACK_EVENT, GameplayConstants.MOVEMENT_QUERY_HAZARD_EVENT }
 end
 
 ---@diagnostic disable-next-line: unused, Gameplay Ability override intentionally ignores its receiver
@@ -24,7 +22,7 @@ function AmbushAbility:activate(_abilitySystem, eventData)
         eventData.payload.value = eventData.payload.value * 2
         return assert(GameplayAbilityResult.Success("AttackResolved", eventData.payload))
     end
-    local MovementSpecials = require("Source.MovementSpecials")
+    local MovementSpecials = require("Source.Utils.MovementSpecials")
     local player = eventData.target
     local enemy = eventData.instigator
     local playerPosition = eventData.payload.playerPosition

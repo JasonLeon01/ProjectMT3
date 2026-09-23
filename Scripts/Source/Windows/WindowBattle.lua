@@ -4,9 +4,9 @@ local Render = require("Global.Utils.Render")
 local Data = require("Source.Data")
 local Battle = require("Source.Configs.Battle")
 local Locale = require("Source.Locale.Core")
-local WindowBase = require("Source.Windows.Base.WindowBase")
-local Ui = require("Source.UIBase.Ui")
-local View = require("Source.UI.WindowBattle")
+local WindowBase = require("Internal.UIBase.WindowBase")
+local Ui = require("Internal.UIBase.Ui")
+local View = require("Internal.UI.WindowBattle")
 local BattleTextParticle = require("Source.CustomParticles.BattleTextParticle")
 local Effects = require("Source.Gameplay.Effects")
 local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
@@ -23,7 +23,7 @@ local Animation = GlobalCore.Animation
 local Controller = {}
 Controller.windowOptions = { hidden = true, focusable = true }
 
----@param actor  Source.Player.Player
+---@param actor  Source.MapActors.Player.Player
 ---@param slot   string
 ---@param skills table<string, Source.Configs.Battle.Skill | nil>
 ---@return Source.Configs.Battle.Skill | nil
@@ -45,7 +45,7 @@ local function resolveEquipSkill(actor, slot, skills)
     return skill, bool(animationKey) and animationKey or "", equipData.fatiguePlus or 0, equipData.breathMinus or 0
 end
 
----@param actor  Source.Player.Player | Source.Enemy
+---@param actor  Source.MapActors.Player.Player | Source.MapActors.Enemy
 ---@param player boolean
 ---@return Source.Windows.WindowBattle.BattlerState
 local function createState(actor, player)
@@ -66,7 +66,7 @@ local function createState(actor, player)
     local attackSkillBreathMinus = 0
     local defenseSkillBreathMinus = 0
     if player then
-        ---@cast actor Source.Player.Player
+        ---@cast actor Source.MapActors.Player.Player
         attackSkill, attackSkillAnimationKey, attackSkillFatiguePlus, attackSkillBreathMinus = resolveEquipSkill(
             actor, "weapon", Battle.attackSkills
         )

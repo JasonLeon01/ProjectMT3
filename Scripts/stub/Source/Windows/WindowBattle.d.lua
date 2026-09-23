@@ -47,9 +47,9 @@
 ---@alias Source.Windows.WindowBattle.Result "win"|"lose"|"retreat"
 ---@alias Source.Windows.WindowBattle.Finished fun(result: Source.Windows.WindowBattle.Result, hp: integer, breath: integer, addedStates: table<string, integer>)
 
----@class Source.Windows.WindowBattle.Controller: Source.UIBase.UiController
+---@class Source.Windows.WindowBattle.Controller: Internal.UIBase.UiController
 ---@field host                  Source.Windows.WindowBattle
----@field ui                    Source.UI.WindowBattle
+---@field ui                    Internal.UI.WindowBattle
 ---@field _scene                Source.Gameplay.GameplayScene
 ---@field _generation           integer
 ---@field _running              boolean
@@ -61,8 +61,8 @@
 ---@field _actionButtonColours  table<string, sf.Color>
 ---@field _breathColours        table<string, sf.Color[]>
 ---@field _particles            Engine.ParticleSystem
----@field _playerActor          Source.Player.Player | nil
----@field _enemyActor           Source.Enemy | nil
+---@field _playerActor          Source.MapActors.Player.Player | nil
+---@field _enemyActor           Source.MapActors.Enemy | nil
 ---@field _player               Source.Windows.WindowBattle.BattlerState | nil
 ---@field _enemy                Source.Windows.WindowBattle.BattlerState | nil
 ---@field _onFinished           Source.Windows.WindowBattle.Finished | nil
@@ -70,8 +70,8 @@ local Controller = {}
 
 ---@param scene Source.Gameplay.GameplayScene
 function Controller:init(scene) end
----@param player     Source.Player.Player
----@param enemy      Source.Enemy
+---@param player     Source.MapActors.Player.Player
+---@param enemy      Source.MapActors.Enemy
 ---@param onFinished Source.Windows.WindowBattle.Finished
 function Controller:open(player, enemy, onFinished) end
 ---@param name string

@@ -1524,7 +1524,7 @@ function AudioManager.setVoiceFilter(voice, filter) end
 ---@return nil
 function AudioManager.setMusicFilter(music, filter) end
 ---@param audioType string
----@param effect Source.AudioEffects.Attacher|nil
+---@param effect Source.Utils.AudioEffects.Attacher|nil
 ---@return nil
 function AudioManager.setEffect(audioType, effect) end
 ---@return integer

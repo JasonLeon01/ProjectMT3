@@ -1,4 +1,4 @@
-local Player = require("Source.Player")
+local Player = require("Source.MapActors.Player")
 
 ---@class (partial) Mixins.Actors.BravorCrystal
 local BravorCrystal = {}
@@ -24,7 +24,7 @@ function BravorCrystal:onCollision(other)
     if player == nil then
         return
     end
-    local NodeFunctionUtils = require("Source.NodeFunctions.Utils")
+    local NodeFunctionUtils = require("GlobalFunctions.Utils")
     NodeFunctionUtils.SetGameVariable("bravorshow", true)
     assert(self.emitterComp ~= nil, "BravorCrystal requires emitterComp")
     local bounds = self:getLocalBounds()
