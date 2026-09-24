@@ -5,15 +5,13 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const { execFileSync } = require('node:child_process');
 
-const upstream = { owner: 'JasonLeon01', repo: 'Ludork' };
+const { upstream, shaPattern, requireSha, successfulRuns, selectArtifact } = require('./package-upstream.cjs');
 const prefix = 'projectmt3-windows-v1';
-const allowedEvents = new Set(['push', 'schedule', 'workflow_dispatch']);
 const buildDirectories = ['build', 'bin', 'Intermediate'];
 const toolFiles = [
   'tools/pack_project.bat', 'tools/build_cpp.bat', 'tools/build_standalone.bat',
   'tools/ScriptTools/ScriptTools.exe', 'tools/luac.exe', 'tools/gnu-make/gnumake.exe',
 ];
-const shaPattern = /^[0-9a-f]{40}$/;
 const cachePattern = new RegExp(`^${prefix}-[a-z0-9-]+$`);
 function temp(name) {
   const root = path.resolve(process.env.RUNNER_TEMP);
@@ -37,10 +35,6 @@ function execute(command, args, cwd = process.env.GITHUB_WORKSPACE) {
     env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
   });
 }
-function requireSha(value) {
-  if (!shaPattern.test(value ?? '')) throw new Error(`Invalid commit/tree SHA: ${value}`);
-  return value;
-}
 function invocation(context) {
   return `${context.runId}-${process.env.GITHUB_RUN_ATTEMPT}`;
 }
@@ -61,23 +55,11 @@ function readPrevious(core) {
   }
 }
 
-async function* successfulRuns(github, repository, workflow, extra = {}) {
-  for await (const page of github.paginate.iterator(github.rest.actions.listWorkflowRuns, {
-    ...repository, workflow_id: workflow, branch: 'main', status: 'success', per_page: 100, ...extra,
-  })) {
-    for (const run of page.data) {
-      if (run.status === 'completed' && run.conclusion === 'success'
-          && run.head_branch === 'main' && allowedEvents.has(run.event)
-          && run.head_repository?.full_name === `${repository.owner}/${repository.repo}`) yield run;
-    }
-  }
-}
-
 async function checkProject({ github, context, core }) {
   if (context.ref !== 'refs/heads/main') throw new Error('Run this workflow on main.');
   core.setOutput('project_sha', requireSha(context.sha));
   // Every push/dispatch builds its selected commit, including deliberate retries.
-  for await (const run of successfulRuns(github, context.repo, 'package-windows.yml')) {
+  for await (const run of successfulRuns(github, context.repo, 'package-game.yml')) {
     if (run.id === context.runId) continue;
     const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
       ...context.repo, run_id: run.id, filter: 'latest', per_page: 100,
@@ -103,32 +85,6 @@ function changedScripts(base, head, repository) {
   // diffs have no REST compare API file-count truncation.
   return execute('git', ['-C', repository, 'diff', '--name-only', '--no-renames', '-z', base, head])
     .split('\0').filter(file => /\.(py|bat|sh)$/i.test(file));
-}
-
-async function selectArtifact(github, head) {
-  // Scheduled exports can skip Windows entirely. Prefer the checked HEAD, then
-  // walk earlier successful runs until an actual downloadable package is found.
-  const inspected = new Set();
-  for (const filter of [{ head_sha: head }, {}]) {
-    for await (const run of successfulRuns(github, upstream, 'export-editor.yml', filter)) {
-      if ((filter.head_sha && run.head_sha !== head) || inspected.has(run.id)) continue;
-      inspected.add(run.id);
-      const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
-        ...upstream, run_id: run.id, filter: 'latest', per_page: 100,
-      });
-      if (!jobs.some(job => job.name === 'Windows x64' && job.conclusion === 'success')) continue;
-      const name = `Ludork-windows-x64-${requireSha(run.head_sha)}`;
-      const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
-        ...upstream, run_id: run.id, per_page: 100,
-      });
-      const matches = artifacts.filter(artifact => artifact.name === name);
-      if (matches.length !== 1 || matches[0].expired || !(Date.parse(matches[0].expires_at) > Date.now())) continue;
-      return {
-        ludork_sha: run.head_sha, ludork_run_id: String(run.id), ludork_artifact_id: String(matches[0].id),
-      };
-    }
-  }
-  throw new Error(`No successful Ludork Windows run on main has a unique, unexpired package (checked HEAD ${head} and earlier runs).`);
 }
 
 async function selectLudork({ github, core }) {

@@ -1,10 +1,10 @@
-name: Package Windows
+name: Package Game
 
 on:
   push:
     branches: [main]
     paths-ignore:
-      - '.github/workflows/**'
+      - '.github/**'
   workflow_dispatch:
 
 permissions:
@@ -12,7 +12,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: package-windows
+  group: package-game
   cancel-in-progress: false
   queue: max
 
@@ -186,3 +186,102 @@ jobs:
         with:
           path: ${{ runner.temp }}/projectmt3-state/
           key: ${{ steps.build.outputs.state_key }}
+
+  android:
+    name: Package AOS ARM64
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+
+      - name: Select Ludork macOS toolchain
+        id: ludork
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          script: |
+            const { upstream, requireSha, selectArtifact } = require('./.github/scripts/package-upstream.cjs');
+            const { data } = await github.rest.repos.getBranch({ ...upstream, branch: 'main' });
+            const head = requireSha(data.commit.sha);
+            const selected = await selectArtifact(github, head, 'macos-arm64');
+            for (const [key, value] of Object.entries(selected)) core.setOutput(key, value);
+            core.setOutput('ludork_checked_sha', head);
+            core.info(`Using Ludork macOS DMG ${selected.ludork_sha}; checked main ${head}`);
+
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ steps.ludork.outputs.ludork_run_id }}
+          artifact-ids: ${{ steps.ludork.outputs.ludork_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-android-artifact
+          merge-multiple: true
+
+      - name: Prepare Android build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(uname -s)" == Darwin && "$(uname -m)" == arm64 ]]
+          if [[ ! -d '/Applications/Android Studio.app' ]]; then
+            brew install --cask android-studio
+          fi
+          export JAVA_HOME='/Applications/Android Studio.app/Contents/jbr/Contents/Home'
+          test -x "$JAVA_HOME/bin/java"
+          test -x "$JAVA_HOME/bin/keytool"
+          export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          test -x "$sdkmanager"
+          # sdkmanager's status matters; yes may exit on a closed pipe.
+          (set +o pipefail; yes | "$sdkmanager" --licenses >/dev/null)
+          "$sdkmanager" --install 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.3.13750724'
+          if ! /usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null; then
+            sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+          fi
+          cmake --version
+          {
+            echo "JAVA_HOME=$JAVA_HOME"
+            echo "ANDROID_HOME=$ANDROID_HOME"
+            echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          } >> "$GITHUB_ENV"
+
+      - name: Build and validate signed AOS APK
+        shell: bash
+        env:
+          LUDORK_SHA: ${{ steps.ludork.outputs.ludork_sha }}
+          LUDORK_CHECKED_SHA: ${{ steps.ludork.outputs.ludork_checked_sha }}
+          LUDORK_RUN_ID: ${{ steps.ludork.outputs.ludork_run_id }}
+          LUDORK_ARTIFACT_ID: ${{ steps.ludork.outputs.ludork_artifact_id }}
+          AOS_ALIAS: ${{ secrets.AOS_ALIAS }}
+          AOS_KEY_PASSWORD: ${{ secrets.AOS_KEY_PASSWORD }}
+          AOS_KEY_STORE_PASSWORD: ${{ secrets.AOS_KEY_STORE_PASSWORD }}
+          AOS_SIGNING_KEY: ${{ secrets.AOS_SIGNING_KEY }}
+        run: |
+          bash .github/scripts/package-android.sh \
+            "$GITHUB_WORKSPACE" \
+            "$RUNNER_TEMP/ludork-android-artifact" \
+            "$RUNNER_TEMP/projectmt3-android-package"
+
+      - name: Remove Android signing material
+        if: always()
+        shell: bash
+        run: rm -f -- "$RUNNER_TEMP/projectmt3-aos.jks"
+
+      - name: Upload signed AOS APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-aos-arm64-v8a-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-android-package/*-android-arm64-v8a-signed.apk
+            ${{ runner.temp }}/projectmt3-android-package/build-info.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+          overwrite: true

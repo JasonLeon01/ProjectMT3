@@ -1,22 +1,46 @@
-# Windows 打包
+# Windows 与 AOS 打包
 
-`package-windows.yml` 在推送到 `main` 时自动运行；仅修改 `.github/workflows/**` 时不触发自动构建，同时修改项目文件时仍正常构建。也可在 Actions 的 **Package Windows → Run workflow** 中选择 `main` 手动运行。
+`package-game.yml` 在推送到 `main` 时自动运行；仅修改 `.github/**` 时不触发自动构建，同时修改该目录之外的文件时仍正常构建。也可在 Actions 的 **Package Game → Run workflow** 中选择 `main` 手动运行。每次运行固定本项目提交，Windows 与 AOS 两个 job 并行构建；不生成 MT3 macOS 游戏包。
 
-## 启用
+## 上游工具与产物
 
-默认使用 GitHub 自动提供的 `GITHUB_TOKEN` 查询和下载公开的 Ludork 产物，不因未配置自定义 Secret 而提前终止。本仓库历史查询也使用该 token，不需要内容写权限。
+默认使用 GitHub 自动提供的 `GITHUB_TOKEN` 查询和下载公开的 Ludork 产物。如果跨仓库下载权限不足，可配置能访问 `JasonLeon01/Ludork`、具有 **Actions: Read-only** 权限的 `LUDORK_ACTIONS_TOKEN`；两个平台均优先使用该 Secret。
 
-如果实际下载返回权限错误，可在本仓库 **Settings → Secrets and variables → Actions** 添加可选 Secret `LUDORK_ACTIONS_TOKEN`：使用能访问 `JasonLeon01/Ludork`、具有 **Actions: Read-only** 权限的 fine-grained token。配置后，上游查询与下载均优先使用它。公开产物列表可匿名读取，但下载接口仍需要认证；自动 token 的跨仓库下载需由实际 CI 验证。
+两部分共用 `package-upstream.cjs` 的产物选择逻辑：优先检查 Ludork `main` HEAD 的成功 `export-editor.yml` 运行，再向前查找更早的成功运行。必须存在实际成功的平台 job，以及名称精确匹配、唯一且未过期的产物；跳过没有生成包的运行、缺失或过期产物，全部不可用才报错。
 
-## 打包和去重
+| MT3 产物 | 构建环境 | Ludork 工具来源 |
+| --- | --- | --- |
+| Windows x64 游戏目录 | `windows-2022` | `Windows x64` job 的 `Ludork-windows-x64-<上游提交>` |
+| AOS / Android ARM64 签名 APK | `macos-15` Apple Silicon | `macOS ARM64` job 的 `Ludork-macos-arm64-<上游提交>` DMG |
 
-- 只比较 ProjectMT3 的提交 hash。找到本工作流最近一次工作流成功、且 `Package Windows` job 实际成功的运行，以其 `head_sha` 为基准；相同则跳过，否则构建。不要随意更改该 job 的显示名称。
-- 跳过、失败和取消不更新基准；首次运行或历史被删除后重新构建。去重不依赖 artifact，因此游戏包过期不会单独触发重建。查询失败直接报错。
-- 需要构建时，选择 Ludork `main` 上最新成功完成、且 `Windows x64` job 实际成功的 `export-editor.yml` 运行，排除 PR。上游因近期无变化而跳过打包时，工作流仍会成功但没有产物；这类运行会被忽略，继续使用更早的实际 Windows 打包。下载其 `Ludork-windows-x64-<commit>`；这次实际打包的产物缺失、过期或下载失败时报错，不回退到更旧的打包。
-- Ludork 只提供工具。项目的 Engine、Application 和资源直接使用本仓库选定提交，通过随包 `tools/pack_project.bat` 编译 Windows x64 Release；不升级项目，不额外启用 Lua 编译、加密或 ldpak。
-- 成功上传的 `ProjectMT3-windows-x64-<项目hash>` 保留 **7 天**，包含游戏目录与 `build-info.json`。该 JSON 记录项目提交、Ludork 提交及上游运行和产物 ID。
+Ludork 只提供工具。项目的 Engine、Application、资源和 Android 模板均使用本仓库选定提交，不用上游模板替换项目源码；两个平台均采用默认 Release 打包，不额外启用 Lua 编译、加密或 ldpak。
 
-首次启用后手动运行，确认下载、完整编译和上传成功，再下载游戏包验证启动。脚本和工作流静态检查不能替代托管构建及游戏运行验收。
+## Windows
+
+沿用现有工具、构建和状态缓存。每次推送或手动运行都会打包选定提交；最近一次成功工作流中的 `Package Windows` job 用于定位缓存基线，不按相同提交跳过手动重试。保持 workflow 文件名及该 job 名称稳定，以保留历史查找。
+
+`tools/pack_project.bat` 完成构建后检查运行程序、资源目录和 DLL；成功上传及缓存保存完成后才发布新的缓存状态。`ProjectMT3-windows-x64-<项目提交>` 保留 **7 天**，包含游戏目录与 `build-info.json`。
+
+## AOS / Android
+
+AOS job 下载 Ludork DMG，只读挂载并用 `ditto` 提取 `Ludork.app/Contents/Resources/tools`，保留工具的执行权限后卸载镜像。复用其中的 `pack_android.sh` 及 ScriptTools，不构建 macOS 游戏。
+
+构建环境按 Ludork 的 Android 打包契约准备：Android Studio 及其 JBR、SDK Platform 36、Build Tools 36.0.0、稳定 NDK r27 或更新版本，以及系统 CMake。CI 确保安装 NDK `27.3.13750724`，打包器从已有安装中选择最高的完整稳定版本；需要时补装 Rosetta。runner 环境参见 [GitHub macOS ARM64 镜像清单](https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md)。
+
+使用仓库已有的四个 Secrets：
+
+| Secret | 用途 |
+| --- | --- |
+| `AOS_ALIAS` | keystore 内的签名密钥 alias |
+| `AOS_KEY_PASSWORD` | 密钥密码 |
+| `AOS_KEY_STORE_PASSWORD` | keystore 密码 |
+| `AOS_SIGNING_KEY` | keystore 文件内容的 Base64 编码 |
+
+签名材料仅在打包步骤注入。keystore 解码到 runner 临时目录，密码按“keystore 密码、密钥密码”的顺序通过标准输入传给 Ludork 打包器，不写入命令参数或产物。脚本退出时清理临时密钥，workflow 的 `always()` 步骤再做一次清理；缺失 Secret、签名或校验失败直接失败，不回退到未签名 APK。
+
+打包器负责 APK 签名、签名验证、资源及原生库检查。只上传一个 `*-android-arm64-v8a-signed.apk` 和 `build-info.json`，产物名为 `ProjectMT3-aos-arm64-v8a-<项目提交>`，保留 **7 天**。元数据记录项目提交、Engine tree、实际选中的 Ludork 提交/运行/产物 ID 及 APK SHA-256。AOS 当前每次进行完整打包，不复用 Windows 的原生构建缓存。
+
+首次托管运行需确认下载、Android 工具安装、完整编译、签名验证和上传成功，再安装到 Android 设备验证启动。脚本和工作流的本地检查不替代托管构建、真实密钥签名或设备验收。
 
 # Ludork Engine 与 Global 增量同步
 
