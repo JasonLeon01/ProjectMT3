@@ -21,6 +21,8 @@ Ludork 只提供工具。项目的 Engine、Application、资源和 Android 模�
 
 `tools/pack_project.bat` 完成构建后检查运行程序、资源目录和 DLL；成功上传及缓存保存完成后才发布新的缓存状态。`ProjectMT3-windows-x64-<项目提交>` 保留 **7 天**，包含游戏目录与 `build-info.json`。
 
+Windows 与 AOS 都成功后，独立清理 job 确认本次工具、构建、状态三类缓存均已存在，再删除 `main` 上 `projectmt3-windows-v1-` 下更早的旧缓存，保留本次实际引用的三个 key（包括复用的旧工具缓存）。其他分支和其他用途的缓存不受影响；本次缓存缺失或发现更新运行的缓存时跳过清理。仅清理 job 授予 `actions: write`，清理 API 失败只报告警告，不让已成功的打包失去缓存基线资格。
+
 ## AOS / Android
 
 AOS job 下载 Ludork DMG，只读挂载并用 `ditto` 提取 `Ludork.app/Contents/Resources/tools`，保留工具的执行权限后卸载镜像。复用其中的 `pack_android.sh` 及 ScriptTools，不构建 macOS 游戏。

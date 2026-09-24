@@ -280,7 +280,65 @@ function publishState() {
   writeJson(stateFile(), readJson(candidateFile()));
 }
 
+async function cleanupCaches({ github, context, core }, current) {
+  try {
+    const toolsPattern = new RegExp(`^${prefix}-tools-[0-9a-f]{40}-[0-9]+$`);
+    const generationPattern = new RegExp(`^${prefix}-(?:build|state)-([0-9]+)-([0-9]+)$`);
+    if (context.ref !== 'refs/heads/main' || !toolsPattern.test(current.tools)
+        || current.build !== `${prefix}-build-${invocation(context)}`
+        || current.state !== `${prefix}-state-${invocation(context)}`) {
+      core.warning('Skipping cache cleanup: current cache keys do not match this main run.');
+      return;
+    }
+    // Fetch every page before deleting; pagination must not shift during cleanup.
+    const listed = await github.paginate('GET /repos/{owner}/{repo}/actions/caches', {
+      ...context.repo, ref: context.ref, key: `${prefix}-`, per_page: 100,
+    });
+    const caches = listed.filter(cache => cache.ref === context.ref
+      && (toolsPattern.test(cache.key) || generationPattern.test(cache.key)));
+    const keep = new Set([current.tools, current.build, current.state]);
+    if ([...keep].some(key => !caches.some(cache => cache.key === key && cache.size_in_bytes > 0))) {
+      core.warning('Skipping cache cleanup: the current tools, build and state caches are not all available.');
+      return;
+    }
+    // Re-running an older workflow must not remove a newer run's cache baseline.
+    if (caches.some(cache => {
+      const generation = generationPattern.exec(cache.key);
+      return generation && (BigInt(generation[1]) > BigInt(context.runId)
+        || (BigInt(generation[1]) === BigInt(context.runId)
+          && BigInt(generation[2]) > BigInt(process.env.GITHUB_RUN_ATTEMPT)));
+    })) {
+      core.info('Skipping cache cleanup: caches from a newer run or attempt exist.');
+      return;
+    }
+    const state = caches.find(cache => cache.key === current.state && cache.size_in_bytes > 0);
+    const cutoff = Date.parse(state.created_at);
+    if (!Number.isFinite(cutoff)) {
+      core.warning('Skipping cache cleanup: the current state cache has no valid creation time.');
+      return;
+    }
+    let removed = 0;
+    for (const cache of caches) {
+      if (keep.has(cache.key) || !(Date.parse(cache.created_at) < cutoff)) continue;
+      try {
+        await github.request('DELETE /repos/{owner}/{repo}/actions/caches/{cache_id}', {
+          ...context.repo, cache_id: cache.id,
+        });
+        removed++;
+        core.info(`Removed superseded cache: ${cache.key}`);
+      } catch (error) {
+        if (error.status !== 404) throw error;
+      }
+    }
+    core.info(`Removed ${removed} old package caches; retained current tools, build and state.`);
+  } catch (error) {
+    // Cleanup failures must not make an otherwise successful package unusable as
+    // the next cache baseline, especially after some old entries were removed.
+    core.warning(`Package cache cleanup stopped: ${error.message}`);
+  }
+}
+
 module.exports = {
   checkProject, restoreState, selectLudork, selectBuild, prepareBuild, snapshotBuild, publishState,
-  changedScripts, selectArtifact, buildReason,
+  changedScripts, selectArtifact, buildReason, cleanupCaches,
 };

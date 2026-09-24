@@ -42,6 +42,10 @@ jobs:
     # Used by the history lookup; keep this name stable.
     name: Package Windows
     needs: check
+    outputs:
+      tools_key: ${{ steps.ludork.outputs.tools_key }}
+      build_key: ${{ steps.build.outputs.save_key }}
+      state_key: ${{ steps.build.outputs.state_key }}
     runs-on: windows-2022
     timeout-minutes: 180
     env:
@@ -285,3 +289,31 @@ jobs:
           compression-level: 0
           retention-days: 7
           overwrite: true
+
+  cleanup:
+    name: Clean superseded package caches
+    needs: [package, android]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: Keep the current successful cache set
+        uses: actions/github-script@v8
+        env:
+          CURRENT_TOOLS_KEY: ${{ needs.package.outputs.tools_key }}
+          CURRENT_BUILD_KEY: ${{ needs.package.outputs.build_key }}
+          CURRENT_STATE_KEY: ${{ needs.package.outputs.state_key }}
+        with:
+          script: |
+            await require('./.github/scripts/package-windows.cjs').cleanupCaches({ github, context, core }, {
+              tools: process.env.CURRENT_TOOLS_KEY,
+              build: process.env.CURRENT_BUILD_KEY,
+              state: process.env.CURRENT_STATE_KEY,
+            });
