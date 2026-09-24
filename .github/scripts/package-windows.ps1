@@ -29,7 +29,7 @@ foreach ($variable in @('PROJECT_SHA', 'LUDORK_SHA', 'LUDORK_RUN_ID', 'LUDORK_AR
 }
 
 $packer = Join-Path $LudorkDirectory 'tools/pack_project.bat'
-& $packer $ProjectDirectory $OutputDirectory
+& $packer --dev $ProjectDirectory $OutputDirectory
 if ($LASTEXITCODE -ne 0) {
     throw "Ludork packaging failed with exit code $LASTEXITCODE"
 }

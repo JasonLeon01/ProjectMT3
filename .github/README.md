@@ -13,7 +13,7 @@
 | Windows x64 游戏目录 | `windows-2022` | `Windows x64` job 的 `Ludork-editor-windows-x64-<上游提交>` |
 | AOS / Android ARM64 签名 APK | `macos-15` Apple Silicon | `macOS ARM64` job 的 `Ludork-editor-macos-arm64-<上游提交>` 签名 DMG |
 
-Ludork 只提供工具。项目的 Engine、Application、资源和 Android 模板均使用本仓库选定提交，不用上游模板替换项目源码；两个平台均采用默认 Release 打包，不额外启用 Lua 编译、加密或 ldpak。
+Ludork 只提供工具。项目的 Engine、Application、资源和 Android 模板均使用本仓库选定提交，不用上游模板替换项目源码；两个平台均以 Release 优化构建内测包（`--dev`），不额外启用 Lua 编译、加密或 ldpak。
 
 ## Windows
 

@@ -69,7 +69,7 @@ printf '%s' "$AOS_SIGNING_KEY" | base64 --decode > "$keystore"
 test -s "$keystore"
 # The packer reads store password, then key password, from standard input.
 printf '%s\n%s\n' "$AOS_KEY_STORE_PASSWORD" "$AOS_KEY_PASSWORD" | \
-    sh "$work/tools/pack_android.sh" --sign --keystore "$keystore" --key-alias "$AOS_ALIAS" \
+    sh "$work/tools/pack_android.sh" --dev --sign --keystore "$keystore" --key-alias "$AOS_ALIAS" \
         "$project" "$output"
 
 apks=("$output"/*.apk)
