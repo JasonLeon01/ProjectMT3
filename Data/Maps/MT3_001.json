@@ -614,7 +614,7 @@
     "default": [
       {
         "tag": "MT3_001.Upstair_default_5_0",
-        "bp": "Data.Blueprints.Teleportations.Upstair",
+        "bp": "Data.Blueprints.Teleportations.BP_Upstair",
         "position": [
           5,
           0
@@ -622,7 +622,7 @@
       },
       {
         "tag": "MT3_001.Gem_1_2_default_6_8",
-        "bp": "Data.Blueprints.Consumables.Gem_1_2",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
         "position": [
           6,
           8
@@ -630,7 +630,7 @@
       },
       {
         "tag": "MT3_001.Gem_2_2_default_6_6",
-        "bp": "Data.Blueprints.Consumables.Gem_2_2",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
         "position": [
           6,
           6
