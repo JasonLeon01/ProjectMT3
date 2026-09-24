@@ -1,4 +1,4 @@
-name: Sync Ludork Global Scripts
+name: Sync Ludork Engine and Global
 
 on:
   schedule:
@@ -10,12 +10,12 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: sync-ludork-global
+  group: sync-ludork
   cancel-in-progress: false
 
 jobs:
   sync:
-    name: Sync Global scripts and update PR
+    name: Sync Engine and Global and update PR
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -32,17 +32,17 @@ jobs:
       - name: Fetch upstream main history
         shell: bash
         run: |
-          upstream="$RUNNER_TEMP/ludork-global-sync-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.git"
+          upstream="$RUNNER_TEMP/ludork-sync-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.git"
           git clone --bare --filter=blob:none --single-branch --branch main \
             https://github.com/JasonLeon01/Ludork.git "$upstream"
           echo "LUDORK_SYNC_REPOSITORY=$upstream" >> "$GITHUB_ENV"
 
-      - name: Check and apply changed Global scripts
+      - name: Check and apply changed Engine and Global files
         id: sync
         uses: actions/github-script@v8
         with:
           script: |
-            const sync = require('./.github/scripts/sync-global.cjs');
+            const sync = require('./.github/scripts/sync-ludork.cjs');
             await sync.run({ core, context });
 
       - name: Create or update sync PR
@@ -50,18 +50,22 @@ jobs:
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ github.token }}
-          branch: codex/sync-ludork-global
+          branch: codex/sync-ludork
           base: ${{ github.event.repository.default_branch }}
           add-paths: |
+            Engine/
+            :(exclude)Engine/ThirdParty
+            :(exclude)Engine/ThirdParty/**
             Scripts/Global/
-            .github/ludork-global-sync.json
-          commit-message: 'chore: sync Ludork Global scripts from ${{ steps.sync.outputs.upstream_sha }}'
-          title: 'chore: sync Ludork Global scripts'
+            .github/ludork-sync.json
+          commit-message: 'chore: sync Ludork Engine and Global from ${{ steps.sync.outputs.upstream_sha }}'
+          title: 'chore: sync Ludork Engine and Global'
           body: |
-            Incrementally sync changed files from `JasonLeon01/Ludork` `Game/Scripts/Global/` into `Scripts/Global/`.
+            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/` and `Game/Scripts/Global/` into `Scripts/Global/`.
 
-            - Preserve files unchanged upstream since the merged baseline.
-            - Merged baseline: `${{ steps.sync.outputs.baseline_sha }}`
+            - Preserve `Engine/ThirdParty/` and files unchanged upstream since the merged baseline.
+            - Engine merged baseline: `${{ steps.sync.outputs.engine_baseline_sha }}`
+            - Global merged baseline: `${{ steps.sync.outputs.global_baseline_sha }}`
             - Upstream: https://github.com/JasonLeon01/Ludork/commit/${{ steps.sync.outputs.upstream_sha }}
             - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 

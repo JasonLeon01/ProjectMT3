@@ -6,7 +6,7 @@ const { execFileSync } = require('node:child_process');
 
 const fourHours = 4 * 60 * 60;
 
-function createSync({ sourceRoot, targetRoot, statePath, excludedDirectories = [] }) {
+function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirectories = [] }) {
   function git(directory, ...args) {
     return execFileSync('git', ['-C', directory, ...args], { maxBuffer: 128 * 1024 * 1024 });
   }
@@ -91,22 +91,17 @@ function createSync({ sourceRoot, targetRoot, statePath, excludedDirectories = [
     }
   }
 
-  function synchronize({ project, upstream, eventName, now = Date.now() }) {
-    if (!['schedule', 'workflow_dispatch'].includes(eventName)) throw new Error(`Unsupported event: ${eventName}`);
-    if (!Number.isFinite(now)) throw new Error('Invalid sync start time.');
+  function synchronize({ project, upstream, upstreamSha: sha }) {
     project = path.resolve(project);
     upstream = path.resolve(upstream);
-    const sha = git(upstream, 'rev-parse', '--verify', 'refs/heads/main^{commit}').toString().trim();
     const latest = tree(upstream, sha, sourceRoot);
     const stateFile = path.join(project, statePath);
     if (!fs.existsSync(stateFile)) throw new Error('Missing sync baseline; set upstreamSha to the Ludork commit already synced into this project.');
-    const baseline = JSON.parse(fs.readFileSync(stateFile, 'utf8')).upstreamSha;
+    const state = JSON.parse(fs.readFileSync(stateFile, 'utf8'));
+    const baseline = state[stateKey]?.upstreamSha;
     if (typeof baseline !== 'string' || !/^[0-9a-f]{40}$/.test(baseline)) throw new Error('Invalid upstreamSha in sync state.');
     git(upstream, 'merge-base', '--is-ancestor', baseline, sha);
     const result = { upstreamSha: sha, baseline, changedFiles: 0, shouldUpdatePr: false };
-    if (eventName === 'schedule' && !hasRecentChanges(upstream, sha, now)) {
-      return { ...result, reason: `No effective ${targetRoot} commits in the last four hours.` };
-    }
 
     const local = tree(project, 'HEAD', targetRoot);
     // The update set comes exclusively from two Ludork revisions. Project-only
@@ -139,7 +134,8 @@ function createSync({ sourceRoot, targetRoot, statePath, excludedDirectories = [
     const shouldUpdatePr = changes.length > 0;
     if (shouldUpdatePr) {
       fs.mkdirSync(path.dirname(stateFile), { recursive: true });
-      fs.writeFileSync(stateFile, `${JSON.stringify({ upstreamSha: sha }, null, 2)}\n`);
+      state[stateKey] = { ...state[stateKey], upstreamSha: sha };
+      fs.writeFileSync(stateFile, `${JSON.stringify(state, null, 2)}\n`);
     }
     return {
       ...result, changedFiles: changes.length, shouldUpdatePr,
@@ -150,26 +146,7 @@ function createSync({ sourceRoot, targetRoot, statePath, excludedDirectories = [
     };
   }
 
-  async function run({ core, context }) {
-    const result = synchronize({
-      project: process.env.GITHUB_WORKSPACE,
-      upstream: process.env.LUDORK_SYNC_REPOSITORY,
-      eventName: context.eventName,
-      now: Number(process.env.SYNC_STARTED_AT) * 1000,
-    });
-    core.setOutput('reconcile_pr', String(Boolean(result.reconcilePr)));
-    core.setOutput('upstream_sha', result.upstreamSha);
-    core.setOutput('baseline_sha', result.baseline);
-    await core.summary.addHeading(`Ludork ${targetRoot} sync`).addTable([
-      [{ data: 'Input', header: true }, { data: 'Value', header: true }],
-      ['Upstream SHA', result.upstreamSha],
-      ['Merged baseline', result.baseline],
-      ['Changed files', String(result.changedFiles)],
-      ['Decision', result.reason],
-    ]).write();
-  }
-
-  return { synchronize, hasRecentChanges, run };
+  return { synchronize, hasRecentChanges };
 }
 
 module.exports = { createSync };
