@@ -353,7 +353,7 @@
     ],
     "default": [
       {
-        "tag": "MT3_019.Downstair_default_10_0",
+        "tag": "MT3_019.BP_Downstair_default_10_0",
         "bp": "Data.Blueprints.Teleportations.BP_Downstair",
         "position": [
           10,
@@ -361,7 +361,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Upstair_default_10_10",
+        "tag": "MT3_019.BP_Upstair_default_10_10",
         "bp": "Data.Blueprints.Teleportations.BP_Upstair",
         "position": [
           10,
@@ -369,7 +369,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Downstair_default_0_0",
+        "tag": "MT3_019.BP_Downstair_default_0_0",
         "bp": "Data.Blueprints.Teleportations.BP_Downstair",
         "position": [
           0,
@@ -577,7 +577,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_150_default_10_4",
+        "tag": "MT3_019.BP_Bottle_150_default_10_4",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           10,
@@ -593,7 +593,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_150_default_4_2",
+        "tag": "MT3_019.BP_Bottle_150_default_4_2",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           4,
@@ -601,7 +601,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_400_default_6_8",
+        "tag": "MT3_019.BP_Bottle_400_default_6_8",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           6,
@@ -609,7 +609,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_400_default_5_8",
+        "tag": "MT3_019.BP_Bottle_400_default_5_8",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           5,
@@ -617,7 +617,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_400_default_0_6",
+        "tag": "MT3_019.BP_Bottle_400_default_0_6",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           0,
@@ -625,7 +625,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_400_default_1_10",
+        "tag": "MT3_019.BP_Bottle_400_default_1_10",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           1,
@@ -633,7 +633,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_400_default_8_6",
+        "tag": "MT3_019.BP_Bottle_400_default_8_6",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           8,
@@ -641,7 +641,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Bottle_400_default_10_6",
+        "tag": "MT3_019.BP_Bottle_400_default_10_6",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           10,
@@ -649,7 +649,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Gem_1_2_default_8_7",
+        "tag": "MT3_019.BP_Gem_1_2_default_8_7",
         "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
         "position": [
           8,
@@ -657,7 +657,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Gem_1_2_default_2_5",
+        "tag": "MT3_019.BP_Gem_1_2_default_2_5",
         "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
         "position": [
           2,
@@ -665,7 +665,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Gem_2_2_default_10_7",
+        "tag": "MT3_019.BP_Gem_2_2_default_10_7",
         "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
         "position": [
           10,
@@ -673,7 +673,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Gem_2_2_default_10_3",
+        "tag": "MT3_019.BP_Gem_2_2_default_10_3",
         "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
         "position": [
           10,
@@ -681,7 +681,7 @@
         ]
       },
       {
-        "tag": "MT3_019.Gem_3_1_default_3_6",
+        "tag": "MT3_019.BP_Gem_3_1_default_3_6",
         "bp": "Data.Blueprints.Consumables.BP_Gem_3_1",
         "position": [
           3,
@@ -754,7 +754,7 @@
       },
       {
         "bp": "Data.Blueprints.Consumables.BP_Gem_GOLD",
-        "tag": "Consumables_Gem_GOLD_default_9_6",
+        "tag": "Consumables_BP_Gem_GOLD_default_9_6",
         "position": [
           9,
           6

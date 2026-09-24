@@ -329,7 +329,7 @@
     ],
     "default": [
       {
-        "tag": "MT3_025.Downstair_default_5_2",
+        "tag": "MT3_025.BP_Downstair_default_5_2",
         "bp": "Data.Blueprints.Teleportations.BP_Downstair",
         "position": [
           5,
@@ -337,7 +337,7 @@
         ]
       },
       {
-        "tag": "MT3_025.Upstair_default_5_8",
+        "tag": "MT3_025.BP_Upstair_default_5_8",
         "bp": "Data.Blueprints.Teleportations.BP_Upstair",
         "position": [
           5,
@@ -401,7 +401,7 @@
         ]
       },
       {
-        "tag": "MT3_025.Bottle_400_default_3_2",
+        "tag": "MT3_025.BP_Bottle_400_default_3_2",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           3,
@@ -409,7 +409,7 @@
         ]
       },
       {
-        "tag": "MT3_025.Bottle_400_default_3_8",
+        "tag": "MT3_025.BP_Bottle_400_default_3_8",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           3,
@@ -417,7 +417,7 @@
         ]
       },
       {
-        "tag": "MT3_025.Bottle_400_default_7_8",
+        "tag": "MT3_025.BP_Bottle_400_default_7_8",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           7,
@@ -433,7 +433,7 @@
         ]
       },
       {
-        "tag": "MT3_025.Bottle_400_default_2_5",
+        "tag": "MT3_025.BP_Bottle_400_default_2_5",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           2,
@@ -457,7 +457,7 @@
         ]
       },
       {
-        "tag": "MT3_025.Bottle_400_default_7_2",
+        "tag": "MT3_025.BP_Bottle_400_default_7_2",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           7,
@@ -482,7 +482,7 @@
       },
       {
         "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
-        "tag": "Consumables_Gem_1_2_default_2_3",
+        "tag": "Consumables_BP_Gem_1_2_default_2_3",
         "position": [
           2,
           3
@@ -490,7 +490,7 @@
       },
       {
         "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
-        "tag": "Consumables_Gem_2_2_default_8_7",
+        "tag": "Consumables_BP_Gem_2_2_default_8_7",
         "position": [
           8,
           7

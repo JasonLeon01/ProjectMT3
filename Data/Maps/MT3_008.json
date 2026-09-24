@@ -669,7 +669,7 @@
     ],
     "default": [
       {
-        "tag": "MT3_008.Downstair_default_8_7",
+        "tag": "MT3_008.BP_Downstair_default_8_7",
         "bp": "Data.Blueprints.Teleportations.BP_Downstair",
         "position": [
           8,
@@ -677,7 +677,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Upstair_default_0_0",
+        "tag": "MT3_008.BP_Upstair_default_0_0",
         "bp": "Data.Blueprints.Teleportations.BP_Upstair",
         "position": [
           0,
@@ -685,7 +685,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Upstair_default_10_0",
+        "tag": "MT3_008.BP_Upstair_default_10_0",
         "bp": "Data.Blueprints.Teleportations.BP_Upstair",
         "position": [
           10,
@@ -797,7 +797,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_1_2_default_9_0",
+        "tag": "MT3_008.BP_Gem_1_2_default_9_0",
         "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
         "position": [
           9,
@@ -805,7 +805,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_1_2_default_5_10",
+        "tag": "MT3_008.BP_Gem_1_2_default_5_10",
         "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
         "position": [
           5,
@@ -813,7 +813,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_1_2_default_1_10",
+        "tag": "MT3_008.BP_Gem_1_2_default_1_10",
         "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
         "position": [
           1,
@@ -821,7 +821,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_2_2_default_3_10",
+        "tag": "MT3_008.BP_Gem_2_2_default_3_10",
         "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
         "position": [
           3,
@@ -829,7 +829,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_2_2_default_9_9",
+        "tag": "MT3_008.BP_Gem_2_2_default_9_9",
         "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
         "position": [
           9,
@@ -837,7 +837,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_2_2_default_9_1",
+        "tag": "MT3_008.BP_Gem_2_2_default_9_1",
         "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
         "position": [
           9,
@@ -845,7 +845,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_3_1_default_2_10",
+        "tag": "MT3_008.BP_Gem_3_1_default_2_10",
         "bp": "Data.Blueprints.Consumables.BP_Gem_3_1",
         "position": [
           2,
@@ -853,7 +853,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_EXP_default_3_7",
+        "tag": "MT3_008.BP_Gem_EXP_default_3_7",
         "bp": "Data.Blueprints.Consumables.BP_Gem_EXP",
         "position": [
           3,
@@ -861,7 +861,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_EXP_default_5_4",
+        "tag": "MT3_008.BP_Gem_EXP_default_5_4",
         "bp": "Data.Blueprints.Consumables.BP_Gem_EXP",
         "position": [
           5,
@@ -869,7 +869,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_Breath_default_1_4",
+        "tag": "MT3_008.BP_Gem_Breath_default_1_4",
         "bp": "Data.Blueprints.Consumables.BP_Gem_Breath",
         "position": [
           1,
@@ -877,7 +877,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Gem_Breath_default_0_6",
+        "tag": "MT3_008.BP_Gem_Breath_default_0_6",
         "bp": "Data.Blueprints.Consumables.BP_Gem_Breath",
         "position": [
           0,
@@ -885,7 +885,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_150_default_1_0",
+        "tag": "MT3_008.BP_Bottle_150_default_1_0",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           1,
@@ -893,7 +893,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_150_default_1_1",
+        "tag": "MT3_008.BP_Bottle_150_default_1_1",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           1,
@@ -901,7 +901,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_150_default_8_9",
+        "tag": "MT3_008.BP_Bottle_150_default_8_9",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           8,
@@ -909,7 +909,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_150_default_8_10",
+        "tag": "MT3_008.BP_Bottle_150_default_8_10",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           8,
@@ -917,7 +917,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_150_default_9_10",
+        "tag": "MT3_008.BP_Bottle_150_default_9_10",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           9,
@@ -925,7 +925,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_400_default_8_6",
+        "tag": "MT3_008.BP_Bottle_400_default_8_6",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           8,
@@ -933,7 +933,7 @@
         ]
       },
       {
-        "tag": "MT3_008.Bottle_400_default_0_3",
+        "tag": "MT3_008.BP_Bottle_400_default_0_3",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "position": [
           0,
@@ -1061,7 +1061,7 @@
         ]
       },
       {
-        "tag": "Consumables_Gem_GOLD_default_10_6",
+        "tag": "Consumables_BP_Gem_GOLD_default_10_6",
         "bp": "Data.Blueprints.Consumables.BP_Gem_GOLD",
         "position": [
           10,

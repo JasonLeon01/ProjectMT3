@@ -958,7 +958,7 @@
         ]
       },
       {
-        "tag": "MT3_000.Bottle_150_default_1_9",
+        "tag": "MT3_000.BP_Bottle_150_default_1_9",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           1,
@@ -966,7 +966,7 @@
         ]
       },
       {
-        "tag": "MT3_000.Bottle_150_default_9_9",
+        "tag": "MT3_000.BP_Bottle_150_default_9_9",
         "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
         "position": [
           9,
