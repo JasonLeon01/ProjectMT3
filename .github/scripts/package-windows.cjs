@@ -77,44 +77,20 @@ function restoreState({ core }) {
   core.setOutput('tools_key', previous?.tools_key ?? '');
 }
 
-function changedScripts(base, head, repository) {
-  requireSha(base);
-  requireSha(head);
-  if (base === head) return [];
-  // Without rename detection both old and new extensions are examined. Git tree
-  // diffs have no REST compare API file-count truncation.
-  return execute('git', ['-C', repository, 'diff', '--name-only', '--no-renames', '-z', base, head])
-    .split('\0').filter(file => /\.(py|bat|sh)$/i.test(file));
-}
-
 async function selectLudork({ github, core }) {
   const previous = readPrevious(core);
   const { data } = await github.rest.repos.getBranch({ ...upstream, branch: 'main' });
   const head = requireSha(data.commit.sha); // Freeze HEAD once for this run.
+  const selected = await selectArtifact(github, head);
   const cached = process.env.TOOLS_CACHE_HIT === 'true' && previous
     && toolFiles.every(file => fs.existsSync(path.join(toolsDirectory(), file))
       && fs.statSync(path.join(toolsDirectory(), file)).isFile());
-  let scripts = [];
-  if (cached && previous.ludork_sha !== head) {
-    const repository = temp('ludork-compare.git');
-    execute('git', ['init', '--bare', repository]);
-    execute('git', ['-C', repository, 'fetch', '--no-tags', '--depth=1', '--filter=blob:none',
-      'https://github.com/JasonLeon01/Ludork.git', previous.ludork_sha, head]);
-    scripts = changedScripts(previous.ludork_sha, head, repository);
-  }
-  let reuse = Boolean(cached && scripts.length === 0);
-  let reason = !cached ? 'Tool cache missing or invalid'
-    : scripts.length ? `Upstream scripts changed (${scripts.length} paths)` : 'No upstream script changes';
-  const selected = reuse ? previous : await selectArtifact(github, head);
-  if (!reuse && selected.ludork_sha !== head) {
-    reason += `; no available HEAD package, selected earlier commit ${selected.ludork_sha}`;
-  }
-  if (!reuse && cached && selected.ludork_sha === previous.ludork_sha
+  const reuse = Boolean(cached && selected.ludork_sha === previous.ludork_sha
       && selected.ludork_run_id === previous.ludork_run_id
-      && selected.ludork_artifact_id === previous.ludork_artifact_id) {
-    reuse = true;
-    reason += '; selected package already cached';
-  }
+      && selected.ludork_artifact_id === previous.ludork_artifact_id);
+  let reason = reuse ? 'Latest available editor artifact already cached'
+    : cached ? 'Latest available editor artifact changed' : 'Tool cache missing or invalid';
+  if (selected.ludork_sha !== head) reason += `; selected available commit ${selected.ludork_sha}`;
   if (!reuse) {
     // This fixed child of RUNNER_TEMP is never the user's project directory.
     fs.rmSync(toolsDirectory(), { recursive: true, force: true });
@@ -340,5 +316,5 @@ async function cleanupCaches({ github, context, core }, current) {
 
 module.exports = {
   checkProject, restoreState, selectLudork, selectBuild, prepareBuild, snapshotBuild, publishState,
-  changedScripts, selectArtifact, buildReason, cleanupCaches,
+  selectArtifact, buildReason, cleanupCaches,
 };

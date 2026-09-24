@@ -6,18 +6,20 @@
 
 默认使用 GitHub 自动提供的 `GITHUB_TOKEN` 查询和下载公开的 Ludork 产物。如果跨仓库下载权限不足，可配置能访问 `JasonLeon01/Ludork`、具有 **Actions: Read-only** 权限的 `LUDORK_ACTIONS_TOKEN`；两个平台均优先使用该 Secret。
 
-两部分共用 `package-upstream.cjs` 的产物选择逻辑：优先检查 Ludork `main` HEAD 的成功 `export-editor.yml` 运行，再向前查找更早的成功运行。必须存在实际成功的平台 job，以及名称精确匹配、唯一且未过期的产物；跳过没有生成包的运行、缺失或过期产物，全部不可用才报错。
+两部分共用 `package-upstream.cjs` 的产物选择逻辑：在 Ludork `main` 上，按运行时间从新到旧查找不带模板的 **Export Editor** 双平台流程与对应单平台流程，选择最新可用的编辑器产物。Windows 同时查找 `export-editor.yml` 和 `export-editor-windows.yml`，AOS 同时查找 `export-editor.yml` 和 `export-editor-macos.yml`。只接受已完成的可信事件运行，要求目标平台 job 实际成功（兼容可复用工作流的 job 名称前缀），以及名称精确匹配、唯一且未过期的产物；另一平台失败不影响已成功的目标平台。跳过未打包、缺失或过期的产物并继续向前查找，全部不可用才报错，不回退到带模板的 **Export Package**。
 
 | MT3 产物 | 构建环境 | Ludork 工具来源 |
 | --- | --- | --- |
-| Windows x64 游戏目录 | `windows-2022` | `Windows x64` job 的 `Ludork-windows-x64-<上游提交>` |
-| AOS / Android ARM64 签名 APK | `macos-15` Apple Silicon | `macOS ARM64` job 的 `Ludork-macos-arm64-<上游提交>` DMG |
+| Windows x64 游戏目录 | `windows-2022` | `Windows x64` job 的 `Ludork-editor-windows-x64-<上游提交>` |
+| AOS / Android ARM64 签名 APK | `macos-15` Apple Silicon | `macOS ARM64` job 的 `Ludork-editor-macos-arm64-<上游提交>` 签名 DMG |
 
 Ludork 只提供工具。项目的 Engine、Application、资源和 Android 模板均使用本仓库选定提交，不用上游模板替换项目源码；两个平台均采用默认 Release 打包，不额外启用 Lua 编译、加密或 ldpak。
 
 ## Windows
 
 沿用现有工具、构建和状态缓存。每次推送或手动运行都会打包选定提交；最近一次成功工作流中的 `Package Windows` job 用于定位缓存基线，不按相同提交跳过手动重试。保持 workflow 文件名及该 job 名称稳定，以保留历史查找。
+
+每次先查询最新可用的上游编辑器产物，再决定是否复用工具缓存；只有选中的提交、运行 ID 和产物 ID 均与缓存状态相同且工具完整时才复用。新版编辑器不会因上游打包脚本未变化而被旧工具缓存遮蔽；实际选中产物决定工具缓存 key，原有 Engine、工具和编译环境的构建缓存兼容性检查仍保留。
 
 `tools/pack_project.bat` 完成构建后检查运行程序、资源目录和 DLL；成功上传及缓存保存完成后才发布新的缓存状态。`ProjectMT3-windows-x64-<项目提交>` 保留 **7 天**，包含游戏目录与 `build-info.json`。
 
