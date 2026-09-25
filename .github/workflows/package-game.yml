@@ -228,17 +228,53 @@ jobs:
           path: ${{ runner.temp }}/ludork-android-artifact
           merge-multiple: true
 
-      - name: Prepare Android build tools
+      - name: Restore Android Studio
+        id: android_studio_cache
+        uses: actions/cache/restore@v5
+        with:
+          path: /Applications/Android Studio.app
+          key: android-studio-macos-15-arm64-v1
+
+      - name: Prepare Android Studio
         shell: bash
         run: |
           set -euo pipefail
           [[ "$(uname -s)" == Darwin && "$(uname -m)" == arm64 ]]
-          if [[ ! -d '/Applications/Android Studio.app' ]]; then
-            brew install --cask android-studio
+          studio='/Applications/Android Studio.app'
+          java_home="$studio/Contents/jbr/Contents/Home"
+          if [[ ! -x "$java_home/bin/java" || ! -x "$java_home/bin/keytool" ]]; then
+            rm -rf -- "$studio"
+            for attempt in 1 2 3; do
+              echo "Installing Android Studio (attempt $attempt/3)"
+              if HOMEBREW_CURL_RETRIES=3 brew install --cask android-studio && \
+                  [[ -x "$java_home/bin/java" && -x "$java_home/bin/keytool" ]]; then
+                break
+              fi
+              if (( attempt == 3 )); then
+                echo 'Android Studio installation failed after 3 attempts.' >&2
+                exit 1
+              fi
+              brew uninstall --cask --force android-studio || true
+              rm -rf -- "$studio"
+              sleep $((attempt * 20))
+            done
           fi
-          export JAVA_HOME='/Applications/Android Studio.app/Contents/jbr/Contents/Home'
+          export JAVA_HOME="$java_home"
           test -x "$JAVA_HOME/bin/java"
           test -x "$JAVA_HOME/bin/keytool"
+          echo "JAVA_HOME=$JAVA_HOME" >> "$GITHUB_ENV"
+
+      - name: Cache Android Studio after first installation
+        if: steps.android_studio_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: /Applications/Android Studio.app
+          key: android-studio-macos-15-arm64-v1
+
+      - name: Prepare Android build tools
+        shell: bash
+        run: |
+          set -euo pipefail
           export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
           export ANDROID_SDK_ROOT="$ANDROID_HOME"
           sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
@@ -251,7 +287,6 @@ jobs:
           fi
           cmake --version
           {
-            echo "JAVA_HOME=$JAVA_HOME"
             echo "ANDROID_HOME=$ANDROID_HOME"
             echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
           } >> "$GITHUB_ENV"
