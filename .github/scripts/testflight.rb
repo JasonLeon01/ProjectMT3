@@ -31,18 +31,18 @@ def report(context, output, status)
   info['testflight'] = context.merge('url' => url)
   File.write(info_path, JSON.pretty_generate(info) + "\n")
   File.write(File.join(output, 'testflight.txt'), <<~TEXT)
-    ProjectMT3 — TestFlight 内部测试
-    版本: #{context['version']}
-    构建号: #{context['build_number'] || '尚未分配'}
-    状态: #{status}
-    测试组: #{ENV.fetch('IOS_TESTFLIGHT_GROUP')}
-    项目提交: #{ENV.fetch('PROJECT_SHA')}
-    管理页面: #{url}
+    ProjectMT3 — TestFlight Internal Testing
+    Version: #{context['version']}
+    Build number: #{context['build_number'] || 'Not yet assigned'}
+    Status: #{status}
+    Test group: #{ENV.fetch('IOS_TESTFLIGHT_GROUP')}
+    Project commit: #{ENV.fetch('PROJECT_SHA')}
+    App Store Connect: #{url}
 
-    仅状态 ready 表示已确认 Apple 处理成功并加入指定内部测试组。
-    内部测试没有公开邀请码。测试者须先成为有应用访问权限的 App Store Connect 用户，
-    由管理员加入内部测试组，并在 iPhone 上通过 Apple 的个人邀请使用 TestFlight。
-    CI 不保存 IPA，也不会为外部测试提交审核或创建公开链接。
+    Only the ready status confirms that Apple has successfully processed the build and it has been added to the selected internal test group.
+    Internal testing has no public invitation code. Testers must be App Store Connect users with access to this app.
+    An administrator must add them to the internal test group. Accept Apple's individual invitation in TestFlight on an iPhone.
+    CI does not retain IPA files, submit builds for external beta review, or create public links.
   TEXT
 end
 
