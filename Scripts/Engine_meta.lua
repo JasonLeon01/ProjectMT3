@@ -3781,6 +3781,12 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {},
         },
+        insertChildBefore = {
+            type = "function",
+            parameters = { "self", "child", "before", self = { "Engine", "Canvas" }, child = { "Engine", "ControlBase" }, before = { "Engine", "ControlBase" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
         removeChild = {
             type = "function",
             parameters = { "self", "child", self = { "Engine", "Canvas" }, child = { "Engine", "ControlBase" } },

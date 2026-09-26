@@ -2883,6 +2883,10 @@ function Canvas:getChildren() end
 ---@return nil
 function Canvas:addChild(child) end
 ---@param child Engine.ControlBase|nil
+---@param before Engine.ControlBase|nil
+---@return nil
+function Canvas:insertChildBefore(child, before) end
+---@param child Engine.ControlBase|nil
 ---@return nil
 function Canvas:removeChild(child) end
 ---@param animation Engine.AnimSprite|nil
