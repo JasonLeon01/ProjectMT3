@@ -686,7 +686,7 @@
       },
       {
         "tag": "MT3_003.BP_GoldShop_MT3_default_2_0",
-        "bp": "Data.Blueprints.Actors.BP_GoldShop_MT3",
+        "bp": "Data.Blueprints.NPCs.BP_GoldShop_MT3",
         "position": [
           2,
           0
@@ -974,7 +974,7 @@
       },
       {
         "tag": "MT3_003.BP_NPC_04_default_0_7",
-        "bp": "Data.Blueprints.Actors.BP_NPC_04",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_04",
         "position": [
           0,
           7

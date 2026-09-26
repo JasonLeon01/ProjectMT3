@@ -411,7 +411,7 @@ local _METADATA = {
         },
     },
     Actor = {
-        attrs = { "scriptMixin", "scriptPath", "tag", "switchInterval", "animatable", "visible", "material", "shaderPath", "hue", "collisionEnabled", "tickable", "speed", "autoSound", "autoSoundInterval", "autoSoundParams", "texturePath", "defaultRect", "defaultTranslation", "defaultRotation", "defaultScale", "defaultOrigin", "lightComp", "emitterComp" },
+        attrs = { "scriptMixin", "scriptPath", "tag", "switchInterval", "animatable", "visible", "material", "shaderPath", "hue", "collisionEnabled", "tickable", "speed", "autoSound", "autoSoundInterval", "autoSoundParams", "texturePath", "defaultRect", "defaultTranslation", "defaultRotation", "defaultScale", "defaultOrigin", "lightComp", "emitterComp", "billboardComp" },
         scriptMixin = {
             type = "bool",
             default = false,
@@ -531,6 +531,10 @@ local _METADATA = {
         },
         emitterComp = {
             type = { "Engine", "EmitterComponent" },
+            component = true,
+        },
+        billboardComp = {
+            type = { "Engine", "BillboardComponent" },
             component = true,
         },
         getCollisionEnabled = {
@@ -1490,6 +1494,75 @@ local _METADATA = {
             },
         },
     },
+    BillboardComponent = {
+        bases = { { "Engine", "Component" } },
+        attrs = { "items", "showRange" },
+        items = {
+            type = {
+                list = { "Engine", "BillboardItem" },
+            },
+            default = {},
+        },
+        showRange = {
+            type = "float",
+            default = 128.0,
+        },
+        onAttach = {
+            type = "function",
+            parameters = { "self", "owner", self = { "Engine", "BillboardComponent" }, owner = "any" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = "any",
+            },
+            },
+        },
+    },
+    BillboardItem = {
+        attrs = { "kind", "text", "fontSize", "color", "image" },
+        kind = {
+            type = "string",
+            default = "text",
+            Meta = { DropBox = { "text", "image" } },
+        },
+        text = {
+            type = "string",
+            default = "",
+            Meta = { Rely = {
+                    source = "kind",
+                    op = "==",
+                    value = "text",
+                } },
+        },
+        fontSize = {
+            type = "int",
+            default = 12,
+            Meta = { Rely = {
+                    source = "kind",
+                    op = "==",
+                    value = "text",
+                } },
+        },
+        color = {
+            type = "sf.Color",
+            default = { 255, 255, 255, 255 },
+            Meta = { Rely = {
+                    source = "kind",
+                    op = "==",
+                    value = "text",
+                } },
+        },
+        image = {
+            type = "string",
+            default = "",
+            Meta = { Rely = {
+                    source = "kind",
+                    op = "==",
+                    value = "image",
+                }, PathVars = "/Game/Assets", PathFilter = "*.png *.jpg *.jpeg *.bmp" },
+        },
+    },
     EmitterComponent = {
         bases = { { "Engine", "Component" } },
         attrs = { "resource", "anchor", "offset", "rotation", "scale", "beforeActor" },
@@ -2438,8 +2511,51 @@ local _METADATA = {
             default = 0.0,
         },
     },
+    InputCapture = {
+        attrs = {},
+        setConfirmEnabled = {
+            type = "function",
+            parameters = { "self", "enabled", self = { "Engine", "InputCapture" }, enabled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+        consumeConfirm = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "InputCapture" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        release = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "InputCapture" } },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
+    },
     Service = {
         attrs = {},
+        isInputCaptured = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        captureInput = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "InputCapture" },
+            },
+        },
         update = {
             type = "function",
             parameters = { "self", "window", self = { "Engine", "Service" }, window = "sf.RenderWindow" },
@@ -7632,6 +7748,23 @@ local _METADATA = {
     },
     Input = {
         attrs = {},
+        isInputCaptured = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        captureInput = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "InputCapture" },
+            },
+        },
         update = {
             type = "function",
             parameters = { "window", window = "sf.RenderWindow" },

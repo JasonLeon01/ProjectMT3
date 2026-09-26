@@ -700,7 +700,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
         "tag": "Actors_BP_SWall_default_6_2",
         "position": [
           6,
@@ -884,7 +884,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "tag": "Actors_BP_Barrier_50_default_1_8",
         "position": [
           1,

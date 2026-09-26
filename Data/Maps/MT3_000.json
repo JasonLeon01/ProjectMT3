@@ -943,7 +943,7 @@
     "default": [
       {
         "tag": "MT3_000.BP_NPC_00_default_6_1",
-        "bp": "Data.Blueprints.Actors.BP_NPC_00",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_00",
         "position": [
           6,
           1
@@ -951,7 +951,7 @@
       },
       {
         "tag": "MT3_000.BP_NPC_01_default_5_5",
-        "bp": "Data.Blueprints.Actors.BP_NPC_01",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_01",
         "position": [
           5,
           6

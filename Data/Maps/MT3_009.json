@@ -900,7 +900,7 @@
   "actors": {
     "floor": [
       {
-        "bp": "Data.Blueprints.Actors.BP_NPC_062",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_062",
         "tag": "Actors_BP_NPC_062_default_4_0",
         "position": [
           4,
@@ -1375,7 +1375,7 @@
       },
       {
         "tag": "MT3_009.BP_NPC_06_default_4_0",
-        "bp": "Data.Blueprints.Actors.BP_NPC_06",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_06",
         "position": [
           4,
           0

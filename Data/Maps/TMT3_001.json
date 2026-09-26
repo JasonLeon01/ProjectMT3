@@ -956,7 +956,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
         "tag": "Actors_BP_SWall_default_0_6",
         "position": [
           0,

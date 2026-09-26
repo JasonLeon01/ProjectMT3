@@ -684,7 +684,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
         "tag": "Actors_BP_SWall_default_4_1",
         "position": [
           4,
@@ -764,7 +764,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_GoldShop_MT3_2",
+        "bp": "Data.Blueprints.NPCs.BP_GoldShop_MT3_2",
         "tag": "Actors_BP_GoldShop_MT3_2_default_6_3",
         "position": [
           6,
@@ -788,7 +788,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
         "tag": "Actors_BP_SWall_default_4_4",
         "position": [
           3,
@@ -948,7 +948,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "tag": "Actors_BP_Barrier_50_default_7_7",
         "position": [
           7,
@@ -996,7 +996,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_NPC_18",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_18",
         "tag": "Actors_BP_NPC_18_default_1_9",
         "position": [
           1,
@@ -1004,7 +1004,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "tag": "Actors_BP_Barrier_50_default_3_9",
         "position": [
           3,
@@ -1012,7 +1012,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "tag": "Actors_BP_Barrier_50_default_6_9",
         "position": [
           6,

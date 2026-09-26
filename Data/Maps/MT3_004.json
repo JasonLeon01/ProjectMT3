@@ -990,7 +990,7 @@
       },
       {
         "tag": "MT3_004.BP_NPC_05_default_0_10",
-        "bp": "Data.Blueprints.Actors.BP_NPC_05",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_05",
         "position": [
           0,
           10

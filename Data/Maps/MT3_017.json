@@ -908,7 +908,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_NPC_092",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_092",
         "tag": "Actors_BP_NPC_092_default_7_1",
         "position": [
           7,
@@ -967,7 +967,7 @@
       },
       {
         "tag": "MT3_017.BP_NPC_09_default_7_1",
-        "bp": "Data.Blueprints.Actors.BP_NPC_09",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_09",
         "position": [
           7,
           1
@@ -1230,7 +1230,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
         "tag": "Actors_BP_SWall_default_4_10",
         "position": [
           4,

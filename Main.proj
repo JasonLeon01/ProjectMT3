@@ -2,9 +2,10 @@
   "Cpp": true,
   "ffmpeg": true,
   "packaging": {
-    "dev": true
+    "dev": true,
+    "version": "1.0.0"
   },
   "IndividualWindow": true,
-  "lastFileExplorerPath": "Data/Blueprints/Enemies",
-  "lastOpenedMapKey": "MT3_016"
+  "lastFileExplorerPath": "Data/UI/Assets",
+  "lastOpenedMapKey": "MT3_002"
 }

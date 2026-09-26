@@ -673,7 +673,7 @@
     ],
     "lava": [
       {
-        "bp": "Data.Blueprints.Actors.BP_Bravor_NPC",
+        "bp": "Data.Blueprints.NPCs.BP_Bravor_NPC",
         "tag": "Bravor",
         "position": [
           5,
@@ -708,7 +708,7 @@
       },
       {
         "tag": "MT3_025.BP_NPC_12_default_5_7",
-        "bp": "Data.Blueprints.Actors.BP_NPC_12",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_12",
         "position": [
           5,
           7
@@ -716,7 +716,7 @@
       },
       {
         "tag": "Old",
-        "bp": "Data.Blueprints.Actors.BP_NPC_092",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_092",
         "position": [
           4,
           7
@@ -724,14 +724,14 @@
       },
       {
         "tag": "Thief",
-        "bp": "Data.Blueprints.Actors.BP_NPC_062",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_062",
         "position": [
           6,
           7
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_Bravor_Crystal",
+        "bp": "Data.Blueprints.NPCs.BP_Bravor_Crystal",
         "tag": "Actors_BP_Bravor_Crystal_default_5_2",
         "position": [
           5,

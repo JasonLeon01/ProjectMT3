@@ -662,7 +662,7 @@
       },
       {
         "tag": "MT3_007.BP_EXPShop_MT3_default_8_5",
-        "bp": "Data.Blueprints.Actors.BP_EXPShop_MT3",
+        "bp": "Data.Blueprints.NPCs.BP_EXPShop_MT3",
         "position": [
           8,
           5

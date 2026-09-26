@@ -1,0 +1,151 @@
+{
+  "parent": "Engine.Actor",
+  "attrs": {
+    "scriptMixin": false,
+    "scriptPath": "",
+    "tag": "",
+    "switchInterval": 0.2,
+    "animatable": false,
+    "visible": true,
+    "material": {
+      "lightBlock": 0,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1,
+      "speedRate": 1,
+      "ignoreLighting": false
+    },
+    "shaderPath": "",
+    "hue": 0,
+    "collisionEnabled": false,
+    "tickable": false,
+    "speed": 64,
+    "autoSound": "",
+    "autoSoundInterval": 0,
+    "autoSoundParams": {
+      "volume": 100,
+      "minDistance": 64,
+      "attenuation": 1,
+      "loop": false,
+      "maxDistance": 0
+    },
+    "texturePath": "",
+    "defaultRect": [
+      [
+        0,
+        0,
+        32,
+        32
+      ]
+    ],
+    "defaultTranslation": [
+      0,
+      0
+    ],
+    "defaultRotation": 0,
+    "defaultScale": [
+      1,
+      1
+    ],
+    "defaultOrigin": [
+      0,
+      0
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [],
+        "links": []
+      },
+      "onCreate": {
+        "nodes": [
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowTutorial",
+            "params": [
+              "TM_01"
+            ],
+            "pos": [
+              0,
+              0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowTutorial",
+            "params": [
+              "TM_02"
+            ],
+            "pos": [
+              720,
+              0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
+            "pos": [
+              1440,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": 0,
+            "right": 1,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 1,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          }
+        ]
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onWorldSleep": {
+        "nodes": [],
+        "links": []
+      },
+      "onWorldWake": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": null,
+      "onCreate": 0,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null,
+      "onWorldSleep": null,
+      "onWorldWake": null
+    }
+  },
+  "type": "blueprint"
+}

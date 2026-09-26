@@ -11,17 +11,16 @@
     },
     "collisionEnabled": true,
     "tickable": false,
-    "texturePath": "/Game/Assets/Characters/enemies/classic-enemies-01-slime-single.png",
+    "texturePath": "/Game/Assets/Characters/npcs/Npc401.png",
+    "tag": "",
     "defaultRect": [
       [
         0,
-        224,
+        32,
         32,
         32
       ]
-    ],
-    "shaderPath": "/Game/Assets/Shaders/Rainbow.frag",
-    "tag": ""
+    ]
   },
   "graph": {
     "nodeGraph": {
@@ -32,17 +31,15 @@
             "params": [],
             "pos": [
               -720.0,
-              564.0
+              634.0
             ]
           },
           {
-            "nodeFunction": "GlobalFunctions.Movement.SetAutoPathToDestination",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
-              null,
-              [
-                9,
-                9
-              ]
+              "{DN_MERCHANT}",
+              "{DC_NPC03_1}",
+              null
             ],
             "pos": [
               0.0,
@@ -50,23 +47,33 @@
             ]
           },
           {
-            "nodeFunction": "GlobalFunctions.Utils.Print",
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
             "params": [
-              "Start path!"
+              "{DN_PRINCESS}",
+              "{DC_NPC03_2}",
+              null
             ],
             "pos": [
               720.0,
-              189.0
+              314.0
             ]
           },
           {
-            "nodeFunction": "GlobalFunctions.Utils.Print",
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
+            "params": [],
+            "pos": [
+              0,
+              954
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowTutorial",
             "params": [
-              "End path"
+              "TM_04"
             ],
             "pos": [
-              720.0,
-              439.0
+              1440,
+              314
             ]
           }
         ],
@@ -75,7 +82,7 @@
             "left": 0,
             "right": 1,
             "leftOutPin": 0,
-            "rightInPin": 0,
+            "rightInPin": 2,
             "linkType": "Params"
           },
           {
@@ -86,9 +93,16 @@
             "linkType": "Exec"
           },
           {
-            "left": 1,
-            "right": 3,
-            "leftOutPin": 1,
+            "left": 3,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 2,
+            "right": 4,
+            "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"
           }

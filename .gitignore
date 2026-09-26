@@ -14,3 +14,4 @@ Main.ini
 *.DS_Store
 /bin/
 *.log
+/dist

@@ -16,6 +16,7 @@ local SceneMapBuilder = require("Source.SceneComponents.MapBuilder")
 local RegionTitleController = require("Source.Scenes.SceneMap.RegionTitle.Controller")
 local PlayerAttrHUD = require("Source.Windows.HUDPlayerAttr")
 local SceneMapWindows = require("Source.Scenes.SceneMap.Windows")
+local TutorialController = require("Source.SceneComponents.Tutorial")
 
 local Input = Engine.Input
 local Display = GlobalCore.Display
@@ -98,12 +99,14 @@ function Scene:onCreate()
     self._worldAmbientStartColour = nil
     self._worldAmbientTargetColour = nil
     self._worldAmbientTransitionElapsed = 0
+    self._tutorials = TutorialController.new(self)
     local startMap = self.inst:getCurrentMapPath() or GameSystem.GetStartMap()
     self:gotoMapAndPos(startMap, nil, true)
     LiveDebug.BindScene(self)
 end
 
 function Scene:onQuit()
+    self._tutorials:cancel()
     self:cancelBattle()
     ManagerFunctions.stopVoice()
     self._mapAudio:stopMapAudio()
@@ -113,6 +116,7 @@ function Scene:onQuit()
 end
 
 function Scene:onDestroy()
+    self._tutorials:dispose()
     self:cancelBattle()
     LiveDebug.UnbindScene(self)
     self._gameplayRequestsActive = false
@@ -134,6 +138,7 @@ function Scene:onDestroy()
 end
 
 function Scene:refreshLocale()
+    self._tutorials:refreshLocale()
     local messageWindow = self._messageWindow:peek()
     if self._dialogueLocaleSource ~= nil and messageWindow ~= nil and messageWindow:isInDialogue() then
         if self._dialogueLocaleSource.kind == "selection" then
@@ -195,6 +200,7 @@ function Scene:onInput()
 end
 
 function Scene:onTick(deltaTime)
+    self._tutorials:update()
     self._mapAudio:onTick(deltaTime)
     if self._dialogueLocaleSource ~= nil and not self:_isInDialogue() then
         self._dialogueLocaleSource = nil
@@ -262,6 +268,7 @@ function Scene:cancelBattle()
 end
 
 function Scene:loadMap(mapPath, initialPosition)
+    self._tutorials:cancel()
     self:cancelBattle()
     Logging.info("Loading map: %s", mapPath)
     local startTime = perfCounter()
@@ -409,10 +416,12 @@ function Scene:_drawCommonTipOverlay()
     if self._regionTitleUI:getVisible() then
         self._regionTitleUI:draw()
     end
+    self._tutorials:draw()
 end
 
 ---@param deltaTime number
 function Scene:_renderHandle(deltaTime)
+    self._tutorials:updateUI(deltaTime)
     self:getGameMap():show()
     super(Scene, self)._renderHandle(deltaTime)
     self:_processPendingTeleporterTransfer()
@@ -460,8 +469,9 @@ end
 
 ---@return boolean
 function Scene:_canOpenMenu()
-    return not self._pendingMenuOpen and self._pendingSaveLoadOpen == nil and not self._pendingQuickSave
-        and not self:_isMenuBlocking() and not self:_isInDialogue() and not self:_hasVisibleBlockingWindow()
+    return not self._tutorials:isBlocking() and not self._pendingMenuOpen and self._pendingSaveLoadOpen == nil
+        and not self._pendingQuickSave and not self:_isMenuBlocking() and not self:_isInDialogue()
+        and not self:_hasVisibleBlockingWindow()
 end
 
 ---@return boolean
@@ -473,8 +483,9 @@ end
 
 ---@return boolean
 function Scene:_isMapClickMoveBlocked()
-    return self:_isInDialogue() or self:_isMenuBlocking()
-        or self:_hasVisibleBlockingWindow() or self._mapInputBlockFrames > 0
+    return self._tutorials:isBlocking() or self:_isInDialogue()
+        or self:_isMenuBlocking() or self:_hasVisibleBlockingWindow()
+        or self._mapInputBlockFrames > 0
 end
 
 ---@return boolean

@@ -546,7 +546,7 @@
       },
       {
         "tag": "MT3_020.BP_Barrier_50_default_6_10",
-        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "position": [
           6,
           10
@@ -554,7 +554,7 @@
       },
       {
         "tag": "MT3_020.BP_Barrier_50_default_9_3",
-        "bp": "Data.Blueprints.Actors.BP_Barrier_50",
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "position": [
           9,
           3

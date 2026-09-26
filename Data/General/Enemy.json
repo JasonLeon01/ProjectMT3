@@ -1047,7 +1047,7 @@
       "breathLimit": 100,
       "drops": {},
       "special": {
-        "Ember": "Data.Blueprints.Actors.BP_Barrier_50"
+        "Ember": "Data.Blueprints.Barriers.BP_Barrier_50"
       },
       "ANIMATION_KEY": "17_zhua",
       "CritAnimationKey": "18_zhua2"
@@ -1064,7 +1064,7 @@
       "drops": {},
       "special": {
         "First": "",
-        "Glacial": "Data.Blueprints.Actors.BP_SWall_Ice"
+        "Glacial": "Data.Blueprints.Barriers.BP_SWall_Ice"
       },
       "ANIMATION_KEY": "12_daji",
       "CritAnimationKey": "13_daji2"
@@ -1164,7 +1164,7 @@
       "special": {
         "Magic": "",
         "Domain": 1,
-        "BurstFlame": "Data.Blueprints.Actors.BP_Barrier_50"
+        "BurstFlame": "Data.Blueprints.Barriers.BP_Barrier_50"
       },
       "ANIMATION_KEY": "50_huoyan",
       "CritAnimationKey": "51_huoyan2"
@@ -1282,7 +1282,7 @@
       "special": {
         "Magic": "",
         "Domain": 1,
-        "Snowland": "Data.Blueprints.Actors.BP_SWall_Ice"
+        "Snowland": "Data.Blueprints.Barriers.BP_SWall_Ice"
       },
       "ANIMATION_KEY": "47_bingshilaimu",
       "CritAnimationKey": "48_bingshilaimu2"

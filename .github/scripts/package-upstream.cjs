@@ -12,15 +12,6 @@ function isCompletedMainRun(run, repository) {
   return run.status === 'completed' && run.head_branch === 'main' && allowedEvents.has(run.event)
     && run.head_repository?.full_name === `${repository.owner}/${repository.repo}`;
 }
-async function* successfulRuns(github, repository, workflow, extra = {}) {
-  for await (const page of github.paginate.iterator(github.rest.actions.listWorkflowRuns, {
-    ...repository, workflow_id: workflow, branch: 'main', status: 'success', per_page: 100, ...extra,
-  })) {
-    for (const run of page.data) {
-      if (isCompletedMainRun(run, repository) && run.conclusion === 'success') yield run;
-    }
-  }
-}
 
 async function selectArtifact(github, head, platform = 'windows-x64') {
   const target = {
@@ -55,4 +46,4 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
   throw new Error(`No Ludork Export Editor ${platform} run on main has a successful platform job and a unique, unexpired editor artifact (checked main ${head}).`);
 }
 
-module.exports = { upstream, shaPattern, requireSha, successfulRuns, selectArtifact };
+module.exports = { upstream, requireSha, selectArtifact };

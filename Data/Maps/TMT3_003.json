@@ -628,7 +628,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_SWall",
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
         "tag": "Actors_BP_SWall_default_2_0",
         "position": [
           2,
@@ -1044,7 +1044,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Actors.BP_NPC_17",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_17",
         "tag": "Actors_BP_NPC_17_default_10_10",
         "position": [
           10,

@@ -34,6 +34,8 @@
 ---@field ActorUpdateBatch Engine.ActorUpdateBatch
 ---@field AutoSoundParams Engine.AutoSoundParams
 ---@field Character Engine.Character
+---@field BillboardComponent Engine.BillboardComponent
+---@field BillboardItem Engine.BillboardItem
 ---@field EmitterComponent Engine.EmitterComponent
 ---@field LightComponent Engine.LightComponent
 ---@field TileLayer Engine.TileLayer
@@ -52,6 +54,7 @@
 ---@field TileLayerGraphics Engine.TileLayerGraphics
 ---@field InjectedInputEvent Engine.InjectedInputEvent
 ---@field InputActionKey Engine.InputActionKey
+---@field InputCapture Engine.InputCapture
 ---@field InputNamedValue Engine.InputNamedValue
 ---@field Service Engine.Service
 ---@field Input table
@@ -158,10 +161,10 @@
 ---@field FocusDirection table<string, string>
 ---@field TextConfig table
 ---@field TextLayout table
----@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field DefaultFontSize integer
 ---@field DefaultFont sf.Font|nil
 ---@field DefaultWindowskinName string|nil
+---@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field _default_bus Engine.EventBus
 ---@field eventBus fun(): Engine.EventBus
 ---@field subscribe fun(event: string, handler: fun(arg1: any): nil, priority?: integer): integer
@@ -204,10 +207,10 @@
 ---@field ManhattanDistance fun(left: sf.Vector2i, right: sf.Vector2i): integer
 ---@field CanvasRenderStates fun(): sf.RenderStates
 ---@field BuildPixelGridVertices fun(origin: sf.Vector2f, size: sf.Vector2u): sf.VertexArray
+---@field getJSONData fun(filePath: string): Engine.RuntimeDataValue
 ---@field getJSONText fun(filePath: string): string
 ---@field jsonExists fun(filePath: string): boolean
----@field getJSONData fun(filePath: string): any
----@field writeJSON fun(filePath: string, value: any): nil
+---@field writeJSON fun(filePath: string, value: Engine.RuntimeDataValue): nil
 ---@field latentManager Engine.LatentManager|nil
 ---@field getClassModulePath fun(classReference: any): any
 ---@field getClassTypeMetadata fun(classReference: any): any, any
@@ -522,6 +525,10 @@ function Engine.CanvasRenderStates() end
 function Engine.BuildPixelGridVertices(origin, size) end
 
 ---@param filePath string
+---@return Engine.RuntimeDataValue
+function Engine.getJSONData(filePath) end
+
+---@param filePath string
 ---@return string
 function Engine.getJSONText(filePath) end
 
@@ -530,11 +537,7 @@ function Engine.getJSONText(filePath) end
 function Engine.jsonExists(filePath) end
 
 ---@param filePath string
----@return any
-function Engine.getJSONData(filePath) end
-
----@param filePath string
----@param value any
+---@param value Engine.RuntimeDataValue
 ---@return nil
 function Engine.writeJSON(filePath, value) end
 
@@ -970,6 +973,7 @@ Engine.SoundFilter = SoundFilter
 ---@field defaultOrigin sf.Vector2f
 ---@field lightComp Engine.LightComponent|nil
 ---@field emitterComp Engine.EmitterComponent|nil
+---@field billboardComp Engine.BillboardComponent|nil
 ---@field lightColour sf.Color
 ---@field lightRadius number
 local Actor = {}
@@ -1204,6 +1208,10 @@ function Actor:syncMapCache() end
 ---@param beforeActor boolean
 ---@return nil
 function Actor:drawEmitter(target, states, beforeActor) end
+---@param target sf.RenderTarget
+---@param states sf.RenderStates
+---@return nil
+function Actor:drawBillboard(target, states) end
 ---@return nil
 function Actor:normaliseAutoSoundParams() end
 ---@return nil
@@ -1387,6 +1395,40 @@ function Character:update(deltaTime) end
 ---@return any
 function Character.GenActor(actorModel, texture, textureRect, tag) end
 Engine.Character = Character
+
+---@class Engine.BillboardComponent : Engine.Component
+---@field items Engine.BillboardItem[]
+---@field showRange number
+local BillboardComponent = {}
+---@param values table
+---@return Engine.BillboardComponent
+function BillboardComponent.new(values) end
+---@return Engine.BillboardComponent
+function BillboardComponent.new() end
+---@param self Engine.BillboardComponent
+---@param values table
+function BillboardComponent.init(self, values) end
+---@param self Engine.BillboardComponent
+function BillboardComponent.init(self) end
+---@param owner any
+---@return any[]
+function BillboardComponent:onAttach(owner) end
+Engine.BillboardComponent = BillboardComponent
+
+---@class Engine.BillboardItem
+---@field kind string
+---@field text string
+---@field fontSize integer
+---@field color sf.Color
+---@field image string
+local BillboardItem = {}
+---@param values table
+---@return Engine.BillboardItem
+function BillboardItem.new(values) end
+---@param self Engine.BillboardItem
+---@param values table
+function BillboardItem.init(self, values) end
+Engine.BillboardItem = BillboardItem
 
 ---@class Engine.EmitterComponent : Engine.Component
 ---@field resource string
@@ -2069,6 +2111,17 @@ function InputActionKey.new(values) end
 function InputActionKey.init(self, values) end
 Engine.InputActionKey = InputActionKey
 
+---@class Engine.InputCapture
+local InputCapture = {}
+---@param enabled boolean
+---@return nil
+function InputCapture:setConfirmEnabled(enabled) end
+---@return boolean
+function InputCapture:consumeConfirm() end
+---@return nil
+function InputCapture:release() end
+Engine.InputCapture = InputCapture
+
 ---@class Engine.InputNamedValue
 ---@field name string
 ---@field value integer
@@ -2083,6 +2136,10 @@ Engine.InputNamedValue = InputNamedValue
 
 ---@class Engine.Service
 local Service = {}
+---@return boolean
+function Service:isInputCaptured() end
+---@return Engine.InputCapture|nil
+function Service:captureInput() end
 ---@param window sf.RenderWindow
 ---@return nil
 function Service:update(window) end
@@ -4914,6 +4971,9 @@ function LatentManager.init(self) end
 function LatentManager:add(graph, key, condition, localRef, index, cache) end
 ---@return nil
 function LatentManager:update() end
+---@param condition function
+---@return nil
+function LatentManager:cancel(condition) end
 Engine.LatentManager = LatentManager
 
 ---@class Engine.Node : Engine.RuntimeObject
@@ -4976,6 +5036,10 @@ function RuntimeValue:typeName() end
 Engine.RuntimeValue = RuntimeValue
 
 Engine.Input = Engine.Input or {}
+---@return boolean
+function Engine.Input.isInputCaptured() end
+---@return Engine.InputCapture|nil
+function Engine.Input.captureInput() end
 ---@param window sf.RenderWindow
 ---@return nil
 function Engine.Input.update(window) end

@@ -672,6 +672,13 @@ local GameMapBase = {}
 function GameMapBase.new() end
 ---@param self GlobalCore.GameMapBase
 function GameMapBase.init(self) end
+---@return nil
+function GameMapBase:releaseBillboards() end
+---@param deltaTime number
+---@param camera GlobalCore.Camera
+---@param layerVisible fun(arg1: Engine.Actor, arg2: string): boolean
+---@return nil
+function GameMapBase:_updateBillboards(deltaTime, camera, layerVisible) end
 --- @brief Build a grayscale texture from a material map
 ---
 --- - @param size Output texture size

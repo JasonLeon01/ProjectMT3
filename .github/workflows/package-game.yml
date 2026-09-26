@@ -18,133 +18,82 @@ concurrency:
 
 jobs:
   check:
-    name: Check package inputs
+    name: Select package inputs
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
-      project_sha: ${{ steps.project.outputs.project_sha }}
-      previous_state_key: ${{ steps.project.outputs.previous_state_key }}
+      project_sha: ${{ steps.inputs.outputs.project_sha }}
+      ludork_checked_sha: ${{ steps.inputs.outputs.ludork_checked_sha }}
+      windows_sha: ${{ steps.inputs.outputs.windows_sha }}
+      windows_run_id: ${{ steps.inputs.outputs.windows_run_id }}
+      windows_artifact_id: ${{ steps.inputs.outputs.windows_artifact_id }}
+      macos_sha: ${{ steps.inputs.outputs.macos_sha }}
+      macos_run_id: ${{ steps.inputs.outputs.macos_run_id }}
+      macos_artifact_id: ${{ steps.inputs.outputs.macos_artifact_id }}
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
           persist-credentials: false
-
-      - name: Find last successful package
-        id: project
+      - name: Freeze project and upstream editor artifacts
+        id: inputs
         uses: actions/github-script@v8
         with:
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           script: |
-            const ci = require('./.github/scripts/package-windows.cjs');
-            await ci.checkProject({ github, context, core });
+            if (context.ref !== 'refs/heads/main') throw new Error('Run this workflow on main.');
+            const { upstream, requireSha, selectArtifact } = require('./.github/scripts/package-upstream.cjs');
+            core.setOutput('project_sha', requireSha(context.sha));
+            const { data } = await github.rest.repos.getBranch({ ...upstream, branch: 'main' });
+            const head = requireSha(data.commit.sha);
+            core.setOutput('ludork_checked_sha', head);
+            for (const [name, platform] of [['windows', 'windows-x64'], ['macos', 'macos-arm64']]) {
+              const selected = await selectArtifact(github, head, platform);
+              for (const suffix of ['sha', 'run_id', 'artifact_id']) {
+                core.setOutput(`${name}_${suffix}`, selected[`ludork_${suffix}`]);
+              }
+              core.info(`${platform}: Ludork ${selected.ludork_sha}, artifact ${selected.ludork_artifact_id}`);
+            }
 
   package:
-    # Used by the history lookup; keep this name stable.
     name: Package Windows
     needs: check
-    outputs:
-      tools_key: ${{ steps.ludork.outputs.tools_key }}
-      build_key: ${{ steps.build.outputs.save_key }}
-      state_key: ${{ steps.build.outputs.state_key }}
     runs-on: windows-2022
     timeout-minutes: 180
     env:
       CMAKE_GENERATOR: Ninja
       PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.windows_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.windows_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.windows_artifact_id }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ needs.check.outputs.project_sha }}
           persist-credentials: false
-
-      - name: Restore last successful state
-        if: needs.check.outputs.previous_state_key != ''
-        uses: actions/cache/restore@v5
+      - uses: actions/setup-python@v6
         with:
-          path: ${{ runner.temp }}/projectmt3-state/
-          key: ${{ needs.check.outputs.previous_state_key }}
-
-      - name: Read cached tool identity
-        id: state
-        uses: actions/github-script@v8
-        with:
-          script: |
-            require('./.github/scripts/package-windows.cjs').restoreState({ core });
-
-      - name: Restore Ludork tools
-        id: tools_cache
-        if: steps.state.outputs.tools_key != ''
-        uses: actions/cache/restore@v5
-        with:
-          path: ${{ runner.temp }}/ludork/
-          key: ${{ steps.state.outputs.tools_key }}
-
-      - name: Compare cached Ludork with main HEAD
-        id: ludork
-        uses: actions/github-script@v8
-        env:
-          TOOLS_CACHE_HIT: ${{ steps.tools_cache.outputs.cache-hit }}
-        with:
-          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
-          script: |
-            const ci = require('./.github/scripts/package-windows.cjs');
-            await ci.selectLudork({ github, core });
-
-      - name: Download selected Ludork Windows package
-        if: steps.ludork.outputs.download == 'true'
+          python-version: '3.12'
+      - name: Download Ludork Windows tools
         uses: actions/download-artifact@v8
         with:
           repository: JasonLeon01/Ludork
-          run-id: ${{ steps.ludork.outputs.ludork_run_id }}
-          artifact-ids: ${{ steps.ludork.outputs.ludork_artifact_id }}
+          run-id: ${{ needs.check.outputs.windows_run_id }}
+          artifact-ids: ${{ needs.check.outputs.windows_artifact_id }}
           github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           path: ${{ runner.temp }}/ludork
           merge-multiple: true
-
       - name: Set up MSVC x64
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
-
-      - name: Check Engine and compiler cache compatibility
-        id: build
-        uses: actions/github-script@v8
-        with:
-          script: |
-            require('./.github/scripts/package-windows.cjs').selectBuild({ core, context });
-
-      - name: Restore compatible build
-        id: build_cache
-        if: steps.build.outputs.restore_key != ''
-        uses: actions/cache/restore@v5
-        with:
-          path: |
-            build/
-            bin/
-            Intermediate/
-            ${{ runner.temp }}/projectmt3-build-state/
-          key: ${{ steps.build.outputs.restore_key }}
-
-      - name: Validate build cache and restore timestamps
-        uses: actions/github-script@v8
-        env:
-          BUILD_CACHE_HIT: ${{ steps.build_cache.outputs.cache-hit }}
-        with:
-          script: |
-            await require('./.github/scripts/package-windows.cjs').prepareBuild({ core });
-
-      - name: Build and validate Windows package
+      - name: Clean build and validate Windows package
         shell: pwsh
-        env:
-          LUDORK_SHA: ${{ steps.ludork.outputs.ludork_sha }}
-          LUDORK_RUN_ID: ${{ steps.ludork.outputs.ludork_run_id }}
-          LUDORK_ARTIFACT_ID: ${{ steps.ludork.outputs.ludork_artifact_id }}
         run: |
           & ./.github/scripts/package-windows.ps1 `
             -ProjectDirectory $env:GITHUB_WORKSPACE `
             -LudorkDirectory (Join-Path $env:RUNNER_TEMP 'ludork') `
             -OutputDirectory (Join-Path $env:RUNNER_TEMP 'projectmt3-package')
-
       - name: Upload Windows package
         uses: actions/upload-artifact@v7
         with:
@@ -155,42 +104,6 @@ jobs:
           retention-days: 7
           overwrite: true
 
-      # Separate saves: failed builds/uploads must never advance the baseline.
-      - name: Save Ludork tools
-        if: steps.ludork.outputs.download == 'true'
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ runner.temp }}/ludork/
-          key: ${{ steps.ludork.outputs.tools_key }}
-
-      - name: Snapshot build inputs and outputs
-        uses: actions/github-script@v8
-        with:
-          script: |
-            require('./.github/scripts/package-windows.cjs').snapshotBuild({ core });
-
-      - name: Save successful build
-        uses: actions/cache/save@v5
-        with:
-          path: |
-            build/
-            bin/
-            Intermediate/
-            ${{ runner.temp }}/projectmt3-build-state/
-          key: ${{ steps.build.outputs.save_key }}
-
-      - name: Publish successful state
-        uses: actions/github-script@v8
-        with:
-          script: |
-            require('./.github/scripts/package-windows.cjs').publishState();
-
-      - name: Save successful state
-        uses: actions/cache/save@v5
-        with:
-          path: ${{ runner.temp }}/projectmt3-state/
-          key: ${{ steps.build.outputs.state_key }}
-
   android:
     name: Package AOS ARM64
     needs: check
@@ -198,32 +111,26 @@ jobs:
     timeout-minutes: 180
     env:
       PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
     steps:
       - uses: actions/checkout@v7
         with:
           ref: ${{ needs.check.outputs.project_sha }}
           persist-credentials: false
 
-      - name: Select Ludork macOS toolchain
-        id: ludork
-        uses: actions/github-script@v8
+      - uses: actions/setup-python@v6
         with:
-          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
-          script: |
-            const { upstream, requireSha, selectArtifact } = require('./.github/scripts/package-upstream.cjs');
-            const { data } = await github.rest.repos.getBranch({ ...upstream, branch: 'main' });
-            const head = requireSha(data.commit.sha);
-            const selected = await selectArtifact(github, head, 'macos-arm64');
-            for (const [key, value] of Object.entries(selected)) core.setOutput(key, value);
-            core.setOutput('ludork_checked_sha', head);
-            core.info(`Using Ludork macOS DMG ${selected.ludork_sha}; checked main ${head}`);
+          python-version: '3.12'
 
       - name: Download Ludork macOS DMG
         uses: actions/download-artifact@v8
         with:
           repository: JasonLeon01/Ludork
-          run-id: ${{ steps.ludork.outputs.ludork_run_id }}
-          artifact-ids: ${{ steps.ludork.outputs.ludork_artifact_id }}
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
           github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           path: ${{ runner.temp }}/ludork-android-artifact
           merge-multiple: true
@@ -294,10 +201,6 @@ jobs:
       - name: Build and validate signed AOS APK
         shell: bash
         env:
-          LUDORK_SHA: ${{ steps.ludork.outputs.ludork_sha }}
-          LUDORK_CHECKED_SHA: ${{ steps.ludork.outputs.ludork_checked_sha }}
-          LUDORK_RUN_ID: ${{ steps.ludork.outputs.ludork_run_id }}
-          LUDORK_ARTIFACT_ID: ${{ steps.ludork.outputs.ludork_artifact_id }}
           AOS_ALIAS: ${{ secrets.AOS_ALIAS }}
           AOS_KEY_PASSWORD: ${{ secrets.AOS_KEY_PASSWORD }}
           AOS_KEY_STORE_PASSWORD: ${{ secrets.AOS_KEY_STORE_PASSWORD }}
@@ -311,7 +214,7 @@ jobs:
       - name: Remove Android signing material
         if: always()
         shell: bash
-        run: rm -f -- "$RUNNER_TEMP/projectmt3-aos.jks"
+        run: bash .github/scripts/package-macos-common.sh cleanup android
 
       - name: Upload signed AOS APK
         uses: actions/upload-artifact@v7
@@ -325,30 +228,135 @@ jobs:
           retention-days: 7
           overwrite: true
 
-  cleanup:
-    name: Clean superseded package caches
-    needs: [package, android]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      actions: write
+  macos:
+    name: Package macOS ARM64
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
     steps:
       - uses: actions/checkout@v7
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.check.outputs.project_sha }}
           persist-credentials: false
-
-      - name: Keep the current successful cache set
-        uses: actions/github-script@v8
-        env:
-          CURRENT_TOOLS_KEY: ${{ needs.package.outputs.tools_key }}
-          CURRENT_BUILD_KEY: ${{ needs.package.outputs.build_key }}
-          CURRENT_STATE_KEY: ${{ needs.package.outputs.state_key }}
+      - uses: actions/setup-python@v6
         with:
-          script: |
-            await require('./.github/scripts/package-windows.cjs').cleanupCaches({ github, context, core }, {
-              tools: process.env.CURRENT_TOOLS_KEY,
-              build: process.env.CURRENT_BUILD_KEY,
-              state: process.env.CURRENT_STATE_KEY,
-            });
+          python-version: '3.12'
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-macos-artifact
+          merge-multiple: true
+      - name: Build, sign and notarize macOS app
+        shell: bash
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          MACOS_SIGNING_CERTIFICATE: ${{ secrets.MACOS_SIGNING_CERTIFICATE }}
+          MACOS_SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_SIGNING_CERTIFICATE_PASSWORD }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          bash .github/scripts/package-macos.sh \
+            "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-macos-artifact" "$RUNNER_TEMP/projectmt3-macos-package"
+      - name: Remove macOS signing material
+        if: always()
+        shell: bash
+        run: bash .github/scripts/package-macos-common.sh cleanup macos
+      - name: Upload notarized macOS app
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-macos-arm64-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-macos-package/*-macos-arm64.zip
+            ${{ runner.temp }}/projectmt3-macos-package/build-info.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+          overwrite: true
+
+  ios:
+    name: Publish iOS TestFlight
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 240
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
+      FASTLANE_SKIP_UPDATE_CHECK: 'true'
+      FASTLANE_HIDE_CHANGELOG: 'true'
+      FASTLANE_OPT_OUT_USAGE: 'true'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Select Xcode 26 for App Store Connect
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/select-xcode.py
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: false
+      - name: Install pinned fastlane without restoring gems
+        shell: bash
+        run: gem install fastlane --version 2.240.1 --no-document
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-ios-artifact
+          merge-multiple: true
+      - name: Build, sign and publish internal TestFlight
+        shell: bash
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          IOS_SIGNING_CERTIFICATE: ${{ secrets.IOS_SIGNING_CERTIFICATE }}
+          IOS_SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.IOS_SIGNING_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          IOS_TESTFLIGHT_GROUP: ${{ vars.IOS_TESTFLIGHT_GROUP }}
+          IOS_USES_NON_EXEMPT_ENCRYPTION: ${{ vars.IOS_USES_NON_EXEMPT_ENCRYPTION }}
+          IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE: ${{ vars.IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE }}
+        run: |
+          bash .github/scripts/package-ios.sh \
+            "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-ios-artifact" "$RUNNER_TEMP/projectmt3-ios-package"
+      - name: Remove iOS signing material and temporary IPA
+        if: always()
+        shell: bash
+        run: bash .github/scripts/package-macos-common.sh cleanup ios
+      - name: Upload TestFlight status only
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-ios-testflight-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-ios-package/testflight.txt
+            ${{ runner.temp }}/projectmt3-ios-package/build-info.json
+          if-no-files-found: warn
+          retention-days: 7
+          overwrite: true
