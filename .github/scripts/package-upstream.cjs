@@ -46,4 +46,38 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
   throw new Error(`No Ludork Export Editor ${platform} run on main has a successful platform job and a unique, unexpired editor artifact (checked main ${head}).`);
 }
 
-module.exports = { upstream, requireSha, selectArtifact };
+async function selectPackageInputs(github, context, platform = 'all', frozen = '') {
+  if (context.ref !== 'refs/heads/main') throw new Error('Run this workflow on main.');
+  const platforms = {
+    all: [['windows', 'windows-x64'], ['macos', 'macos-arm64']],
+    'windows-x64': [['windows', 'windows-x64']],
+    'macos-arm64': [['macos', 'macos-arm64']],
+  }[platform];
+  if (!platforms) throw new Error(`Unsupported package input platform: ${platform}`);
+  const inputs = { project_sha: requireSha(context.sha) };
+  const supplied = frozen ? JSON.parse(frozen) : null;
+  if (frozen) {
+    if (!supplied || supplied.project_sha !== inputs.project_sha) {
+      throw new Error('Frozen package inputs must match this workflow commit.');
+    }
+    inputs.ludork_checked_sha = requireSha(supplied.ludork_checked_sha);
+  } else {
+    const { data } = await github.rest.repos.getBranch({ ...upstream, branch: 'main' });
+    inputs.ludork_checked_sha = requireSha(data.commit.sha);
+  }
+  for (const [name, target] of platforms) {
+    const selected = supplied || await selectArtifact(github, inputs.ludork_checked_sha, target);
+    const prefix = supplied ? name : 'ludork';
+    inputs[`${name}_sha`] = requireSha(selected[`${prefix}_sha`]);
+    for (const suffix of ['run_id', 'artifact_id']) {
+      const value = selected[`${prefix}_${suffix}`];
+      if (typeof value !== 'string' || !/^[1-9][0-9]*$/.test(value)) {
+        throw new Error(`Invalid ${name} ${suffix}: ${value}`);
+      }
+      inputs[`${name}_${suffix}`] = value;
+    }
+  }
+  return inputs;
+}
+
+module.exports = { upstream, requireSha, selectArtifact, selectPackageInputs };

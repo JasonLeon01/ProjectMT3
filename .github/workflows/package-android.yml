@@ -1,0 +1,155 @@
+name: Package AOS ARM64
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      package_inputs:
+        description: Frozen inputs from Package Game; empty selects this platform's tools.
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+# Shared by direct runs and calls from Package Game; distinct from the parent's lock.
+concurrency:
+  group: package-android
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  check:
+    name: Select package inputs
+    uses: ./.github/workflows/package-inputs.yml
+    with:
+      platform: macos-arm64
+      package_inputs: ${{ inputs.package_inputs }}
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  package:
+    name: Package AOS ARM64
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-android-artifact
+          merge-multiple: true
+
+      - name: Restore Android Studio
+        id: android_studio_cache
+        uses: actions/cache/restore@v5
+        with:
+          path: /Applications/Android Studio.app
+          key: android-studio-macos-15-arm64-v1
+
+      - name: Prepare Android Studio
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$(uname -s)" == Darwin && "$(uname -m)" == arm64 ]]
+          studio='/Applications/Android Studio.app'
+          java_home="$studio/Contents/jbr/Contents/Home"
+          if [[ ! -x "$java_home/bin/java" || ! -x "$java_home/bin/keytool" ]]; then
+            rm -rf -- "$studio"
+            for attempt in 1 2 3; do
+              echo "Installing Android Studio (attempt $attempt/3)"
+              if HOMEBREW_CURL_RETRIES=3 brew install --cask android-studio && \
+                  [[ -x "$java_home/bin/java" && -x "$java_home/bin/keytool" ]]; then
+                break
+              fi
+              if (( attempt == 3 )); then
+                echo 'Android Studio installation failed after 3 attempts.' >&2
+                exit 1
+              fi
+              brew uninstall --cask --force android-studio || true
+              rm -rf -- "$studio"
+              sleep $((attempt * 20))
+            done
+          fi
+          export JAVA_HOME="$java_home"
+          test -x "$JAVA_HOME/bin/java"
+          test -x "$JAVA_HOME/bin/keytool"
+          echo "JAVA_HOME=$JAVA_HOME" >> "$GITHUB_ENV"
+
+      - name: Cache Android Studio after first installation
+        if: steps.android_studio_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: /Applications/Android Studio.app
+          key: android-studio-macos-15-arm64-v1
+
+      - name: Prepare Android build tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          export ANDROID_HOME="${ANDROID_HOME:-$HOME/Library/Android/sdk}"
+          export ANDROID_SDK_ROOT="$ANDROID_HOME"
+          sdkmanager="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          test -x "$sdkmanager"
+          # sdkmanager's status matters; yes may exit on a closed pipe.
+          (set +o pipefail; yes | "$sdkmanager" --licenses >/dev/null)
+          "$sdkmanager" --install 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.3.13750724'
+          if ! /usr/bin/arch -x86_64 /usr/bin/true 2>/dev/null; then
+            sudo /usr/sbin/softwareupdate --install-rosetta --agree-to-license
+          fi
+          cmake --version
+          {
+            echo "ANDROID_HOME=$ANDROID_HOME"
+            echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          } >> "$GITHUB_ENV"
+
+      - name: Build and validate signed AOS APK
+        shell: bash
+        env:
+          AOS_ALIAS: ${{ secrets.AOS_ALIAS }}
+          AOS_KEY_PASSWORD: ${{ secrets.AOS_KEY_PASSWORD }}
+          AOS_KEY_STORE_PASSWORD: ${{ secrets.AOS_KEY_STORE_PASSWORD }}
+          AOS_SIGNING_KEY: ${{ secrets.AOS_SIGNING_KEY }}
+        run: |
+          bash .github/scripts/package-android.sh \
+            "$GITHUB_WORKSPACE" \
+            "$RUNNER_TEMP/ludork-android-artifact" \
+            "$RUNNER_TEMP/projectmt3-android-package"
+
+      - name: Remove Android signing material
+        if: always()
+        shell: bash
+        run: bash .github/scripts/package-macos-common.sh cleanup android
+
+      - name: Upload signed AOS APK
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-aos-arm64-v8a-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-android-package/*-android-arm64-v8a-signed.apk
+            ${{ runner.temp }}/projectmt3-android-package/build-info.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+          overwrite: true

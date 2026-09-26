@@ -8,6 +8,8 @@ import os
 from pathlib import Path
 import plistlib
 import re
+import secrets
+import shlex
 import subprocess
 
 
@@ -87,6 +89,41 @@ def ios_context(project, work):
     }) + "\n")
 
 
+def prepare_keychain(work):
+    keychain = work / "ci.keychain-db"
+    marker = work / "keychain-search-list.json"
+    require(not marker.exists(), "A signing keychain search list is already saved")
+    previous = shlex.split(run(["security", "list-keychains", "-d", "user"]).decode())
+    # Save before creating the keychain so cleanup can restore even a partial setup.
+    marker.write_text(json.dumps(previous) + "\n")
+    password = secrets.token_hex(24)
+    run(["security", "create-keychain", "-p", password, str(keychain)])
+    run(["security", "set-keychain-settings", "-lut", "21600", str(keychain)])
+    run(["security", "unlock-keychain", "-p", password, str(keychain)])
+    run(["security", "list-keychains", "-d", "user", "-s", str(keychain), *previous])
+    run(["security", "import", str(work / "signing.p12"), "-P", os.environ["IOS_SIGNING_CERTIFICATE_PASSWORD"],
+         "-k", str(keychain), "-T", "/usr/bin/codesign", "-T", "/usr/bin/security"])
+    run(["security", "set-key-partition-list", "-S", "apple-tool:,apple:,codesign:",
+         "-s", "-k", password, str(keychain)])
+    identity = json.loads((work / "ios-context.json").read_text())["identity"]
+    valid = run(["security", "find-identity", "-v", "-p", "codesigning", str(keychain)]).decode()
+    if not re.search(rf"^\s*\d+\)\s+{re.escape(identity)}\b", valid, re.MULTILINE):
+        matching = run(["security", "find-identity", "-p", "codesigning", str(keychain)]).decode()
+        raise ValueError(f"Expected iOS signing identity is not valid in the temporary keychain:\n{matching}")
+    print("Temporary iOS signing keychain is enabled and its signing identity is valid.")
+
+
+def restore_keychains(work):
+    marker = work / "keychain-search-list.json"
+    if not marker.exists():
+        return
+    previous = json.loads(marker.read_text())
+    require(isinstance(previous, list) and all(isinstance(path, str) for path in previous),
+            "Invalid saved keychain search list")
+    run(["security", "list-keychains", "-d", "user", "-s", *previous])
+    marker.unlink()
+
+
 def prepare_app(project, work, app):
     context = json.loads((work / "ios-context.json").read_text())
     info_path = app / "Info.plist"
@@ -144,11 +181,17 @@ def main():
         item.add_argument("work", type=Path)
         if name == "prepare-app":
             item.add_argument("app", type=Path)
+    for name in ("prepare-keychain", "restore-keychains"):
+        sub.add_parser(name).add_argument("work", type=Path)
     args = parser.parse_args()
     if args.command == "identity":
         print(certificate(args.path, args.platform)[0])
     elif args.command == "ios-context":
         ios_context(args.project, args.work)
+    elif args.command == "prepare-keychain":
+        prepare_keychain(args.work)
+    elif args.command == "restore-keychains":
+        restore_keychains(args.work)
     else:
         prepare_app(args.project, args.work, args.app)
 

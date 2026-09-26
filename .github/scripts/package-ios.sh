@@ -50,15 +50,10 @@ app=${apps[0]}
 python3 "$ci" validate "$app"
 python3 "$apple" prepare-app "$project" "$work" "$app"
 
-# Ludork removes its signing keychain when the packer exits; import into a new,
-# explicitly addressed temporary keychain for the modified distribution bundle.
+# Ludork removes its signing keychain when the packer exits. Enable a new one
+# in the search list and verify the identity before signing the modified app.
 keychain="$work/ci.keychain-db"
-keychain_password=$(openssl rand -hex 24)
-security create-keychain -p "$keychain_password" "$keychain"
-security set-keychain-settings -lut 21600 "$keychain"
-security unlock-keychain -p "$keychain_password" "$keychain"
-security import "$work/signing.p12" -P "$IOS_SIGNING_CERTIFICATE_PASSWORD" -k "$keychain" -T /usr/bin/codesign
-security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$keychain_password" "$keychain" >/dev/null
+python3 "$apple" prepare-keychain "$work"
 codesign --force --sign "$identity" --keychain "$keychain" --generate-entitlement-der \
     --entitlements "$work/entitlements.plist" "$app"
 codesign --verify --deep --strict --verbose=2 "$app"

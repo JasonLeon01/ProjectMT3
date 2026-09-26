@@ -1,6 +1,20 @@
 # 四平台加密打包与干净构建
 
-`package-game.yml` 在推送到 `main` 时运行；仅修改 `.github/**` 时不自动触发。修改 CI 后首次验证请在 **Actions → Package Game → Run workflow** 选择 `main`。工作流先固定项目提交与上游工具身份，再并行运行 Windows、Android、macOS、iOS 四个独立 job；一个平台构建失败不会取消其他平台。
+`package-game.yml` 在推送到 `main` 时运行；仅修改 `.github/**` 时不自动触发。它先固定项目提交与上游工具身份，再并行调用 Windows、Android、macOS、iOS 四个可复用工作流；一个平台构建失败不会取消其他平台。
+
+各平台也有独立的手动入口，在 **Actions → 对应工作流 → Run workflow** 选择 `main`：
+
+| 工作流 | 文件 | 运行范围 |
+| --- | --- | --- |
+| Package Game | `package-game.yml` | 四个平台 |
+| Package Windows | `package-windows.yml` | Windows x64 |
+| Package AOS ARM64 | `package-android.yml` | Android ARM64 |
+| Package macOS ARM64 | `package-macos.yml` | macOS ARM64 签名、公证 |
+| Publish iOS TestFlight | `package-ios.yml` | iOS 构建、签名及内部 TestFlight 发布 |
+
+只验证 iOS 时运行 **Publish iOS TestFlight**，不会启动其他平台。新工作流文件需要先提交到默认分支，GitHub 才会显示手动入口。修改 CI 后请启动新运行；重试旧运行仍使用旧提交。
+
+`package-inputs.yml` 共用项目与上游产物选择逻辑。总入口将已固定的输入传给子工作流，不重新选择上游；独立运行只选择对应工具平台，Windows 使用 x64 工具，其他三个平台使用 macOS ARM64 工具。
 
 所有平台均使用 Release 编译和 `--dev --encrypt-data --compile-lua --use-ldpak`：
 
@@ -26,7 +40,7 @@
 | Package macOS ARM64 | `macos-15` ARM64 | `ProjectMT3-macos-arm64-<提交>`：已签名公证 `.app` 的 ZIP、构建记录 |
 | Publish iOS TestFlight | `macos-15` ARM64，已安装的最新稳定 Xcode 26 / iPhoneOS 26 SDK | `ProjectMT3-ios-testflight-<提交>`：`testflight.txt`、构建记录，绝不上传 IPA |
 
-`build-info.json` 记录项目/Engine 提交、Ludork 提交/运行/产物 ID、构建选项、平台和干净构建状态；APK/ZIP 还记录 SHA-256。CI 全局串行排队，单次运行内四平台并行，避免本工作流的 iOS 构建号分配竞争。
+`build-info.json` 记录项目/Engine 提交、Ludork 提交/运行/产物 ID、构建选项、平台和干净构建状态；APK/ZIP 还记录 SHA-256。Package Game 的完整运行串行排队，单次运行内四平台并行。每个平台另有固定的并发组，独立运行与总入口调用共用该组并排队执行；iOS 的输入选择、构建号分配、上传和处理等待均在同一并发组内，避免两个入口同时分配构建号。父、子工作流使用不同的并发组，避免互相等待。
 
 ## GitHub Secrets
 
@@ -85,8 +99,8 @@ base64 -i /path/to/profile.mobileprovision | pbcopy
 
 项目启用了资源加密，CI 不擅自判断其申报类别。首次在 App Store Connect 完成适用的加密信息/材料配置，再把结果填入变量。`true` 且没有已批准代码时会拒绝构建，避免每次上传后等待手动补资料。参考：[Apple 加密配置](https://developer.apple.com/help/app-store-connect/manage-app-information/overview-of-export-compliance/)。
 
-6. 手动运行 Package Game。iOS 先核对证书、描述文件、应用记录和内部组，通过 App Store Connect 查询所有已有 iOS 构建号，以三段数字格式递增分配，包含失败、已过期构建及仍在转为 Build 的上传记录，避免同小时运行或旧工作流重跑冲突。请勿同时通过其他流水线向此应用上传，否则可能出现构建号竞争。
-7. CI 使用 Ludork 打包器编译，在临时包中生成不带透明通道的 1024px AppIcon 和 Xcode 资产目录，补齐构建号、图标和加密申报后重新签名。原游戏图标及仓库资源不变。
+6. 手动运行 Publish iOS TestFlight（或通过 Package Game 一起运行四个平台）。iOS 先核对证书、描述文件、应用记录和内部组，通过 App Store Connect 查询所有已有 iOS 构建号，以三段数字格式递增分配，包含失败、已过期构建及仍在转为 Build 的上传记录，避免同小时运行或旧工作流重跑冲突。请勿同时通过其他流水线向此应用上传，否则可能出现构建号竞争。
+7. CI 使用 Ludork 打包器编译，在临时包中生成不带透明通道的 1024px AppIcon 和 Xcode 资产目录，补齐构建号、图标和加密申报后重新签名。重签名前将新的临时钥匙串加入搜索列表、确认签名身份有效，退出时恢复原搜索列表并删除临时钥匙串。原游戏图标及仓库资源不变。
 8. 使用固定 `fastlane 2.240.1` 和 API 密钥上传，最多等待 45 分钟确认 Apple 处理成功并加入指定内部组。失败、缺少合规信息、处理超时都会使 job 失败；`testflight.txt` 明确记录状态，只有 `ready` 表示验收通过。故障重跑会生成更高的新构建号。
 
 内部测试最多 100 名有应用访问权限的 App Store Connect 用户；通过 Apple 的个人邀请使用 TestFlight，**没有公开邀请码**。`testflight.txt` 保存版本、构建号、状态、管理链接和加入说明。参考：[Apple 内部测试说明](https://developer.apple.com/help/app-store-connect/test-a-beta-version/add-internal-testers/)。

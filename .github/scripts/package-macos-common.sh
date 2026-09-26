@@ -24,6 +24,9 @@ cleanup_package_work() {
         hdiutil detach "$mountpoint" || hdiutil detach -force "$mountpoint" || return 1
         rm -f -- "$work/mounted"
     fi
+    if [[ -f "$work/keychain-search-list.json" ]]; then
+        python3 "$GITHUB_WORKSPACE/.github/scripts/package-apple.py" restore-keychains "$work" || return 1
+    fi
     shopt -s nullglob
     for keychain in "$work/ci.keychain-db" "$work"/tmp/ludork-signing-*/ludork-signing.keychain-db; do
         if [[ -f "$keychain" ]]; then
