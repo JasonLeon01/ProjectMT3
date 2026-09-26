@@ -53,9 +53,11 @@ def prepare(context)
   groups = app.get_beta_groups.select { |group| group.name == ENV.fetch('IOS_TESTFLIGHT_GROUP') }
   raise 'Expected one existing internal TestFlight group' unless groups.length == 1 && groups.first.is_internal_group
   builds = Spaceship::ConnectAPI::Build.all(app_id: app.id, platform: 'IOS', limit: 200)
-  # A delivered upload may not have become a Build yet when a failed job is retried.
-  deliveries = app.get_build_deliveries.select { |delivery| delivery.platform == 'IOS' }
-  versions = builds.map(&:version) + deliveries.map(&:cf_build_version)
+  # Uploads may not have become Builds yet; include every page and processing state.
+  uploads = Spaceship::ConnectAPI.get_build_uploads(
+    app_id: app.id, filter: { platform: 'IOS' }, limit: 200
+  ).all_pages.flat_map(&:to_models)
+  versions = builds.map(&:version) + uploads.map(&:cf_build_version)
   context.merge!(
     'app_id' => app.id, 'group_id' => groups.first.id,
     'build_number' => next_build_number(versions)
