@@ -39,6 +39,18 @@ jobs:
       package_inputs: ${{ toJSON(needs.check.outputs) }}
     secrets: inherit
 
+  harmony:
+    name: Package HOS ARM64
+    needs: check
+    permissions:
+      contents: read
+      actions: read
+      packages: read
+    uses: ./.github/workflows/package-harmony.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit
+
   macos:
     name: Package macOS ARM64
     needs: check

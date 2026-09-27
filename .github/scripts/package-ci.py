@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """CI-only cleanup, package inspection and provenance for every platform."""
 import argparse
+import datetime
 import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shutil
+import stat
 import struct
 import subprocess
 import tempfile
@@ -37,7 +40,15 @@ def clean(project, output):
     output.mkdir(parents=True)
 
 
-def inspect_ldpak(path, group):
+def is_signing_material(name):
+    path = Path(name)
+    return path.suffix.lower() in {
+        ".p12", ".pfx", ".pkcs12", ".jks", ".keystore", ".pem", ".key", ".cer",
+        ".p7b", ".p8", ".mobileprovision",
+    } or path.name.lower() == "harmony-signing.json"
+
+
+def inspect_ldpak(path, group, reject_signing=False):
     # Read the published LDPK v1 format; never unpack entries into the checkout.
     size = path.stat().st_size
     files = set()
@@ -64,6 +75,8 @@ def inspect_ldpak(path, group):
             require(name not in names and not name.startswith("/") and "\\" not in name
                     and all(part not in ("", ".", "..") for part in name.split("/")), f"Invalid entry path: {name}")
             names.add(name)
+            if reject_signing:
+                require(not is_signing_material(name), f"Signing material remains in {group}: {name}")
             require(entry_flags in (0, 1) and entry_reserved == 0, f"Invalid entry flags: {name}")
             if entry_flags == 1:
                 require((offset, length_data, data_crc) == (0, 0, 0), f"Invalid directory: {name}")
@@ -119,6 +132,71 @@ def validate_apk(apk):
         validate(Path(temporary))
 
 
+def inspect_zip(archive, label):
+    names = archive.namelist()
+    require(len(names) == len(set(names)), f"Duplicate {label} entries")
+    for info in archive.infolist():
+        name = info.filename
+        require(name and not name.startswith("/") and "\\" not in name
+                and all(part not in ("", ".", "..") for part in name.rstrip("/").split("/")),
+                f"Invalid {label} path: {name}")
+        require(not stat.S_ISLNK(info.external_attr >> 16), f"Symlink in {label}: {name}")
+        require(not is_signing_material(name), f"Signing material in {label}: {name}")
+    require(archive.testzip() is None, f"Corrupt {label} entry")
+    return names
+
+
+def validate_hap(hap, project):
+    require(hap.is_file() and not hap.is_symlink(), "Signed HAP is missing or is a symlink")
+    version = json.loads((project / "Main.proj").read_text(encoding="utf-8"))["packaging"]["version"]
+    require(isinstance(version, str), "Invalid project package version")
+    match = re.fullmatch(rf"ProjectMT3-{re.escape(version)}\.(20\d{{8}})-harmony-mobile-signed\.hap", hap.name)
+    require(match is not None, "Expected one ProjectMT3 Mobile signed dev HAP")
+    built_at = datetime.datetime.strptime(match[1], "%Y%m%d%H")
+    with zipfile.ZipFile(hap) as archive, tempfile.TemporaryDirectory(dir=os.environ.get("RUNNER_TEMP")) as temporary:
+        names = inspect_zip(archive, "HAP")
+        require("module.json" in names, "HAP module.json is missing")
+        manifest = json.loads(archive.read("module.json"))
+        app, module = manifest.get("app", {}), manifest.get("module", {})
+        require(app.get("bundleName") == "com.ludork.projectmt3.76adf92ced"
+                and app.get("versionName") == version and app.get("versionCode") == int(built_at.strftime("%y%m%d%H")),
+                "HAP identity or version does not match ProjectMT3")
+        require(app.get("buildMode") == "release" and app.get("debug") is False, "HAP must use the Release build")
+        require(module.get("name") == "entry" and module.get("type") == "entry"
+                and module.get("mainElement") == "EntryAbility"
+                and sorted(module.get("deviceTypes", [])) == ["phone", "tablet"], "Invalid Mobile HAP module")
+        native = "libs/arm64-v8a/libentry.so"
+        require(native in names, "HAP native entry is missing")
+        with archive.open(native) as stream:
+            header = stream.read(20)
+        require(len(header) == 20 and header[:6] == b"\x7fELF\x02\x01"
+                and int.from_bytes(header[18:20], "little") == 183, "HAP native entry is not arm64 ELF")
+        runtime_name = "resources/rawfile/ludork-runtime.zip"
+        hash_name = "resources/rawfile/ludork-runtime.sha256"
+        require(runtime_name in names and hash_name in names, "HAP runtime archive or checksum is missing")
+        require(archive.getinfo(runtime_name).compress_type == zipfile.ZIP_STORED, "HAP recompressed its runtime archive")
+        digest = archive.read(hash_name).decode("ascii").strip()
+        require(re.fullmatch(r"[0-9a-f]{64}", digest) is not None, "Invalid HAP runtime checksum")
+        root = Path(temporary)
+        runtime_path = root / "runtime.zip"
+        with archive.open(runtime_name) as source, runtime_path.open("wb") as destination:
+            shutil.copyfileobj(source, destination)
+        with runtime_path.open("rb") as stream:
+            require(hashlib.file_digest(stream, "sha256").hexdigest() == digest, "HAP runtime checksum mismatch")
+        with zipfile.ZipFile(runtime_path) as runtime:
+            runtime_names = inspect_zip(runtime, "HAP runtime")
+            for group in GROUPS:
+                name = f"{group}.ldpak"
+                require(name in runtime_names and not any(n.rstrip("/") == group or n.startswith(f"{group}/") for n in runtime_names),
+                        f"Invalid HAP runtime resource layout: {group}")
+                require(runtime.getinfo(name).compress_type == zipfile.ZIP_STORED, f"HAP runtime recompressed {name}")
+                target = root / name
+                with runtime.open(name) as source, target.open("wb") as destination:
+                    shutil.copyfileobj(source, destination)
+                print(f"Validated {group}: {inspect_ldpak(target, group, reject_signing=True)} files")
+    print("Validated Mobile HAP identity, runtime checksum and packed encrypted resources")
+
+
 def metadata(project, output, platform, artifact=None, signed=False, notarized=False):
     required = ("PROJECT_SHA", "LUDORK_SHA", "LUDORK_CHECKED_SHA", "LUDORK_RUN_ID", "LUDORK_ARTIFACT_ID")
     for name in required:
@@ -159,6 +237,9 @@ def main():
             item.add_argument("--notarized", action="store_true")
     for command in ("validate", "validate-apk"):
         sub.add_parser(command).add_argument("path", type=Path)
+    hap_parser = sub.add_parser("validate-hap")
+    hap_parser.add_argument("path", type=Path)
+    hap_parser.add_argument("project", type=Path)
     args = parser.parse_args()
     if args.command == "clean":
         clean(args.project, args.output)
@@ -166,6 +247,8 @@ def main():
         validate(args.path)
     elif args.command == "validate-apk":
         validate_apk(args.path)
+    elif args.command == "validate-hap":
+        validate_hap(args.path, args.project)
     else:
         metadata(args.project, args.output, args.platform, args.artifact, args.signed, args.notarized)
 
