@@ -217,10 +217,12 @@ function Controller:setPlayer(player)
 end
 
 function Controller:open(gameMap)
+    local SceneFunctions = require("GlobalFunctions.Scene")
     self:refreshEnemies(gameMap)
     self.host:showWithAnimation("FadeIn", function ()
         self.host:setActive(true)
         self.host:requestKeyboardFocus()
+        SceneFunctions.ShowTutorial("TM_05")
     end)
 end
 

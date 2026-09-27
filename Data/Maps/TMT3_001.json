@@ -978,6 +978,22 @@
           9,
           0
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Transfer_T1_1",
+        "tag": "Teleportations_BP_Transfer_T1_1_default_4_0",
+        "position": [
+          4,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Transfer_T1_2",
+        "tag": "Teleportations_BP_Transfer_T1_2_default_6_0",
+        "position": [
+          6,
+          0
+        ]
       }
     ]
   },

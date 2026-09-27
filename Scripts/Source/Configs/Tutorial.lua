@@ -15,6 +15,10 @@ local Tutorial = {
     TM_04 = {
         rect = sf.IntRect.new(512, 448, 128, 32),
         text = "{TM_04}"
+    },
+    TM_05 = {
+        rect = sf.IntRect.new(160, 80, 320, 64),
+        text = "{TM_05}"
     }
 }
 
