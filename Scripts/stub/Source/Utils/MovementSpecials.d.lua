@@ -11,6 +11,10 @@
 
 local MovementSpecials = {}
 
+---@param gameMap GameMap
+---@return Source.MapActors.Enemy[]
+function MovementSpecials.CollectEnemies(gameMap) end
+
 ---@param gameMap      GameMap
 ---@param actor        Engine.Actor
 ---@param fromPosition sf.Vector2i
