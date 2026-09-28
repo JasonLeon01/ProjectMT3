@@ -1,4 +1,4 @@
-name: Sync Ludork Engine and Global
+name: Sync Ludork Engine, Global and Internal
 
 on:
   schedule:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   sync:
-    name: Sync Engine and Global and update PR
+    name: Sync Engine, Global and Internal and update PR
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -37,7 +37,7 @@ jobs:
             https://github.com/JasonLeon01/Ludork.git "$upstream"
           echo "LUDORK_SYNC_REPOSITORY=$upstream" >> "$GITHUB_ENV"
 
-      - name: Check and apply changed Engine and Global files
+      - name: Check and apply changed Engine, Global and Internal files
         id: sync
         uses: actions/github-script@v8
         with:
@@ -57,15 +57,17 @@ jobs:
             :(exclude)Engine/ThirdParty
             :(exclude)Engine/ThirdParty/**
             Scripts/Global/
+            Scripts/Internal/
             .github/ludork-sync.json
-          commit-message: 'chore: sync Ludork Engine and Global from ${{ steps.sync.outputs.upstream_sha }}'
-          title: 'chore: sync Ludork Engine and Global'
+          commit-message: 'chore: sync Ludork Engine, Global and Internal from ${{ steps.sync.outputs.upstream_sha }}'
+          title: 'chore: sync Ludork Engine, Global and Internal'
           body: |
-            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/` and `Game/Scripts/Global/` into `Scripts/Global/`.
+            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/` and `Game/Scripts/{Global,Internal}/` into the corresponding `Scripts/` directories.
 
             - Preserve `Engine/ThirdParty/` and files unchanged upstream since the merged baseline.
             - Engine merged baseline: `${{ steps.sync.outputs.engine_baseline_sha }}`
             - Global merged baseline: `${{ steps.sync.outputs.global_baseline_sha }}`
+            - Internal merged baseline: `${{ steps.sync.outputs.internal_baseline_sha }}`
             - Upstream: https://github.com/JasonLeon01/Ludork/commit/${{ steps.sync.outputs.upstream_sha }}
             - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 

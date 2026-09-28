@@ -4,5 +4,8 @@
   },
   "global": {
     "upstreamSha": "2353ecf8e88c7cedcd9742ac21f40d613a4b5446"
+  },
+  "internal": {
+    "upstreamSha": "2353ecf8e88c7cedcd9742ac21f40d613a4b5446"
   }
 }
