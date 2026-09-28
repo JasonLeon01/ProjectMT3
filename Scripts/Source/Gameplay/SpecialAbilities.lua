@@ -48,15 +48,6 @@ local abilityTypes = {
             "FixDmg special magnitude must be a finite non-negative number or a non-empty string"
         )
         return FixDmgAbility.new(magnitude)
-    end,
-    [Special.Domain] = function (magnitude)
-        return MovementSpecialAbility.new(Special.Domain, magnitude)
-    end,
-    [Special.Flank] = function (magnitude)
-        return MovementSpecialAbility.new(Special.Flank, magnitude)
-    end,
-    [Special.Blockade] = function (magnitude)
-        return MovementSpecialAbility.new(Special.Blockade, magnitude)
     end
 }
 
@@ -67,7 +58,12 @@ local movementSpecialIDs = {
 
 function SpecialAbilities.CreateEffect(specialID, magnitude)
     local createAbility = abilityTypes[specialID]
-    local ability = createAbility ~= nil and createAbility(magnitude) or PassiveTagAbility.new(specialID)
+    local ability
+    if createAbility == nil and movementSpecialIDs[specialID] then
+        ability = MovementSpecialAbility.new(specialID, magnitude)
+    else
+        ability = createAbility ~= nil and createAbility(magnitude) or PassiveTagAbility.new(specialID)
+    end
     local grantedTags = { GameplayConstants.SPECIAL_PREFIX .. specialID }
     if movementSpecialIDs[specialID] then
         grantedTags[#grantedTags + 1] = GameplayConstants.MOVEMENT_HAZARD_TAG
