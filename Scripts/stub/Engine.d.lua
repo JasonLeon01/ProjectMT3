@@ -161,10 +161,10 @@
 ---@field FocusDirection table<string, string>
 ---@field TextConfig table
 ---@field TextLayout table
+---@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field DefaultFontSize integer
 ---@field DefaultFont sf.Font|nil
 ---@field DefaultWindowskinName string|nil
----@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field _default_bus Engine.EventBus
 ---@field eventBus fun(): Engine.EventBus
 ---@field subscribe fun(event: string, handler: fun(arg1: any): nil, priority?: integer): integer
