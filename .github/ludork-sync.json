@@ -7,5 +7,11 @@
   },
   "internal": {
     "upstreamSha": "6ba095d941252273f5ef14ad97c5cfebe6c3afef"
+  },
+  "globalStub": {
+    "upstreamSha": "9d8bf8d043927f6b9c1386134277f0a831baf3b1"
+  },
+  "internalStub": {
+    "upstreamSha": "6ba095d941252273f5ef14ad97c5cfebe6c3afef"
   }
 }
