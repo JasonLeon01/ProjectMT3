@@ -7,6 +7,17 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+$archives = @(Get-ChildItem -LiteralPath $LudorkDirectory -Filter 'Ludork-editor-*-windows-x64.7z' -File)
+if ($archives.Count -gt 0) {
+    if ($archives.Count -ne 1) {
+        throw 'Expected exactly one Ludork Windows editor archive.'
+    }
+    & "$env:ProgramFiles\7-Zip\7z.exe" x $archives[0].FullName "-o$LudorkDirectory" -y
+    if ($LASTEXITCODE -ne 0) {
+        throw "Ludork editor extraction failed with exit code $LASTEXITCODE"
+    }
+}
+
 foreach ($command in @('cmake', 'ninja', 'cl', 'python')) {
     Get-Command $command -ErrorAction Stop | Out-Null
 }

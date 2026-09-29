@@ -17,7 +17,9 @@ import zlib
 
 GROUPS = ("Assets", "Data", "Scripts")
 HEADER = struct.Struct("<4sHHIIQQII")
-ENTRY = struct.Struct("<IIQQII")
+ENTRY = struct.Struct("<IIQQQII")
+BLOCK = struct.Struct("<III")
+BLOCK_SIZE = 1024 * 1024
 
 
 def require(condition, message):
@@ -49,7 +51,7 @@ def is_signing_material(name):
 
 
 def inspect_ldpak(path, group, reject_signing=False):
-    # Read the published LDPK v1 format; never unpack entries into the checkout.
+    # Read Ludork's block-compressed LDPK format; never unpack entries into the checkout.
     size = path.stat().st_size
     files = set()
     with path.open("rb") as stream:
@@ -67,7 +69,7 @@ def inspect_ldpak(path, group, reject_signing=False):
         names = set()
         for _ in range(count):
             require(position + ENTRY.size <= len(index), f"Truncated index: {path}")
-            length, entry_flags, offset, length_data, data_crc, entry_reserved = ENTRY.unpack_from(index, position)
+            length, entry_flags, offset, length_data, stored_size, data_crc, block_count = ENTRY.unpack_from(index, position)
             position += ENTRY.size
             require(length > 0 and position + length <= len(index), f"Invalid entry name: {path}")
             name = index[position:position + length].decode("utf-8")
@@ -77,21 +79,38 @@ def inspect_ldpak(path, group, reject_signing=False):
             names.add(name)
             if reject_signing:
                 require(not is_signing_material(name), f"Signing material remains in {group}: {name}")
-            require(entry_flags in (0, 1) and entry_reserved == 0, f"Invalid entry flags: {name}")
+            require(entry_flags in (0, 1), f"Invalid entry flags: {name}")
             if entry_flags == 1:
-                require((offset, length_data, data_crc) == (0, 0, 0), f"Invalid directory: {name}")
+                require((offset, length_data, stored_size, data_crc, block_count) == (0, 0, 0, 0, 0),
+                        f"Invalid directory: {name}")
                 continue
             require(offset % 8 == 0 and offset >= HEADER.size + group_size
-                    and offset + length_data <= index_offset, f"Invalid data bounds: {name}")
+                    and offset + stored_size <= index_offset, f"Invalid data bounds: {name}")
+            require(block_count == (length_data + BLOCK_SIZE - 1) // BLOCK_SIZE
+                    and position + block_count * BLOCK.size <= len(index), f"Invalid block count: {name}")
             stream.seek(offset)
-            remaining, actual_crc, signature = length_data, 0, b""
-            while remaining:
-                chunk = stream.read(min(1024 * 1024, remaining))
-                require(bool(chunk), f"Truncated entry: {name}")
+            consumed, actual_crc, signature = 0, 0, b""
+            for block_index in range(block_count):
+                block_size, block_flags, block_crc = BLOCK.unpack_from(index, position)
+                position += BLOCK.size
+                raw_size = min(BLOCK_SIZE, length_data - block_index * BLOCK_SIZE)
+                require(block_flags in (0, 1) and 0 < block_size <= stored_size - consumed
+                        and (block_size == raw_size if block_flags == 0 else block_size < raw_size),
+                        f"Invalid block bounds: {name}")
+                chunk = stream.read(block_size)
+                require(len(chunk) == block_size, f"Truncated block: {name}")
+                consumed += block_size
+                if block_flags == 1:
+                    inflater = zlib.decompressobj()
+                    chunk = inflater.decompress(chunk, raw_size + 1)
+                    require(len(chunk) == raw_size and inflater.eof
+                            and not inflater.unused_data and not inflater.unconsumed_tail,
+                            f"Invalid compressed block: {name}")
+                require(zlib.crc32(chunk) & 0xffffffff == block_crc, f"Invalid block checksum: {name}")
                 if not signature:
                     signature = chunk[:4]
                 actual_crc = zlib.crc32(chunk, actual_crc)
-                remaining -= len(chunk)
+            require(consumed == stored_size, f"Invalid stored size: {name}")
             require(actual_crc & 0xffffffff == data_crc, f"Invalid data checksum: {name}")
             lower = name.lower()
             require(not lower.endswith(".lua"), f"Lua source remains in {group}: {name}")
