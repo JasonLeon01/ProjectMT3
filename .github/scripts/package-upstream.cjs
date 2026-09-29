@@ -3,6 +3,7 @@
 const upstream = { owner: 'JasonLeon01', repo: 'Ludork' };
 const allowedEvents = new Set(['push', 'schedule', 'workflow_dispatch']);
 const shaPattern = /^[0-9a-f]{40}$/;
+const windowsArchivePattern = /^Ludork-editor-\d+\.\d+\.\d+(?:\.\d{10})?-windows-x64\.7z$/;
 
 function requireSha(value) {
   if (!shaPattern.test(value ?? '')) throw new Error(`Invalid commit/tree SHA: ${value}`);
@@ -36,7 +37,9 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
       const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
         ...upstream, run_id: run.id, per_page: 100,
       });
-      const matches = artifacts.filter(artifact => artifact.name === name);
+      // upload-artifact with archive: false uses the filename and ignores name.
+      const matches = artifacts.filter(artifact => artifact.name === name
+        || (platform === 'windows-x64' && windowsArchivePattern.test(artifact.name)));
       if (matches.length !== 1 || matches[0].expired || !(Date.parse(matches[0].expires_at) > Date.now())) continue;
       return {
         ludork_sha: run.head_sha, ludork_run_id: String(run.id), ludork_artifact_id: String(matches[0].id),

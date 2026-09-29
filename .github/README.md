@@ -30,7 +30,7 @@
 
 **Actions 仅缓存 Android Studio 和 DevEco Studio 应用目录**。Android 保留原有 key `android-studio-macos-15-arm64-v1`；DevEco 缓存 `DevEco-Studio.app`（含其自带 SDK 和构建工具），key 为 `deveco-studio-macos-15-arm64-v1-<HOS_DEVECO_SHA256>`，只使用完整 key 匹配。不恢复或保存 Ludork 工具、项目构建产物、状态、独立 Android SDK/NDK、Gradle、Ruby gem 或项目依赖缓存。Android 使用全新的临时 `GRADLE_USER_HOME`，关闭 Gradle build/configuration cache。runner 镜像预装工具正常使用；旧 Windows 远程缓存不会再被读取或续存，由 GitHub 过期回收，也可在 Actions → Caches 手动删除。
 
-共用 `package-upstream.cjs` 选择 Ludork `main` 上最新可用的 **Export Editor** 产物：兼容双平台和对应单平台工作流；只接受可信事件、目标平台 job 成功、名称精确匹配且唯一未过期的产物。另一平台失败不排除目标平台已成功的产物，不回退到带模板的 **Export Package**。Windows 使用 x64 工具；Android、HarmonyOS、macOS、iOS 下载同一份选定的 ARM64 DMG，各自只读挂载并提取工具，不跨 job 复用下载目录。
+共用 `package-upstream.cjs` 选择 Ludork `main` 上最新可用的 **Export Editor** 产物：兼容双平台和对应单平台工作流；只接受可信事件、目标平台 job 成功、名称匹配且唯一未过期的产物。支持原有带提交 SHA 的名称，以及 Windows 直接上传的 `Ludork-editor-<版本>-windows-x64.7z` 文件名（`archive: false` 会忽略上传步骤指定的名称）；来源提交取所属运行的 SHA。另一平台失败不排除目标平台已成功的产物，不回退到带模板的 **Export Package**。Windows 使用 x64 工具，7z 产物先解压再构建；Android、HarmonyOS、macOS、iOS 下载同一份选定的 ARM64 DMG，各自只读挂载并提取工具，不跨 job 复用下载目录。
 
 项目 Engine、Application、资源和移动端模板始终来自本仓库。默认使用 `GITHUB_TOKEN` 读取上游公开产物；跨仓库权限不足时配置可读取 `JasonLeon01/Ludork`、具有 **Actions: Read-only** 权限的 `LUDORK_ACTIONS_TOKEN`。
 
