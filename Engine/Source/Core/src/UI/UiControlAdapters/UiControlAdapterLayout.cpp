@@ -1,0 +1,189 @@
+#include "UiControlAdapterRegistryBuilderImpl.hpp"
+
+#include "UiControlAdapterSupport.hpp"
+
+#include <UI/Canvas.hpp>
+#include <UI/ListView.hpp>
+#include <UI/ScrollBox.hpp>
+#include <UI/WrapBox.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <memory>
+#include <utility>
+#include <vector>
+
+void UiControlAdapterRegistry::BuilderImpl::registerLayoutAdapters(
+    UiControlAdapterRegistry& registry) {
+    using namespace ui_control_adapter_detail;
+
+    UiControlAdapterRegistry::Adapter canvas;
+    canvas.factory = [](const UiControlProperties& properties) {
+        const sf::Vector2u size =
+            vector2uProperty(properties, "size", {100u, 100u});
+        return std::make_shared<Canvas>(sf::IntRect(
+            {0, 0}, {static_cast<int>(size.x), static_cast<int>(size.y)}));
+    };
+    canvas.setter = [](ControlBase& control, const std::string& propertyId,
+                       const UiControlPropertyValue& value) {
+        Canvas& canvas = requireControlType<Canvas>(control, "Engine.Canvas");
+        if (propertyId == "size") {
+            canvas.resize(requireVector2u(value, "size"));
+            return;
+        }
+        throw std::invalid_argument("Unknown Canvas property " + propertyId);
+    };
+    canvas.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                         const sf::Vector2f& renderScale) {
+        Canvas& canvas = requireControlType<Canvas>(control, "Engine.Canvas");
+        const sf::Vector2u logicalSize{
+            static_cast<unsigned int>(std::max(0.0f, std::round(size.x))),
+            static_cast<unsigned int>(std::max(0.0f, std::round(size.y)))};
+        canvas.resizeForLayout(logicalSize);
+        canvas.setScale(renderScale);
+    };
+    canvas.childAttacher =
+        [](ControlBase& control,
+           const std::vector<std::shared_ptr<ControlBase>>& children) {
+            Canvas& canvas =
+                requireControlType<Canvas>(control, "Engine.Canvas");
+            for (const std::shared_ptr<ControlBase>& child : children) {
+                canvas.addChild(child);
+            }
+        };
+    registry.registerAdapter<CanvasUiControlAdapterTag>(std::move(canvas));
+
+    UiControlAdapterRegistry::Adapter scrollBox;
+    scrollBox.factory = [](const UiControlProperties& properties) {
+        return std::make_shared<ScrollBox>(
+            vector2fProperty(properties, "size", {100.0f, 100.0f}),
+            loadWindowSkin(stringProperty(properties, "windowSkin")));
+    };
+    scrollBox.setter = [](ControlBase& control, const std::string& propertyId,
+                          const UiControlPropertyValue& value) {
+        ScrollBox& scroll =
+            requireControlType<ScrollBox>(control, "Engine.ScrollBox");
+        if (propertyId == "size") {
+            scroll.resize(requireVector2f(value, "size"));
+            return;
+        }
+        if (propertyId == "windowSkin") {
+            scroll.setWindowSkin(
+                loadWindowSkin(requireString(value, "windowSkin")));
+            return;
+        }
+        throw std::invalid_argument("Unknown ScrollBox property " + propertyId);
+    };
+    scrollBox.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                            const sf::Vector2f& renderScale) {
+        ScrollBox& scroll =
+            requireControlType<ScrollBox>(control, "Engine.ScrollBox");
+        scroll.resize({std::max(0.0f, size.x), std::max(0.0f, size.y)});
+        scroll.setScale(renderScale);
+    };
+    scrollBox.childAttacher =
+        [](ControlBase& control,
+           const std::vector<std::shared_ptr<ControlBase>>& children) {
+            ScrollBox& scroll =
+                requireControlType<ScrollBox>(control, "Engine.ScrollBox");
+            for (const std::shared_ptr<ControlBase>& child : children) {
+                scroll.addChild(child);
+            }
+        };
+    registry.registerAdapter<ScrollBoxUiControlAdapterTag>(
+        std::move(scrollBox));
+
+    UiControlAdapterRegistry::Adapter listView;
+    listView.factory = [](const UiControlProperties& properties) {
+        const sf::Vector2f size =
+            vector2fProperty(properties, "size", {100.0f, 100.0f});
+        const int defaultItemHeight =
+            intProperty(properties, "defaultItemHeight", 32);
+        const bool fixItemHeight =
+            boolProperty(properties, "fixItemHeight", false);
+        const int columns = intProperty(properties, "columns", 1);
+        return std::make_shared<ListView>(
+            sf::IntRect({0, 0}, {static_cast<int>(std::round(size.x)),
+                                 static_cast<int>(std::round(size.y))}),
+            defaultItemHeight, fixItemHeight, columns);
+    };
+    listView.setter = [](ControlBase& control, const std::string& propertyId,
+                         const UiControlPropertyValue& value) {
+        ListView& list =
+            requireControlType<ListView>(control, "Engine.ListView");
+        if (propertyId == "size") {
+            list.setSizeVector2f(requireVector2f(value, "size"));
+            return;
+        }
+        if (propertyId == "columns") {
+            list.setColumns(requireInt(value, "columns"));
+            return;
+        }
+        throw std::invalid_argument(
+            propertyId + " is a construction-only ListView property");
+    };
+    listView.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                           const sf::Vector2f& renderScale) {
+        ListView& list =
+            requireControlType<ListView>(control, "Engine.ListView");
+        list.setSizeVector2f({std::max(0.0f, size.x), std::max(0.0f, size.y)});
+        list.setScale(renderScale);
+        list.invalidatePositions();
+    };
+    listView.childAttacher =
+        [](ControlBase& control,
+           const std::vector<std::shared_ptr<ControlBase>>& children) {
+            ListView& list =
+                requireControlType<ListView>(control, "Engine.ListView");
+            for (const std::shared_ptr<ControlBase>& child : children) {
+                list.addChild(child);
+            }
+        };
+    listView.childReflow = [](ControlBase& control) {
+        ListView& list =
+            requireControlType<ListView>(control, "Engine.ListView");
+        list.invalidatePositions();
+        list.applyPositions();
+    };
+    registry.registerAdapter<ListViewUiControlAdapterTag>(std::move(listView));
+
+    UiControlAdapterRegistry::Adapter wrapBox;
+    wrapBox.factory = [](const UiControlProperties& properties) {
+        return std::make_shared<WrapBox>(
+            vector2fProperty(properties, "size", {100.0f, 100.0f}),
+            intProperty(properties, "count", 1),
+            vector2fProperty(properties, "spacing", {0.0f, 0.0f}));
+    };
+    wrapBox.setter = [](ControlBase& control, const std::string& propertyId,
+                        const UiControlPropertyValue& value) {
+        WrapBox& box = requireControlType<WrapBox>(control, "Engine.WrapBox");
+        if (propertyId == "size") {
+            box.setSize(requireVector2f(value, "size"));
+        } else if (propertyId == "count") {
+            box.setCount(requireInt(value, "count"));
+        } else if (propertyId == "spacing") {
+            box.setSpacing(requireVector2f(value, "spacing"));
+        } else {
+            throw std::invalid_argument("Unknown WrapBox property " +
+                                        propertyId);
+        }
+    };
+    wrapBox.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                          const sf::Vector2f& renderScale) {
+        WrapBox& box = requireControlType<WrapBox>(control, "Engine.WrapBox");
+        box.setSize(size);
+        box.setScale(renderScale);
+    };
+    wrapBox.childAttacher =
+        [](ControlBase&,
+           const std::vector<std::shared_ptr<ControlBase>>& children) {
+            if (!children.empty()) {
+                throw std::invalid_argument(
+                    "WrapBox children must be instantiated from its template");
+            }
+        };
+    wrapBox.childReflow = [](ControlBase& control) {
+        requireControlType<WrapBox>(control, "Engine.WrapBox").reflowItems();
+    };
+    registry.registerAdapter<WrapBoxUiControlAdapterTag>(std::move(wrapBox));
+}

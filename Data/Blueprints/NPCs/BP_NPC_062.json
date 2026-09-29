@@ -1,0 +1,84 @@
+{
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "animatable": true,
+    "material": {
+      "lightBlock": 0.4,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/npcs/classic-npcs-50F-single.png",
+    "tag": "",
+    "defaultRect": [
+      [
+        0,
+        64,
+        32,
+        32
+      ]
+    ],
+    "conditionVariable": "thief9",
+    "conditionValue": true
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [
+          {
+            "nodeFunction": "GlobalFunctions.Scene.OpenShop",
+            "params": [
+              [
+                "KEY_Y",
+                "KEY_B"
+              ],
+              false
+            ],
+            "pos": [
+              0,
+              314
+            ]
+          }
+        ],
+        "links": []
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": 0,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

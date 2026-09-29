@@ -1,0 +1,173 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 608,
+    "height": 32
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Enemy Encyclopedia Special Row",
+    "category": "Rows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        608,
+        32
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "NameArea",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            80,
+            32
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 80,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "Name",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "lineAlignment": "left",
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "Magic"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "DescriptionArea",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            520,
+            32
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 88,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "Description",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "lineAlignment": "left",
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "Uses powerful elemental attacks."
+            },
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

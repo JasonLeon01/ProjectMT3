@@ -1,0 +1,396 @@
+#include "UiControlAdapterRegistryBuilderImpl.hpp"
+
+#include "UiControlAdapterSupport.hpp"
+
+#include <UI/CharacterView.hpp>
+#include <UI/EmitterView.hpp>
+#include <UI/FunctionalImage.hpp>
+#include <UI/Image.hpp>
+#include <UI/ProgressBar.hpp>
+#include <UI/Rect.hpp>
+#include <UI/SolidRect.hpp>
+#include <UI/Window.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <stdexcept>
+#include <utility>
+#include <variant>
+
+namespace {
+
+Image::DrawAs imageDrawAs(const UiControlPropertyValue& value) {
+    if (const auto drawAs = std::get_if<Image::DrawAs>(&value)) {
+        return *drawAs;
+    }
+    if (const auto number = std::get_if<std::int64_t>(&value)) {
+        if (*number == static_cast<std::int64_t>(Image::DrawAs::Image)) {
+            return Image::DrawAs::Image;
+        }
+        if (*number == static_cast<std::int64_t>(Image::DrawAs::Tile)) {
+            return Image::DrawAs::Tile;
+        }
+    }
+    throw std::invalid_argument("drawAs must be an ImageDrawAs member");
+}
+
+}  // namespace
+
+void UiControlAdapterRegistry::BuilderImpl::registerVisualAdapters(
+    UiControlAdapterRegistry& registry) {
+    using namespace ui_control_adapter_detail;
+
+    UiControlAdapterRegistry::Adapter emitterView;
+    emitterView.factory = [](const UiControlProperties& properties) {
+        return std::make_shared<EmitterView>(
+            stringProperty(properties, "particle"),
+            vector2fProperty(properties, "size", {100.0f, 100.0f}),
+            vector2fProperty(properties, "anchor", {0.5f, 0.5f}),
+            boolProperty(properties, "autoPlay", true));
+    };
+    emitterView.setter = [](ControlBase& control, const std::string& propertyId,
+                            const UiControlPropertyValue& value) {
+        EmitterView& view =
+            requireControlType<EmitterView>(control, "Engine.EmitterView");
+        if (propertyId == "particle") {
+            view.setParticle(requireString(value, "particle"));
+        } else if (propertyId == "size") {
+            view.setSize(requireVector2f(value, "size"));
+        } else if (propertyId == "anchor") {
+            view.setAnchor(requireVector2f(value, "anchor"));
+        } else if (propertyId == "autoPlay") {
+            view.setAutoPlay(requireBool(value, "autoPlay"));
+        } else {
+            throw std::invalid_argument("Unknown EmitterView property " +
+                                        propertyId);
+        }
+    };
+    emitterView.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                              const sf::Vector2f& renderScale) {
+        EmitterView& view =
+            requireControlType<EmitterView>(control, "Engine.EmitterView");
+        view.setSize(size);
+        view.setScale(renderScale);
+    };
+    registry.registerAdapter<EmitterViewUiControlAdapterTag>(
+        std::move(emitterView));
+
+    UiControlAdapterRegistry::Adapter solidRect;
+    solidRect.factory = [](const UiControlProperties& properties) {
+        return std::make_shared<SolidRect>(
+            vector2fProperty(properties, "size", {100.0f, 32.0f}),
+            colorProperty(properties, "fillColor", sf::Color::White),
+            colorProperty(properties, "outlineColor", sf::Color::Transparent),
+            floatProperty(properties, "outlineThickness", 0.0f));
+    };
+    solidRect.setter = [](ControlBase& control, const std::string& propertyId,
+                          const UiControlPropertyValue& value) {
+        SolidRect& rect =
+            requireControlType<SolidRect>(control, "Engine.SolidRect");
+        if (propertyId == "size") {
+            rect.setSize(requireVector2f(value, "size"));
+        } else if (propertyId == "fillColor") {
+            rect.setFillColor(requireColor(value, "fillColor"));
+        } else if (propertyId == "outlineColor") {
+            rect.setOutlineColor(requireColor(value, "outlineColor"));
+        } else if (propertyId == "outlineThickness") {
+            rect.setOutlineThickness(requireFloat(value, "outlineThickness"));
+        } else {
+            throw std::invalid_argument("Unknown SolidRect property " +
+                                        propertyId);
+        }
+    };
+    solidRect.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                            const sf::Vector2f& renderScale) {
+        SolidRect& rect =
+            requireControlType<SolidRect>(control, "Engine.SolidRect");
+        rect.setSize({std::max(0.0f, size.x), std::max(0.0f, size.y)});
+        rect.setScale(renderScale);
+    };
+    registry.registerAdapter<SolidRectUiControlAdapterTag>(
+        std::move(solidRect));
+
+    UiControlAdapterRegistry::Adapter progressBar;
+    progressBar.factory = [](const UiControlProperties& properties) {
+        std::shared_ptr<ProgressBar> result = std::make_shared<ProgressBar>(
+            vector2fProperty(properties, "size", {100.0f, 12.0f}),
+            floatProperty(properties, "progress", 0.0f),
+            colorProperty(properties, "backgroundColor",
+                          sf::Color(255, 255, 255, 64)),
+            colorProperty(properties, "fillColor", sf::Color::White));
+        result->setBackgroundTexture(loadOptionalTexture(
+            stringProperty(properties, "backgroundTexture")));
+        result->setFillTexture(
+            loadOptionalTexture(stringProperty(properties, "fillTexture")));
+        result->setBackgroundTextureRect(
+            optionalIntRectProperty(properties, "backgroundTextureRect"));
+        result->setFillTextureRect(
+            optionalIntRectProperty(properties, "fillTextureRect"));
+        return result;
+    };
+    progressBar.setter = [](ControlBase& control, const std::string& propertyId,
+                            const UiControlPropertyValue& value) {
+        ProgressBar& progress =
+            requireControlType<ProgressBar>(control, "Engine.ProgressBar");
+        if (propertyId == "size") {
+            progress.resize(requireVector2f(value, "size"));
+        } else if (propertyId == "progress") {
+            progress.setProgress(requireFloat(value, "progress"));
+        } else if (propertyId == "backgroundColor") {
+            progress.setBackgroundColor(requireColor(value, "backgroundColor"));
+        } else if (propertyId == "fillColor") {
+            progress.setFillColor(requireColor(value, "fillColor"));
+        } else if (propertyId == "backgroundTexture") {
+            progress.setBackgroundTexture(
+                loadOptionalTexture(requireString(value, "backgroundTexture")));
+        } else if (propertyId == "fillTexture") {
+            progress.setFillTexture(
+                loadOptionalTexture(requireString(value, "fillTexture")));
+        } else if (propertyId == "backgroundTextureRect") {
+            progress.setBackgroundTextureRect(
+                isNil(value) ? std::nullopt
+                             : std::optional<sf::IntRect>(requireIntRect(
+                                   value, "backgroundTextureRect")));
+        } else if (propertyId == "fillTextureRect") {
+            progress.setFillTextureRect(
+                isNil(value) ? std::nullopt
+                             : std::optional<sf::IntRect>(
+                                   requireIntRect(value, "fillTextureRect")));
+        } else {
+            throw std::invalid_argument("Unknown ProgressBar property " +
+                                        propertyId);
+        }
+    };
+    progressBar.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                              const sf::Vector2f& renderScale) {
+        ProgressBar& progress =
+            requireControlType<ProgressBar>(control, "Engine.ProgressBar");
+        progress.resize(size);
+        progress.setScale(renderScale);
+    };
+    registry.registerAdapter<ProgressBarUiControlAdapterTag>(
+        std::move(progressBar));
+
+    UiControlAdapterRegistry::Adapter image;
+    image.factory = [](const UiControlProperties& properties) {
+        std::shared_ptr<Image> result = std::make_shared<Image>(
+            loadTexture(stringProperty(properties, "texture")),
+            optionalIntRectProperty(properties, "textureRect"));
+        if (const auto drawAs = properties.find("drawAs");
+            drawAs != properties.end()) {
+            result->setDrawAs(imageDrawAs(drawAs->second));
+        }
+        result->setColour(
+            colorProperty(properties, "colour", sf::Color::White));
+        return result;
+    };
+    image.setter = [](ControlBase& control, const std::string& propertyId,
+                      const UiControlPropertyValue& value) {
+        Image& image = requireControlType<Image>(control, "Engine.Image");
+        if (propertyId == "texture") {
+            image.setTexture(loadTexture(requireString(value, "texture")),
+                             true);
+        } else if (propertyId == "textureRect") {
+            if (isNil(value)) {
+                image.setTextureRect(
+                    {{0, 0},
+                     {static_cast<int>(image.getTexture().getSize().x),
+                      static_cast<int>(image.getTexture().getSize().y)}});
+            } else {
+                image.setTextureRect(requireIntRect(value, "textureRect"));
+            }
+        } else if (propertyId == "drawAs") {
+            image.setDrawAs(imageDrawAs(value));
+        } else if (propertyId == "colour") {
+            image.setColour(requireColor(value, "colour"));
+        } else {
+            throw std::invalid_argument("Unknown Image property " + propertyId);
+        }
+    };
+    image.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                        const sf::Vector2f& renderScale) {
+        arrangeByScale(control, size, renderScale);
+    };
+    registry.registerAdapter<ImageUiControlAdapterTag>(std::move(image));
+
+    UiControlAdapterRegistry::Adapter characterView;
+    characterView.factory = [](const UiControlProperties& properties) {
+        std::shared_ptr<CharacterView> result = std::make_shared<CharacterView>(
+            loadTexture(stringProperty(properties, "texture")),
+            optionalIntRectProperty(properties, "textureRect"),
+            vector2fProperty(properties, "size", {32.0f, 32.0f}),
+            boolProperty(properties, "animatable", true),
+            floatProperty(properties, "switchInterval", 0.2f),
+            stringProperty(properties, "shader"),
+            floatProperty(properties, "hue", 0.0f));
+        result->setCharacterScale(
+            vector2fProperty(properties, "characterScale", {1.0f, 1.0f}));
+        result->setColour(
+            colorProperty(properties, "colour", sf::Color::White));
+        return result;
+    };
+    characterView.setter = [](ControlBase& control,
+                              const std::string& propertyId,
+                              const UiControlPropertyValue& value) {
+        CharacterView& view =
+            requireControlType<CharacterView>(control, "Engine.CharacterView");
+        if (propertyId == "size") {
+            view.resize(requireVector2f(value, "size"));
+        } else if (propertyId == "texture") {
+            view.setCharacterTexture(
+                loadTexture(requireString(value, "texture")));
+        } else if (propertyId == "textureRect") {
+            if (isNil(value)) {
+                view.resetFrameRectToTexture();
+            } else {
+                view.setFrameRect(requireIntRect(value, "textureRect"));
+            }
+        } else if (propertyId == "characterScale") {
+            view.setCharacterScale(requireVector2f(value, "characterScale"));
+        } else if (propertyId == "animatable") {
+            view.setAnimatable(requireBool(value, "animatable"));
+        } else if (propertyId == "switchInterval") {
+            view.setSwitchInterval(requireFloat(value, "switchInterval"));
+        } else if (propertyId == "shader") {
+            view.setShaderPath(requireString(value, "shader"));
+        } else if (propertyId == "hue") {
+            view.setHue(requireFloat(value, "hue"));
+        } else if (propertyId == "colour") {
+            view.setColour(requireColor(value, "colour"));
+        } else {
+            throw std::invalid_argument("Unknown CharacterView property " +
+                                        propertyId);
+        }
+    };
+    characterView.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                                const sf::Vector2f& renderScale) {
+        CharacterView& view =
+            requireControlType<CharacterView>(control, "Engine.CharacterView");
+        view.resize(size);
+        view.setScale(renderScale);
+    };
+    registry.registerAdapter<CharacterViewUiControlAdapterTag>(
+        std::move(characterView));
+
+    UiControlAdapterRegistry::Adapter functionalImage;
+    functionalImage.factory = [](const UiControlProperties& properties) {
+        std::shared_ptr<FunctionalImage> result =
+            std::make_shared<FunctionalImage>(
+                loadTexture(stringProperty(properties, "texture")),
+                optionalIntRectProperty(properties, "textureRect"));
+        if (const auto drawAs = properties.find("drawAs");
+            drawAs != properties.end()) {
+            result->setDrawAs(imageDrawAs(drawAs->second));
+        }
+        result->setColour(
+            colorProperty(properties, "colour", sf::Color::White));
+        return result;
+    };
+    functionalImage.setter = [](ControlBase& control,
+                                const std::string& propertyId,
+                                const UiControlPropertyValue& value) {
+        FunctionalImage& image = requireControlType<FunctionalImage>(
+            control, "Engine.FunctionalImage");
+        if (propertyId == "texture") {
+            image.setTexture(loadTexture(requireString(value, "texture")),
+                             true);
+        } else if (propertyId == "textureRect") {
+            if (isNil(value)) {
+                image.setTextureRect(
+                    {{0, 0},
+                     {static_cast<int>(image.getTexture().getSize().x),
+                      static_cast<int>(image.getTexture().getSize().y)}});
+            } else {
+                image.setTextureRect(requireIntRect(value, "textureRect"));
+            }
+        } else if (propertyId == "drawAs") {
+            image.setDrawAs(imageDrawAs(value));
+        } else if (propertyId == "colour") {
+            image.setColour(requireColor(value, "colour"));
+        } else {
+            throw std::invalid_argument("Unknown FunctionalImage property " +
+                                        propertyId);
+        }
+    };
+    functionalImage.arranger = [](ControlBase& control,
+                                  const sf::Vector2f& size,
+                                  const sf::Vector2f& renderScale) {
+        arrangeByScale(control, size, renderScale);
+    };
+    registry.registerAdapter<FunctionalImageUiControlAdapterTag>(
+        std::move(functionalImage));
+}
+
+void UiControlAdapterRegistry::BuilderImpl::registerSkinnedAdapters(
+    UiControlAdapterRegistry& registry) {
+    using namespace ui_control_adapter_detail;
+
+    UiControlAdapterRegistry::Adapter window;
+    window.factory = [](const UiControlProperties& properties) {
+        const sf::Vector2u size =
+            vector2uProperty(properties, "size", {160u, 96u});
+        auto window = std::make_shared<Window>(
+            sf::IntRect({0, 0},
+                        {static_cast<int>(size.x), static_cast<int>(size.y)}),
+            loadWindowSkin(stringProperty(properties, "windowSkin")),
+            boolProperty(properties, "repeated", false));
+        window->setColour(
+            colorProperty(properties, "colour", sf::Color::White));
+        return window;
+    };
+    window.setter = [](ControlBase& control, const std::string& propertyId,
+                       const UiControlPropertyValue& value) {
+        Window& window = requireControlType<Window>(control, "Engine.Window");
+        if (propertyId == "size") {
+            window.resize(requireVector2u(value, "size"));
+            return;
+        }
+        if (propertyId == "colour") {
+            window.setColour(requireColor(value, "colour"));
+            return;
+        }
+        throw std::invalid_argument(propertyId +
+                                    " is a construction-only Window property");
+    };
+    window.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                         const sf::Vector2f& renderScale) {
+        Window& window = requireControlType<Window>(control, "Engine.Window");
+        window.resize(
+            {static_cast<unsigned int>(std::max(0.0f, std::round(size.x))),
+             static_cast<unsigned int>(std::max(0.0f, std::round(size.y)))});
+        window.setScale(renderScale);
+    };
+    registry.registerAdapter<WindowUiControlAdapterTag>(std::move(window));
+
+    UiControlAdapterRegistry::Adapter rect;
+    rect.factory = [](const UiControlProperties& properties) {
+        const sf::Vector2f size =
+            vector2fProperty(properties, "size", {160.0f, 96.0f});
+        const std::string curve = stringProperty(properties, "opacityCurve");
+        return std::make_shared<Rect>(
+            sf::IntRect({0, 0}, {static_cast<int>(std::round(size.x)),
+                                 static_cast<int>(std::round(size.y))}),
+            loadWindowSkin(stringProperty(properties, "windowSkin")),
+            curve.empty() ? std::nullopt : std::optional<std::string>(curve));
+    };
+    rect.setter = [](ControlBase& control, const std::string& propertyId,
+                     const UiControlPropertyValue& value) {
+        Rect& rect = requireControlType<Rect>(control, "Engine.Rect");
+        if (propertyId == "size") {
+            rect.resize(requireVector2f(value, "size"));
+            return;
+        }
+        throw std::invalid_argument(propertyId +
+                                    " is a construction-only Rect property");
+    };
+    rect.arranger = [](ControlBase& control, const sf::Vector2f& size,
+                       const sf::Vector2f& renderScale) {
+        Rect& rect = requireControlType<Rect>(control, "Engine.Rect");
+        rect.resize(size);
+        rect.setScale(renderScale);
+    };
+    registry.registerAdapter<RectUiControlAdapterTag>(std::move(rect));
+}

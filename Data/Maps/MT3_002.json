@@ -1,0 +1,1012 @@
+{
+  "mapName": "{MT3_002}",
+  "width": 11,
+  "height": 11,
+  "layerOrder": [
+    "floor",
+    "default"
+  ],
+  "layers": {
+    "floor": {
+      "layerName": "floor",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      ],
+      "autoTiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "shaderPath": "",
+      "actors": []
+    },
+    "default": {
+      "layerName": "default",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          7,
+          null,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          7,
+          null,
+          7,
+          7,
+          null,
+          7,
+          null,
+          null,
+          null,
+          7
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          7,
+          7,
+          null,
+          7,
+          null,
+          7,
+          7,
+          7,
+          null,
+          null
+        ],
+        [
+          7,
+          null,
+          null,
+          null,
+          7,
+          null,
+          7,
+          7,
+          7,
+          7,
+          null
+        ],
+        [
+          null,
+          7,
+          null,
+          7,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          7,
+          null,
+          7,
+          7
+        ],
+        [
+          7,
+          null,
+          7,
+          7,
+          7,
+          7,
+          7,
+          null,
+          null,
+          null,
+          7
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          7
+        ],
+        [
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          7
+        ],
+        [
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          7,
+          7,
+          7,
+          7,
+          7
+        ]
+      ],
+      "autoTiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "shaderPath": "",
+      "actors": []
+    }
+  },
+  "actors": {
+    "floor": [
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_2_3_2",
+        "position": [
+          2,
+          3
+        ]
+      }
+    ],
+    "default": [
+      {
+        "tag": "MT3_002.BP_Downstair_default_5_0",
+        "bp": "Data.Blueprints.Teleportations.BP_Downstair",
+        "position": [
+          5,
+          0
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Upstair_default_0_5",
+        "bp": "Data.Blueprints.Teleportations.BP_Upstair",
+        "position": [
+          0,
+          5
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Gem_1_2_default_0_10",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
+        "position": [
+          0,
+          10
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Gem_1_2_default_7_8",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
+        "position": [
+          7,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Gem_2_2_default_9_8",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
+        "position": [
+          9,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Gem_2_2_default_0_3",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
+        "position": [
+          0,
+          3
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Gem_3_1_default_7_0",
+        "bp": "Data.Blueprints.Consumables.BP_Gem_3_1",
+        "position": [
+          7,
+          0
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Bottle_150_default_3_4",
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "position": [
+          3,
+          4
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Bottle_150_default_7_9",
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "position": [
+          7,
+          9
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Bottle_150_default_9_9",
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "position": [
+          9,
+          9
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Bottle_150_default_8_2",
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "position": [
+          8,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Bottle_150_default_9_1",
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "position": [
+          9,
+          1
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Bottle_400_default_2_10",
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
+        "position": [
+          2,
+          10
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Door_Y_default_1_7",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "position": [
+          1,
+          7
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Door_Y_default_2_1",
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "position": [
+          2,
+          1
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Door_B_default_10_4",
+        "bp": "Data.Blueprints.Doors.BP_Door_B",
+        "position": [
+          10,
+          4
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Door_B_default_8_6",
+        "bp": "Data.Blueprints.Doors.BP_Door_B",
+        "position": [
+          8,
+          6
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_4_2",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          4,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_0_0",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_1_0",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          1,
+          0
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_1_9",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          1,
+          9
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_4_10",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          4,
+          10
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_8_9",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          8,
+          9
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_Y_default_9_2",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "position": [
+          9,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_B_default_5_9",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_B",
+        "position": [
+          5,
+          9
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_B_default_5_2",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_B",
+        "position": [
+          5,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Item_Key_R_default_6_2",
+        "bp": "Data.Blueprints.Items.BP_Item_Key_R",
+        "position": [
+          6,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E00_shilaimu_default_5_5",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E00_shilaimu",
+        "position": [
+          5,
+          5
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E00_shilaimu_default_3_3",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E00_shilaimu",
+        "position": [
+          3,
+          3
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E01_hongseshilaimu_default_2_5",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E01_hongseshilaimu",
+        "position": [
+          2,
+          5
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E01_hongseshilaimu_default_7_7",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E01_hongseshilaimu",
+        "position": [
+          7,
+          7
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E01_hongseshilaimu_default_9_7",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E01_hongseshilaimu",
+        "position": [
+          9,
+          7
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E02_bianfu_default_1_2",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E02_bianfu",
+        "position": [
+          1,
+          2
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E02_bianfu_default_1_8",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E02_bianfu",
+        "position": [
+          1,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E03_shuishushi_default_2_0",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E03_shuishushi",
+        "position": [
+          2,
+          0
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E03_shuishushi_default_8_1",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E03_shuishushi",
+        "position": [
+          8,
+          1
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E04_shouwei_default_10_3",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E04_shouwei",
+        "position": [
+          10,
+          3
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E04_shouwei_default_8_8",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E04_shouwei",
+        "position": [
+          8,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_Enemy_E05_leishushi_default_3_8",
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E05_leishushi",
+        "position": [
+          3,
+          8
+        ]
+      },
+      {
+        "tag": "MT3_002.BP_NPC_03_default_1_4",
+        "bp": "Data.Blueprints.NPCs.BP_NPC_03",
+        "position": [
+          1,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_4_1",
+        "position": [
+          4,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_8_3",
+        "position": [
+          8,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_10_7",
+        "position": [
+          10,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_6_8",
+        "position": [
+          6,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_3_9",
+        "position": [
+          3,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_6_6",
+        "position": [
+          6,
+          6
+        ]
+      }
+    ]
+  },
+  "ambientLight": [
+    72,
+    72,
+    72,
+    255
+  ],
+  "lights": [],
+  "bgm": "/Game/Assets/Musics/sound-2.mp3",
+  "bgmFilter": {},
+  "bgs": "",
+  "bgsFilter": {},
+  "fog": "",
+  "fogPower": 0,
+  "fogOx": 0,
+  "fogOy": 0,
+  "fogDistort": 0,
+  "panorama": "",
+  "BPClassVarChanged": {
+    "Actors_BP_Fire_Left_default_2_3_2": {
+      "defaultTranslation": [
+        36,
+        8
+      ],
+      "defaultRotation": -45
+    }
+  },
+  "type": "map"
+}

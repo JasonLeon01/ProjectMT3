@@ -1,0 +1,40 @@
+#pragma once
+
+#include <cstddef>
+
+#include "LuaSFValueTraits.hpp"
+
+#if defined(_WIN32)
+#if defined(LUASF_BUILD_DLL)
+#define LUASF_API __declspec(dllexport)
+#else
+#define LUASF_API __declspec(dllimport)
+#endif
+#elif defined(__GNUC__) || defined(__clang__)
+#define LUASF_API __attribute__((visibility("default")))
+#else
+#define LUASF_API
+#endif
+
+struct lua_State;
+using LuaSFStateEnterHook = int (*)(lua_State* state, void* context) noexcept;
+using LuaSFStateTryEnterHook = int (*)(lua_State* state, void* context) noexcept;
+using LuaSFStateLeaveHook = void (*)(lua_State* state, void* context) noexcept;
+
+extern "C" LUASF_API int LuaSF_initialize_state(lua_State* state);
+extern "C" LUASF_API int LuaSF_set_state_execution_hooks(
+    lua_State* state,
+    LuaSFStateEnterHook enterHook,
+    LuaSFStateTryEnterHook tryEnterHook,
+    LuaSFStateLeaveHook leaveHook,
+    void* context);
+extern "C" LUASF_API void LuaSF_quiesce_state(lua_State* state) noexcept;
+extern "C" LUASF_API void LuaSF_shutdown_state(lua_State* state);
+extern "C" LUASF_API int LuaSF_enter_state(lua_State* state);
+extern "C" LUASF_API int LuaSF_try_enter_state(lua_State* state) noexcept;
+extern "C" LUASF_API void LuaSF_leave_state(lua_State* state) noexcept;
+extern "C" LUASF_API int LuaSF_take_deferred_callback_error(
+    lua_State* state, char* buffer, std::size_t capacity);
+extern "C" LUASF_API int LuaSF_register(lua_State* state);
+extern "C" LUASF_API int LuaSF_write_stub(lua_State* state,
+                                                  const char* path);

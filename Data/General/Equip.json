@@ -1,0 +1,94 @@
+{
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this equipment.",
+      "defaultValue": ""
+    },
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this equipment.",
+      "defaultValue": ""
+    },
+    "icon": {
+      "type": "file",
+      "comment": "The icon asset logical path.",
+      "base": "Icons",
+      "defaultValue": ""
+    },
+    "slot": {
+      "type": "string",
+      "comment": "The Class slot key occupied by this equipment.",
+      "defaultValue": ""
+    },
+    "attrPlus": {
+      "type": "dict",
+      "comment": "Attribute names mapped to integer modifiers applied while this equipment is equipped.",
+      "defaultValue": {},
+      "valueType": "int"
+    },
+    "AnimationKey": {
+      "type": "string",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
+    },
+    "fatiguePlus": {
+      "type": "int",
+      "defaultValue": 0
+    },
+    "breathMinus": {
+      "type": "int",
+      "defaultValue": 0
+    }
+  },
+  "members": {
+    "HuiRen": {
+      "name": "{HUIREN}",
+      "desc": "{HUIREN_DESC}",
+      "icon": "/Game/Assets/Icons/彩虹岛精灵石05.png",
+      "slot": "weapon",
+      "attrPlus": {
+        "ATK": 8,
+        "MAGIC": 2
+      },
+      "_graph": {
+        "nodeGraph": {
+          "onEquip": {
+            "nodes": [],
+            "links": []
+          },
+          "onUnequip": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onEquip": null,
+          "onUnequip": null
+        }
+      },
+      "AnimationKey": "waterspread",
+      "fatiguePlus": 15,
+      "breathMinus": 1
+    },
+    "HuiMu": {
+      "name": "{HUIMU}",
+      "desc": "{HUIMU_DESC}",
+      "icon": "/Game/Assets/Icons/彩虹岛盾牌17.png",
+      "slot": "shield",
+      "attrPlus": {
+        "DEF": 8,
+        "MAGIC": 2
+      },
+      "AnimationKey": "26_dunsui",
+      "fatiguePlus": 20,
+      "breathMinus": 1
+    }
+  },
+  "events": [
+    "onEquip",
+    "onUnequip"
+  ]
+}

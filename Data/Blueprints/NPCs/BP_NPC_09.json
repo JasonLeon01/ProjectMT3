@@ -1,0 +1,259 @@
+{
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "animatable": true,
+    "material": {
+      "lightBlock": 0.4,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/npcs/classic-npcs-50F-single.png",
+    "tag": "",
+    "defaultRect": [
+      [
+        0,
+        0,
+        32,
+        32
+      ]
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [
+          {
+            "nodeFunction": "GlobalFunctions.Utils.SELF",
+            "params": [],
+            "pos": [
+              -720.0,
+              634.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_ELDER}",
+              "{DC_NPC09_1}",
+              null
+            ],
+            "pos": [
+              0.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC09_2}",
+              null
+            ],
+            "pos": [
+              720.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_ELDER}",
+              "{DC_NPC09_3}",
+              null
+            ],
+            "pos": [
+              1440.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC09_4}",
+              null
+            ],
+            "pos": [
+              2160.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_ELDER}",
+              "{DC_NPC09_5}",
+              null
+            ],
+            "pos": [
+              2880.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
+            "params": [],
+            "pos": [
+              0,
+              954
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.AddItem",
+            "params": [
+              "SDoor",
+              3
+            ],
+            "pos": [
+              3600,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
+            "pos": [
+              5040,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Utils.SetGameVariable",
+            "params": [
+              "sdoor",
+              true
+            ],
+            "pos": [
+              4320,
+              314
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": 0,
+            "right": 1,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 1,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 2,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 3,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 4,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 6,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 6,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 5,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 7,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 9,
+            "right": 8,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          }
+        ]
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": 1,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

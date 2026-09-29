@@ -1,0 +1,173 @@
+#pragma once
+
+#include <CoreMinimal.hpp>
+
+#include <EngineRuntimeApi.hpp>
+
+#include <Input/InputNamedValue.hpp>
+#include <SFML/Window/Keyboard.hpp>
+#include <UI/ControlBase.hpp>
+#include <UI/FunctionalBase.hpp>
+#include <UI/PlainText.hpp>
+#include <UI/PlainTextConfig.hpp>
+
+class PlainText;
+class Rect;
+class SolidRect;
+
+namespace ludork::engine::ui_interaction {
+class GamepadGlyphImpl;
+}
+
+BIND_CLASS(callbacks = true)
+class LUDORK_ENGINE_API TabView : public ControlBase, public FunctionalBase {
+public:
+    LUDORK_CAST_DERIVED(TabView, ControlBase, FunctionalBase)
+
+    BIND_CLASS(copyable = true, table_init = true, strict_fields = true)
+    struct KeyHint {
+        BIND_PROPERTY()
+        std::optional<sf::Keyboard::Key> Keyboard;
+
+        BIND_PROPERTY()
+        std::optional<InputNamedValue> Joystick;
+    };
+
+    BIND_INIT(defaults = {0})
+    TabView(const sf::Vector2f& size, const sf::Image& windowSkin,
+            std::shared_ptr<PlainTextConfig> textConfig,
+            std::vector<std::string> items, int selectedIndex = 0);
+    virtual ~TabView();
+
+    TabView(const TabView&) = delete;
+    TabView& operator=(const TabView&) = delete;
+    TabView(TabView&&) = delete;
+    TabView& operator=(TabView&&) = delete;
+
+    BIND_METHOD(Pure = true)
+    virtual sf::Vector2f getSize() const override;
+
+    BIND_METHOD()
+    void resize(const sf::Vector2f& size);
+
+    BIND_METHOD()
+    void setWindowSkin(const sf::Image& windowSkin);
+
+    BIND_METHOD()
+    void setTextConfig(std::shared_ptr<PlainTextConfig> textConfig);
+
+    BIND_METHOD(Pure = true)
+    std::vector<std::string> getItems() const;
+
+    BIND_METHOD()
+    void setItems(const std::vector<std::string>& items);
+
+    BIND_METHOD()
+    void setOnSelectedIndexChanged(
+        std::optional<std::function<void(int)>> callback);
+
+    BIND_METHOD(Pure = true)
+    int getSelectedIndex() const;
+
+    BIND_METHOD()
+    void setSelectedIndex(int index);
+
+    BIND_METHOD(Pure = true)
+    std::string getSelectedItem() const;
+
+    BIND_METHOD()
+    bool selectPrevious();
+
+    BIND_METHOD()
+    bool selectNext();
+
+    BIND_METHOD()
+    bool handleNavigationInput();
+
+    BIND_METHOD()
+    void setCursorSound(const std::string& filename);
+
+    BIND_METHOD(Pure = true)
+    const std::string& getCursorSound() const;
+
+    BIND_METHOD()
+    void setKeyHint(const KeyHint& leftHint, const KeyHint& rightHint);
+
+    BIND_METHOD(Pure = true)
+    virtual sf::FloatRect getLocalBounds() const override;
+
+    BIND_METHOD()
+    virtual void update(float deltaTime) override;
+
+    BIND_METHOD()
+    virtual void onClick(const UiInputEventArguments& arguments) override;
+
+    BIND_METHOD()
+    virtual bool onMouseButtonDown(
+        const UiInputEventArguments& arguments) override;
+
+    BIND_METHOD()
+    virtual void onMouseMoved(const UiInputEventArguments& arguments) override;
+
+    void refreshDisplayScale() override;
+
+    void releaseRuntimeCallbacks() noexcept override;
+
+protected:
+    void _refreshPresentationColour() override;
+
+    BIND_METHOD()
+    virtual void draw(sf::RenderTarget& target,
+                      sf::RenderStates states) const override;
+
+    bool acceptsTouchCapture() const override;
+    void onTouchCaptureBegan(const sf::Vector2f& position) override;
+
+private:
+    struct KeyHintText {
+        std::optional<std::string> keyboard;
+        std::optional<InputNamedValue> joystick;
+    };
+
+    static sf::Vector2f normalizedSize(const sf::Vector2f& size);
+    static int clampedIndex(int index, std::size_t count);
+    static KeyHintText parseKeyHint(const KeyHint& values,
+                                    const std::string& source);
+    static bool anyJoystickConnected();
+    static bool keyboardHintsAvailableWithoutJoystick();
+
+    bool setSelectedIndexInternal(int index, bool playSound);
+    bool selectPointerPosition(const sf::Vector2f& screenPosition);
+    void selectMouseHover(const UiInputEventArguments& arguments);
+    std::optional<int> tabIndexAt(const sf::Vector2f& localPosition) const;
+    sf::Vector2f toLocalPosition(const sf::Vector2f& screenPosition) const;
+    void rebuildVisuals();
+    void rebuildLabels();
+    void rebuildHintVisuals();
+    void layoutVisuals();
+    void layoutLabel(PlainText& label, int index) const;
+    void layoutHint(ludork::engine::ui_interaction::GamepadGlyphImpl& glyph,
+                    SolidRect& background, bool left) const;
+    void updateSelectionVisual();
+    void updateHintVisibility();
+    void applyPresentationColour();
+
+    sf::Vector2f size_;
+    sf::Image windowSkin_;
+    std::shared_ptr<PlainTextConfig> textConfig_;
+    std::vector<std::string> items_;
+    int selectedIndex_ = 0;
+    KeyHintText leftHint_;
+    KeyHintText rightHint_;
+    std::function<void(int)> selectedIndexChangedCallback_;
+    std::string cursorSound_;
+    std::unique_ptr<Rect> selectionRect_;
+    std::vector<std::unique_ptr<PlainText>> labels_;
+    std::unique_ptr<SolidRect> leftHintBackground_;
+    std::unique_ptr<SolidRect> rightHintBackground_;
+    std::unique_ptr<ludork::engine::ui_interaction::GamepadGlyphImpl>
+        leftHintGlyph_;
+    std::unique_ptr<ludork::engine::ui_interaction::GamepadGlyphImpl>
+        rightHintGlyph_;
+    bool suppressNextClick_ = false;
+};

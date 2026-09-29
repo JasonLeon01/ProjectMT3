@@ -1,0 +1,392 @@
+---@meta Source.Scenes.SceneMap
+
+---@class Source.Scenes.SceneMap.PendingTeleporterTransfer
+---@field targetMap      string
+---@field targetPosition sf.Vector2i
+---@field moveEnabled    boolean
+---@field findNearest    boolean
+---@field record         boolean
+
+---@class Source.Scenes.SceneMap.PendingWorldTransfer
+---@field targetMap      string
+---@field targetPosition sf.Vector2i
+
+---@class Source.Scenes.SceneMap.DialogueLocaleContext
+---@field name         string
+---@field localeArgs   table<string, any>
+---@field localVars    table<string, any>
+---@field instanceVars table<string, any>
+
+---@class Source.Scenes.SceneMap.DialogueMessageLocaleSource
+---@field kind    "message"
+---@field context Source.Scenes.SceneMap.DialogueLocaleContext
+---@field content string
+
+---@class Source.Scenes.SceneMap.DialogueSelectionLocaleSource
+---@field kind    "selection"
+---@field context Source.Scenes.SceneMap.DialogueLocaleContext
+---@field content string[]
+
+---@alias Source.Scenes.SceneMap.BlockingWindow Source.Windows.WindowShop | Source.Windows.WindowAttrShop | Source.Windows.WindowEnemyBook | Source.Windows.WindowEnemyEncyclopedia | Source.Windows.WindowFloorTeleporter | Source.Windows.WindowPlayerName | Source.Windows.WindowBattle | Source.Windows.WindowMagicDoor | Source.Windows.WindowHotkeys
+
+---@class Source.Scenes.SceneMap.SceneMap: Source.Gameplay.GameplayScene
+---@field new                                   fun(): Source.Scenes.SceneMap.SceneMap
+---@field inst                                  Source.GameInstance.GameInstance
+---@field player                                Source.MapActors.Player.Player
+---@field _windowBattle                         Internal.UIBase.LazyWindow<Source.Windows.WindowBattle>
+---@field _battleActive                         boolean | nil
+---@field _battleMoveEnabled                    boolean
+---@field _gameplayRequestsActive               boolean
+---@field _gameOverRequest                      { player: Source.MapActors.Player.Player, gameMap: GameMap } | nil
+---@field _mapBuilder                           Source.SceneComponents.SceneMapBuilder
+---@field _mapAudio                             Source.SceneComponents.SceneMapAudioController
+---@field _tutorials                            Source.SceneComponents.Tutorial
+---@field _playerHUD                            Source.Windows.PlayerAttrHUD
+---@field _messageWindow                        Internal.UIBase.LazyWindow<Source.Windows.WindowMessage>
+---@field _windowPlayerName                     Internal.UIBase.LazyWindow<Source.Windows.WindowPlayerName>
+---@field _playerNameMoveEnabledBeforeOpen      boolean
+---@field _windowItem                           Internal.UIBase.LazyWindow<Source.Windows.WindowItem>
+---@field _windowEquip                          Internal.UIBase.LazyWindow<Source.Windows.WindowEquip>
+---@field _windowShop                           Internal.UIBase.LazyWindow<Source.Windows.WindowShop>
+---@field _windowAttrShop                       Internal.UIBase.LazyWindow<Source.Windows.WindowAttrShop>
+---@field _windowEnemyBook                      Internal.UIBase.LazyWindow<Source.Windows.WindowEnemyBook>
+---@field _windowEnemyEncyclopedia              Internal.UIBase.LazyWindow<Source.Windows.WindowEnemyEncyclopedia>
+---@field _windowFloorTeleporter                Internal.UIBase.LazyWindow<Source.Windows.WindowFloorTeleporter>
+---@field _windowMagicDoor                      Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor>
+---@field _windowHotkeys                        Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
+---@field _shortcutMoveEnabledBeforeOpen        boolean
+---@field _windowSaveLoad                       Internal.UIBase.LazyWindow<Source.Windows.WindowSaveLoad>
+---@field _windowMenu                           Internal.UIBase.LazyWindow<Source.Windows.WindowMenu>
+---@field _configWindow                         Internal.UIBase.LazyWindow<Source.Windows.ConfigWindow>
+---@field _blockingWindows                      Internal.UIBase.LazyWindow<Source.Scenes.SceneMap.BlockingWindow>[]
+---@field _regionTitleUI                        Source.Scenes.SceneMap.RegionTitle.Controller
+---@field _regionTitleText                      Engine.PlainText
+---@field _localeChangedToken                   integer | nil
+---@field _dialogueLocaleSource                 Source.Scenes.SceneMap.DialogueMessageLocaleSource | Source.Scenes.SceneMap.DialogueSelectionLocaleSource | nil
+---@field _gameMap                              GameMap | nil
+---@field _cachedMapFile                        string | nil
+---@field _currentRegion                        string | nil
+---@field _mapClickMoveBlockedUntilLateTick     boolean
+---@field _mapInputBlockFrames                  integer
+---@field _pendingMenuOpen                      boolean
+---@field _pendingSaveLoadOpen                  "load" | "save" | nil
+---@field _pendingQuickSave                     boolean
+---@field _pendingTeleporterTransfer            Source.Scenes.SceneMap.PendingTeleporterTransfer | nil
+---@field _pendingWorldTransfer                 Source.Scenes.SceneMap.PendingWorldTransfer | nil
+---@field _mapTransferInProgress                boolean
+---@field _worldEnvironmentKey                  string | nil
+---@field _worldAmbientStartColour              sf.Color | nil
+---@field _worldAmbientTargetColour             sf.Color | nil
+---@field _worldAmbientTransitionElapsed        number
+---@field _shopMoveEnabledBeforeOpen            boolean
+---@field _attrShopMoveEnabledBeforeOpen        boolean
+---@field _enemyBookMoveEnabledBeforeOpen       boolean
+---@field _floorTeleporterMoveEnabledBeforeOpen boolean
+---@field _itemMoveEnabledBeforeOpen            boolean
+---@field _equipMoveEnabledBeforeOpen           boolean
+---@field _saveLoadMoveEnabledBeforeOpen        boolean
+local Scene = {}
+
+---@return boolean
+function Scene:showMagicDoor() end
+
+---@return boolean
+function Scene:showHotkeys() end
+
+function Scene:_onMapShortcutClose() end
+
+---@param player Source.MapActors.Player.Player
+---@param enemy  Source.MapActors.Enemy
+---@return boolean
+function Scene:requestBattle(player, enemy) end
+
+function Scene:cancelBattle() end
+
+---@return boolean
+function Scene:_isInDialogue() end
+
+---@return boolean
+function Scene:_isMenuBlocking() end
+
+---@return fun(): boolean
+function Scene:openPlayerName() end
+
+---@private
+function Scene:_onPlayerNameClose() end
+
+---@param source Source.Scenes.SceneMap.DialogueMessageLocaleSource
+---@return string, string
+function Scene.FormatDialogueMessageSource(source) end
+
+---@param source Source.Scenes.SceneMap.DialogueSelectionLocaleSource
+---@return string, string[]
+function Scene.FormatDialogueSelectionSource(source) end
+
+---@brief Start with a transition effect.
+function Scene:onEnter() end
+
+---@brief Set the game instance for this scene.
+---
+--- - @param inst The GameInstance to use.
+---@param inst Source.GameInstance.GameInstance
+function Scene:setInst(inst) end
+
+---@brief Create the player HUD and popup factories, then load the starting map.
+function Scene:onCreate() end
+
+---@brief Stop map BGM/BGS and weather when leaving this scene.
+function Scene:onQuit() end
+
+---@brief Ensure map BGM/BGS are stopped when scene is destroyed.
+function Scene:onDestroy() end
+
+---@brief Forward fixed timestep updates to the game map.
+---
+--- - @param fixedDelta Fixed timestep in seconds.
+---@param fixedDelta number
+function Scene:onFixedTick(fixedDelta) end
+
+---@brief Handle map hotkeys on the window thread.
+function Scene:onInput() end
+
+---@brief Forward per-frame updates to the game map and handle menu open trigger.
+---
+--- - @param deltaTime Elapsed time in seconds.
+---@param deltaTime number
+function Scene:onTick(deltaTime) end
+
+---@brief Forward late-update to the game map.
+---
+--- - @param deltaTime Elapsed time in seconds.
+---@param deltaTime number
+function Scene:onLateTick(deltaTime) end
+
+---@brief Load and generate a game map from data.
+---
+--- - @param mapPath Path to the map data file.
+--- - @return Resolved map data file path.
+---@param mapPath         string
+---@param initialPosition sf.Vector2i | nil
+---@return string
+function Scene:loadMap(mapPath, initialPosition) end
+
+---@return GameMap
+function Scene:getGameMap() end
+
+---@return Source.GameInstance.GameInstance
+function Scene:getGameInstance() end
+
+function Scene:refreshLocale() end
+
+---@param teleporter Source.MapActors.Teleporter.Teleporter
+---@param step       integer
+---@return boolean
+function Scene:requestFloorStep(teleporter, step) end
+
+---@param player Source.MapActors.Player.Player
+---@param delay  number
+function Scene:requestGameOver(player, delay) end
+
+---@brief Show a dialogue message window.
+---
+--- - @param name Speaker name.
+--- - @param message Message text.
+--- - @param refActor Optional reference actor for positioning.
+--- - @param localeArgs Optional raw locale values inserted after translating the message template.
+--- - @return A callable condition function that returns True when dialogue finishes.
+---@param name        string
+---@param message     string
+---@param refActor    Engine.Actor | nil
+---@param localeArgs? table<string, any>
+---@return function
+function Scene:showMessage(name, message, refActor, localeArgs) end
+
+---@brief Show a selection window with multiple options.
+---
+--- - @param name Window title.
+--- - @param options List of option strings.
+--- - @param refActor Optional reference actor for positioning.
+--- - @param allowCancel Whether the player can cancel.
+--- - @param localeArgs Optional raw locale values inserted after translating each text template.
+--- - @return A callable that returns the selected option index, or -1 for cancel.
+---@param name        string
+---@param options     string[]
+---@param refActor    Engine.Actor | nil
+---@param allowCancel boolean
+---@param localeArgs? table<string, any>
+---@return function
+function Scene:showSelection(name, options, refActor, allowCancel, localeArgs) end
+
+---@brief Apply a loaded game instance and force-reload the cached map.
+---
+--- - @param inst The restored game instance from a save file.
+---@param inst Source.GameInstance.GameInstance
+function Scene:applyLoadedGame(inst) end
+
+---@brief Bind the primary player, rebind UI, and load that player's stored map.
+function Scene:applyPrimaryPlayer() end
+
+---@brief Show the current-map monster handbook.
+---@return boolean
+function Scene:showEnemyBook() end
+
+---@brief Show the visited-floor teleporter preview window.
+---@return boolean
+function Scene:showFloorTeleporter() end
+
+---@brief Request the in-game menu to open on the next render pass.
+---@return boolean
+function Scene:openMenu() end
+
+---@brief Open the save/load UI on the Save tab without the menu.
+---@return boolean
+function Scene:openSaveUI() end
+
+---@brief Open the save/load UI on the Load tab without the menu.
+---@return boolean
+function Scene:openLoadUI() end
+
+---@brief Open the item window without the menu.
+---@return boolean
+function Scene:openItemUI() end
+
+---@brief Open the equipment window without the menu.
+---@return boolean
+function Scene:openEquipUI() end
+
+---@brief Quick-save to the next empty standard slot after the next render pass.
+---@return boolean
+function Scene:quickSave() end
+
+---@brief Quick-load the most recently modified standard save.
+---@return boolean
+function Scene:quickLoad() end
+
+---@brief Open the map-bound shop and wait until it closes.
+---
+--- - @param buyItemIDs Item IDs available for purchase.
+--- - @param canSell Whether selling is available.
+--- - @return A condition callable that becomes True when the shop closes.
+---@param buyItemIDs string[]
+---@param canSell    boolean
+---@return function
+function Scene:openShop(buyItemIDs, canSell) end
+
+---@brief Open the map-bound attribute shop and wait until it closes.
+---
+--- - @param actor The actor whose avatar is shown.
+--- - @param shopName Locale key for the shop name.
+--- - @param shopDescription Locale key for the shop description.
+--- - @param abilities Mapping of player attribute names to purchased increments.
+--- - @param priceRef Mutable reference containing a shared price or ordered price list.
+--- - @param priceIncrement Amount added to the price after each purchase.
+--- - @param moneyName Player info component attribute used as currency.
+--- - @return A condition callable that becomes True when the shop closes.
+---@param actor           Engine.Actor
+---@param shopName        string
+---@param shopDescription string
+---@param abilities       table<string, integer>
+---@param priceRef        GlobalFunctions.Utils.NodeReference<integer | integer[]>
+---@param priceIncrement  integer
+---@param moneyName       string
+---@return function
+function Scene:openAttrShop(actor, shopName, shopDescription, abilities, priceRef, priceIncrement, moneyName) end
+
+---@param targetMap      string
+---@param targetPosition sf.Vector2i
+---@param moveEnabled    boolean
+---@param findNearest    boolean
+---@param record         boolean
+---@return boolean
+function Scene:requestTeleporterTransfer(targetMap, targetPosition, moveEnabled, findNearest, record) end
+
+---@brief Transition to a map and set the player position.
+---
+--- - @param mapPath Path to the map data file.
+--- - @param pos The position to place the player.
+--- - @param blockTransition Whether to skip the map transition effect.
+---@param mapPath          string
+---@param pos              sf.Vector2i | nil
+---@param blockTransition? boolean
+function Scene:gotoMapAndPos(mapPath, pos, blockTransition) end
+
+---@brief Teleport the player to the centre-symmetric tile on the current map when passable.
+---
+--- - @return True when the teleport succeeds.
+---@return boolean
+function Scene:tryCenterSymmetricTeleport() end
+
+---@brief Teleport the player to the same coordinates on an adjacent region floor when passable.
+---
+--- - @param step Region-list offset; +1 goes upstairs and -1 goes downstairs.
+--- - @return True when the teleport succeeds.
+---@param step integer
+---@return boolean
+function Scene:tryAdjacentFloorSamePos(step) end
+
+---@brief Record an added actor for persistence.
+---
+--- - @param actor The added actor.
+---@param actor Engine.Actor
+function Scene:recordAddedActor(actor) end
+
+---@brief Record an actor position change for persistence, including an authored root's world-region ownership.
+---
+--- - @param actor The moved actor.
+---@param actor    Engine.Actor
+---@param position sf.Vector2i | nil
+function Scene:recordActorPosition(actor, position) end
+
+---@brief Record a destroyed actor for persistence.
+---
+--- - @param actor The destroyed actor.
+---@param actor Engine.Actor
+function Scene:recordDestroyedActor(actor) end
+
+---@brief Record a destroyed Actor by map-placement tag and remove its resident world instance when present.
+---
+--- The lookup never loads an Unloaded world child. A missing resident Actor still leaves the tag recorded.
+---@param actorTag string
+function Scene:recordDestroyedActorTag(actorTag) end
+
+---@brief Persist terrain changes already applied to the current map.
+---
+--- - @param layerName The changed tile layer.
+--- - @param positions The positions successfully changed by GameMap.
+---@param layerName string
+---@param positions sf.Vector2i[]
+function Scene:recordTerrainDestructions(layerName, positions) end
+
+---@param deltaTime number
+---@param force     boolean | nil
+function Scene:_updateWorldEnvironment(deltaTime, force) end
+
+---@brief Replace the current map BGM.
+---
+--- - @param bgm Canonical music asset path under /Game/Assets/Musics.
+--- - @param bgmFilter Optional music filter to apply.
+---@param bgm       string
+---@param bgmFilter Engine.MusicFilter | nil
+function Scene:playBgm(bgm, bgmFilter) end
+
+---@brief Set a filter attribute on the current BGM music.
+---
+--- - @param attr The filter attribute name.
+--- - @param value The filter attribute value.
+---@param attr  string
+---@param value Source.SceneComponents.MusicFilterValue
+function Scene:setBgmFilter(attr, value) end
+
+---@brief Set a filter attribute on the current BGS music.
+---
+--- - @param attr The filter attribute name.
+--- - @param value The filter attribute value.
+---@param attr  string
+---@param value Source.SceneComponents.MusicFilterValue
+function Scene:setBgsFilter(attr, value) end
+
+---@param mapKey string
+---@return string
+function Scene:resolveRegionMapPath(mapKey) end
+
+return Scene

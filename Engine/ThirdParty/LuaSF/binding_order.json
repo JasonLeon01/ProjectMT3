@@ -1,0 +1,373 @@
+{
+  "schema_version": 1,
+  "order_cache_version": 4,
+  "input_hash": "a189db515258f911386bc71ccb3f03117b4fc6bdc7af82617eaf8aed15881cf8",
+  "order": [
+    "bind_Drawable",
+    "bind_Handle",
+    "bind_Angle",
+    "bind_InputStream",
+    "bind_FileInputStream",
+    "bind_MemoryInputStream",
+    "bind_Time",
+    "bind_Clock",
+    "bind_Sleep",
+    "bind_TimeoutWithPredicate",
+    "bind_Vector2",
+    "bind_Vector3",
+    "bind_Version",
+    "bind_Clipboard",
+    "bind_ContextSettings",
+    "bind_Context",
+    "bind_Cursor",
+    "bind_Joystick",
+    "bind_Keyboard",
+    "bind_Mouse",
+    "bind_Sensor",
+    "bind_Event",
+    "bind_Touch",
+    "bind_VideoMode",
+    "bind_WindowEnums",
+    "bind_WindowBase",
+    "bind_Window",
+    "bind_WindowHandle",
+    "bind_BlendMode",
+    "bind_Color",
+    "bind_CoordinateType",
+    "bind_Image",
+    "bind_PrimitiveType",
+    "bind_Rect",
+    "bind_Glyph",
+    "bind_Shader",
+    "bind_StencilMode",
+    "bind_Texture",
+    "bind_Font",
+    "bind_Transform",
+    "bind_Glsl",
+    "bind_RenderStates",
+    "bind_Transformable",
+    "bind_Shape",
+    "bind_CircleShape",
+    "bind_ConvexShape",
+    "bind_RectangleShape",
+    "bind_Sprite",
+    "bind_ClassSupport",
+    "bind_Vertex",
+    "bind_VertexArray",
+    "bind_Text",
+    "bind_VertexBuffer",
+    "bind_View",
+    "bind_RenderTarget",
+    "bind_RenderTexture",
+    "bind_RenderWindow",
+    "bind_Listener",
+    "bind_OutputSoundFile",
+    "bind_PlaybackDevice",
+    "bind_SoundChannel",
+    "bind_InputSoundFile",
+    "bind_SoundBuffer",
+    "bind_SoundFileReader",
+    "bind_SoundFileWriter",
+    "bind_SoundRecorder",
+    "bind_SoundBufferRecorder",
+    "bind_SoundSource",
+    "bind_Sound",
+    "bind_SoundStream",
+    "bind_Music",
+    "bind_IpAddress",
+    "bind_Dns",
+    "bind_Ftp",
+    "bind_Http",
+    "bind_Packet",
+    "bind_Sftp",
+    "bind_Socket",
+    "bind_SocketSelector",
+    "bind_TcpListener",
+    "bind_TcpSocket",
+    "bind_UdpSocket"
+  ],
+  "dependencies": {
+    "bind_Angle": [],
+    "bind_BlendMode": [],
+    "bind_CircleShape": [
+      "bind_Shape",
+      "bind_Vector2"
+    ],
+    "bind_ClassSupport": [
+      "bind_Sprite"
+    ],
+    "bind_Clipboard": [],
+    "bind_Clock": [
+      "bind_Time"
+    ],
+    "bind_Color": [],
+    "bind_Context": [
+      "bind_ContextSettings",
+      "bind_Vector2"
+    ],
+    "bind_ContextSettings": [],
+    "bind_ConvexShape": [
+      "bind_Shape",
+      "bind_Vector2"
+    ],
+    "bind_CoordinateType": [],
+    "bind_Cursor": [
+      "bind_Vector2"
+    ],
+    "bind_Dns": [
+      "bind_IpAddress",
+      "bind_Time"
+    ],
+    "bind_Drawable": [],
+    "bind_Event": [
+      "bind_Joystick",
+      "bind_Keyboard",
+      "bind_Mouse",
+      "bind_Sensor",
+      "bind_Vector2"
+    ],
+    "bind_FileInputStream": [
+      "bind_InputStream"
+    ],
+    "bind_Font": [
+      "bind_Glyph",
+      "bind_Texture"
+    ],
+    "bind_Ftp": [
+      "bind_IpAddress",
+      "bind_Time"
+    ],
+    "bind_Glsl": [
+      "bind_Color",
+      "bind_Transform",
+      "bind_Vector2",
+      "bind_Vector3"
+    ],
+    "bind_Glyph": [
+      "bind_Rect"
+    ],
+    "bind_Handle": [],
+    "bind_Http": [
+      "bind_IpAddress",
+      "bind_Time"
+    ],
+    "bind_Image": [
+      "bind_Color",
+      "bind_Vector2"
+    ],
+    "bind_InputSoundFile": [
+      "bind_SoundChannel",
+      "bind_Time"
+    ],
+    "bind_InputStream": [],
+    "bind_IpAddress": [
+      "bind_Time"
+    ],
+    "bind_Joystick": [],
+    "bind_Keyboard": [],
+    "bind_Listener": [
+      "bind_Angle",
+      "bind_Vector3"
+    ],
+    "bind_MemoryInputStream": [
+      "bind_InputStream"
+    ],
+    "bind_Mouse": [
+      "bind_Vector2"
+    ],
+    "bind_Music": [
+      "bind_SoundStream",
+      "bind_Time"
+    ],
+    "bind_OutputSoundFile": [],
+    "bind_Packet": [],
+    "bind_PlaybackDevice": [],
+    "bind_PrimitiveType": [],
+    "bind_Rect": [
+      "bind_Vector2"
+    ],
+    "bind_RectangleShape": [
+      "bind_Shape",
+      "bind_Vector2"
+    ],
+    "bind_RenderStates": [
+      "bind_BlendMode",
+      "bind_CoordinateType",
+      "bind_Shader",
+      "bind_StencilMode",
+      "bind_Texture",
+      "bind_Transform"
+    ],
+    "bind_RenderTarget": [
+      "bind_Color",
+      "bind_PrimitiveType",
+      "bind_Rect",
+      "bind_StencilMode",
+      "bind_Vector2",
+      "bind_View"
+    ],
+    "bind_RenderTexture": [
+      "bind_RenderTarget",
+      "bind_Texture",
+      "bind_Vector2"
+    ],
+    "bind_RenderWindow": [
+      "bind_RenderTarget",
+      "bind_Vector2",
+      "bind_VideoMode",
+      "bind_Window",
+      "bind_WindowEnums"
+    ],
+    "bind_Sensor": [
+      "bind_Vector3"
+    ],
+    "bind_Sftp": [
+      "bind_IpAddress"
+    ],
+    "bind_Shader": [
+      "bind_Vector2"
+    ],
+    "bind_Shape": [
+      "bind_Color",
+      "bind_Drawable",
+      "bind_Rect",
+      "bind_Texture",
+      "bind_Transformable",
+      "bind_Vector2"
+    ],
+    "bind_Sleep": [
+      "bind_Time"
+    ],
+    "bind_Socket": [],
+    "bind_SocketSelector": [
+      "bind_Time"
+    ],
+    "bind_Sound": [
+      "bind_SoundBuffer",
+      "bind_SoundSource",
+      "bind_Time"
+    ],
+    "bind_SoundBuffer": [
+      "bind_SoundChannel",
+      "bind_Time"
+    ],
+    "bind_SoundBufferRecorder": [
+      "bind_SoundBuffer",
+      "bind_SoundRecorder"
+    ],
+    "bind_SoundChannel": [],
+    "bind_SoundFileReader": [
+      "bind_SoundChannel"
+    ],
+    "bind_SoundFileWriter": [],
+    "bind_SoundRecorder": [
+      "bind_SoundChannel"
+    ],
+    "bind_SoundSource": [
+      "bind_Angle",
+      "bind_Vector3"
+    ],
+    "bind_SoundStream": [
+      "bind_SoundChannel",
+      "bind_SoundSource",
+      "bind_Time"
+    ],
+    "bind_Sprite": [
+      "bind_Color",
+      "bind_Drawable",
+      "bind_Rect",
+      "bind_Texture",
+      "bind_Transformable"
+    ],
+    "bind_StencilMode": [],
+    "bind_TcpListener": [
+      "bind_IpAddress",
+      "bind_Socket"
+    ],
+    "bind_TcpSocket": [
+      "bind_IpAddress",
+      "bind_Socket",
+      "bind_Time"
+    ],
+    "bind_Text": [
+      "bind_Color",
+      "bind_Drawable",
+      "bind_Font",
+      "bind_Glyph",
+      "bind_Rect",
+      "bind_Transformable",
+      "bind_Vector2",
+      "bind_VertexArray"
+    ],
+    "bind_Texture": [
+      "bind_Image",
+      "bind_Vector2"
+    ],
+    "bind_Time": [],
+    "bind_TimeoutWithPredicate": [
+      "bind_Time"
+    ],
+    "bind_Touch": [
+      "bind_Vector2"
+    ],
+    "bind_Transform": [
+      "bind_Angle",
+      "bind_Rect",
+      "bind_Vector2"
+    ],
+    "bind_Transformable": [
+      "bind_Angle",
+      "bind_Transform",
+      "bind_Vector2"
+    ],
+    "bind_UdpSocket": [
+      "bind_IpAddress",
+      "bind_Socket"
+    ],
+    "bind_Vector2": [
+      "bind_Angle"
+    ],
+    "bind_Vector3": [],
+    "bind_Version": [],
+    "bind_Vertex": [
+      "bind_Color",
+      "bind_Vector2"
+    ],
+    "bind_VertexArray": [
+      "bind_Drawable",
+      "bind_PrimitiveType",
+      "bind_Rect",
+      "bind_Vertex"
+    ],
+    "bind_VertexBuffer": [
+      "bind_Drawable",
+      "bind_PrimitiveType"
+    ],
+    "bind_VideoMode": [
+      "bind_Vector2"
+    ],
+    "bind_View": [
+      "bind_Angle",
+      "bind_Rect",
+      "bind_Transform",
+      "bind_Vector2"
+    ],
+    "bind_Window": [
+      "bind_ContextSettings",
+      "bind_VideoMode",
+      "bind_WindowBase",
+      "bind_WindowEnums"
+    ],
+    "bind_WindowBase": [
+      "bind_Event",
+      "bind_Handle",
+      "bind_Time",
+      "bind_Vector2",
+      "bind_VideoMode",
+      "bind_WindowEnums"
+    ],
+    "bind_WindowEnums": [],
+    "bind_WindowHandle": []
+  },
+  "cycle_breaks": []
+}

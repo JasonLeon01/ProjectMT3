@@ -1,0 +1,81 @@
+name: Select Package Inputs
+
+on:
+  workflow_call:
+    inputs:
+      platform:
+        description: all, windows-x64 or macos-arm64
+        type: string
+        required: false
+        default: all
+      package_inputs:
+        description: Frozen inputs from Package Game; empty selects fresh inputs.
+        type: string
+        required: false
+        default: ''
+    secrets:
+      LUDORK_ACTIONS_TOKEN:
+        required: false
+    outputs:
+      project_sha:
+        description: Project commit to package
+        value: ${{ jobs.check.outputs.project_sha }}
+      ludork_checked_sha:
+        description: Ludork main commit checked during selection
+        value: ${{ jobs.check.outputs.ludork_checked_sha }}
+      windows_sha:
+        description: Selected Windows tool commit
+        value: ${{ jobs.check.outputs.windows_sha }}
+      windows_run_id:
+        description: Selected Windows tool run
+        value: ${{ jobs.check.outputs.windows_run_id }}
+      windows_artifact_id:
+        description: Selected Windows tool artifact
+        value: ${{ jobs.check.outputs.windows_artifact_id }}
+      macos_sha:
+        description: Selected macOS ARM64 tool commit
+        value: ${{ jobs.check.outputs.macos_sha }}
+      macos_run_id:
+        description: Selected macOS ARM64 tool run
+        value: ${{ jobs.check.outputs.macos_run_id }}
+      macos_artifact_id:
+        description: Selected macOS ARM64 tool artifact
+        value: ${{ jobs.check.outputs.macos_artifact_id }}
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  check:
+    name: Select package inputs
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      project_sha: ${{ steps.inputs.outputs.project_sha }}
+      ludork_checked_sha: ${{ steps.inputs.outputs.ludork_checked_sha }}
+      windows_sha: ${{ steps.inputs.outputs.windows_sha }}
+      windows_run_id: ${{ steps.inputs.outputs.windows_run_id }}
+      windows_artifact_id: ${{ steps.inputs.outputs.windows_artifact_id }}
+      macos_sha: ${{ steps.inputs.outputs.macos_sha }}
+      macos_run_id: ${{ steps.inputs.outputs.macos_run_id }}
+      macos_artifact_id: ${{ steps.inputs.outputs.macos_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Freeze project and upstream editor artifacts
+        id: inputs
+        uses: actions/github-script@v8
+        env:
+          PACKAGE_PLATFORM: ${{ inputs.platform }}
+          PACKAGE_INPUTS: ${{ inputs.package_inputs }}
+        with:
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          script: |
+            const { selectPackageInputs } = require('./.github/scripts/package-upstream.cjs');
+            const selected = await selectPackageInputs(github, context, process.env.PACKAGE_PLATFORM, process.env.PACKAGE_INPUTS);
+            for (const [name, value] of Object.entries(selected)) {
+              core.setOutput(name, value);
+              core.info(`${name}: ${value}`);
+            }

@@ -1,0 +1,1847 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 416,
+    "height": 256
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Battle",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        416,
+        256
+      ]
+    },
+    "children": [
+      {
+        "name": "WindowFrame",
+        "controlId": "Engine.Window",
+        "properties": {
+          "size": [
+            416,
+            256
+          ],
+          "windowSkin": "",
+          "repeated": true
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              1.0,
+              1.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Content",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            384,
+            224
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              1.0,
+              1.0
+            ]
+          },
+          "offsets": {
+            "left": 16.0,
+            "top": 16.0,
+            "right": 16.0,
+            "bottom": 16.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "EnemyPortrait",
+            "controlId": "Engine.CharacterView",
+            "properties": {
+              "size": [
+                32,
+                32
+              ],
+              "texture": "/Game/Assets/Characters/enemies/classic-enemies-10-king-single.png",
+              "textureRect": [
+                0,
+                0,
+                32,
+                32
+              ],
+              "characterScale": [
+                1,
+                1
+              ],
+              "animatable": true,
+              "switchInterval": 0.4
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 24,
+                "top": 24,
+                "right": 32,
+                "bottom": 32
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "EnemyNameArea",
+            "controlId": "Engine.Canvas",
+            "properties": {
+              "size": [
+                96,
+                24
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 24,
+                "top": 0,
+                "right": 96,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "EnemyName",
+                "controlId": "Engine.PlainText",
+                "properties": {
+                  "text": "",
+                  "characterSize": 22,
+                  "outlineThickness": 1,
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ]
+                },
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0.5,
+                      0
+                    ],
+                    "max": [
+                      0.5,
+                      0
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 96,
+                    "bottom": 24
+                  },
+                  "alignment": [
+                    0.5,
+                    0
+                  ],
+                  "autoSize": true,
+                  "zOrder": 0
+                },
+                "editor": {
+                  "previewText": "史莱姆"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "EnemyHPLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 72,
+                "top": 24,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "体力:"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyHPValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 120,
+                "top": 24,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyATKLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 72,
+                "top": 48,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "攻击:"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyATKValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 120,
+                "top": 48,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyDEFLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 72,
+                "top": 72,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "防御:"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyDEFValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 120,
+                "top": 72,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyFATIGUELabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 72,
+                "top": 120,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "疲劳:"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyFATIGUEValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 120,
+                "top": 120,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyBREATHLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 24,
+                "top": 144.00000000000003,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "气息:"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyBreathBar",
+            "controlId": "Engine.ProgressBar",
+            "properties": {
+              "size": [
+                80,
+                4
+              ],
+              "progress": 1,
+              "backgroundTexture": "/Game/Assets/System/mting-1226.png",
+              "fillTexture": "/Game/Assets/System/mting-1226.png",
+              "backgroundTextureRect": [
+                0,
+                0,
+                80,
+                4
+              ],
+              "fillTextureRect": [
+                0,
+                4,
+                80,
+                4
+              ],
+              "backgroundColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "scale": [
+                1,
+                1.5
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 72,
+                "top": 152,
+                "right": 80,
+                "bottom": 4
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "PlayerPortrait",
+            "controlId": "Engine.CharacterView",
+            "properties": {
+              "size": [
+                32,
+                32
+              ],
+              "texture": "/Game/Assets/Characters/actors/classic-cha-braver01.png",
+              "textureRect": [
+                0,
+                0,
+                32,
+                32
+              ],
+              "characterScale": [
+                1,
+                1
+              ],
+              "animatable": false,
+              "switchInterval": 0.4
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 312,
+                "top": 24,
+                "right": 32,
+                "bottom": 32
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "PlayerNameArea",
+            "controlId": "Engine.Canvas",
+            "properties": {
+              "size": [
+                96,
+                24
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 280,
+                "top": 0,
+                "right": 96,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "PlayerName",
+                "controlId": "Engine.PlainText",
+                "properties": {
+                  "text": "",
+                  "characterSize": 22,
+                  "outlineThickness": 1,
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ]
+                },
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0.5,
+                      0
+                    ],
+                    "max": [
+                      0.5,
+                      0
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 96,
+                    "bottom": 24
+                  },
+                  "alignment": [
+                    0.5,
+                    0
+                  ],
+                  "autoSize": true,
+                  "zOrder": 0
+                },
+                "editor": {
+                  "previewText": "勇士"
+                },
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "PlayerHPLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 24,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": ":体力"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerHPValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 248,
+                "top": 24,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerATKLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 48,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": ":攻击"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerATKValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 248,
+                "top": 48,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerDEFLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 72,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": ":防御"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerDEFValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 248,
+                "top": 72,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerFATIGUELabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 120,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": ":疲劳"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerFATIGUEValue",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 248,
+                "top": 120,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                1,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerBREATHLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 20,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 232,
+                "top": 144,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "气息:"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerBreathBar",
+            "controlId": "Engine.ProgressBar",
+            "properties": {
+              "size": [
+                80,
+                4
+              ],
+              "progress": 1,
+              "backgroundTexture": "/Game/Assets/System/mting-1226.png",
+              "fillTexture": "/Game/Assets/System/mting-1226.png",
+              "backgroundTextureRect": [
+                0,
+                0,
+                80,
+                4
+              ],
+              "fillTextureRect": [
+                0,
+                4,
+                80,
+                4
+              ],
+              "backgroundColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "fillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "scale": [
+                1,
+                1
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 152,
+                "right": 80,
+                "bottom": 4
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "BreathLit",
+            "controlId": "Engine.WrapBox",
+            "properties": {
+              "size": [
+                74,
+                20
+              ],
+              "count": 5,
+              "spacing": [
+                -4,
+                0
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 136,
+                "right": 74,
+                "bottom": 20
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "BreathLitFlame",
+                "controlId": "Engine.Canvas",
+                "properties": {
+                  "size": [
+                    18,
+                    20
+                  ],
+                  "visible": false
+                },
+                "slot": {},
+                "editor": {},
+                "children": [
+                  {
+                    "name": "BreathLitPreview",
+                    "controlId": "Engine.Image",
+                    "properties": {
+                      "texture": "/Game/Assets/Animations/mting-1211.png"
+                    },
+                    "slot": {
+                      "anchors": {
+                        "min": [
+                          0,
+                          0
+                        ],
+                        "max": [
+                          0,
+                          0
+                        ]
+                      },
+                      "offsets": {
+                        "left": 0,
+                        "top": 1,
+                        "right": 16,
+                        "bottom": 16
+                      },
+                      "alignment": [
+                        0,
+                        0
+                      ],
+                      "autoSize": false,
+                      "zOrder": 0
+                    },
+                    "editor": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "BreathDim",
+            "controlId": "Engine.WrapBox",
+            "properties": {
+              "size": [
+                74,
+                20
+              ],
+              "count": 5,
+              "spacing": [
+                -4,
+                0
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 296,
+                "top": 136,
+                "right": 74,
+                "bottom": 20
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "BreathDimFlame",
+                "controlId": "Engine.Canvas",
+                "properties": {
+                  "size": [
+                    18,
+                    20
+                  ],
+                  "visible": true
+                },
+                "slot": {},
+                "editor": {},
+                "children": [
+                  {
+                    "name": "BreathDimPreview",
+                    "controlId": "Engine.Image",
+                    "properties": {
+                      "texture": "/Game/Assets/Animations/mting-1211_g.png"
+                    },
+                    "slot": {
+                      "anchors": {
+                        "min": [
+                          0,
+                          0
+                        ],
+                        "max": [
+                          0,
+                          0
+                        ]
+                      },
+                      "offsets": {
+                        "left": 0,
+                        "top": 1,
+                        "right": 16,
+                        "bottom": 16
+                      },
+                      "alignment": [
+                        0,
+                        0
+                      ],
+                      "autoSize": false,
+                      "zOrder": 0
+                    },
+                    "editor": {},
+                    "children": []
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "name": "CriticalButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-528.png",
+              "origin": [
+                14,
+                14.5
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 256,
+                "top": 192,
+                "right": 28,
+                "bottom": 29
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "AttackSkillButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1215.png",
+              "origin": [
+                8,
+                8
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 280,
+                "top": 192,
+                "right": 16,
+                "bottom": 16
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "DefenseSkillButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1214.png",
+              "origin": [
+                9.5,
+                9.5
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 304,
+                "top": 192,
+                "right": 19,
+                "bottom": 19
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "CriticalButtonSelected",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1227.png",
+              "origin": [
+                12,
+                12
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 256,
+                "top": 192,
+                "right": 24,
+                "bottom": 24
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "AttackSkillButtonSelected",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1227.png",
+              "origin": [
+                12,
+                12
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 280,
+                "top": 192,
+                "right": 24,
+                "bottom": 24
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "DefenseSkillButtonSelected",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "/Game/Assets/Icons/mting-1227.png",
+              "origin": [
+                12,
+                12
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 304,
+                "top": 192,
+                "right": 24,
+                "bottom": 24
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "RetreatTouchArea",
+            "controlId": "Engine.Canvas",
+            "properties": {
+              "size": [
+                128,
+                44
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 174,
+                "right": 128,
+                "bottom": 44
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "RetreatButton",
+            "controlId": "Engine.FunctionalPlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 22,
+              "outlineThickness": 1,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "colour": [
+                255,
+                255,
+                0,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 184,
+                "right": 128,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "~撤退~"
+            },
+            "children": []
+          },
+          {
+            "name": "WindowPauseMark",
+            "controlId": "Project:Parts/Shared/WindowPauseMark",
+            "properties": {},
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.5,
+                  1
+                ],
+                "max": [
+                  0.5,
+                  1
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 4,
+                "right": 16,
+                "bottom": 16
+              },
+              "alignment": [
+                0.5,
+                1
+              ],
+              "autoSize": false,
+              "zOrder": 100
+            },
+            "editor": {},
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "WindowChrome",
+        "controlId": "Project:Parts/Shared/WindowChrome",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              1.0,
+              1.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": false,
+          "zOrder": 100
+        },
+        "editor": {},
+        "children": []
+      }
+    ]
+  },
+  "animations": [
+    {
+      "target": null,
+      "duration": 0.08,
+      "name": "FadeIn",
+      "tracks": {
+        "colour": [
+          {
+            "value": [
+              255,
+              255,
+              255,
+              0
+            ],
+            "time": 0
+          },
+          {
+            "value": [
+              255,
+              255,
+              255,
+              255
+            ],
+            "time": 0.08
+          }
+        ]
+      }
+    }
+  ]
+}

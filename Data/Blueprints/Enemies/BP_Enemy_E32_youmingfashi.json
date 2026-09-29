@@ -1,0 +1,71 @@
+{
+  "parent": "Source.MapActors.Enemy",
+  "attrs": {
+    "material": {
+      "lightBlock": 0.4,
+      "mirror": false,
+      "reflectionStrength": 0.0,
+      "opacity": 1.0,
+      "speedRate": 1.5
+    },
+    "texturePath": "/Game/Assets/Characters/enemies/classic-enemies-50F-single.png",
+    "defaultRect": [
+      [
+        0,
+        960,
+        32,
+        32
+      ]
+    ],
+    "ID": "E32_youmingfashi",
+    "tag": "",
+    "afterBattleVarChanges": {
+      "floor25Phase": [
+        "\u002B",
+        1
+      ]
+    }
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [],
+        "links": []
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": null,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

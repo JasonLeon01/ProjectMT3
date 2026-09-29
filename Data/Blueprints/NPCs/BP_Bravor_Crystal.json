@@ -1,0 +1,124 @@
+{
+  "parent": "Engine.Actor",
+  "attrs": {
+    "scriptMixin": true,
+    "scriptPath": "Actors/BravorCrystal.lua",
+    "emitterComp": {
+      "resource": "CrystalShatter",
+      "anchor": [
+        0.5,
+        0.5
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "scale": [
+        1,
+        1
+      ],
+      "beforeActor": false
+    },
+    "tag": "",
+    "switchInterval": 0.2,
+    "animatable": false,
+    "visible": true,
+    "material": {
+      "lightBlock": 0,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1,
+      "speedRate": 1,
+      "ignoreLighting": false
+    },
+    "shaderPath": "",
+    "hue": 0,
+    "collisionEnabled": true,
+    "tickable": false,
+    "speed": 64,
+    "autoSound": "",
+    "autoSoundInterval": 0,
+    "autoSoundParams": {
+      "volume": 100,
+      "minDistance": 64,
+      "attenuation": 1,
+      "loop": false,
+      "maxDistance": 0
+    },
+    "texturePath": "/Game/Assets/Characters/actors/mting-1245.png",
+    "defaultRect": [
+      [
+        0,
+        0,
+        21,
+        55
+      ]
+    ],
+    "defaultTranslation": [
+      5,
+      -23
+    ],
+    "defaultRotation": 0,
+    "defaultScale": [
+      1,
+      1
+    ],
+    "defaultOrigin": [
+      0,
+      0
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [],
+        "links": []
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onWorldSleep": {
+        "nodes": [],
+        "links": []
+      },
+      "onWorldWake": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": null,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null,
+      "onWorldSleep": null,
+      "onWorldWake": null
+    }
+  },
+  "type": "blueprint"
+}

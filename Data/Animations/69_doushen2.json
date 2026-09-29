@@ -1,0 +1,343 @@
+{
+  "name": "斗神2",
+  "frameRate": 30,
+  "assets": [
+    "/Game/Assets/Animations/mting-875.png",
+    "/Game/Assets/Animations/mting-876.png",
+    "/Game/Assets/Animations/mting-878.png",
+    "/Game/Assets/Animations/mting-879.png",
+    "/Game/Assets/Animations/mting-880.png",
+    "/Game/Assets/Animations/mting-881.png",
+    "/Game/Assets/Animations/mting-882.png",
+    "/Game/Assets/Animations/mting-883.png",
+    "/Game/Assets/Animations/mting-884.png",
+    "/Game/Assets/Animations/mting-885.png",
+    "/Game/Assets/Sounds/mting-53.wav"
+  ],
+  "timeLines": [
+    {
+      "timeSegments": [
+        {
+          "type": "frame",
+          "asset": 0,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.03333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 1,
+          "startFrame": {
+            "time": 0.03333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.06666666666666667,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 2,
+          "startFrame": {
+            "time": 0.06666666666666667,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 3,
+          "startFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.13333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 4,
+          "startFrame": {
+            "time": 0.13333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.16666666666666666,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 5,
+          "startFrame": {
+            "time": 0.16666666666666666,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.2,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 6,
+          "startFrame": {
+            "time": 0.2,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.23333333333333334,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 7,
+          "startFrame": {
+            "time": 0.23333333333333334,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.26666666666666666,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 8,
+          "startFrame": {
+            "time": 0.26666666666666666,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.3,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 9,
+          "startFrame": {
+            "time": 0.3,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.3333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "timeSegments": [
+        {
+          "type": "sound",
+          "asset": 10,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.6530612244897959,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "originalDuration": 0.6530612244897959
+        }
+      ]
+    }
+  ],
+  "timeTags": [
+    {
+      "tag": "dmg",
+      "time": 0.0
+    }
+  ],
+  "type": "animation"
+}

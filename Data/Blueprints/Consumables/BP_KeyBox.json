@@ -1,0 +1,76 @@
+{
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "scriptMixin": true,
+    "scriptPath": "Consumables/KeyBox.lua",
+    "material": {
+      "lightBlock": 0.16,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "texturePath": "/Game/Assets/Characters/items/classic-keys.png",
+    "defaultRect": [
+      [
+        0,
+        32,
+        32,
+        32
+      ]
+    ],
+    "plus": 1,
+    "lightComp": {
+      "lightColour": [
+        255,
+        200,
+        96,
+        128
+      ],
+      "lightRadius": 32,
+      "lightOffset": [
+        0,
+        0
+      ]
+    },
+    "tag": ""
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

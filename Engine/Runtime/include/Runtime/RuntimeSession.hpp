@@ -1,0 +1,29 @@
+#pragma once
+
+#include <RuntimeApi.hpp>
+#include <RuntimeSession.hpp>
+
+struct lua_State;
+
+namespace ludork::runtime {
+
+LUDORK_RUNTIME_API void initialize(lua_State* state);
+LUDORK_RUNTIME_API void shutdown(lua_State* state) noexcept;
+
+class LUDORK_RUNTIME_API RuntimeScope {
+public:
+    enum class RuntimeModuleState {
+        unattached,
+        attached,
+        detached,
+    };
+
+    RuntimeScope();
+
+    lua_State* state() const noexcept;
+
+private:
+    ludork::standard::LuaExecutionScope execution_;
+};
+
+}  // namespace ludork::runtime

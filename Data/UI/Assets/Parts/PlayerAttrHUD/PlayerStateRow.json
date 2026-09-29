@@ -1,0 +1,169 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 132,
+    "height": 24
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Player State Row",
+    "category": "HUD"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        132,
+        24
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "StateContent",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            128,
+            24
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 4,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "IconArea",
+            "controlId": "Engine.Canvas",
+            "properties": {
+              "size": [
+                16,
+                16
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 16,
+                "bottom": 16
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "Icon",
+                "controlId": "Engine.Image",
+                "properties": {
+                  "texture": "",
+                  "visible": false
+                },
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0,
+                      0
+                    ],
+                    "max": [
+                      0,
+                      0
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0
+                  },
+                  "alignment": [
+                    0,
+                    0
+                  ],
+                  "autoSize": true,
+                  "zOrder": 0
+                },
+                "editor": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "StateName",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "text": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 1
+            },
+            "editor": {
+              "previewText": "Poisoned"
+            },
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

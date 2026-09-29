@@ -1,0 +1,147 @@
+name: Package HOS ARM64
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      package_inputs:
+        description: Frozen inputs from Package Game; empty selects this platform's tools.
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: package-harmony
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  check:
+    name: Select package inputs
+    uses: ./.github/workflows/package-inputs.yml
+    with:
+      platform: macos-arm64
+      package_inputs: ${{ inputs.package_inputs }}
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  package:
+    name: Package HOS ARM64
+    needs: check
+    permissions:
+      contents: read
+      actions: read
+      packages: read
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Validate HOS settings
+        shell: bash
+        env:
+          HOS_ALIAS: ${{ secrets.HOS_ALIAS }}
+          HOS_KEY_PASSWORD: ${{ secrets.HOS_KEY_PASSWORD }}
+          HOS_KEY_STORE_PASSWORD: ${{ secrets.HOS_KEY_STORE_PASSWORD }}
+          HOS_SIGNING_KEY: ${{ secrets.HOS_SIGNING_KEY }}
+          HOS_SIGNING_CERTIFICATE: ${{ secrets.HOS_SIGNING_CERTIFICATE }}
+          HOS_PROVISIONING_PROFILE: ${{ secrets.HOS_PROVISIONING_PROFILE }}
+          HOS_DEVECO_PACKAGE: ${{ vars.HOS_DEVECO_PACKAGE }}
+          HOS_DEVECO_SHA256: ${{ vars.HOS_DEVECO_SHA256 }}
+        run: |
+          source .github/scripts/package-macos-common.sh
+          require_environment HOS_ALIAS HOS_KEY_PASSWORD HOS_KEY_STORE_PASSWORD \
+            HOS_SIGNING_KEY HOS_SIGNING_CERTIFICATE HOS_PROVISIONING_PROFILE \
+            HOS_DEVECO_PACKAGE HOS_DEVECO_SHA256
+
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-harmony-artifact
+          merge-multiple: true
+
+      - name: Restore DevEco Studio
+        id: deveco_cache
+        uses: actions/cache/restore@v5
+        with:
+          path: ${{ runner.temp }}/projectmt3-deveco-work/DevEco-Studio.app
+          key: deveco-studio-macos-15-arm64-v1-${{ vars.HOS_DEVECO_SHA256 }}
+
+      - name: Set up ORAS for GHCR download
+        if: steps.deveco_cache.outputs.cache-hit != 'true'
+        uses: oras-project/setup-oras@22ce207df3b08e061f537244349aac6ae1d214f6 # v1.2.4
+        with:
+          # setup-oras v1.2.4's bundled release table stops at 1.3.0.
+          url: https://github.com/oras-project/oras/releases/download/v1.3.4/oras_1.3.4_darwin_arm64.tar.gz
+          checksum: 217761a9500242ff473de8656b5aca21136ff39e17e9e61fd8936bbfd902704c
+
+      - name: Prepare DevEco Studio and native SDK
+        shell: bash
+        env:
+          HOS_DEVECO_CACHE_HIT: ${{ steps.deveco_cache.outputs.cache-hit }}
+          HOS_DEVECO_PACKAGE: ${{ vars.HOS_DEVECO_PACKAGE }}
+          HOS_DEVECO_SHA256: ${{ vars.HOS_DEVECO_SHA256 }}
+          GH_TOKEN: ${{ github.token }}
+        run: bash .github/scripts/prepare-harmony.sh
+
+      - name: Cache DevEco Studio after verified installation
+        if: steps.deveco_cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v5
+        with:
+          path: ${{ runner.temp }}/projectmt3-deveco-work/DevEco-Studio.app
+          key: deveco-studio-macos-15-arm64-v1-${{ vars.HOS_DEVECO_SHA256 }}
+
+      - name: Build and validate signed HOS HAP
+        shell: bash
+        env:
+          HOS_ALIAS: ${{ secrets.HOS_ALIAS }}
+          HOS_KEY_PASSWORD: ${{ secrets.HOS_KEY_PASSWORD }}
+          HOS_KEY_STORE_PASSWORD: ${{ secrets.HOS_KEY_STORE_PASSWORD }}
+          HOS_SIGNING_KEY: ${{ secrets.HOS_SIGNING_KEY }}
+          HOS_SIGNING_CERTIFICATE: ${{ secrets.HOS_SIGNING_CERTIFICATE }}
+          HOS_PROVISIONING_PROFILE: ${{ secrets.HOS_PROVISIONING_PROFILE }}
+        run: |
+          bash .github/scripts/package-harmony.sh \
+            "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-harmony-artifact" "$RUNNER_TEMP/projectmt3-harmony-package"
+
+      - name: Remove HOS signing material and DevEco tools
+        if: always()
+        shell: bash
+        run: |
+          status=0
+          bash .github/scripts/package-macos-common.sh cleanup harmony || status=1
+          bash .github/scripts/prepare-harmony.sh cleanup || status=1
+          exit "$status"
+
+      - name: Upload signed HOS HAP
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-hos-arm64-v8a-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-harmony-package/*-harmony-mobile-signed.hap
+            ${{ runner.temp }}/projectmt3-harmony-package/build-info.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+          overwrite: true

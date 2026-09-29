@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "callbacks": [
+    {
+      "name": "interleavedFloatTransform",
+      "selector": {
+        "kind": "alias",
+        "cppName": "sf::SoundSource::EffectProcessor"
+      },
+      "canonicalType": "std::function<void(const float*, unsigned int&, float*, unsigned int&, unsigned int)>",
+      "codec": "lua_sf::callback::InterleavedFloatTransformCodec",
+      "luaType": "sf.SoundSource.EffectProcessor",
+      "luaSignature": "fun(inputFrames: number[]|nil, inputFrameCount: integer, outputFrames: number[], outputFrameCount: integer, frameChannelCount: integer): {inputFrameCount: integer, outputFrameCount: integer, outputFrames: number[]?}",
+      "allowNil": true,
+      "threadPolicy": "nativeTryEnter",
+      "directions": [
+        "fromLua",
+        "toLua"
+      ],
+      "parameters": [
+        {
+          "name": "inputFrames",
+          "role": "copiedInputBuffer",
+          "access": "read",
+          "nullable": true,
+          "unit": "sample"
+        },
+        {
+          "name": "inputFrameCount",
+          "role": "inputCapacity",
+          "access": "read",
+          "nullable": false,
+          "unit": "frame"
+        },
+        {
+          "name": "outputFrames",
+          "role": "zeroInitializedOutputBuffer",
+          "access": "readWrite",
+          "nullable": false,
+          "unit": "sample"
+        },
+        {
+          "name": "outputFrameCount",
+          "role": "outputCapacity",
+          "access": "read",
+          "nullable": false,
+          "unit": "frame"
+        },
+        {
+          "name": "frameChannelCount",
+          "role": "channelCount",
+          "access": "read",
+          "nullable": false,
+          "unit": "channel"
+        }
+      ],
+      "returns": [
+        {
+          "name": "inputFrameCount",
+          "role": "consumedInputCount",
+          "nullable": false,
+          "unit": "frame"
+        },
+        {
+          "name": "outputFrameCount",
+          "role": "producedOutputCount",
+          "nullable": false,
+          "unit": "frame"
+        },
+        {
+          "name": "outputFrames",
+          "role": "replacementOutputBuffer",
+          "nullable": true,
+          "unit": "sample"
+        }
+      ],
+      "clearSetterOnQuiesce": false
+    },
+    {
+      "name": "glyphPreProcessor",
+      "selector": {
+        "kind": "alias",
+        "cppName": "sf::Text::GlyphPreProcessor"
+      },
+      "canonicalType": "std::function<void(const sf::Text::ShapedGlyph&, std::uint32_t&, sf::Color&, sf::Color&, float&)>",
+      "codec": "lua_sf::callback::GlyphPreProcessorCodec",
+      "luaType": "sf.Text.GlyphPreProcessor",
+      "luaSignature": "fun(shapedGlyph: sf.Text.ShapedGlyph, style: integer, fillColor: sf.Color, outlineColor: sf.Color, outlineThickness: number): {style: integer?, fillColor: sf.Color?, outlineColor: sf.Color?, outlineThickness: number?}|nil",
+      "allowNil": true,
+      "threadPolicy": "blockingEnter",
+      "directions": [
+        "fromLua"
+      ],
+      "parameters": [
+        {
+          "name": "shapedGlyph",
+          "role": "value",
+          "access": "read",
+          "nullable": false,
+          "unit": ""
+        },
+        {
+          "name": "style",
+          "role": "value",
+          "access": "readWrite",
+          "nullable": false,
+          "unit": ""
+        },
+        {
+          "name": "fillColor",
+          "role": "value",
+          "access": "readWrite",
+          "nullable": false,
+          "unit": ""
+        },
+        {
+          "name": "outlineColor",
+          "role": "value",
+          "access": "readWrite",
+          "nullable": false,
+          "unit": ""
+        },
+        {
+          "name": "outlineThickness",
+          "role": "value",
+          "access": "readWrite",
+          "nullable": false,
+          "unit": ""
+        }
+      ],
+      "returns": [
+        {
+          "name": "updates",
+          "role": "inoutPatch",
+          "nullable": true,
+          "unit": ""
+        }
+      ],
+      "clearSetterOnQuiesce": false
+    },
+    {
+      "name": "sftpDownloadBuffer",
+      "selector": {
+        "kind": "functionParameter",
+        "qualifiedFunction": "sf::Sftp::download",
+        "parameterName": "callback",
+        "callableSignature": "bool(const void*, std::size_t)"
+      },
+      "canonicalType": "std::function<bool(const void*, std::size_t)>",
+      "codec": "lua_sf::callback::SftpDownloadBufferCodec",
+      "luaType": "fun(data: string, size: integer): boolean",
+      "luaSignature": "fun(data: string, size: integer): boolean",
+      "allowNil": false,
+      "threadPolicy": "blockingEnter",
+      "directions": [
+        "fromLua"
+      ],
+      "parameters": [
+        {
+          "name": "data",
+          "role": "inputBuffer",
+          "access": "read",
+          "nullable": false,
+          "unit": "byte"
+        },
+        {
+          "name": "size",
+          "role": "inputCount",
+          "access": "read",
+          "nullable": false,
+          "unit": "byte"
+        }
+      ],
+      "returns": [
+        {
+          "name": "keepGoing",
+          "role": "continueFlag",
+          "nullable": false,
+          "unit": ""
+        }
+      ],
+      "clearSetterOnQuiesce": false
+    },
+    {
+      "name": "sftpUploadBuffer",
+      "selector": {
+        "kind": "functionParameter",
+        "qualifiedFunction": "sf::Sftp::upload",
+        "parameterName": "callback",
+        "callableSignature": "bool(void*, std::size_t&)"
+      },
+      "canonicalType": "std::function<bool(void*, std::size_t&)>",
+      "codec": "lua_sf::callback::SftpUploadBufferCodec",
+      "luaType": "fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil",
+      "luaSignature": "fun(capacity: integer): string|integer[]|{keepGoing: boolean?, data: string|integer[]?}|boolean|nil",
+      "allowNil": false,
+      "threadPolicy": "blockingEnter",
+      "directions": [
+        "fromLua"
+      ],
+      "parameters": [
+        {
+          "name": "capacity",
+          "role": "outputCapacity",
+          "access": "read",
+          "nullable": false,
+          "unit": "byte"
+        }
+      ],
+      "returns": [
+        {
+          "name": "result",
+          "role": "bufferFillResult",
+          "nullable": true,
+          "unit": "byte"
+        }
+      ],
+      "clearSetterOnQuiesce": false
+    },
+    {
+      "name": "playbackDeviceNotification",
+      "selector": {
+        "kind": "alias",
+        "cppName": "sf::PlaybackDevice::NotificationCallback"
+      },
+      "canonicalType": "std::function<void(sf::PlaybackDevice::Notification)>",
+      "codec": "lua_sf::callback::NativeThreadBoundaryCodec",
+      "luaType": "sf.PlaybackDevice.NotificationCallback",
+      "luaSignature": "fun(notification: sf.PlaybackDevice.Notification)",
+      "allowNil": true,
+      "threadPolicy": "nativeThreadBoundary",
+      "directions": [
+        "fromLua"
+      ],
+      "parameters": [
+        {
+          "name": "notification",
+          "role": "value",
+          "access": "read",
+          "nullable": false,
+          "unit": ""
+        }
+      ],
+      "returns": [],
+      "clearSetterOnQuiesce": true
+    }
+  ]
+}

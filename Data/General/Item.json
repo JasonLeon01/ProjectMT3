@@ -1,0 +1,1275 @@
+{
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this item.",
+      "defaultValue": ""
+    },
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this item.",
+      "defaultValue": ""
+    },
+    "usable": {
+      "type": "bool",
+      "comment": "Whether the item can be activated from the inventory and trigger onUse.",
+      "defaultValue": false
+    },
+    "price": {
+      "type": "int",
+      "comment": "The gold price used when buying or selling the item in shops.",
+      "defaultValue": 0
+    },
+    "icon": {
+      "type": "file",
+      "comment": "The icon asset logical path.",
+      "base": "Icons",
+      "defaultValue": ""
+    },
+    "cost": {
+      "type": "bool",
+      "comment": "Whether the inventory displays this item\u0027s stack count.",
+      "defaultValue": true
+    }
+  },
+  "members": {
+    "KEY_Y": {
+      "name": "{KEY_Y}",
+      "desc": "{KEY_Y_DESC}",
+      "usable": false,
+      "price": 20,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      },
+      "icon": "/Game/Assets/Icons/classic-keys-0-0.png",
+      "cost": true
+    },
+    "KEY_B": {
+      "name": "{KEY_B}",
+      "desc": "{KEY_B_DESC}",
+      "usable": false,
+      "price": 80,
+      "icon": "/Game/Assets/Icons/classic-keys-0-1.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      }
+    },
+    "KEY_R": {
+      "name": "{KEY_R}",
+      "desc": "{KEY_R_DESC}",
+      "usable": false,
+      "price": 500,
+      "icon": "/Game/Assets/Icons/classic-keys-0-2.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      }
+    },
+    "EnemyBook": {
+      "name": "{ENEMY_BOOK}",
+      "desc": "{ENEMY_BOOK_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/mting-1267.png",
+      "cost": false,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Scene.ShowEnemyBook",
+                "params": [],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              }
+            ],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "Teleport": {
+      "name": "{FLY_FLOOR}",
+      "desc": "{FLY_FLOOR_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/mting-1266.png",
+      "cost": false,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Mota.OpenFloorTeleporter",
+                "params": [],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              }
+            ],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "UpFly": {
+      "name": "{UPFLY}",
+      "desc": "{UPFLY_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-2-2.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Mota.GoUpstairsSamePos",
+                "params": [],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "UpFly",
+                  1
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "DownFly": {
+      "name": "{DOWNFLY}",
+      "desc": "{DOWNFLY_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-1-2.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Mota.GoDownstairsSamePos",
+                "params": [],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "DownFly",
+                  1
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "CentreFly": {
+      "name": "{CENTREFLY}",
+      "desc": "{CENTREFLY_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-0-2.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Mota.CenterSymmetricTeleport",
+                "params": [],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "CentreFly",
+                  1
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "BreakWall": {
+      "name": "{BREAK_WALL}",
+      "desc": "{BREAK_WALL_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-0-0.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Scene.DestroyTerrain",
+                "params": [
+                  "default",
+                  [
+                    0,
+                    0
+                  ],
+                  null
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.GetTerrainTile",
+                "params": [
+                  "default",
+                  [
+                    0,
+                    0
+                  ]
+                ],
+                "pos": [
+                  -1440,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.ListContains",
+                "params": [
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": [
+                      5,
+                      6,
+                      7
+                    ]
+                  },
+                  ""
+                ],
+                "pos": [
+                  -720,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Utils.IF",
+                "params": [
+                  false
+                ],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.GetPlayerFrontPosition",
+                "params": [],
+                "pos": [
+                  -2160,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "BreakWall",
+                  1
+                ],
+                "pos": [
+                  1440,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 1,
+                "right": 2,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 2,
+                "right": 3,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 3,
+                "right": 0,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              },
+              {
+                "left": 4,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 4,
+                "right": 0,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 0,
+                "right": 5,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 3
+        }
+      }
+    },
+    "ClearWall": {
+      "name": "{CLEAR_WALL}",
+      "desc": "{CLEAR_WALL_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-1-6.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Scene.DestroyTerrainList",
+                "params": [
+                  "default",
+                  [],
+                  null
+                ],
+                "pos": [
+                  1440,
+                  0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.GetTerrainTilePositions",
+                "params": [
+                  "default",
+                  5
+                ],
+                "pos": [
+                  -1440,
+                  320
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.GetTerrainTilePositions",
+                "params": [
+                  "default",
+                  6
+                ],
+                "pos": [
+                  -720,
+                  1280
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.GetTerrainTilePositions",
+                "params": [
+                  "default",
+                  7
+                ],
+                "pos": [
+                  0,
+                  1600
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "ClearWall",
+                  1
+                ],
+                "pos": [
+                  2160,
+                  0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.TableToList",
+                "params": [
+                  []
+                ],
+                "pos": [
+                  -720,
+                  320
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.ListExtend",
+                "params": [
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": []
+                  },
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": []
+                  }
+                ],
+                "pos": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.ListExtend",
+                "params": [
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": []
+                  },
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": []
+                  }
+                ],
+                "pos": [
+                  720,
+                  0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.ListToTable",
+                "params": [
+                  null
+                ],
+                "pos": [
+                  720,
+                  960
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 4,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              },
+              {
+                "left": 1,
+                "right": 5,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 5,
+                "right": 6,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 2,
+                "right": 6,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 5,
+                "right": 7,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 6,
+                "right": 7,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              },
+              {
+                "left": 3,
+                "right": 7,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 7,
+                "right": 0,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              },
+              {
+                "left": 5,
+                "right": 8,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 8,
+                "right": 0,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              }
+            ]
+          },
+          "onDrop": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": 6,
+          "onDrop": null
+        }
+      }
+    },
+    "BreakLava": {
+      "name": "{BREAK_LAVA}",
+      "desc": "{BREAK_LAVA_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-2-0.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Player.GetPlayerFrontPosition",
+                "params": [],
+                "pos": [
+                  -2160,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.GetTerrainTile",
+                "params": [
+                  "lava",
+                  [
+                    0,
+                    0
+                  ]
+                ],
+                "pos": [
+                  -1440,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.ListContains",
+                "params": [
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": [
+                      14,
+                      "lava"
+                    ]
+                  },
+                  ""
+                ],
+                "pos": [
+                  -720,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Utils.IF",
+                "params": [
+                  false
+                ],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.DestroyTerrain",
+                "params": [
+                  "lava",
+                  [
+                    0,
+                    0
+                  ],
+                  null
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "BreakLava",
+                  1
+                ],
+                "pos": [
+                  1440,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 2,
+                "right": 3,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 3,
+                "right": 4,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              },
+              {
+                "left": 0,
+                "right": 4,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 1,
+                "right": 2,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 4,
+                "right": 5,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 3
+        }
+      }
+    },
+    "BreakIce": {
+      "name": "{BREAK_ICE}",
+      "desc": "{BREAK_ICE_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-1-0.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Player.GetPlayerFrontPosition",
+                "params": [],
+                "pos": [
+                  -2160,
+                  250
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.GetTerrainTile",
+                "params": [
+                  "default",
+                  [
+                    0,
+                    0
+                  ]
+                ],
+                "pos": [
+                  -1440,
+                  250
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Container.ListContains",
+                "params": [
+                  {
+                    "$type": {
+                      "list": "any"
+                    },
+                    "$value": [
+                      15
+                    ]
+                  },
+                  ""
+                ],
+                "pos": [
+                  -720,
+                  250
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Utils.IF",
+                "params": [
+                  false
+                ],
+                "pos": [
+                  0,
+                  0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.DestroyTerrain",
+                "params": [
+                  "default",
+                  [
+                    0,
+                    0
+                  ],
+                  null
+                ],
+                "pos": [
+                  720,
+                  0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "BreakIce",
+                  1
+                ],
+                "pos": [
+                  1440,
+                  0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 1,
+                "right": 2,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 2,
+                "right": 3,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 3,
+                "right": 4,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              },
+              {
+                "left": 0,
+                "right": 4,
+                "leftOutPin": 0,
+                "rightInPin": 1,
+                "linkType": "Params"
+              },
+              {
+                "left": 4,
+                "right": 5,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          },
+          "onDrop": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": 3,
+          "onDrop": null
+        }
+      }
+    },
+    "PoisonedEase": {
+      "name": "{POISONED_EASE}",
+      "desc": "{POISONED_EASE_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-potions-6-0.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Gameplay.ReducePlayerState",
+                "params": [
+                  "Poisoned",
+                  5
+                ],
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "PoisonedEase",
+                  1
+                ],
+                "pos": [
+                  720.0,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "PoisonedRelease": {
+      "name": "{POISONED_RELEASE}",
+      "desc": "{POISONED_RELEASE_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-0-3.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Gameplay.RemovePlayerState",
+                "params": [
+                  "Poisoned"
+                ],
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "PoisonedRelease",
+                  1
+                ],
+                "pos": [
+                  720.0,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "WeakEase": {
+      "name": "{WEAK_EASE}",
+      "desc": "{WEAK_EASE_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-potions-6-1.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Gameplay.ReducePlayerState",
+                "params": [
+                  "Weak",
+                  5
+                ],
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "WeakEase",
+                  1
+                ],
+                "pos": [
+                  720.0,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "WeakRelease": {
+      "name": "{WEAK_RELEASE}",
+      "desc": "{WEAK_RELEASE_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-1-3.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Gameplay.RemovePlayerState",
+                "params": [
+                  "Weak"
+                ],
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "WeakRelease",
+                  1
+                ],
+                "pos": [
+                  720.0,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "SDoor": {
+      "name": "{SDOOR}",
+      "desc": "{SDOOR_DESC}",
+      "usable": true,
+      "price": 30,
+      "icon": "/Game/Assets/Icons/mting-1217.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Player.GetPlayerFrontPosition",
+                "params": [],
+                "pos": [
+                  -720,
+                  250.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Scene.ConvertSWallToYellowDoor",
+                "params": [
+                  [
+                    0,
+                    0
+                  ]
+                ],
+                "pos": [
+                  0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "SDoor",
+                  1
+                ],
+                "pos": [
+                  720,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Params"
+              },
+              {
+                "left": 1,
+                "right": 2,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 1
+        }
+      }
+    },
+    "ReflectionNet": {
+      "name": "{REFLECTION_NET}",
+      "desc": "{REFLECTION_NET_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/mting-1279.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      }
+    },
+    "ItemBag": {
+      "name": "{ITEM_BAG}",
+      "desc": "{ITEM_BAG_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/mting-1265.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      }
+    },
+    "EternalIce": {
+      "name": "{ETERNAL_ICE}",
+      "desc": "{ETERNAL_ICE_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/classic-items-2-0.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      }
+    },
+    "DivineShield": {
+      "name": "{DIVINE_SHIELD}",
+      "desc": "{DIVINE_SHIELD_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/mting-1280.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [],
+            "links": []
+          }
+        },
+        "startNodes": {
+          "onUse": null
+        }
+      }
+    }
+  },
+  "events": [
+    "onDrop",
+    "onUse"
+  ]
+}

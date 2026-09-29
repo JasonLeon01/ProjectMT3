@@ -1,0 +1,162 @@
+{
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this special.",
+      "defaultValue": ""
+    },
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this special.",
+      "defaultValue": ""
+    },
+    "icon": {
+      "type": "file",
+      "comment": "The icon asset logical path.",
+      "base": "Icons",
+      "defaultValue": ""
+    }
+  },
+  "members": {
+    "Poisoning": {
+      "name": "{S_POISONING}",
+      "desc": "{S_POISONING_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Poisoning.png"
+    },
+    "Weaken": {
+      "name": "{S_WEAKEN}",
+      "desc": "{S_WEAKEN_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Weaken.png"
+    },
+    "Hard": {
+      "name": "{S_HARD}",
+      "desc": "{S_HARD_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Hard.png"
+    },
+    "Magic": {
+      "name": "{S_MAGIC}",
+      "desc": "{S_MAGIC_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Magic.png"
+    },
+    "MultiHit": {
+      "name": "{S_MULTIHIT}",
+      "desc": "{S_MULTIHIT_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/MultiHit.png"
+    },
+    "Compete": {
+      "name": "{S_COMPETE}",
+      "desc": "{S_COMPETE_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Compete.png"
+    },
+    "Domain": {
+      "name": "{S_DOMAIN}",
+      "desc": "{S_DOMAIN_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Domain.png"
+    },
+    "Flank": {
+      "name": "{S_FLANK}",
+      "desc": "{S_FLANK_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Flank.png"
+    },
+    "Blockade": {
+      "name": "{S_BLOCKADE}",
+      "desc": "{S_BLOCKADE_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Blockade.png"
+    },
+    "Reborn": {
+      "name": "{S_REBORN}",
+      "desc": "{S_REBORN_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Reborn.png"
+    },
+    "Vampire": {
+      "name": "{S_VAMPIRE}",
+      "desc": "{S_VAMPIRE_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/Vampire.png"
+    },
+    "First": {
+      "name": "{S_FIRST}",
+      "desc": "{S_FIRST_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/First.png"
+    },
+    "FixDmg": {
+      "name": "{S_FIXDMG}",
+      "desc": "{S_FIXDMG_DESC}",
+      "icon": "/Game/Assets/Icons/Specials/FixDmg.png"
+    },
+    "Mucus": {
+      "name": "{S_MUCUS}",
+      "desc": "{S_MUCUS_DESC}",
+      "icon": ""
+    },
+    "SureKill": {
+      "name": "{S_SUREKILL}",
+      "desc": "{S_SUREKILL_DESC}",
+      "icon": ""
+    },
+    "DeathCurse": {
+      "name": "{S_DEATHCURSE}",
+      "desc": "{S_DEATHCURSE_DESC}",
+      "icon": ""
+    },
+    "Berserk": {
+      "name": "{S_BERSERK}",
+      "desc": "{S_BERSERK_DESC}",
+      "icon": ""
+    },
+    "Ambush": {
+      "name": "{S_AMBUSH}",
+      "desc": "{S_AMBUSH_DESC}",
+      "icon": ""
+    },
+    "EvilEye": {
+      "name": "{S_EVILEYE}",
+      "desc": "{S_EVILEYE_DESC}",
+      "icon": ""
+    },
+    "Frost": {
+      "name": "{S_FROST}",
+      "desc": "{S_FROST_DESC}",
+      "icon": ""
+    },
+    "Thunder": {
+      "name": "{S_THUNDER}",
+      "desc": "{S_THUNDER_DESC}",
+      "icon": ""
+    },
+    "Ember": {
+      "name": "{S_EMBER}",
+      "desc": "{S_EMBER_DESC}",
+      "icon": ""
+    },
+    "Glacial": {
+      "name": "{S_GLACIAL}",
+      "desc": "{S_GLACIAL_DESC}",
+      "icon": ""
+    },
+    "Burn": {
+      "name": "{S_BURN}",
+      "desc": "{S_BURN_DESC}",
+      "icon": ""
+    },
+    "BurstFlame": {
+      "name": "{S_BURSTFLAME}",
+      "desc": "{S_BURSTFLAME_DESC}",
+      "icon": ""
+    },
+    "AuraField": {
+      "name": "{S_AURAFIELD}",
+      "desc": "{S_AURAFIELD_DESC}",
+      "icon": ""
+    },
+    "ArmorBreak": {
+      "name": "{S_ARMORBREAK}",
+      "desc": "{S_ARMORBREAK_DESC}",
+      "icon": ""
+    },
+    "Snowland": {
+      "name": "{S_SNOWLAND}",
+      "desc": "{S_SNOWLAND_DESC}",
+      "icon": ""
+    }
+  }
+}

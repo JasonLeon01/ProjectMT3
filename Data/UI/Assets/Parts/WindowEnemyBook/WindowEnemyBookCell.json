@@ -1,0 +1,771 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 320,
+    "height": 64
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Enemy Book Cell",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        320,
+        64
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "EnemyIcon",
+        "controlId": "Engine.CharacterView",
+        "properties": {
+          "size": [
+            64,
+            64
+          ],
+          "texture": "/Game/Assets/Characters/enemies/classic-enemies-01-slime-single.png",
+          "textureRect": [
+            0,
+            0,
+            32,
+            32
+          ],
+          "characterScale": [
+            1.0,
+            1.0
+          ],
+          "animatable": true,
+          "switchInterval": 0.2,
+          "shader": "",
+          "hue": 0.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "NameArea",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            256,
+            22
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 64,
+            "top": 0,
+            "right": 256,
+            "bottom": 22
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "Name",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "characterSize": 16,
+              "text": "",
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineThickness": 1.0
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "Slime"
+            },
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "HPLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 64.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 8
+        },
+        "editor": {
+          "previewText": "HP"
+        },
+        "children": []
+      },
+      {
+        "name": "HPValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 138.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 9
+        },
+        "editor": {
+          "previewText": "999.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "ATKLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 144.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 10
+        },
+        "editor": {
+          "previewText": "ATK"
+        },
+        "children": []
+      },
+      {
+        "name": "ATKValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 218.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 11
+        },
+        "editor": {
+          "previewText": "99.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "DEFLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 224.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 12
+        },
+        "editor": {
+          "previewText": "DEF"
+        },
+        "children": []
+      },
+      {
+        "name": "DEFValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 314.0,
+            "top": 24.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 13
+        },
+        "editor": {
+          "previewText": "99.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "EXPLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 64.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 14
+        },
+        "editor": {
+          "previewText": "EXP"
+        },
+        "children": []
+      },
+      {
+        "name": "EXPValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 138.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 15
+        },
+        "editor": {
+          "previewText": "120K"
+        },
+        "children": []
+      },
+      {
+        "name": "GOLDLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 144.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 16
+        },
+        "editor": {
+          "previewText": "GOLD"
+        },
+        "children": []
+      },
+      {
+        "name": "GOLDValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 218.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 17
+        },
+        "editor": {
+          "previewText": "30K"
+        },
+        "children": []
+      },
+      {
+        "name": "DamageLabel",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 224.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 18
+        },
+        "editor": {
+          "previewText": "Damage"
+        },
+        "children": []
+      },
+      {
+        "name": "DamageValue",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 12,
+          "lineAlignment": "right",
+          "text": "",
+          "outlineColor": [
+            0,
+            0,
+            0,
+            255
+          ],
+          "outlineThickness": 1.0
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 314.0,
+            "top": 44.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            1.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 19
+        },
+        "editor": {
+          "previewText": "79.9K"
+        },
+        "children": []
+      },
+      {
+        "name": "Special1",
+        "controlId": "Project:Parts/WindowEnemyBook/SpecialDisplay",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 260,
+            "top": 0,
+            "right": 20,
+            "bottom": 20
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 2
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Special2",
+        "controlId": "Project:Parts/WindowEnemyBook/SpecialDisplay",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 280,
+            "top": 0,
+            "right": 20,
+            "bottom": 20
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 3
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Special3",
+        "controlId": "Project:Parts/WindowEnemyBook/SpecialDisplay",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 300,
+            "top": 0,
+            "right": 20,
+            "bottom": 20
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 4
+        },
+        "editor": {},
+        "children": []
+      }
+    ]
+  }
+}

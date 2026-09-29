@@ -1,0 +1,7 @@
+.hvigor/
+.idea/
+build/
+entry/.cxx/
+entry/build/
+entry/libs/
+oh_modules/

@@ -1,0 +1,393 @@
+#include "Containers/ContainerSupport.hpp"
+#include <UI/Canvas.hpp>
+#include <UI/WrapBox.hpp>
+#include <AnimSprite.hpp>
+
+#include <EngineState.hpp>
+#include <UI/ListView.hpp>
+#include <Utils/Math.hpp>
+#include <Utils/Render.hpp>
+
+#include <algorithm>
+#include <stdexcept>
+
+Canvas::Canvas(const sf::IntRect& rect)
+    : SpriteBase(placeholderTexture()),
+      inRect_(rect),
+      size_(toVector2u(toVector2f(rect.size))),
+      canvas_(std::make_shared<sf::RenderTexture>(nonZeroRenderTextureSize(
+          toVector2u(toVector2f(rect.size) * engineState().getScale())))),
+      displayScale_(engineState().getScale()) {
+    setPremultipliedTexture(true);
+    bindCanvasTexture();
+    setPosition(toVector2f(rect.position));
+}
+
+Canvas::~Canvas() {
+    if (particleSystem_ != nullptr) {
+        particleSystem_->clear();
+    }
+}
+
+sf::Vector2f Canvas::getOrigin() const {
+    return SpriteBase::getOrigin() / engineState().getScale();
+}
+
+void Canvas::setOrigin(const sf::Vector2f& origin) {
+    SpriteBase::setOrigin(origin * engineState().getScale());
+}
+
+sf::Vector2f Canvas::getSize() const {
+    return {static_cast<float>(size_.x), static_cast<float>(size_.y)};
+}
+
+void Canvas::resize(const sf::Vector2u& size) {
+    size_ = size;
+    inRect_.size = {static_cast<int>(size.x), static_cast<int>(size.y)};
+    if (!canvas_->resize(nonZeroRenderTextureSize(
+            toVector2u(toVector2f(size) * engineState().getScale())))) {
+        throw std::runtime_error("Failed to resize canvas render texture");
+    }
+    bindCanvasTexture();
+}
+
+void Canvas::resizeForLayout(const sf::Vector2u& size) {
+    const sf::Vector2u pixelSize =
+        toVector2u(toVector2f(size) * engineState().getScale());
+    if (getSize() != toVector2f(size) ||
+        canvas_->getSize() != nonZeroRenderTextureSize(pixelSize) ||
+        &getTexture() != &canvas_->getTexture() ||
+        getTextureRect() != sf::IntRect({0, 0}, toVector2i(pixelSize))) {
+        resize(size);
+    } else {
+        canvas_->setSmooth(false);
+        setView(getDefaultView());
+    }
+}
+
+sf::IntRect Canvas::getNoTranslationRect() const {
+    return {{0, 0},
+            toVector2i(sf::Vector2f{static_cast<float>(size_.x),
+                                    static_cast<float>(size_.y)})};
+}
+
+sf::IntRect Canvas::getContentRect() const {
+    return {{16, 16},
+            {static_cast<int>(size_.x) - 32, static_cast<int>(size_.y) - 32}};
+}
+
+sf::View Canvas::getView() const {
+    const sf::View view = canvas_->getView();
+    return sf::View(view.getCenter() / engineState().getScale(),
+                    view.getSize() / engineState().getScale());
+}
+
+sf::View Canvas::getDefaultView() const {
+    const sf::View view = canvas_->getDefaultView();
+    return sf::View(view.getCenter() / engineState().getScale(),
+                    view.getSize() / engineState().getScale());
+}
+
+void Canvas::setView(const sf::View& view) {
+    canvas_->setView(sf::View(view.getCenter() * engineState().getScale(),
+                              view.getSize() * engineState().getScale()));
+}
+
+std::vector<std::shared_ptr<ControlBase>> Canvas::getChildren() const {
+    return children_;
+}
+
+void Canvas::addChild(const std::shared_ptr<ControlBase>& child) {
+    if (child == nullptr) {
+        throw std::invalid_argument("Canvas child cannot be null");
+    }
+    const std::shared_ptr<ControlBase> self = weak_from_this().lock();
+    if (self == nullptr) {
+        throw std::logic_error("Canvas owner is not shared");
+    }
+    children_.push_back(child);
+    child->setParent(self);
+}
+
+void Canvas::insertChildBefore(const std::shared_ptr<ControlBase>& child,
+                               const std::shared_ptr<ControlBase>& before) {
+    if (child == nullptr) {
+        throw std::invalid_argument("Canvas child cannot be null");
+    }
+    const std::shared_ptr<ControlBase> self = weak_from_this().lock();
+    if (self == nullptr) {
+        throw std::logic_error("Canvas owner is not shared");
+    }
+    const auto iterator = std::find(children_.begin(), children_.end(), before);
+    if (iterator == children_.end()) {
+        throw std::invalid_argument("Child not found");
+    }
+    children_.insert(iterator, child);
+    child->setParent(self);
+}
+
+void Canvas::removeChild(const std::shared_ptr<ControlBase>& child) {
+    const auto iterator = std::find(children_.begin(), children_.end(), child);
+    if (iterator == children_.end()) {
+        throw std::invalid_argument("Child not found");
+    }
+    (*iterator)->setParent(nullptr);
+    children_.erase(iterator);
+}
+
+void Canvas::addAnim(const std::shared_ptr<AnimSprite>& animation) {
+    if (animation == nullptr) {
+        throw std::invalid_argument("Animation cannot be null");
+    }
+    animations_.push_back(animation);
+}
+
+void Canvas::removeAnim(const std::shared_ptr<AnimSprite>& animation) {
+    const auto iterator =
+        std::find(animations_.begin(), animations_.end(), animation);
+    if (iterator == animations_.end()) {
+        throw std::invalid_argument("Animation not found");
+    }
+    animations_.erase(iterator);
+}
+
+void Canvas::clearAnims() {
+    animations_.clear();
+}
+
+std::vector<std::shared_ptr<AnimSprite>> Canvas::getAnims() const {
+    return animations_;
+}
+
+std::shared_ptr<ParticleSystem> Canvas::getParticleSystem() {
+    if (particleSystem_ == nullptr) {
+        particleSystem_ = std::make_shared<ParticleSystem>();
+    }
+    return particleSystem_;
+}
+
+void Canvas::setZOrder(int zOrder) {
+    zOrder_ = zOrder;
+}
+
+int Canvas::getZOrder() const {
+    return zOrder_;
+}
+
+void Canvas::update(float deltaTime) {
+    ludork::engine::ui_container::tickChildren(
+        children_, &FunctionalBase::update, deltaTime);
+    animations_.erase(
+        std::remove_if(animations_.begin(), animations_.end(),
+                       [](const std::shared_ptr<AnimSprite>& animation) {
+                           return animation == nullptr ||
+                                  animation->isFinished();
+                       }),
+        animations_.end());
+    const std::vector<std::shared_ptr<AnimSprite>> snapshot = animations_;
+    for (const std::shared_ptr<AnimSprite>& animation : snapshot) {
+        animation->update(deltaTime);
+    }
+    if (particleSystem_ != nullptr) {
+        particleSystem_->onTick(deltaTime);
+    }
+    FunctionalBase::update(deltaTime);
+}
+
+void Canvas::render() {
+    if (displayScale_ != engineState().getScale()) {
+        refreshDisplayScale();
+    }
+    _buildRenderQueue();
+    canvas_->clear(sf::Color::Transparent);
+    for (const RenderEntry& entry : renderQueue_) {
+        canvas_->draw(*entry.node, entry.states);
+    }
+    const std::vector<std::shared_ptr<AnimSprite>> snapshot = animations_;
+    for (const std::shared_ptr<AnimSprite>& animation : snapshot) {
+        if (animation != nullptr) {
+            canvas_->draw(*animation, _getAnimRenderStates());
+        }
+    }
+    if (particleSystem_ != nullptr) {
+        canvas_->draw(*particleSystem_, _getAnimRenderStates());
+    }
+    if (!hasCanvasAncestor()) {
+        buildOverlayQueue();
+        drawOverlays();
+    }
+    canvas_->display();
+}
+
+void Canvas::render(sf::RenderTarget& target) {
+    static_cast<void>(target);
+    render();
+}
+
+void Canvas::lateUpdate(float deltaTime) {
+    ludork::engine::ui_container::tickChildren(
+        children_, &FunctionalBase::lateUpdate, deltaTime);
+    if (particleSystem_ != nullptr) {
+        particleSystem_->onLateTick(deltaTime);
+    }
+    FunctionalBase::lateUpdate(deltaTime);
+}
+
+void Canvas::fixedUpdate(float fixedDelta) {
+    ludork::engine::ui_container::tickChildren(
+        children_, &FunctionalBase::fixedUpdate, fixedDelta);
+    if (particleSystem_ != nullptr) {
+        particleSystem_->onFixedTick(fixedDelta);
+    }
+    FunctionalBase::fixedUpdate(fixedDelta);
+}
+
+sf::RenderTexture& Canvas::getRenderTexture() {
+    return *canvas_;
+}
+
+const sf::RenderTexture& Canvas::getRenderTexture() const {
+    return *canvas_;
+}
+
+void Canvas::refreshDisplayScale() {
+    if (displayScale_ != engineState().getScale()) {
+        const sf::View pixelView = canvas_->getView();
+        const sf::View logicalView(pixelView.getCenter() / displayScale_,
+                                   pixelView.getSize() / displayScale_);
+        const sf::Vector2f logicalOrigin =
+            SpriteBase::getOrigin() / displayScale_;
+        displayScale_ = engineState().getScale();
+        resize(size_);
+        setView(logicalView);
+        setOrigin(logicalOrigin);
+    }
+    ControlBase::refreshDisplayScale();
+}
+
+sf::Transform Canvas::_getScreenRenderTransform() const {
+    sf::Transform transform = _getRenderTransform();
+    const std::shared_ptr<ControlBase> parent = getParent();
+    if (parent != nullptr) {
+        sf::Transform combined = parent->screenRenderTransform();
+        combined.combine(transform);
+        transform = combined;
+    }
+    const sf::Vector2f scrollOffset =
+        getDefaultView().getCenter() - getView().getCenter();
+    if (scrollOffset.x != 0.0f || scrollOffset.y != 0.0f) {
+        transform.translate(scrollOffset * engineState().getScale());
+    }
+    return transform;
+}
+
+void Canvas::_appendRenderNode(const std::shared_ptr<ControlBase>& node,
+                               const sf::RenderStates& parentStates) {
+    ListView* listView = ludork::Cast<ListView>(node.get());
+    if (listView != nullptr) {
+        listView->applyPositions();
+    }
+    WrapBox* wrapBox = ludork::Cast<WrapBox>(node.get());
+    if (wrapBox != nullptr) {
+        wrapBox->applyPositions();
+    }
+    sf::RenderStates nodeStates = node->getRenderStates();
+    nodeStates.transform.combine(parentStates.transform);
+    if (listView == nullptr && wrapBox == nullptr) {
+        renderQueue_.push_back({node, nodeStates});
+    }
+    if (Canvas* nested = ludork::Cast<Canvas>(node.get())) {
+        nested->render();
+        return;
+    }
+    sf::RenderStates childStates = parentStates;
+    childStates.transform.combine(node->renderTransform());
+    const std::vector<std::shared_ptr<ControlBase>> children =
+        node->getChildren();
+    for (const std::shared_ptr<ControlBase>& child : children) {
+        if (child != nullptr && child->getVisible()) {
+            _appendRenderNode(child, childStates);
+        }
+    }
+}
+
+void Canvas::_buildRenderQueue() {
+    renderQueue_.clear();
+    const sf::RenderStates baseStates = canvasRenderStates();
+    for (const std::shared_ptr<ControlBase>& child : children_) {
+        if (child != nullptr && child->getVisible()) {
+            _appendRenderNode(child, baseStates);
+        }
+    }
+}
+
+sf::RenderStates Canvas::_getAnimRenderStates() const {
+    sf::RenderStates states = canvasRenderStates();
+    states.transform.scale(
+        {engineState().getScale(), engineState().getScale()});
+    return states;
+}
+
+std::shared_ptr<sf::Texture> Canvas::placeholderTexture() {
+    return std::make_shared<sf::Texture>();
+}
+
+bool Canvas::hasCanvasAncestor() const {
+    std::shared_ptr<ControlBase> parent = getParent();
+    while (parent != nullptr) {
+        if (ludork::Cast<Canvas>(parent.get()) != nullptr) {
+            return true;
+        }
+        parent = parent->getParent();
+    }
+    return false;
+}
+
+void Canvas::appendOverlayNode(const std::shared_ptr<ControlBase>& node) {
+    if (WrapBox* wrapBox = ludork::Cast<WrapBox>(node.get())) {
+        wrapBox->applyPositions();
+    }
+    ListView* listView = ludork::Cast<ListView>(node.get());
+    if (listView != nullptr) {
+        listView->applyPositions();
+    }
+    if (node->_hasOverlay()) {
+        overlayQueue_.push_back(node);
+    }
+    const std::vector<std::shared_ptr<ControlBase>> children =
+        node->getChildren();
+    for (const std::shared_ptr<ControlBase>& child : children) {
+        if (child != nullptr && child->getVisible()) {
+            appendOverlayNode(child);
+        }
+    }
+}
+
+void Canvas::buildOverlayQueue() {
+    overlayQueue_.clear();
+    for (const std::shared_ptr<ControlBase>& child : children_) {
+        if (child != nullptr && child->getVisible()) {
+            appendOverlayNode(child);
+        }
+    }
+}
+
+void Canvas::drawOverlays() {
+    const sf::Transform hostInverse = screenRenderTransform().getInverse();
+    for (const std::shared_ptr<ControlBase>& node : overlayQueue_) {
+        sf::RenderStates states = node->getRenderStates();
+        states.transform = hostInverse * node->screenRenderTransform();
+        node->_drawOverlay(*canvas_, states);
+    }
+}
+
+void Canvas::bindCanvasTexture() {
+    std::shared_ptr<sf::Texture> texture(
+        canvas_, const_cast<sf::Texture*>(&canvas_->getTexture()));
+    setTexture(std::move(texture), true);
+    const sf::Vector2u textureSize =
+        toVector2u(toVector2f(size_) * engineState().getScale());
+    setTextureRect(
+        {{0, 0},
+         {static_cast<int>(textureSize.x), static_cast<int>(textureSize.y)}});
+}

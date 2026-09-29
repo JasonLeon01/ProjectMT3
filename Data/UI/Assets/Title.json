@@ -1,0 +1,89 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 640,
+    "height": 480
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Title",
+    "category": "Scenes"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        640,
+        480
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "Background",
+        "controlId": "Engine.Image",
+        "properties": {
+          "texture": "/Game/Assets/System/GrassBackground.png"
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "CommandPanel",
+        "controlId": "Project:Parts/Title/CommandWindow",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0.5,
+              0.5
+            ],
+            "max": [
+              0.5,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 256,
+            "bottom": 160
+          },
+          "alignment": [
+            0.5,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": []
+      }
+    ]
+  }
+}

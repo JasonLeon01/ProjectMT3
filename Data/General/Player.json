@@ -1,0 +1,125 @@
+{
+  "params": {
+    "name": {
+      "type": "string",
+      "comment": "The display name of this player preset.",
+      "defaultValue": ""
+    },
+    "desc": {
+      "type": "string",
+      "comment": "The display description of this player preset.",
+      "defaultValue": ""
+    },
+    "CLASS": {
+      "type": "string",
+      "comment": "The Class member ID that defines the player\u0027s equipment slots and initial equipment.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "general",
+        "key": "Class"
+      }
+    },
+    "MAXHP": {
+      "type": "int",
+      "comment": "The player\u0027s starting maximum HP.",
+      "defaultValue": 1000
+    },
+    "HP": {
+      "type": "int",
+      "comment": "The player\u0027s starting current HP.",
+      "defaultValue": 1000
+    },
+    "ATK": {
+      "type": "int",
+      "comment": "The player\u0027s starting attack value.",
+      "defaultValue": 10
+    },
+    "DEF": {
+      "type": "int",
+      "comment": "The player\u0027s starting defence value.",
+      "defaultValue": 10
+    },
+    "EXP": {
+      "type": "int",
+      "comment": "The player\u0027s starting experience.",
+      "defaultValue": 0
+    },
+    "GOLD": {
+      "type": "int",
+      "comment": "The player\u0027s starting gold.",
+      "defaultValue": 0
+    },
+    "LEVEL": {
+      "type": "int",
+      "comment": "The player\u0027s starting level.",
+      "defaultValue": 1
+    },
+    "breath": {
+      "type": "int",
+      "comment": "The player\u0027s starting current breath.",
+      "defaultValue": 0
+    },
+    "breathLimit": {
+      "type": "int",
+      "comment": "The player\u0027s starting maximum breath.",
+      "defaultValue": 0
+    },
+    "MAGIC": {
+      "type": "int",
+      "comment": "The player\u0027s starting magic value.",
+      "defaultValue": 0
+    },
+    "ANIMATION_KEY": {
+      "type": "string",
+      "comment": "The animation played when the player attacks.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
+    },
+    "CritAnimationKey": {
+      "type": "string",
+      "comment": "The animation played on a critical attack.",
+      "defaultValue": "",
+      "reference": {
+        "kind": "animation"
+      }
+    }
+  },
+  "members": {
+    "Bravor": {
+      "name": "{BRAVOR}",
+      "desc": "{BRAVOR_DESC}",
+      "CLASS": "Warrior",
+      "MAXHP": 7500,
+      "HP": 5000,
+      "ATK": 100,
+      "DEF": 100,
+      "EXP": 0,
+      "GOLD": 0,
+      "LEVEL": 1,
+      "breath": 0,
+      "breathLimit": 150,
+      "MAGIC": 0,
+      "ANIMATION_KEY": "02_jian",
+      "CritAnimationKey": "03_jian2"
+    },
+    "Princess": {
+      "name": "{PRINCESS}",
+      "desc": "{PRINCESS_DESC}",
+      "CLASS": "Princess",
+      "MAXHP": 3000,
+      "HP": 500,
+      "ATK": 6,
+      "DEF": 6,
+      "EXP": 0,
+      "GOLD": 0,
+      "LEVEL": 1,
+      "breath": 0,
+      "breathLimit": 180,
+      "MAGIC": 0,
+      "ANIMATION_KEY": "19_2jian",
+      "CritAnimationKey": "58_huangzhe"
+    }
+  }
+}

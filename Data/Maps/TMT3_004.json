@@ -1,0 +1,1106 @@
+{
+  "mapName": "{TMT3_004}",
+  "width": 11,
+  "height": 11,
+  "ambientLight": [
+    72,
+    72,
+    72,
+    255
+  ],
+  "bgm": "/Game/Assets/Musics/sound-2.mp3",
+  "bgmFilter": {},
+  "bgs": "",
+  "bgsFilter": {},
+  "fog": "",
+  "fogPower": 0,
+  "fogOx": 0,
+  "fogOy": 0,
+  "fogDistort": 0,
+  "panorama": "",
+  "layerOrder": [
+    "floor",
+    "default"
+  ],
+  "layers": {
+    "floor": {
+      "layerName": "floor",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ]
+      ],
+      "autoTiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "shaderPath": "",
+      "actors": []
+    },
+    "default": {
+      "layerName": "default",
+      "layerTileset": "Mota",
+      "tiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          7
+        ],
+        [
+          null,
+          null,
+          7,
+          7,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          null,
+          7,
+          null,
+          7,
+          7,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          7,
+          null,
+          null,
+          null,
+          7,
+          7,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          null,
+          7,
+          null,
+          7,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          7,
+          null,
+          7,
+          null,
+          7,
+          7
+        ],
+        [
+          null,
+          null,
+          7,
+          7,
+          7,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          null,
+          null,
+          null,
+          7,
+          7,
+          7,
+          null
+        ],
+        [
+          null,
+          null,
+          7,
+          null,
+          7,
+          7,
+          null,
+          7,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          7,
+          null,
+          null,
+          7,
+          null,
+          null,
+          7,
+          null,
+          null,
+          null
+        ]
+      ],
+      "autoTiles": [
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      ],
+      "shaderPath": "",
+      "actors": []
+    }
+  },
+  "actors": {
+    "floor": [],
+    "default": [
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren",
+        "tag": "Enemies_BP_Enemy_E42_shouren_default_1_0",
+        "position": [
+          1,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_B",
+        "tag": "Items_BP_Item_Key_B_default_3_0",
+        "position": [
+          3,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_4_0",
+        "position": [
+          4,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
+        "tag": "Enemies_BP_Enemy_E35_bianfu_default_5_0",
+        "position": [
+          5,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_7_0",
+        "position": [
+          7,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E40_kulou",
+        "tag": "Enemies_BP_Enemy_E40_kulou_default_9_0",
+        "position": [
+          9,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_0_1",
+        "position": [
+          0,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_1_1",
+        "position": [
+          1,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
+        "tag": "Actors_BP_SWall_default_4_1",
+        "position": [
+          4,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_5_1",
+        "position": [
+          5,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E43_xieshilaimu",
+        "tag": "Enemies_BP_Enemy_E43_xieshilaimu_default_7_1",
+        "position": [
+          7,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Upstair",
+        "tag": "Teleportations_BP_Upstair_default_10_1",
+        "position": [
+          0,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_2_2",
+        "position": [
+          2,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E41_jiantouguai",
+        "tag": "Enemies_BP_Enemy_E41_jiantouguai_default_3_2",
+        "position": [
+          3,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
+        "tag": "Consumables_BP_Gem_1_2_default_4_2",
+        "position": [
+          4,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
+        "tag": "Enemies_BP_Enemy_E36_fashi_default_0_3",
+        "position": [
+          0,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E34_dashilaimu",
+        "tag": "Enemies_BP_Enemy_E34_dashilaimu_default_1_3",
+        "position": [
+          1,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_4_3",
+        "position": [
+          4,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.NPCs.BP_GoldShop_MT3_2",
+        "tag": "Actors_BP_GoldShop_MT3_2_default_6_3",
+        "position": [
+          6,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Weak_Release",
+        "tag": "Items_BP_Item_Weak_Release_default_9_3",
+        "position": [
+          9,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E29_xieyanshilaimu",
+        "tag": "Enemies_BP_Enemy_E29_xieyanshilaimu_default_10_3",
+        "position": [
+          10,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Barriers.BP_SWall",
+        "tag": "Actors_BP_SWall_default_4_4",
+        "position": [
+          3,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
+        "tag": "Consumables_BP_Gem_1_2_default_5_4",
+        "position": [
+          5,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
+        "tag": "Consumables_BP_Gem_2_2_default_6_4",
+        "position": [
+          6,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_3_1",
+        "tag": "Consumables_BP_Gem_3_1_default_7_4",
+        "position": [
+          7,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
+        "tag": "Consumables_BP_Bottle_400_default_10_4",
+        "position": [
+          10,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_0_5",
+        "position": [
+          0,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_1_5",
+        "position": [
+          1,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_4_5",
+        "position": [
+          4,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E39_kuloutoumu",
+        "tag": "Enemies_BP_Enemy_E39_kuloutoumu_default_6_5",
+        "position": [
+          6,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_8_5",
+        "position": [
+          8,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_9_5",
+        "position": [
+          9,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E37_dusangshi",
+        "tag": "Enemies_BP_Enemy_E37_dusangshi_default_10_5",
+        "position": [
+          10,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_2_6",
+        "position": [
+          2,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E40_kulou",
+        "tag": "Enemies_BP_Enemy_E40_kulou_default_3_6",
+        "position": [
+          3,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
+        "tag": "Consumables_BP_Gem_2_2_default_4_6",
+        "position": [
+          4,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_B",
+        "tag": "Doors_BP_Door_B_default_6_6",
+        "position": [
+          6,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_8_6",
+        "position": [
+          8,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E33_shilaimu",
+        "tag": "Enemies_BP_Enemy_E33_shilaimu_default_0_7",
+        "position": [
+          0,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
+        "tag": "Enemies_BP_Enemy_E35_bianfu_default_1_7",
+        "position": [
+          1,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "tag": "Enemies_BP_Enemy_E24_gongbing_default_6_7",
+        "position": [
+          6,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
+        "tag": "Actors_BP_Barrier_50_default_7_7",
+        "position": [
+          7,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_9_7",
+        "position": [
+          9,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "tag": "Enemies_BP_Enemy_E28_fengwushi_default_3_8",
+        "position": [
+          3,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_4_8",
+        "position": [
+          4,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "tag": "Enemies_BP_Enemy_E31_huiqishi_default_5_8",
+        "position": [
+          5,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_B",
+        "tag": "Doors_BP_Door_B_default_10_8",
+        "position": [
+          10,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.NPCs.BP_NPC_18",
+        "tag": "Actors_BP_NPC_18_default_1_9",
+        "position": [
+          1,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
+        "tag": "Actors_BP_Barrier_50_default_3_9",
+        "position": [
+          3,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
+        "tag": "Actors_BP_Barrier_50_default_6_9",
+        "position": [
+          6,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_8_9",
+        "position": [
+          8,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Weak_Ease",
+        "tag": "Items_BP_Item_Weak_Ease_default_9_9",
+        "position": [
+          9,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E38_dubianfu",
+        "tag": "Enemies_BP_Enemy_E38_dubianfu_default_10_9",
+        "position": [
+          10,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Downstair",
+        "tag": "Teleportations_BP_Downstair_default_0_10",
+        "position": [
+          10,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Upstair",
+        "tag": "Teleportations_BP_Upstair_default_2_10",
+        "position": [
+          5,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Poisoned_Ease",
+        "tag": "Items_BP_Item_Poisoned_Ease_default_3_10",
+        "position": [
+          3,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Downstair",
+        "tag": "Teleportations_BP_Downstair_default_5_10",
+        "position": [
+          2,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Poisoned_Release",
+        "tag": "Items_BP_Item_Poisoned_Release_default_8_10",
+        "position": [
+          8,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_9_10",
+        "position": [
+          9,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_10_10",
+        "position": [
+          10,
+          10
+        ]
+      }
+    ]
+  },
+  "BPClassVarChanged": {},
+  "type": "map"
+}

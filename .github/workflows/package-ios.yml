@@ -1,0 +1,108 @@
+name: Publish iOS TestFlight
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      package_inputs:
+        description: Frozen inputs from Package Game; empty selects this platform's tools.
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+# Shared by direct runs and calls from Package Game; distinct from the parent's lock.
+concurrency:
+  group: package-ios
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  check:
+    name: Select package inputs
+    uses: ./.github/workflows/package-inputs.yml
+    with:
+      platform: macos-arm64
+      package_inputs: ${{ inputs.package_inputs }}
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  package:
+    name: Publish iOS TestFlight
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 240
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
+      FASTLANE_SKIP_UPDATE_CHECK: 'true'
+      FASTLANE_HIDE_CHANGELOG: 'true'
+      FASTLANE_OPT_OUT_USAGE: 'true'
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Select Xcode 26 for App Store Connect
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/select-xcode.py
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: false
+      - name: Install pinned fastlane without restoring gems
+        shell: bash
+        run: gem install fastlane --version 2.240.1 --no-document
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-ios-artifact
+          merge-multiple: true
+      - name: Build, sign and publish internal TestFlight
+        shell: bash
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          IOS_SIGNING_CERTIFICATE: ${{ secrets.IOS_SIGNING_CERTIFICATE }}
+          IOS_SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.IOS_SIGNING_CERTIFICATE_PASSWORD }}
+          IOS_PROVISIONING_PROFILE: ${{ secrets.IOS_PROVISIONING_PROFILE }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          IOS_TESTFLIGHT_GROUP: ${{ vars.IOS_TESTFLIGHT_GROUP }}
+          IOS_USES_NON_EXEMPT_ENCRYPTION: ${{ vars.IOS_USES_NON_EXEMPT_ENCRYPTION }}
+          IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE: ${{ vars.IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE }}
+        run: |
+          bash .github/scripts/package-ios.sh \
+            "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-ios-artifact" "$RUNNER_TEMP/projectmt3-ios-package"
+      - name: Remove iOS signing material and temporary IPA
+        if: always()
+        shell: bash
+        run: bash .github/scripts/package-macos-common.sh cleanup ios
+      - name: Upload TestFlight status only
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-ios-testflight-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-ios-package/testflight.txt
+            ${{ runner.temp }}/projectmt3-ios-package/build-info.json
+          if-no-files-found: warn
+          retention-days: 7
+          overwrite: true

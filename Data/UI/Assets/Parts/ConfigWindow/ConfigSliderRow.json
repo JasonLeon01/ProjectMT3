@@ -1,0 +1,138 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 448,
+    "height": 32
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Config Slider Row",
+    "category": "General"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        448,
+        32
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "Label",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 20,
+          "text": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.5
+            ],
+            "max": [
+              0.0,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 32.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.5
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {
+          "previewText": "Volume"
+        },
+        "children": []
+      },
+      {
+        "name": "Slider",
+        "controlId": "Engine.Slider",
+        "properties": {
+          "size": [
+            160.0,
+            8.0
+          ],
+          "minValue": 0,
+          "maxValue": 100,
+          "value": 0,
+          "lineTexture": "/Game/Assets/System/SliderLine.png",
+          "handleTexture": "/Game/Assets/System/SliderHandle.png"
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.5,
+              0.5
+            ],
+            "max": [
+              0.5,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.5
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "ValueText",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 20,
+          "text": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.5,
+              0.5
+            ],
+            "max": [
+              0.5,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 176.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.5
+          ],
+          "autoSize": true,
+          "zOrder": 2
+        },
+        "editor": {
+          "previewText": "100"
+        },
+        "children": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,327 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 416,
+    "height": 240
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Floor Map Preview",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        416,
+        240
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "TelepointWindowFrame",
+        "controlId": "Engine.Window",
+        "properties": {
+          "size": [
+            176,
+            240
+          ],
+          "windowSkin": "",
+          "repeated": true,
+          "visible": false
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "PreviewWindowFrame",
+        "controlId": "Engine.Window",
+        "properties": {
+          "size": [
+            240,
+            240
+          ],
+          "windowSkin": "",
+          "repeated": true
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 176.0,
+            "top": 0.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "TelepointContent",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            144,
+            208
+          ],
+          "visible": false
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 16.0,
+            "top": 16.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "TelepointScrollBox",
+            "controlId": "Engine.ScrollBox",
+            "properties": {
+              "size": [
+                144,
+                208
+              ],
+              "windowSkin": ""
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.0,
+                  0.0
+                ],
+                "max": [
+                  1.0,
+                  1.0
+                ]
+              },
+              "offsets": {
+                "left": 0.0,
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [
+                0.0,
+                0.0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "TelepointList",
+                "controlId": "Engine.ListView",
+                "properties": {
+                  "size": [
+                    144.0,
+                    208.0
+                  ],
+                  "defaultItemHeight": 32,
+                  "fixItemHeight": true,
+                  "columns": 1
+                },
+                "slot": {},
+                "editor": {},
+                "children": []
+              }
+            ]
+          },
+          {
+            "name": "WindowPauseMark",
+            "controlId": "Project:Parts/Shared/WindowPauseMark",
+            "properties": {},
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.5,
+                  1
+                ],
+                "max": [
+                  0.5,
+                  1
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 4,
+                "right": 16,
+                "bottom": 16
+              },
+              "alignment": [
+                0.5,
+                1
+              ],
+              "autoSize": false,
+              "zOrder": 100
+            },
+            "editor": {},
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "PreviewContent",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            208,
+            208
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 192.0,
+            "top": 16.0,
+            "right": 0.0,
+            "bottom": 0.0
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "PreviewImage",
+            "controlId": "Engine.Image",
+            "properties": {
+              "texture": "",
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.0,
+                  0.0
+                ],
+                "max": [
+                  0.0,
+                  0.0
+                ]
+              },
+              "offsets": {
+                "left": 0.0,
+                "top": 0.0,
+                "right": 0.0,
+                "bottom": 0.0
+              },
+              "alignment": [
+                0.0,
+                0.0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "WindowChrome",
+        "controlId": "Project:Parts/Shared/WindowChrome",
+        "properties": {},
+        "slot": {
+          "anchors": {
+            "min": [
+              0.0,
+              0.0
+            ],
+            "max": [
+              0.0,
+              0.0
+            ]
+          },
+          "offsets": {
+            "left": 0.0,
+            "top": 0.0,
+            "right": 176,
+            "bottom": 240
+          },
+          "alignment": [
+            0.0,
+            0.0
+          ],
+          "autoSize": false,
+          "zOrder": 100
+        },
+        "editor": {},
+        "children": []
+      }
+    ]
+  }
+}

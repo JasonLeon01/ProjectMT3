@@ -1,0 +1,110 @@
+#include <GlobalRuntimeApi.hpp>
+
+#include "System/Diagnostics/PerformanceProfiler.hpp"
+
+#include <CustomParticles/CommonTipController.hpp>
+#include <EditorCommandServices.hpp>
+#include <Fog/FogController.hpp>
+#include <Panorama/PanoramaController.hpp>
+#include <Manager/ActorAudioBridge.hpp>
+#include <Manager/AudioManager.hpp>
+#include <Manager/FontManager.hpp>
+#include <Manager/ShaderManager.hpp>
+#include <Manager/TextureManager.hpp>
+#include <Manager/TimeManager.hpp>
+#include <Manager/UiAudioBridge.hpp>
+#include <RuntimeSession.hpp>
+#include <SFML/Window/WindowEnums.hpp>
+#include <System.hpp>
+#include <UIManager.hpp>
+#include <VideoPlayback.hpp>
+#include <Weather/WeatherController.hpp>
+
+extern "C" {
+#include <lua.h>
+}
+
+namespace {
+
+ludork::global::RuntimeLaunchOptions launchOptions;
+
+void registerEditorCommands(lua_State* state) {
+    const int stackBase = lua_gettop(state);
+    lua_getglobal(state, "GlobalCore");
+    if (lua_istable(state, -1)) {
+        ludork::standard::registerEditorCommandEnvironment(state, "GlobalCore",
+                                                           -1);
+        lua_getfield(state, -1, "System");
+        if (lua_istable(state, -1)) {
+            lua_getfield(state, -1, "exit");
+            if (lua_isfunction(state, -1)) {
+                ludork::standard::registerEditorCommandShutdownHandler(state,
+                                                                       -1);
+            }
+        }
+    }
+    lua_settop(state, stackBase);
+    ludork::standard::registerEditorCommandBoolControlHandler(
+        state, "performanceMonitor", &PerformanceProfiler::setEnabled);
+}
+
+void unregisterEditorCommands(lua_State* state) noexcept {
+    ludork::standard::unregisterEditorCommandBoolControlHandler(
+        state, "performanceMonitor");
+    ludork::standard::unregisterEditorCommandShutdownHandler(state);
+    ludork::standard::unregisterEditorCommandEnvironment(state, "GlobalCore");
+}
+
+}  // namespace
+
+void initializeGlobalLifecycle(lua_State* state) {
+    ludork::standard::registerRuntimeCleanup(state, ludork::global::shutdown);
+    PerformanceProfiler::setEnabled(false);
+    System::initializeRuntimeSession();
+    AudioManager::initialize(state);
+    initializeActorAudioBridge();
+    initializeUiAudioBridge();
+    registerVideoPlayback(state);
+    registerEditorCommands(state);
+}
+
+namespace ludork::global {
+
+void setRuntimeLaunchOptions(const RuntimeLaunchOptions& options) noexcept {
+    launchOptions = options;
+}
+
+const RuntimeLaunchOptions& runtimeLaunchOptions() noexcept {
+    return launchOptions;
+}
+
+std::uint32_t runtimeWindowStyle() noexcept {
+    return sf::Style::Titlebar | sf::Style::Close;
+}
+
+void shutdown(lua_State* state) noexcept {
+    ludork::standard::LuaExecutionScope execution(state);
+    if (!execution.active()) {
+        return;
+    }
+    unregisterEditorCommands(execution.state());
+    ludork::standard::LuaExecutionPause pause;
+    shutdownVideoPlayback();
+    System::shutdownRuntime();
+    PerformanceProfiler::shutdown();
+    UIManager::shutdown();
+    WeatherController::shutdown();
+    FogController::shutdown();
+    PanoramaController::shutdown();
+    shutdownUiAudioBridge();
+    AudioManager::shutdown();
+    CommonTipController::shutdown();
+    FontManager::clear();
+    ShaderManager::clear();
+    TextureManager::clear();
+    TimeManager::shutdown();
+    shutdownActorAudioBridge();
+    System::shutdownConfiguration();
+}
+
+}  // namespace ludork::global

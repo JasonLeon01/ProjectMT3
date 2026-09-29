@@ -1,0 +1,11 @@
+{
+  "type": "uiAsset",
+  "designSize": { "width": 320, "height": 24 },
+  "palette": { "exposed": true, "displayName": "Hotkey Text", "category": "Parts / WindowHotkeys" },
+  "root": {
+    "name": "Text", "controlId": "Engine.PlainText",
+    "properties": { "characterSize": 18 },
+    "editor": { "previewText": "H: Hotkey help" },
+    "children": []
+  }
+}

@@ -1,0 +1,78 @@
+name: Sync Ludork Engine, Global and Internal
+
+on:
+  schedule:
+    - cron: '17 */4 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: sync-ludork
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync Engine, Global and Internal and update PR
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Record time window
+        shell: bash
+        run: echo "SYNC_STARTED_AT=$(date +%s)" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v7
+        with:
+          # Always rebuild the cumulative PR from the merged baseline.
+          ref: ${{ github.event.repository.default_branch }}
+          persist-credentials: false
+
+      - name: Fetch upstream main history
+        shell: bash
+        run: |
+          upstream="$RUNNER_TEMP/ludork-sync-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.git"
+          git clone --bare --filter=blob:none --single-branch --branch main \
+            https://github.com/JasonLeon01/Ludork.git "$upstream"
+          echo "LUDORK_SYNC_REPOSITORY=$upstream" >> "$GITHUB_ENV"
+
+      - name: Check and apply changed Engine, Global, Internal and Lua stub files
+        id: sync
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const sync = require('./.github/scripts/sync-ludork.cjs');
+            await sync.run({ core, context });
+
+      - name: Create or update sync PR
+        if: steps.sync.outputs.reconcile_pr == 'true'
+        uses: peter-evans/create-pull-request@v8
+        with:
+          token: ${{ github.token }}
+          branch: codex/sync-ludork
+          base: ${{ github.event.repository.default_branch }}
+          add-paths: |
+            Engine/
+            :(exclude)Engine/ThirdParty
+            :(exclude)Engine/ThirdParty/**
+            Scripts/Global/
+            Scripts/Internal/
+            Scripts/stub/Global/
+            Scripts/stub/Internal/
+            .github/ludork-sync.json
+          commit-message: 'chore: sync Ludork Engine, Global, Internal and Lua stubs from ${{ steps.sync.outputs.upstream_sha }}'
+          title: 'chore: sync Ludork Engine, Global, Internal and Lua stubs'
+          body: |
+            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/`, `Game/Scripts/{Global,Internal}/` into the corresponding `Scripts/` directories, and `Game/Scripts/stub/{Global,Internal}/` into the corresponding `Scripts/stub/` directories.
+
+            - Preserve `Engine/ThirdParty/` and files unchanged upstream since the merged baseline.
+            - Engine merged baseline: `${{ steps.sync.outputs.engine_baseline_sha }}`
+            - Global merged baseline: `${{ steps.sync.outputs.global_baseline_sha }}`
+            - Internal merged baseline: `${{ steps.sync.outputs.internal_baseline_sha }}`
+            - Global stub merged baseline: `${{ steps.sync.outputs.globalStub_baseline_sha }}`
+            - Internal stub merged baseline: `${{ steps.sync.outputs.internalStub_baseline_sha }}`
+            - Upstream: https://github.com/JasonLeon01/Ludork/commit/${{ steps.sync.outputs.upstream_sha }}
+            - Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+            Review and merge manually. This workflow does not build or validate gameplay.

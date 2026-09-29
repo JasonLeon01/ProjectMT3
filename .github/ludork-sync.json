@@ -1,0 +1,17 @@
+{
+  "engine": {
+    "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
+  },
+  "global": {
+    "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
+  },
+  "internal": {
+    "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
+  },
+  "globalStub": {
+    "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
+  },
+  "internalStub": {
+    "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
+  }
+}

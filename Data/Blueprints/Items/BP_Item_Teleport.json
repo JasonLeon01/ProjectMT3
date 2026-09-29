@@ -1,0 +1,87 @@
+{
+  "parent": "Source.MapActors.Item",
+  "attrs": {
+    "material": {
+      "lightBlock": 0.24,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/items/mting-1266.png",
+    "defaultRect": [
+      [
+        0,
+        0,
+        28,
+        28
+      ]
+    ],
+    "ID": "Teleport",
+    "tag": "",
+    "conditionVariable": "fly",
+    "conditionValue": true,
+    "lightComp": {
+      "lightColour": [
+        160,
+        160,
+        160,
+        255
+      ],
+      "lightRadius": 32,
+      "lightOffset": [
+        0,
+        0
+      ]
+    }
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [],
+        "links": []
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onUse": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": null,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null,
+      "onUse": null
+    }
+  },
+  "type": "blueprint"
+}

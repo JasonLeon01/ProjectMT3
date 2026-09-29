@@ -1,0 +1,87 @@
+name: Package macOS ARM64
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      package_inputs:
+        description: Frozen inputs from Package Game; empty selects this platform's tools.
+        type: string
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+  actions: read
+
+# Shared by direct runs and calls from Package Game; distinct from the parent's lock.
+concurrency:
+  group: package-macos
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  check:
+    name: Select package inputs
+    uses: ./.github/workflows/package-inputs.yml
+    with:
+      platform: macos-arm64
+      package_inputs: ${{ inputs.package_inputs }}
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  package:
+    name: Package macOS ARM64
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download Ludork macOS DMG
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-macos-artifact
+          merge-multiple: true
+      - name: Build, sign and notarize macOS app
+        shell: bash
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          MACOS_SIGNING_CERTIFICATE: ${{ secrets.MACOS_SIGNING_CERTIFICATE }}
+          MACOS_SIGNING_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_SIGNING_CERTIFICATE_PASSWORD }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+        run: |
+          bash .github/scripts/package-macos.sh \
+            "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-macos-artifact" "$RUNNER_TEMP/projectmt3-macos-package"
+      - name: Remove macOS signing material
+        if: always()
+        shell: bash
+        run: bash .github/scripts/package-macos-common.sh cleanup macos
+      - name: Upload notarized macOS app
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-macos-arm64-${{ needs.check.outputs.project_sha }}
+          path: |
+            ${{ runner.temp }}/projectmt3-macos-package/*-macos-arm64.zip
+            ${{ runner.temp }}/projectmt3-macos-package/build-info.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 7
+          overwrite: true

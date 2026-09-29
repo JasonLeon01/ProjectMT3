@@ -1,0 +1,74 @@
+name: Package Game
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: package-game
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  daily:
+    name: Check first daily push
+    uses: ./.github/workflows/daily-push-gate.yml
+
+  check:
+    name: Select package inputs
+    needs: daily
+    if: needs.daily.outputs.should_run == 'true'
+    uses: ./.github/workflows/package-inputs.yml
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  package:
+    name: Package Windows
+    needs: check
+    uses: ./.github/workflows/package-windows.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit
+
+  android:
+    name: Package AOS ARM64
+    needs: check
+    uses: ./.github/workflows/package-android.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit
+
+  harmony:
+    name: Package HOS ARM64
+    needs: check
+    permissions:
+      contents: read
+      actions: read
+      packages: read
+    uses: ./.github/workflows/package-harmony.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit
+
+  macos:
+    name: Package macOS ARM64
+    needs: check
+    uses: ./.github/workflows/package-macos.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit
+
+  ios:
+    name: Publish iOS TestFlight
+    needs: check
+    uses: ./.github/workflows/package-ios.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit

@@ -1,0 +1,147 @@
+{
+    "cursorSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-77.wav"
+    },
+    "decisionSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-83.wav"
+    },
+    "cancelSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-64.wav"
+    },
+    "buzzerSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-81.wav"
+    },
+    "shopSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-80.wav"
+    },
+    "saveSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-2.wav"
+    },
+    "loadSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-83.wav"
+    },
+    "gateSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-1.wav"
+    },
+    "stairSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-76.wav"
+    },
+    "getSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-2.wav"
+    },
+    "equipSE": {
+        "type": "file",
+        "base": "Sounds",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Sounds/mting-2.wav"
+    },
+    "titleBGM": {
+        "type": "file",
+        "base": "Musics",
+        "ext": [
+            ".ogg",
+            ".wav",
+            ".mp3",
+            ".aac",
+            ".flac"
+        ],
+        "value": "/Game/Assets/Musics/sound-0.mp3"
+    },
+    "type": "system"
+}

@@ -1,0 +1,207 @@
+{
+  "parent": "Source.MapActors.ConditionalActor.ConditionalActor",
+  "attrs": {
+    "animatable": false,
+    "material": {
+      "lightBlock": 0.4,
+      "mirror": false,
+      "reflectionStrength": 0.5,
+      "opacity": 1.0,
+      "speedRate": 1.0
+    },
+    "collisionEnabled": false,
+    "tickable": false,
+    "texturePath": "/Game/Assets/Characters/blocks/stairs.png",
+    "tag": "",
+    "defaultRect": [
+      [
+        64,
+        0,
+        32,
+        32
+      ]
+    ],
+    "scriptMixin": false
+  },
+  "graph": {
+    "nodeGraph": {
+      "onOverlap": {
+        "nodes": [
+          {
+            "nodeFunction": "GlobalFunctions.Utils.SELF",
+            "params": [],
+            "pos": [
+              -720.0,
+              634.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC01_1}",
+              null
+            ],
+            "pos": [
+              0.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC01_2}",
+              null
+            ],
+            "pos": [
+              720.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC01_3}",
+              null
+            ],
+            "pos": [
+              1440.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowMessage",
+            "params": [
+              "{DN_PRINCESS}",
+              "{DC_NPC01_4}",
+              null
+            ],
+            "pos": [
+              2160.0,
+              314.0
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
+            "params": [],
+            "pos": [
+              3600,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowTutorial",
+            "params": [
+              "TM_03"
+            ],
+            "pos": [
+              2880,
+              314
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": 0,
+            "right": 1,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 0,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 1,
+            "right": 2,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 2,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 3,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 4,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 6,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          }
+        ]
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onCollision": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": null,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": 1,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

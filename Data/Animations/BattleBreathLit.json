@@ -1,0 +1,100 @@
+{
+  "type": "animation",
+  "name": "Battle breath Lit",
+  "frameRate": 30,
+  "assets": [
+    "/Game/Assets/Animations/mting-1211.png",
+    "/Game/Assets/Animations/mting-1212.png",
+    "/Game/Assets/Animations/mting-1213.png"
+  ],
+  "timeLines": [
+    {
+      "timeSegments": [
+        {
+          "type": "frame",
+          "asset": 0,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "endFrame": {
+            "time": 0.4,
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 1,
+          "startFrame": {
+            "time": 0.4,
+            "position": [
+              1,
+              -1
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "endFrame": {
+            "time": 0.8,
+            "position": [
+              1,
+              -1
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 2,
+          "startFrame": {
+            "time": 0.8,
+            "position": [
+              1,
+              -1
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "endFrame": {
+            "time": 1.2000000000000002,
+            "position": [
+              1,
+              -1
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

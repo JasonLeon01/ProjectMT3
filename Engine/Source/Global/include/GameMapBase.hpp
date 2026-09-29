@@ -1,0 +1,505 @@
+#pragma once
+#include <Gameplay/ActorMapService.hpp>
+#include <Gameplay/TileLayer.hpp>
+#include <Gameplay/Tilemap/Tilemap.hpp>
+
+#include <CoreMinimal.hpp>
+#include <Gameplay/Actor.hpp>
+#include <General/Material.hpp>
+#include <Light.hpp>
+#include <LightOcclusionInput.hpp>
+#include <LightOcclusionResult.hpp>
+
+using ActorPtr = std::shared_ptr<Actor>;
+using ActorDict = std::unordered_map<std::string, std::vector<ActorPtr>>;
+using IntPair = std::pair<int, int>;
+
+class EmitterScheduler;
+class Camera;
+
+namespace ludork::global::game_map_base_impl {
+class ActorRegistryImpl;
+class OccupancyIndexImpl;
+class SparseWorldImpl;
+class LightOcclusionImpl;
+class RegionVisibilityImpl;
+}  // namespace ludork::global::game_map_base_impl
+
+////////////////////////////////////////////////////////////
+/// \brief Native game map base for material queries and navigation
+///
+////////////////////////////////////////////////////////////
+BIND_CLASS()
+class GameMapBase : public ActorMapService {
+public:
+    LUDORK_CAST_DERIVED(GameMapBase, ActorMapService)
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Pathfinding result in all runtime path formats
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_CLASS(copyable = true)
+    struct PathResult {
+        ////////////////////////////////////////////////////////////
+        /// \brief Per-step movement offsets
+        ///
+        ////////////////////////////////////////////////////////////
+        BIND_PROPERTY()
+        std::vector<sf::Vector2i> offsets;
+
+        ////////////////////////////////////////////////////////////
+        /// \brief Absolute path points excluding the start position
+        ///
+        ////////////////////////////////////////////////////////////
+        BIND_PROPERTY()
+        std::vector<sf::Vector2i> points;
+
+        ////////////////////////////////////////////////////////////
+        /// \brief Absolute route including the start position
+        ///
+        ////////////////////////////////////////////////////////////
+        BIND_PROPERTY()
+        std::vector<sf::Vector2i> route;
+    };
+
+    BIND_INIT()
+    GameMapBase();
+
+    ~GameMapBase() override;
+
+    void collectEmitters(EmitterScheduler& scheduler);
+    void releaseEmitters() noexcept;
+
+    BIND_METHOD(metadata = false)
+    void releaseBillboards() noexcept;
+
+    BIND_METHOD(metadata = false)
+    void _updateBillboards(
+        float deltaTime, const Camera& camera,
+        std::function<bool(Actor&, const std::string&)> layerVisible);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Build a grayscale texture from a material map
+    ///
+    /// - \param size Output texture size
+    /// - \param materialMap Material values in range `[0, 1]`
+    /// - \param smooth Whether smoothing should be enabled
+    ///
+    /// - \return Shared texture resource
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::shared_ptr<sf::Texture> generateDataFromMap(
+        const sf::Vector2u& size,
+        const std::vector<std::vector<MaterialValue>>& materialMap,
+        bool smooth = false);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Find path data between two grid positions using A*
+    ///
+    /// - \param start Start position
+    /// - \param goal Goal position
+    /// - \param size Grid dimensions
+    /// - \param movingActor Actor whose footprint and occupancy are evaluated
+    /// - \param excludedAnchors Anchor cells that A* must not enter
+    ///
+    /// - \return Pathfinding result containing offsets, points, and route
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD(defaults = {nil, nil, nil, nil, {}})
+    GameMapBase::PathResult findPathExt(
+        const sf::Vector2i& start, const sf::Vector2i& goal,
+        const sf::Vector2u& size, Actor& movingActor,
+        const std::vector<sf::Vector2i>& excludedAnchors = {});
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Build a 2D map of dynamic material property values
+    ///
+    /// - \param width Grid width
+    /// - \param height Grid height
+    /// - \param propertyName Material property name to evaluate
+    /// - \param invalidValue Fallback value for invalid positions
+    ///
+    /// - \return 2D property map
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::vector<std::vector<MaterialValue>> getMaterialPropertyMapExt(
+        int width, int height, const std::string& propertyName,
+        const MaterialValue& invalidValue);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Recompute tile passability and actor occupancy caches
+    ///
+    /// - \param size Grid dimensions
+    ///
+    /// - \return Tile passability grid
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::vector<std::vector<bool>> rebuildPassabilityCache(
+        const sf::Vector2u& size);
+
+    BIND_METHOD(metadata = false)
+    void invalidatePassabilityCache();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Refresh one actor's occupancy without rebuilding tile passability
+    ///
+    /// Removes the actor from all cached cells, then registers it at its
+    /// current occupied cells. Use this after an actor changes map position.
+    ///
+    /// - \param actor Actor whose occupancy should be refreshed
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    void updateActorOccupancy(Actor& actor) override;
+
+    BIND_METHOD(metadata = false)
+    sf::Vector2u getSize() const override;
+    bool isPassable(const Actor& actor,
+                    const sf::Vector2i& position) const override;
+    std::vector<Actor*> getCollision(Actor& actor,
+                                     const sf::Vector2i& position) override;
+    std::vector<Actor*> getOverlaps(Actor& actor) override;
+    std::optional<Material> getTopMaterial(
+        const sf::Vector2i& position) const override;
+    void updateActorList() override;
+    void destroyActor(Actor& actor) override;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Get actors cached at one map position
+    ///
+    /// - \param x Tile X coordinate
+    /// - \param y Tile Y coordinate
+    ///
+    /// - \return Actors at the requested position
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::vector<Actor*> getActorsAt(int x, int y);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Get actors cached inside a square tile range
+    ///
+    /// - \param x Centre tile X coordinate
+    /// - \param y Centre tile Y coordinate
+    /// - \param radius Range radius in tiles
+    ///
+    /// - \return Actors inside the requested range
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::vector<Actor*> getActorsInRange(int x, int y, int radius);
+
+    BIND_METHOD(metadata = false)
+    std::vector<Actor*> getActorsInRangeExcluding(int x, int y, int radius,
+                                                  Actor& excludedActor);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Get colliding actors cached at one map position
+    ///
+    /// - \param x Tile X coordinate
+    /// - \param y Tile Y coordinate
+    /// - \param selfActor Actor excluded from the result
+    ///
+    /// - \return Colliding actors on the topmost occupied layer, ordered from
+    /// visually topmost to bottommost
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::vector<Actor*> getCollisionAt(int x, int y, Actor& selfActor);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Get overlapping actors cached at one map position
+    ///
+    /// - \param x Tile X coordinate
+    /// - \param y Tile Y coordinate
+    /// - \param selfActor Actor excluded from the result
+    ///
+    /// - \return Overlapping actors at the requested position
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    std::vector<Actor*> getOverlapsAt(int x, int y, Actor& selfActor);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Set the native tilemap used by material and passability queries
+    ///
+    /// - \param tilemap Tilemap to retain
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    void setTilemap(std::shared_ptr<Tilemap> tilemap);
+
+    BIND_METHOD(metadata = false)
+    void configureSparseWorld(const sf::Vector2u& size,
+                              const std::vector<std::string>& layerOrder,
+                              const std::vector<sf::IntRect>& regionRects);
+
+    BIND_METHOD(metadata = false)
+    void setSparseWorldRegion(int regionIndex, std::shared_ptr<Tilemap> tilemap,
+                              bool actorsReady);
+
+    BIND_METHOD(metadata = false)
+    void setSparseWorldRegionActorsReady(int regionIndex);
+
+    BIND_METHOD(metadata = false)
+    void detachSparseWorldRegion(int regionIndex);
+
+    BIND_METHOD(metadata = false)
+    void setSparseWorldPreparedRect(std::optional<sf::IntRect> rect);
+
+    BIND_METHOD(metadata = false)
+    bool isSparseWorldCellReady(const sf::Vector2i& position) const;
+
+    BIND_METHOD(metadata = false)
+    bool isSparseWorldGameplayPositionReady(const sf::Vector2i& position) const;
+
+    BIND_METHOD(metadata = false)
+    std::optional<int> getSparseWorldRegionIndexAt(
+        const sf::Vector2i& position) const;
+
+    BIND_METHOD(metadata = false)
+    void clearSparseWorld();
+
+    BIND_METHOD(metadata = false)
+    std::size_t getSparseOccupancyPageCount() const;
+
+    BIND_METHOD(metadata = false)
+    std::shared_ptr<sf::Texture> rebuildStaticLightOccupancy(
+        const sf::Vector2i& origin, const sf::Vector2u& size,
+        const std::vector<std::shared_ptr<Actor>>& actors);
+
+    BIND_METHOD(metadata = false)
+    std::vector<LightOcclusionResult> analyseLightOcclusion(
+        const std::vector<LightOcclusionInput>& inputs,
+        const std::vector<std::shared_ptr<Actor>>& visibleActors);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Synchronise cached actor pointers from typed actor lists
+    ///
+    /// - \param actors Layer name to actor list mapping
+    ///
+    ////////////////////////////////////////////////////////////
+    BIND_METHOD()
+    void syncActorsRef(const ActorDict& actors);
+
+    BIND_METHOD(metadata = false)
+    void syncMaterialActorsRef(const ActorDict& actors);
+
+    BIND_METHOD(metadata = false)
+    void setActorListUpdater(std::function<void()> updater);
+
+    BIND_METHOD(metadata = false)
+    void setActorDestroyer(std::function<void(Actor&)> destroyer);
+
+    BIND_METHOD(metadata = false)
+    void setPlayerActor(ActorPtr actor = nullptr);
+
+    BIND_METHOD(name = "_registerLayerActor", metadata = false)
+    bool registerLayerActor(ActorPtr actor, const std::string& layer);
+
+    BIND_METHOD(name = "_getRegisteredActorLayer", metadata = false)
+    std::optional<std::string> getRegisteredActorLayer(Actor& actor) const;
+
+    BIND_METHOD(metadata = false)
+    void beginActorBatch();
+
+    BIND_METHOD(metadata = false)
+    void endActorBatch();
+
+    BIND_METHOD(name = "_flushActorChanges", metadata = false)
+    void flushActorChanges();
+
+    BIND_METHOD(name = "_withDeferredActorViewSync", metadata = false)
+    void withDeferredActorViewSync(std::function<void()> handler);
+
+    BIND_METHOD(name = "_drainActorLifecycle", metadata = false)
+    void drainActorLifecycle(std::function<void(Actor&)> createHandler,
+                             std::function<void(Actor&)> componentHandler);
+
+    BIND_METHOD(name = "_syncActorViews", metadata = false)
+    void syncActorViews(const ActorDict& actors);
+
+    BIND_METHOD(name = "_forgetActors", metadata = false)
+    void forgetActors(const std::vector<ActorPtr>& actors);
+
+    BIND_METHOD(name = "_updateActors", metadata = false)
+    void updateActors(float deltaTime);
+
+    BIND_METHOD(name = "_lateUpdateActors", metadata = false)
+    void lateUpdateActors(float deltaTime);
+
+    BIND_METHOD(name = "_fixedUpdateActors", metadata = false)
+    void fixedUpdateActors(float fixedDelta);
+
+    /// \brief Enable tile-only disconnected-region hiding on ordinary maps.
+    BIND_METHOD()
+    void setHideDisconnectedRegions(bool enabled);
+
+    /// \brief Override the observation cell for previews; nil follows the
+    /// player.
+    BIND_METHOD(defaults = {nil})
+    void setVisibilityObserver(
+        std::optional<sf::Vector2i> position = std::nullopt);
+
+    /// \brief Query current map presentation without changing gameplay
+    /// visibility.
+    BIND_METHOD(Pure = true)
+    bool isCellVisible(const sf::Vector2i& position) const;
+
+    /// \brief Include the actor's own visibility and every ancestor's map cell.
+    BIND_METHOD(Pure = true)
+    bool isActorVisibleOnMap(const Actor& actor) const;
+
+    /// \brief Revision of terrain and the observed connected region, refreshed
+    /// on query.
+    BIND_METHOD(Pure = true)
+    std::size_t getVisibilityRevision() const;
+
+    BIND_METHOD(metadata = false)
+    bool getHideDisconnectedRegions() const;
+    std::vector<std::vector<sf::Vector2i>> getDisplayTileSources() const;
+    std::shared_ptr<sf::Texture> rebuildRenderLightOccupancy(
+        const std::shared_ptr<Tilemap>& displayTilemap,
+        const std::vector<std::shared_ptr<Actor>>& actors);
+
+    const ActorDict& getMaterialActorsForRenderer() const;
+
+    const ActorPtr& getPlayerActorForRenderer() const;
+
+private:
+    ////////////////////////////////////////////////////////////
+    /// \brief Check whether one grid node is traversable
+    ///
+    /// - \param x Node X coordinate
+    /// - \param y Node Y coordinate
+    /// - \param sx Start node X coordinate
+    /// - \param sy Start node Y coordinate
+    /// - \param gx Goal node X coordinate
+    /// - \param gy Goal node Y coordinate
+    ///
+    /// - \return `true` when traversable
+    ///
+    ////////////////////////////////////////////////////////////
+    bool passable(int x, int y, int sx, int sy, int gx, int gy);
+
+    bool passableForActor(int x, int y, int sx, int sy, int gx, int gy,
+                          const Actor* excludedActor);
+
+    std::vector<Actor*> getActorsInRangeImpl(int x, int y, int radius,
+                                             const Actor* excludedActor);
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Check whether a pathfinding transition is passable for a moving
+    /// actor
+    ///
+    /// - \param fromX Source anchor X coordinate
+    /// - \param fromY Source anchor Y coordinate
+    /// - \param x Node anchor X coordinate
+    /// - \param y Node anchor Y coordinate
+    /// - \param sx Start anchor X coordinate
+    /// - \param sy Start anchor Y coordinate
+    /// - \param gx Goal anchor X coordinate
+    /// - \param gy Goal anchor Y coordinate
+    /// - \param width Search grid width
+    /// - \param height Search grid height
+    /// - \param movingActor Moving actor used for footprint checks
+    ///
+    /// - \return `true` when the node and directional transition are passable
+    ///
+    ////////////////////////////////////////////////////////////
+    bool transitionPassableForActor(int fromX, int fromY, int x, int y, int sx,
+                                    int sy, int gx, int gy, unsigned int width,
+                                    unsigned int height,
+                                    const Actor& movingActor);
+
+    bool directionPassableForActor(const sf::Vector2i& fromPosition,
+                                   const sf::Vector2i& toPosition,
+                                   const std::vector<sf::Vector2i>& toCells,
+                                   const Actor& movingActor) const;
+
+    bool isDirectionPassable(const sf::Vector2i& fromPosition,
+                             const sf::Vector2i& toPosition,
+                             int direction) const;
+
+    void ensurePassabilityCache() const;
+    void refreshActorOccupancyCache();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Return layer names in top-first order
+    ///
+    /// - \return Reversed tilemap layer name list
+    ///
+    ////////////////////////////////////////////////////////////
+    std::vector<std::string> getTopFirstLayerNames() const;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Query dynamic material property at one map position
+    ///
+    /// - \param pos Tile position
+    /// - \param propertyName Material property name
+    /// - \param invalidValue Fallback value
+    ///
+    /// - \return Property value or `invalidValue`
+    ///
+    ////////////////////////////////////////////////////////////
+    MaterialValue getMaterialProperty(const sf::Vector2i& pos,
+                                      const std::string& propertyName,
+                                      const MaterialValue& invalidValue) const;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Resolve an actor's layer index in top-first layer order
+    ///
+    /// - \param actor Actor to query
+    ///
+    /// - \return Layer index, or a large value when unknown
+    ///
+    ////////////////////////////////////////////////////////////
+    int getActorLayerIndex(const Actor* actor) const;
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Resolve the topmost occupant layer index at one cell
+    ///
+    /// - \param actorsAtCell Actors cached at the cell
+    /// - \param selfActor Actor excluded from the lookup, or `nullptr` to
+    /// consider all occupants
+    ///
+    /// - \return Topmost layer index, or a large value when empty
+    ///
+    ////////////////////////////////////////////////////////////
+    int getTopmostOccupantLayerIndex(const std::vector<Actor*>& actorsAtCell,
+                                     const Actor* selfActor) const;
+
+    bool isTopmostOccupant(Actor* actor, const Actor* excludedActor,
+                           const std::unordered_set<Actor*>* descendants,
+                           int topmostLayerIndex) const;
+
+    struct VisibilityLayerState {
+        std::shared_ptr<TileLayer> layer;
+        bool visible = false;
+        std::size_t revision = 0;
+        bool operator==(const VisibilityLayerState&) const = default;
+    };
+    void ensureVisibilityCache() const;
+    std::unique_ptr<ludork::global::game_map_base_impl::RegionVisibilityImpl>
+        regionVisibility_;
+    bool hideDisconnectedRegions_ = false;
+    std::optional<sf::Vector2i> visibilityObserver_;
+    mutable bool visibilityDirty_ = true;
+    mutable std::size_t visibilityRevision_ = 0;
+    mutable std::vector<VisibilityLayerState> visibilityLayers_;
+
+    std::shared_ptr<Tilemap> tilemap_;
+    std::unique_ptr<ludork::global::game_map_base_impl::SparseWorldImpl>
+        sparseWorld_;
+    std::unique_ptr<ludork::global::game_map_base_impl::LightOcclusionImpl>
+        lightOcclusion_;
+    std::vector<std::vector<bool>> tilePassableGrid_;
+    bool passabilityDirty_ = true;
+    std::unique_ptr<ludork::global::game_map_base_impl::OccupancyIndexImpl>
+        occupancy_;
+    std::unique_ptr<ludork::global::game_map_base_impl::ActorRegistryImpl>
+        actorRegistry_;
+};

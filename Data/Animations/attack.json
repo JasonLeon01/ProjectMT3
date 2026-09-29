@@ -1,0 +1,170 @@
+{
+  "name": "attack",
+  "frameRate": 30,
+  "assets": [
+    "/Game/Assets/Animations/Explosion_01.png",
+    "/Game/Assets/Animations/Explosion_02.png",
+    "/Game/Assets/Animations/Explosion_03.png",
+    "/Game/Assets/Animations/Explosion_04.png",
+    "/Game/Assets/Sounds/mting-27.wav"
+  ],
+  "timeLines": [
+    {
+      "timeSegments": [
+        {
+          "type": "frame",
+          "asset": 1,
+          "startFrame": {
+            "time": 0.05,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 0,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.05,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 2,
+          "startFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.15000000000000002,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 3,
+          "startFrame": {
+            "time": 0.15000000000000002,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.20000000000000007,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "timeSegments": [
+        {
+          "type": "sound",
+          "asset": 4,
+          "startFrame": {
+            "time": 0,
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "endFrame": {
+            "time": 1.5673459768295288,
+            "position": [
+              0,
+              0
+            ],
+            "rotation": 0,
+            "scale": [
+              1,
+              1
+            ]
+          },
+          "originalDuration": 1.5673459768295288,
+          "flipX": false
+        }
+      ]
+    }
+  ],
+  "timeTags": [
+    {
+      "tag": "dmg",
+      "time": 0.06666666666666667
+    }
+  ],
+  "type": "animation"
+}

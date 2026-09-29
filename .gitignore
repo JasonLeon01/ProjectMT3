@@ -1,0 +1,17 @@
+/Log/
+/.vs/
+/Main.sln
+/build/
+/.idea/
+/cmake-build-ludork-debug/
+/CMakeUserPresets.json
+/Intermediate/
+/Cache/
+/EditorCache/
+/Save/
+Main.ini
+/Tools/
+*.DS_Store
+/bin/
+*.log
+/dist

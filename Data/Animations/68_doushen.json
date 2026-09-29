@@ -1,0 +1,169 @@
+{
+  "name": "斗神",
+  "frameRate": 30,
+  "assets": [
+    "/Game/Assets/Animations/mting-1189.png",
+    "/Game/Assets/Animations/mting-1191.png",
+    "/Game/Assets/Animations/mting-1192.png",
+    "/Game/Assets/Animations/mting-1198.png",
+    "/Game/Assets/Sounds/mting-52.wav"
+  ],
+  "timeLines": [
+    {
+      "timeSegments": [
+        {
+          "type": "frame",
+          "asset": 0,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.03333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 1,
+          "startFrame": {
+            "time": 0.03333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.06666666666666667,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 2,
+          "startFrame": {
+            "time": 0.06666666666666667,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "type": "frame",
+          "asset": 3,
+          "startFrame": {
+            "time": 0.1,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.13333333333333333,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "timeSegments": [
+        {
+          "type": "sound",
+          "asset": 4,
+          "startFrame": {
+            "time": 0.0,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "endFrame": {
+            "time": 0.4179591836734694,
+            "position": [
+              0.0,
+              0.0
+            ],
+            "rotation": 0.0,
+            "scale": [
+              1.0,
+              1.0
+            ]
+          },
+          "originalDuration": 0.4179591836734694
+        }
+      ]
+    }
+  ],
+  "timeTags": [
+    {
+      "tag": "dmg",
+      "time": 0.0
+    }
+  ],
+  "type": "animation"
+}

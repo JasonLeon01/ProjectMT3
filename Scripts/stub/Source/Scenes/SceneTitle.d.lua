@@ -1,0 +1,30 @@
+---@meta Source.Scenes.SceneTitle
+---@class Source.Scenes.SceneTitle: GlobalCore.SceneBase
+---@field new             fun(): Source.Scenes.SceneTitle
+---@field _ui             Source.Scenes.SceneTitle.Controller
+---@field _windowCommand  Source.Windows.WindowCommand
+---@field _windowSaveLoad Internal.UIBase.LazyWindow<Source.Windows.WindowSaveLoad>
+---@field _configWindow   Internal.UIBase.LazyWindow<Source.Windows.ConfigWindow>
+local Scene = {}
+
+---@brief Start with a blind transition effect.
+function Scene:onEnter() end
+
+---@brief Create background, command window, and load UI elements.
+function Scene:onCreate() end
+
+---@brief Stop title BGM when leaving this scene.
+function Scene:onQuit() end
+
+---@brief Ensure title BGM is stopped when scene is destroyed.
+function Scene:onDestroy() end
+
+function Scene:startGame() end
+
+function Scene:exitGame() end
+
+function Scene:openLoad() end
+
+function Scene:toggleConfig() end
+
+return Scene
