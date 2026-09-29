@@ -505,16 +505,16 @@
                 ]
               },
               "offsets": {
-                "left": 72,
-                "top": 120,
+                "left": 118,
+                "top": 132,
                 "right": 64,
                 "bottom": 24
               },
               "alignment": [
-                0,
-                0
+                1,
+                0.5
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -549,15 +549,15 @@
               },
               "offsets": {
                 "left": 120,
-                "top": 120,
+                "top": 132,
                 "right": 64,
                 "bottom": 24
               },
               "alignment": [
                 0,
-                0
+                0.5
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -591,16 +591,16 @@
                 ]
               },
               "offsets": {
-                "left": 24,
+                "left": 70,
                 "top": 144.00000000000003,
                 "right": 64,
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {
@@ -1088,14 +1088,14 @@
                 ]
               },
               "offsets": {
-                "left": 296,
-                "top": 120,
+                "left": 250,
+                "top": 132,
                 "right": 64,
                 "bottom": 24
               },
               "alignment": [
-                1,
-                0
+                0,
+                0.5
               ],
               "autoSize": true,
               "zOrder": 0
@@ -1132,13 +1132,13 @@
               },
               "offsets": {
                 "left": 248,
-                "top": 120,
+                "top": 132,
                 "right": 64,
                 "bottom": 24
               },
               "alignment": [
                 1,
-                0
+                0.5
               ],
               "autoSize": true,
               "zOrder": 0
@@ -1174,16 +1174,16 @@
                 ]
               },
               "offsets": {
-                "left": 232,
+                "left": 294,
                 "top": 144,
                 "right": 64,
                 "bottom": 24
               },
               "alignment": [
-                0,
+                1,
                 0
               ],
-              "autoSize": false,
+              "autoSize": true,
               "zOrder": 0
             },
             "editor": {

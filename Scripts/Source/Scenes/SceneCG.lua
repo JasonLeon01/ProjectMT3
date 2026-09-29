@@ -12,7 +12,7 @@ local Scene = {}
 ---@diagnostic disable-next-line: unused
 function Scene:onEnter()
     Transition.setTransition(nil, 0.0)
-    Video.PlayVideo("/Game/Assets/Videos/cg.mp4", false, true)
+    Video.PlayVideo("/Game/Assets/Videos/cg.mp4", false, true, "Data/Subtitles/Opening_CG.json")
 
     local SceneMap = require("Source.Scenes.SceneMap")
     local nextScene = SceneMap.new()
