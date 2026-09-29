@@ -8,6 +8,7 @@ local GeneralEnum = require("Source.Configs.GeneralEnum")
 local Teleporter = require("Source.MapActors.Teleporter")
 local RegionDict = require("Source.Configs.RegionDict")
 local MapConstants = require("Source.Configs.MapConstants")
+local MapClickAutoPath = require("Source.SceneComponents.MapClickAutoPath")
 
 local AudioManager = GlobalCore.AudioManager
 local Save = require("Source.Save")
@@ -204,7 +205,7 @@ end
 function Scene.RebindPlayerToUI(self)
     local windows = {
         self._windowItem, self._windowEquip, self._windowMenu, self._windowShop, self._windowAttrShop,
-        self._windowEnemyBook, self._windowPlayerName
+        self._windowEnemyBook, self._windowPlayerName, self._windowMagicDoor
     }
     for _, lazyWindow in ipairs(windows) do
         local window = lazyWindow:peek()
@@ -229,6 +230,42 @@ function Scene.ShowEnemyBook(self)
     window:open(self:getGameMap())
     self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
     return true
+end
+
+---@param self   Source.Scenes.SceneMap.SceneMap
+---@param window Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor> | Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
+---@return boolean
+local function openMapShortcut(self, window)
+    if self:isInputBlocked() or not self:_canOpenMenu() or self._mapInputBlockFrames > 0 or self._mapTransferInProgress
+        or self._pendingTeleporterTransfer ~= nil or self._pendingWorldTransfer ~= nil then
+        return false
+    end
+    MapClickAutoPath.CancelForMap(self:getGameMap())
+    self._shortcutMoveEnabledBeforeOpen = self.player:getMoveEnabled()
+    self.player:setMoveEnabled(false)
+    window:get():open(self:getGameMap():getMapViewRect())
+    self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
+    return true
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
+---@return boolean
+function Scene.ShowMagicDoor(self)
+    if not self.player:hasItem(GeneralEnum.Item.SDoor) then
+        return false
+    end
+    return openMapShortcut(self, self._windowMagicDoor)
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
+---@return boolean
+function Scene.ShowHotkeys(self)
+    return openMapShortcut(self, self._windowHotkeys)
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
+function Scene.OnMapShortcutClose(self)
+    restorePlayerMovement(self, self._shortcutMoveEnabledBeforeOpen, WINDOW_CLOSE_INPUT_BLOCK_FRAMES)
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap

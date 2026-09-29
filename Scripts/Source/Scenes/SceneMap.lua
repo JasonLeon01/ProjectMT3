@@ -106,6 +106,7 @@ function Scene:onCreate()
 end
 
 function Scene:onQuit()
+    SceneMapWindows.CloseShortcuts(self)
     self._tutorials:cancel()
     self:cancelBattle()
     ManagerFunctions.stopVoice()
@@ -157,7 +158,8 @@ function Scene:refreshLocale()
     end
     local windows = {
         self._windowBattle, self._windowItem, self._windowEquip, self._windowShop, self._windowAttrShop,
-        self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowFloorTeleporter, self._windowPlayerName
+        self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowFloorTeleporter, self._windowPlayerName,
+        self._windowHotkeys
     }
     for _, lazyWindow in ipairs(windows) do
         local window = lazyWindow:peek()
@@ -268,6 +270,7 @@ function Scene:cancelBattle()
 end
 
 function Scene:loadMap(mapPath, initialPosition)
+    SceneMapWindows.CloseShortcuts(self)
     self._tutorials:cancel()
     self:cancelBattle()
     Logging.info("Loading map: %s", mapPath)
@@ -706,6 +709,18 @@ end
 
 function Scene:showEnemyBook()
     return SceneMapInteractions.ShowEnemyBook(self)
+end
+
+function Scene:showMagicDoor()
+    return SceneMapInteractions.ShowMagicDoor(self)
+end
+
+function Scene:showHotkeys()
+    return SceneMapInteractions.ShowHotkeys(self)
+end
+
+function Scene:_onMapShortcutClose()
+    return SceneMapInteractions.OnMapShortcutClose(self)
 end
 
 function Scene:showFloorTeleporter()

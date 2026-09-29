@@ -36,6 +36,7 @@ function SceneMapBuilder.BuildAmbientLight(data)
 end
 
 function SceneMapBuilder:init()
+    GameMap.MapViewRect = MapConstants.MAP_VIEW_RECT:copy()
     self._floorMapPreviewGameMaps = {}
 end
 

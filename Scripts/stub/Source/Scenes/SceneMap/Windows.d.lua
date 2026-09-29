@@ -6,6 +6,9 @@ local Windows = {}
 ---@param self Source.Scenes.SceneMap.SceneMap
 function Windows.Create(self) end
 
+---@param self Source.Scenes.SceneMap.SceneMap
+function Windows.CloseShortcuts(self) end
+
 --- Release existing popup windows and discard unused factories.
 ---@param self Source.Scenes.SceneMap.SceneMap
 function Windows.Dispose(self) end

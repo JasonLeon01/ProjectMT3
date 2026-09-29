@@ -1701,7 +1701,7 @@
           "gradientEnabled": false,
           "gradientDirection": "vertical",
           "gradientCurve": "",
-          "text": "- Press L -",
+          "text": "- Press H -",
           "colour": [
             255,
             255,
@@ -1734,7 +1734,7 @@
           "zOrder": 0
         },
         "editor": {
-          "previewText": "- Press L -"
+          "previewText": "- Press H -"
         },
         "children": []
       }

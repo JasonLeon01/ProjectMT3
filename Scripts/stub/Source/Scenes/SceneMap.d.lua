@@ -27,7 +27,7 @@
 ---@field context Source.Scenes.SceneMap.DialogueLocaleContext
 ---@field content string[]
 
----@alias Source.Scenes.SceneMap.BlockingWindow Source.Windows.WindowShop | Source.Windows.WindowAttrShop | Source.Windows.WindowEnemyBook | Source.Windows.WindowEnemyEncyclopedia | Source.Windows.WindowFloorTeleporter | Source.Windows.WindowPlayerName | Source.Windows.WindowBattle
+---@alias Source.Scenes.SceneMap.BlockingWindow Source.Windows.WindowShop | Source.Windows.WindowAttrShop | Source.Windows.WindowEnemyBook | Source.Windows.WindowEnemyEncyclopedia | Source.Windows.WindowFloorTeleporter | Source.Windows.WindowPlayerName | Source.Windows.WindowBattle | Source.Windows.WindowMagicDoor | Source.Windows.WindowHotkeys
 
 ---@class Source.Scenes.SceneMap.SceneMap: Source.Gameplay.GameplayScene
 ---@field new                                   fun(): Source.Scenes.SceneMap.SceneMap
@@ -52,6 +52,9 @@
 ---@field _windowEnemyBook                      Internal.UIBase.LazyWindow<Source.Windows.WindowEnemyBook>
 ---@field _windowEnemyEncyclopedia              Internal.UIBase.LazyWindow<Source.Windows.WindowEnemyEncyclopedia>
 ---@field _windowFloorTeleporter                Internal.UIBase.LazyWindow<Source.Windows.WindowFloorTeleporter>
+---@field _windowMagicDoor                      Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor>
+---@field _windowHotkeys                        Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
+---@field _shortcutMoveEnabledBeforeOpen        boolean
 ---@field _windowSaveLoad                       Internal.UIBase.LazyWindow<Source.Windows.WindowSaveLoad>
 ---@field _windowMenu                           Internal.UIBase.LazyWindow<Source.Windows.WindowMenu>
 ---@field _configWindow                         Internal.UIBase.LazyWindow<Source.Windows.ConfigWindow>
@@ -83,6 +86,14 @@
 ---@field _equipMoveEnabledBeforeOpen           boolean
 ---@field _saveLoadMoveEnabledBeforeOpen        boolean
 local Scene = {}
+
+---@return boolean
+function Scene:showMagicDoor() end
+
+---@return boolean
+function Scene:showHotkeys() end
+
+function Scene:_onMapShortcutClose() end
 
 ---@param player Source.MapActors.Player.Player
 ---@param enemy  Source.MapActors.Enemy

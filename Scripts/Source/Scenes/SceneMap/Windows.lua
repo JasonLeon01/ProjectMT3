@@ -70,6 +70,26 @@ function Windows.Create(self)
     self._itemMoveEnabledBeforeOpen = true
     self._equipMoveEnabledBeforeOpen = true
     self._saveLoadMoveEnabledBeforeOpen = true
+    self._shortcutMoveEnabledBeforeOpen = true
+    local function onShortcutClose()
+        self:_onMapShortcutClose()
+    end
+    self._windowMagicDoor = LazyWindow.new(function ()
+        local WindowMagicDoor = require("Source.Windows.WindowMagicDoor")
+
+        local window = WindowMagicDoor.new(self.player, onShortcutClose)
+        window:setZOrder(MENU_Z_ORDER)
+        window:mount(manager)
+        return window
+    end)
+    self._windowHotkeys = LazyWindow.new(function ()
+        local WindowHotkeys = require("Source.Windows.WindowHotkeys")
+
+        local window = WindowHotkeys.new(onShortcutClose)
+        window:setZOrder(MENU_Z_ORDER)
+        window:mount(manager)
+        return window
+    end)
     self._windowBattle = LazyWindow.new(function ()
         local WindowBattle = require("Source.Windows.WindowBattle")
         local window = WindowBattle.new(self)
@@ -254,15 +274,25 @@ function Windows.Create(self)
     self._blockingWindows = {
         self._windowBattle, self._windowShop, self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia,
         self._windowFloorTeleporter, self._windowPlayerName, self._windowItem, self._windowEquip, self._windowSaveLoad,
-        self._configWindow
+        self._configWindow, self._windowMagicDoor, self._windowHotkeys
     }
+end
+
+function Windows.CloseShortcuts(self)
+    for _, lazyWindow in ipairs({ self._windowMagicDoor, self._windowHotkeys }) do
+        local window = lazyWindow:peek()
+        if window ~= nil then
+            window:close()
+        end
+    end
 end
 
 function Windows.Dispose(self)
     local windows = {
         self._windowBattle, self._messageWindow, self._windowMenu, self._windowItem, self._windowEquip,
         self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowSaveLoad,
-        self._windowShop, self._windowFloorTeleporter, self._configWindow, self._windowPlayerName
+        self._windowShop, self._windowFloorTeleporter, self._configWindow, self._windowPlayerName, self._windowMagicDoor,
+        self._windowHotkeys
     }
     for _, window in ipairs(windows) do
         window:dispose()
