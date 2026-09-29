@@ -44,6 +44,22 @@
 
 `build-info.json` 记录项目/Engine 提交、Ludork 提交/运行/产物 ID、构建选项、平台和干净构建状态；APK/HAP/ZIP 还记录 SHA-256。Package Game 的完整运行串行排队，单次运行内五平台并行。每个平台另有固定的并发组，独立运行与总入口调用共用该组并排队执行；iOS 的输入选择、构建号分配、上传和处理等待均在同一并发组内，避免两个入口同时分配构建号。父、子工作流使用不同的并发组，避免互相等待。
 
+## Windows Standalone 策划工程
+
+**Build Windows Standalone**（`build-standalone-windows.yml`）是独立入口：推送到 `main` 且包含 `.github/**` 以外的改动时自动运行，也可在 Actions 中选择该工作流、选择 `main` 后手动执行。它使用独立并发组串行排队，不属于 Package Game 的五平台加密打包。
+
+工作流复用现有 Windows 上游工具选择、解压和干净构建逻辑，调用 Ludork `build_standalone.bat`，以 Release 编译本仓库 Engine、Application 和 FFmpeg。仅下载编辑器产物中的工具，不使用上游示例工程替换项目内容，也不随产物附带编辑器。
+
+成功后在该运行的 **Artifacts** 下载 `ProjectMT3-standalone-windows-x64-<提交 SHA>`，保留 7 天。解压得到 `ProjectMT3/` 工程目录和外层 `build-info.json`：
+
+- 在另行安装的 Windows x64 Ludork 编辑器中打开 `ProjectMT3/Main.proj`，即可编辑资源、地图、数据、Lua 并运行游戏；策划机器不需要安装 C++ 编译工具链。
+- 工程使用 `Cpp: false`、`packaging.dev: false`，保留项目版本、FFmpeg 和其他工程设置；仓库中的 `Main.proj` 不变。
+- Assets、Data、Scripts 保持明文，包含 Lua stub、运行 DLL、许可证、UI 预览程序和对应 `EditorCache` 元数据。不要删除预览依赖。
+- 附带 `.emmyrc.json` 和从项目提取的 Lua VS Code 配置；不附带 C++ 构建任务、Engine/Application 源码、构建中间文件或个人存档。第三方源码与许可证按 Ludork 导出规则保留。
+- `build-info.json` 的 `type` 为 `standalone`，记录项目提交、Ludork 工具提交/运行/产物 ID 和未加密、未编译 Lua、未使用 ldpak 的选项；`channel` 为 `null`，因为工程导出不经过游戏包渠道处理。建议使用记录所指上游运行的 Windows 编辑器版本。
+
+CI 校验明文资源、工程入口、运行库，并调用 `ScriptTools ui-preview validate` 检查预览依赖。首次托管构建完成后，还需在无 C++ 工具链的 Windows 环境验收：解压、编辑器打开、编辑保存、UI 预览及游戏运行；静态检查不能替代这些操作验收。
+
 ## GitHub Secrets
 
 进入本仓库 **Settings → Secrets and variables → Actions → Secrets → New repository secret**，按下表填写。密钥文件不能提交到仓库；密码填写原文，不要做 Base64。p12 必须包含证书对应的私钥，建议设置非空导出密码。

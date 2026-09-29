@@ -1,7 +1,8 @@
 param(
     [Parameter(Mandatory)][string] $ProjectDirectory,
     [Parameter(Mandatory)][string] $LudorkDirectory,
-    [Parameter(Mandatory)][string] $OutputDirectory
+    [Parameter(Mandatory)][string] $OutputDirectory,
+    [ValidateSet('package', 'standalone')][string] $Mode = 'package'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -43,7 +44,13 @@ $packer = Join-Path $LudorkDirectory 'tools/pack_project.bat'
 $ci = Join-Path $ProjectDirectory '.github/scripts/package-ci.py'
 & python $ci clean $ProjectDirectory $OutputDirectory
 if ($LASTEXITCODE -ne 0) { throw 'Clean build preparation failed.' }
-& $packer --dev --encrypt-data --compile-lua --use-ldpak $ProjectDirectory $OutputDirectory
+if ($Mode -eq 'standalone') {
+    $standaloneBuilder = Join-Path $LudorkDirectory 'tools/build_standalone.bat'
+    $standaloneDirectory = Join-Path $OutputDirectory 'ProjectMT3'
+    & $standaloneBuilder $ProjectDirectory $standaloneDirectory Release
+} else {
+    & $packer --dev --encrypt-data --compile-lua --use-ldpak $ProjectDirectory $OutputDirectory
+}
 if ($LASTEXITCODE -ne 0) {
     throw "Ludork packaging failed with exit code $LASTEXITCODE"
 }
@@ -59,11 +66,21 @@ foreach ($relativePath in @('Main.exe', 'Binaries/Main.exe')) {
         throw "Game package is missing $relativePath"
     }
 }
-& python $ci validate $gameDirectory
-if ($LASTEXITCODE -ne 0) { throw 'Packed resource validation failed.' }
+$metadataOptions = @()
+if ($Mode -eq 'standalone') {
+    & python $ci prepare-standalone $ProjectDirectory $gameDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'Standalone project preparation failed.' }
+    $scriptTools = Join-Path $LudorkDirectory 'tools/ScriptTools/ScriptTools.exe'
+    & $scriptTools ui-preview validate $gameDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'Standalone UI preview validation failed.' }
+    $metadataOptions = @('--standalone')
+} else {
+    & python $ci validate $gameDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'Packed resource validation failed.' }
+}
 if (-not (Get-ChildItem -LiteralPath (Join-Path $gameDirectory 'Binaries') -Filter '*.dll' -File)) {
     throw 'Game package contains no runtime DLLs.'
 }
 
-& python $ci metadata $ProjectDirectory $OutputDirectory windows-x64
+& python $ci metadata $ProjectDirectory $OutputDirectory windows-x64 @metadataOptions
 if ($LASTEXITCODE -ne 0) { throw 'Build metadata generation failed.' }

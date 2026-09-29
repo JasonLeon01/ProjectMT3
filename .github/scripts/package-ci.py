@@ -216,7 +216,46 @@ def validate_hap(hap, project):
     print("Validated Mobile HAP identity, runtime checksum and packed encrypted resources")
 
 
-def metadata(project, output, platform, artifact=None, signed=False, notarized=False):
+def prepare_standalone(project, output):
+    def read_json(path):
+        return json.loads(path.read_text(encoding="utf-8"))
+
+    def write_json(path, data):
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    config = read_json(project / "Main.proj")
+    config["Cpp"] = False
+    config.setdefault("packaging", {})["dev"] = False
+    write_json(output / "Main.proj", config)
+    shutil.copyfile(project / ".emmyrc.json", output / ".emmyrc.json")
+
+    vscode = output / ".vscode"
+    vscode.mkdir(exist_ok=True)
+    settings = read_json(project / ".vscode/settings.json")
+    write_json(vscode / "settings.json", {
+        key: value for key, value in settings.items() if key.startswith("Lua.") or key == "[lua]"
+    })
+    launch = read_json(project / ".vscode/launch.json")
+    launch["configurations"] = [item for item in launch["configurations"]
+                                if item.get("type") == "emmylua_attach" and item.get("request") == "attach"]
+    write_json(vscode / "launch.json", launch)
+    extensions = read_json(project / ".vscode/extensions.json")
+    write_json(vscode / "extensions.json", {
+        "recommendations": [item for item in extensions["recommendations"] if item == "tangzx.emmylua"]
+    })
+
+    for group in GROUPS:
+        require((output / group).is_dir(), f"Standalone resource directory missing: {group}")
+        require(not (output / f"{group}.ldpak").exists(), f"Packed standalone resources: {group}")
+    for name in ("Scripts/Entry.lua", "Data/Configs/System.json", "Main.exe", "Binaries/Main.exe"):
+        require((output / name).is_file(), f"Standalone project is missing {name}")
+    require((output / "Scripts/stub").is_dir(), "Standalone Lua stubs are missing")
+    for name in ("Engine", "Application", "build", "bin", "Intermediate", "Cache", "Save", ".git"):
+        require(not (output / name).exists(), f"Development/local directory in standalone project: {name}")
+    print("Prepared editable standalone project and Lua editor configuration")
+
+
+def metadata(project, output, platform, artifact=None, signed=False, notarized=False, standalone=False):
     required = ("PROJECT_SHA", "LUDORK_SHA", "LUDORK_CHECKED_SHA", "LUDORK_RUN_ID", "LUDORK_ARTIFACT_ID")
     for name in required:
         require(bool(os.environ.get(name)), f"Missing metadata: {name}")
@@ -236,6 +275,8 @@ def metadata(project, output, platform, artifact=None, signed=False, notarized=F
         "workflow_run_id": os.environ.get("GITHUB_RUN_ID"),
         "workflow_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
     }
+    if standalone:
+        data.update(type="standalone", channel=None, encrypt_data=False, compile_lua=False, use_ldpak=False)
     if artifact:
         with artifact.open("rb") as stream:
             data.update(artifact=artifact.name, artifact_sha256=hashlib.file_digest(stream, "sha256").hexdigest())
@@ -245,7 +286,7 @@ def metadata(project, output, platform, artifact=None, signed=False, notarized=F
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
-    for command in ("clean", "metadata"):
+    for command in ("clean", "metadata", "prepare-standalone"):
         item = sub.add_parser(command)
         item.add_argument("project", type=Path)
         item.add_argument("output", type=Path)
@@ -254,6 +295,7 @@ def main():
             item.add_argument("--artifact", type=Path)
             item.add_argument("--signed", action="store_true")
             item.add_argument("--notarized", action="store_true")
+            item.add_argument("--standalone", action="store_true")
     for command in ("validate", "validate-apk"):
         sub.add_parser(command).add_argument("path", type=Path)
     hap_parser = sub.add_parser("validate-hap")
@@ -262,6 +304,8 @@ def main():
     args = parser.parse_args()
     if args.command == "clean":
         clean(args.project, args.output)
+    elif args.command == "prepare-standalone":
+        prepare_standalone(args.project, args.output)
     elif args.command == "validate":
         validate(args.path)
     elif args.command == "validate-apk":
@@ -269,7 +313,7 @@ def main():
     elif args.command == "validate-hap":
         validate_hap(args.path, args.project)
     else:
-        metadata(args.project, args.output, args.platform, args.artifact, args.signed, args.notarized)
+        metadata(args.project, args.output, args.platform, args.artifact, args.signed, args.notarized, args.standalone)
 
 
 if __name__ == "__main__":

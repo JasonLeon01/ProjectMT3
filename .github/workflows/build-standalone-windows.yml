@@ -1,0 +1,77 @@
+name: Build Windows Standalone
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: build-standalone-windows
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  check:
+    name: Select package inputs
+    uses: ./.github/workflows/package-inputs.yml
+    with:
+      platform: windows-x64
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  build:
+    name: Build Windows Standalone
+    needs: check
+    runs-on: windows-2022
+    timeout-minutes: 180
+    env:
+      CMAKE_GENERATOR: Ninja
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.windows_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.windows_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.windows_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download Ludork Windows tools
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.windows_run_id }}
+          artifact-ids: ${{ needs.check.outputs.windows_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork
+          merge-multiple: true
+      - name: Set up MSVC x64
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: amd64
+      - name: Clean build and validate standalone project
+        shell: pwsh
+        run: |
+          & ./.github/scripts/package-windows.ps1 `
+            -ProjectDirectory $env:GITHUB_WORKSPACE `
+            -LudorkDirectory (Join-Path $env:RUNNER_TEMP 'ludork') `
+            -OutputDirectory (Join-Path $env:RUNNER_TEMP 'projectmt3-standalone') `
+            -Mode standalone
+      - name: Upload standalone project
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-standalone-windows-x64-${{ needs.check.outputs.project_sha }}
+          path: ${{ runner.temp }}/projectmt3-standalone/
+          if-no-files-found: error
+          include-hidden-files: true
+          retention-days: 7
+          overwrite: true
