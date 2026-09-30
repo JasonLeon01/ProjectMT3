@@ -36,7 +36,6 @@ function BravorCrystal:onCollision(other)
     assert(emitter ~= nil, "BravorCrystal emitter is unavailable")
     emitter:emit("Shatter", shatterParticleCount)
     self:setTextureRect(sf.IntRect.new(0, 0, 0, 0))
-    self:setCollisionEnabled(false)
     self.dissipating = true
     local scene = gameMap:getScene()
     assert(scene ~= nil, "BravorCrystal requires an owning scene")

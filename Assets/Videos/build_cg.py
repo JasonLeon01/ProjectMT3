@@ -1,11 +1,13 @@
 """Run `python build_cg.py` to create cg.mp4 (requires av, numpy, Pillow).
 
 Optional music: place BGM_FILENAME beside this script; see suno_bgm_prompt.md.
+Also synchronizes Opening_CG subtitle times with the inserted narration.
 """
 
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from fractions import Fraction
 from pathlib import Path
+import json
 import math
 
 import av
@@ -49,6 +51,19 @@ SAMPLES_PER_FRAME = SAMPLE_RATE // FPS
 SIZE = (1448, 1086)
 DIRECTORY = Path(__file__).parent
 OUTPUT = DIRECTORY / "cg.mp4"
+SUBTITLE = DIRECTORY.parent.parent / "Data" / "Subtitles" / "Opening_CG.json"
+VOICE_TIMINGS = DIRECTORY / "Opening_CG.voice_timings.json"
+# One-based subtitle section indices for each narration, in CFG playback order.
+SUBTITLE_SECTIONS = ((1, 2), (3, 4), (5, 6), (7,), (8,), (9,), (10,), (11, 12), (13,), (14,))
+# Preserve the existing sentence splits as offsets from the voice's start:
+# (previous sentence end, next sentence start), in seconds. A group's outer
+# boundaries always use the actual inserted voice start/end.
+SUBTITLE_SPLITS = {
+    1: ((2.920, 3.355),),
+    2: ((2.635, 3.263),),
+    3: ((2.500, 2.93097001075745),),
+    8: ((6.479, 6.92670003348589),),
+}
 
 
 @dataclass
@@ -68,6 +83,13 @@ class Segment:
     @property
     def total_frames(self) -> int:
         return self.frames + (self.fade_out_frames if self.image else 0)
+
+
+@dataclass
+class VoiceTiming:
+    index: int  # One-based narration index; silent segments and BGM do not count.
+    start_time: float
+    end_time: float
 
 
 def effect_frames(seconds: float, label: str) -> int:
@@ -203,19 +225,23 @@ def video_frames(segments: list[Segment]):
             yield pixels if opacity == 1 else np.rint(pixels * opacity).astype(np.uint8)
 
 
-def soundtrack(segments: list[Segment], total_frames: int) -> np.ndarray | None:
+def soundtrack(segments: list[Segment], total_frames: int
+               ) -> tuple[np.ndarray | None, list[VoiceTiming]]:
     music_path = DIRECTORY / BGM_FILENAME
     has_music = music_path.is_file()
     if not has_music:
         print(f"BGM not found: {music_path}; creating narration-only video")
     if not has_music and not any(segment.audio is not None for segment in segments):
-        return None
+        return None, []
     samples = np.zeros((2, total_frames * SAMPLES_PER_FRAME), dtype=np.float32)
+    voice_timings = []
     start = 0
     for segment in segments:
         if segment.audio is not None:
             end = start + segment.audio.shape[1]
             samples[:, start:end] = segment.audio
+            voice_timings.append(VoiceTiming(len(voice_timings) + 1,
+                                            start / SAMPLE_RATE, end / SAMPLE_RATE))
         start += segment.total_frames * SAMPLES_PER_FRAME
     if has_music:
         music = decode_audio(music_path)
@@ -238,13 +264,41 @@ def soundtrack(segments: list[Segment], total_frames: int) -> np.ndarray | None:
         peak = float(np.max(np.abs(samples)))
         if peak > 0.99:
             samples *= 0.99 / peak
-    return samples
+    return samples, voice_timings
+
+
+def synchronized_subtitle(voice_timings: list[VoiceTiming]) -> str:
+    subtitle = json.loads(SUBTITLE.read_text(encoding="utf-8"))
+    sections = subtitle["sections"]
+    if len(voice_timings) != len(SUBTITLE_SECTIONS):
+        raise ValueError("Each narration must have a SUBTITLE_SECTIONS entry")
+    indices = [index for group in SUBTITLE_SECTIONS for index in group]
+    if indices != list(range(1, len(sections) + 1)):
+        raise ValueError("SUBTITLE_SECTIONS must cover every subtitle section in order")
+    for timing in voice_timings:
+        group = SUBTITLE_SECTIONS[timing.index - 1]
+        splits = SUBTITLE_SPLITS.get(timing.index, ())
+        if len(splits) != len(group) - 1:
+            raise ValueError(f"Narration {timing.index}: expected {len(group) - 1} sentence splits")
+        starts = [0.0, *(start for _, start in splits)]
+        ends = [*(end for end, _ in splits), timing.end_time - timing.start_time]
+        previous_end = 0.0
+        for index, start, end in zip(group, starts, ends):
+            if not previous_end <= start < end <= ends[-1]:
+                raise ValueError(f"Narration {timing.index}: subtitle sentence splits exceed the voice duration")
+            sections[index - 1]["startTime"] = round(timing.start_time + start, 9)
+            sections[index - 1]["endTime"] = round(timing.start_time + end, 9)
+            previous_end = end
+    return json.dumps(subtitle, ensure_ascii=False, indent=2) + "\n"
 
 
 def main() -> None:
     segments = make_segments()
     total_frames = sum(segment.total_frames for segment in segments)
-    samples = soundtrack(segments, total_frames)
+    samples, voice_timings = soundtrack(segments, total_frames)
+    subtitle_text = synchronized_subtitle(voice_timings)
+    for timing in voice_timings:
+        print(f"Voice {timing.index}: {timing.start_time:.6f} - {timing.end_time:.6f} s")
     temporary = OUTPUT.with_name(".cg.tmp.mp4")
     try:
         with av.open(str(temporary), "w") as output:
@@ -279,7 +333,11 @@ def main() -> None:
         temporary.replace(OUTPUT)
     finally:
         temporary.unlink(missing_ok=True)
+    SUBTITLE.write_text(subtitle_text, encoding="utf-8")
+    VOICE_TIMINGS.write_text(json.dumps([asdict(timing) for timing in voice_timings],
+                                       indent=2) + "\n", encoding="utf-8")
     print(f"Created {OUTPUT} ({total_frames / FPS:.3f} s)")
+    print(f"Synchronized {SUBTITLE}")
 
 
 if __name__ == "__main__":
