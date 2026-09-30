@@ -14,7 +14,7 @@ local Controller = {}
 Controller.windowOptions = { hidden = true, focusable = true }
 Controller.ENTRIES = {
     "HOTKEY_MENU", "HOTKEY_ENEMY_BOOK", "HOTKEY_TELEPORT", "HOTKEY_SAVE", "HOTKEY_LOAD", "HOTKEY_ITEM", "HOTKEY_EQUIP",
-    "HOTKEY_QUICK_SAVE", "HOTKEY_QUICK_LOAD", "HOTKEY_MAGIC_DOOR"
+    "HOTKEY_QUICK_SAVE", "HOTKEY_QUICK_LOAD", "HOTKEY_MAGIC_DOOR", "HOTKEY_SWITCH_PLAYER"
 }
 
 function Controller:init(onClose)

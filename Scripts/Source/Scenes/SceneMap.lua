@@ -65,12 +65,22 @@ function Scene:onCreate()
     self._mapAudio = SceneMapAudioController.new()
     ---@type Source.Scenes.SceneMap.SceneMap[]
     local sceneRef = setmetatable({ self }, { __mode = "v" })
-    self._playerHUD = PlayerAttrHUD.new(self.player, function ()
-        local scene = sceneRef[1]
-        if scene ~= nil then
-            scene:openMenu()
+    self._playerHUD = PlayerAttrHUD.new(
+        self.inst,
+        function ()
+            local scene = sceneRef[1]
+            if scene ~= nil then
+                scene:openMenu()
+            end
+        end,
+        function (right)
+            local scene = sceneRef[1]
+            if scene ~= nil then
+                return scene:switchPlayer(right)
+            end
+            return false
         end
-    end)
+    )
     self._dialogueLocaleSource = nil
     SceneMapWindows.Create(self)
     self._regionTitleUI = RegionTitleController.new(Display.getGameSize())
@@ -701,6 +711,10 @@ end
 
 function Scene:applyPrimaryPlayer()
     return SceneMapInteractions.ApplyPrimaryPlayer(self)
+end
+
+function Scene:switchPlayer(right)
+    return SceneMapInteractions.SwitchPlayer(self, right)
 end
 
 function Scene:_rebindPlayerToUI()

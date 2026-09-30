@@ -2,6 +2,7 @@ local EventKeys = {
     LocaleChanged = "LocaleChanged",
     AbilitySystemChanged = "AbilitySystemChanged",
     PlayerChanged = "PlayerChanged",
+    PartyChanged = "PartyChanged",
     AbilitySystemChangeKind = {
         Attribute = "Attribute",
         State = "State"

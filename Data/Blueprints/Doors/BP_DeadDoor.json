@@ -17,7 +17,7 @@
     },
     "shaderPath": "",
     "hue": 0,
-    "collisionEnabled": false,
+    "collisionEnabled": true,
     "tickable": false,
     "speed": 64,
     "autoSound": "",

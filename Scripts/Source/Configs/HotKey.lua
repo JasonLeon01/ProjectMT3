@@ -1,6 +1,12 @@
 local SceneMap = require("Source.Scenes.SceneMap")
 
 return {
+    [sf.Keyboard.Key.U] = {
+        Scene = SceneMap,
+        Filter = { "casual" },
+        FunctionWhenPressed = SceneMap.switchPlayer,
+        FunctionWhenReleased = nil
+    },
     [sf.Keyboard.Key.N] = {
         Scene = SceneMap,
         Filter = { "casual" },

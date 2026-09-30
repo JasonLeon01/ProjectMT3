@@ -21,11 +21,12 @@
 
 ---@brief EventBus event names used by runtime systems.
 ---@class Source.Configs.EventKeys
----@field LocaleChanged             string
----@field AbilitySystemChanged      string
----@field PlayerChanged             string
----@field AbilitySystemChangeKind   Source.Configs.EventKeys.AbilitySystemChangeKind
----@field PlayerChangeKind          Source.Configs.EventKeys.PlayerChangeKind
+---@field LocaleChanged           string
+---@field AbilitySystemChanged    string
+---@field PlayerChanged           string
+---@field PartyChanged            string
+---@field AbilitySystemChangeKind Source.Configs.EventKeys.AbilitySystemChangeKind
+---@field PlayerChangeKind        Source.Configs.EventKeys.PlayerChangeKind
 local EventKeys = {}
 
 return EventKeys

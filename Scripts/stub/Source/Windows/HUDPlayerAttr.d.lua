@@ -10,8 +10,13 @@
 ---@field refreshEvents          string[]
 ---@field _stateSignature        tuple<string> | nil
 ---@field _stateDisplaySignature tuple<string> | nil
----@field _avatarTexture         sf.Texture | nil
----@field _avatarRect            sf.IntRect | nil
+---@field _inst                  Source.GameInstance.GameInstance
+---@field _switchPlayerCallback  fun(right: boolean): boolean | nil
+---@field _avatarWidth           number
+---@field _avatarSize            sf.Vector2f
+---@field _namePosition          sf.Vector2f
+---@field _touchStartPosition    sf.Vector2f | nil
+---@field _touchDragging         boolean
 ---@field _language              string
 ---@field _headerSignature       tuple<any> | nil
 ---@field _combatSignature       tuple<any> | nil
@@ -27,19 +32,23 @@
 ---@field _states                Internal.UIBase.UiCollection<Source.Windows.HUDPlayerAttr.PlayerStateRow.Controller>
 local Controller = {}
 
---- Construct a player attribute HUD bound to the given player instance.
----
---- - @param player  Target player whose attributes are displayed on this HUD
---- - @param openMenuCallback Callback invoked when the player avatar is clicked
----@param player           Source.MapActors.Player.Player
----@param openMenuCallback function | nil
-function Controller:init(player, openMenuCallback) end
+--- Construct the party HUD with menu and player-switch callbacks.
+---@param inst                 Source.GameInstance.GameInstance
+---@param openMenuCallback     function | nil
+---@param switchPlayerCallback fun(right: boolean): boolean | nil
+function Controller:init(inst, openMenuCallback, switchPlayerCallback) end
 
---- Rebind the player whose values are displayed by this HUD.
----
---- - @param player Target player.
----@param player Source.MapActors.Player.Player
-function Controller:setPlayer(player) end
+--- Rebind the party and its primary player, including after loading a save.
+---@param inst Source.GameInstance.GameInstance
+function Controller:setInstance(inst) end
+
+function Controller:refreshAvatars() end
+function Controller:ready() end
+function Controller:_layoutAvatars() end
+---@param payload { instance: Source.GameInstance.GameInstance }
+function Controller:_onPartyChanged(payload) end
+function Controller:_resetAvatarTouch() end
+function Controller:_updateAvatarTouch() end
 
 --- Ignore Ability System and player events from other battlers, then refresh the HUD.
 ---

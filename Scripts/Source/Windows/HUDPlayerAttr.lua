@@ -27,6 +27,9 @@ local createSignature = tuple
 ---@cast createSignature fun(...: any): tuple<any>
 
 local _BREATH_ANIM_DURATION = 1.2
+local _AVATAR_STEP = 8
+local _SWIPE_DISTANCE = 8
+local Input = Engine.Input
 
 local function getStateSignature(states)
     ---@type string[]
@@ -58,11 +61,16 @@ local Controller = {}
 
 Controller.refreshEvents = { EventKeys.LocaleChanged, EventKeys.AbilitySystemChanged, EventKeys.PlayerChanged }
 
-function Controller:init(player, openMenuCallback)
-    self._player = player
+function Controller:init(inst, openMenuCallback, switchPlayerCallback)
+    self._inst = inst
+    self._player = inst:getPlayer()
     self._openMenuCallback = openMenuCallback
-    self._avatarTexture = nil
-    self._avatarRect = nil
+    self._switchPlayerCallback = switchPlayerCallback
+    self._avatarSize = self.ui.controls["Avatar"]:getSize():copy()
+    self._namePosition = self.ui.controls["PlayerName"]:getPosition():copy()
+    self._avatarWidth = self._avatarSize.x
+    self._touchStartPosition = nil
+    self._touchDragging = false
     self._stateSignature = nil
     self._stateDisplaySignature = nil
     self._language = ""
@@ -77,12 +85,14 @@ function Controller:init(player, openMenuCallback)
     self._breathColours = {}
     self._progressSignature = nil
     self._keySignature = nil
-    self:_initialiseAvatar(player)
     self._states = self:createCollection(self.ui.controls["StateHost"], PlayerStateRowController)
 end
 
-function Controller:setPlayer(player)
-    self._player = player
+function Controller:setInstance(inst)
+    self:_resetAvatarTouch()
+    self._inst = inst
+    self._player = inst:getPlayer()
+    self:refreshAvatars()
     self:refresh()
 end
 
@@ -95,10 +105,18 @@ function Controller:refreshFromEvent(payload)
 end
 
 function Controller:onTick(deltaTime)
+    self:_layoutAvatars()
+    if LUDORK_MOBILE then
+        self:_updateAvatarTouch()
+    end
     self._breathAnimElapsed = self._breathAnimElapsed + deltaTime
     if self._breathAnimElapsed >= _BREATH_ANIM_DURATION then
         self:playBreathAnimation()
     end
+end
+
+function Controller:ready()
+    self:_layoutAvatars()
 end
 
 function Controller:getPlayer()
@@ -111,32 +129,114 @@ function Controller:openMenu()
     end
 end
 
----@param player Source.MapActors.Player.Player
-function Controller:_initialiseAvatar(player)
-    local texture = player:getTexture()
-    if texture == nil then
+function Controller:refreshAvatars()
+    local keys = self._inst:getPlayerKeys()
+    local avatars = self.ui.controls["Avatar"]
+    avatars:setCount(#keys)
+    self._avatarWidth = self._avatarSize.x + _AVATAR_STEP * (#keys - 1)
+    avatars:setSpacing(sf.Vector2f.new(_AVATAR_STEP - self._avatarSize.x, 0))
+    for index = 1, #keys do
+        local avatar = avatars:get(index)
+        assert(Class.isInstance(avatar, Engine.Button), "Avatar template must be an Engine.Button")
+        ---@cast avatar Engine.Button
+        avatar:setColour(sf.Color.new(255, 255, 255, index == #keys and 255 or 128))
+        local texture = self._inst:getPlayerByIndex(#keys - index):getTexture()
+        avatar:setVisible(texture ~= nil)
+        if texture ~= nil then
+            local textureSize = texture:getSize()
+            avatar:setTexture(texture, true)
+            avatar:setTextureRect(
+                sf.IntRect.new(
+                    0, 0, math.max(1, math.floor(textureSize.x / 4)), math.max(1, math.floor(textureSize.y / 4))
+                )
+            )
+        end
+        avatar:addClickCallback(self:bindCallback(Controller.openMenu))
+        if LUDORK_MOBILE then
+            -- The HUD owns the whole gesture, including taps, instead of each overlapping button.
+            avatar:setTouchHitBounds(Engine.ToFloatRect(0, 0, 0, 0))
+        end
+    end
+    self._headerSignature = nil
+    self:_layoutAvatars()
+end
+
+function Controller:_layoutAvatars()
+    -- View reflow restores authored slots; keep the dynamic party layout and double reflection.
+    local avatars = self.ui.controls["Avatar"]
+    avatars:setScale(sf.Vector2f.new(-1, 1))
+    for _, avatar in ipairs(avatars:getChildren()) do
+        local size = avatar:getSize()
+        avatar:setScale(sf.Vector2f.new(-self._avatarSize.x / size.x, self._avatarSize.y / size.y))
+    end
+    avatars:setSize(sf.Vector2f.new(self._avatarWidth, self._avatarSize.y))
+    avatars:setOrigin(sf.Vector2f.new(self._avatarWidth, 0))
+    self.ui.controls["PlayerName"]:setPosition(
+        self._namePosition + sf.Vector2f.new(self._avatarWidth - self._avatarSize.x, 0)
+    )
+end
+
+function Controller:_onPartyChanged(payload)
+    if payload.instance == self._inst then
+        self:_resetAvatarTouch()
+        self:refreshAvatars()
+        self:refresh()
+    end
+end
+
+function Controller:_resetAvatarTouch()
+    if self._touchStartPosition ~= nil then
+        Input.cancelTouchGesture()
+    end
+    self._touchStartPosition = nil
+    self._touchDragging = false
+end
+
+function Controller:_updateAvatarTouch()
+    if Input.isTouchBlocked() or not self.host:getActive() then
+        self:_resetAvatarTouch()
         return
     end
-    local textureSize = texture:getSize()
-    local frameWidth = math.max(1, math.floor(textureSize.x / 4))
-    local frameHeight = math.max(1, math.floor(textureSize.y / 4))
-    self._avatarTexture = texture
-    local avatarRect = sf.IntRect.new(0, 0, frameWidth, frameHeight)
-    ---@cast avatarRect sf.IntRect
-    self._avatarRect = avatarRect
+    local bounds = self.ui.controls["Avatar"]:getAbsoluteBounds()
+    if Input.isTouchBegan(false) then
+        local position = Input.getTouchBeganPosition()
+        if position ~= nil and bounds:contains(Engine.ToVector2f(position)) then
+            self._touchStartPosition = Engine.ToVector2f(position)
+            self._touchDragging = false
+            Input.isTouchBegan(true)
+        end
+    end
+    if self._touchStartPosition == nil then
+        return
+    end
+    self._touchDragging = self._touchDragging or Input.isTouchDragged()
+    if Input.isTouchEnded() then
+        local position = Input.getTouchEndedPosition()
+        local startPosition = self._touchStartPosition
+        local dragging = self._touchDragging
+        local tap = Input.isTouchTap(false)
+        self:_resetAvatarTouch()
+        if position == nil then
+            return
+        end
+        local endPosition = Engine.ToVector2f(position)
+        local delta = (endPosition - startPosition) / GlobalCore.Display.getScale()
+        if dragging and delta.x * delta.x > _SWIPE_DISTANCE * _SWIPE_DISTANCE and delta.x * delta.x > delta.y * delta.y then
+            if self._switchPlayerCallback ~= nil then
+                self._switchPlayerCallback(delta.x > 0)
+            end
+        elseif tap and not dragging and bounds:contains(endPosition) then
+            self:openMenu()
+        end
+    elseif not Input.isTouchActive() then
+        self:_resetAvatarTouch()
+    end
 end
 
 function Controller:bind()
-    if self._avatarTexture == nil then
-        self:setProperty("Avatar", "visible", false)
-    else
-        ---@cast self._avatarTexture sf.Texture
-        ---@cast self._avatarRect sf.IntRect
-        self.ui.controls["Avatar"]:setTexture(self._avatarTexture, true)
-        self.ui.controls["Avatar"]:setTextureRect(self._avatarRect)
-        self:setProperty("Avatar", "visible", true)
-        self.ui.controls["Avatar"]:addClickCallback(self:bindCallback(Controller.openMenu))
-    end
+    self:refreshAvatars()
+    self:setProperty("PlainText", "visible", not LUDORK_MOBILE)
+    self:subscribe(EventKeys.PartyChanged, self:bindCallback(Controller._onPartyChanged))
     for _, kind in ipairs({ "Lit", "Dim" }) do
         local colours = {}
         for index = 1, self:getBreathBox(kind):getCount() do
@@ -214,7 +314,11 @@ function Controller:refresh()
         self:setText(
             "PlayerName",
             Engine.TextLayout.fitPlainText(
-                playerName, self.ui.controls["Canvas"]:getSize().x, self.ui.controls["PlayerName"]
+                playerName,
+                math.max(
+                    0,
+                    self.ui.controls["Canvas"]:getSize().x - self._namePosition.x - self._avatarWidth + self._avatarSize.x
+                ), self.ui.controls["PlayerName"]
             )
         )
         self:setText("HpLabel", LOC("HP"))
@@ -317,6 +421,7 @@ function Controller:refresh()
     end
     if layoutDirty then
         self.view:reflow()
+        self:_layoutAvatars()
     end
 end
 
@@ -370,6 +475,7 @@ function Controller:playBreathAnimation()
 end
 
 function Controller:dispose()
+    self:_resetAvatarTouch()
     for _, kind in ipairs({ "Lit", "Dim" }) do
         for index = 1, self:getBreathBox(kind):getCount() do
             self:getBreathCanvas(kind, index):clearAnims()

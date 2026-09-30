@@ -226,6 +226,11 @@ function Scene:applyLoadedGame(inst) end
 ---@brief Bind the primary player, rebind UI, and load that player's stored map.
 function Scene:applyPrimaryPlayer() end
 
+--- Cycle the controlled player when map input is available.
+---@param right? boolean
+---@return boolean
+function Scene:switchPlayer(right) end
+
 ---@brief Show the current-map monster handbook.
 ---@return boolean
 function Scene:showEnemyBook() end

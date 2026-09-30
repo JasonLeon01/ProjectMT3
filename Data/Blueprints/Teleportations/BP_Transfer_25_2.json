@@ -79,7 +79,7 @@
             "nodeFunction": "MapActors.Teleporter.goToMap",
             "params": [
               "self",
-              "MT3_025.json",
+              "TMT3_001.json",
               [
                 6,
                 0

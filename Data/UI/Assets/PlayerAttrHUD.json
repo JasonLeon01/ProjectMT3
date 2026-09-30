@@ -101,27 +101,16 @@
         "children": [
           {
             "name": "Avatar",
-            "controlId": "Engine.Button",
+            "controlId": "Engine.WrapBox",
             "properties": {
-              "texture": "/Game/Assets/Characters/actors/classic-cha-braver01.png",
-              "textureRect": [
-                0,
-                0,
+              "size": [
                 32,
                 32
               ],
-              "visible": true,
-              "hoverColour": [
-                238,
-                246,
-                255,
-                255
-              ],
-              "pressedColour": [
-                205,
-                220,
-                238,
-                255
+              "count": 1,
+              "spacing": [
+                -24,
+                0
               ]
             },
             "slot": {
@@ -149,7 +138,16 @@
               "zOrder": 0
             },
             "editor": {},
-            "children": []
+            "children": [
+              {
+                "name": "AvatarItem",
+                "controlId": "Project:Parts/PlayerAttrHUD/Avatar",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              }
+            ]
           },
           {
             "name": "PlayerName",
@@ -170,7 +168,7 @@
                 ]
               },
               "offsets": {
-                "left": 40,
+                "left": 48,
                 "top": 16,
                 "right": 144,
                 "bottom": 24
@@ -244,7 +242,7 @@
                 ]
               },
               "offsets": {
-                "left": 48,
+                "left": 64,
                 "top": 48,
                 "right": 16,
                 "bottom": 24
@@ -276,7 +274,7 @@
                   "offsets": {
                     "left": 0.0,
                     "top": 0.0,
-                    "right": 128.0,
+                    "right": 128,
                     "bottom": 24.0
                   },
                   "alignment": [

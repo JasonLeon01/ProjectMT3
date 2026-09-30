@@ -221,6 +221,11 @@ function GameInstance:getPlayerByTag(tag) end
 ---@param playerClass string
 function GameInstance:setPlayerByClass(playerClass) end
 
+--- Rotate the party left by default, or right when requested.
+---@param right? boolean
+---@return boolean changed
+function GameInstance:rotatePlayers(right) end
+
 ---@brief Add a new player by class path at a stored map and position.
 ---
 --- - @param playerClass The class path for the player blueprint.

@@ -5,7 +5,7 @@
 ---@field AtkDebuff           Engine.PlainText
 ---@field AtkLabel            Engine.PlainText
 ---@field AtkValue            Engine.PlainText
----@field Avatar              Engine.Button
+---@field Avatar              Engine.WrapBox
 ---@field Background          Engine.Image
 ---@field Background2         Engine.Image
 ---@field Background3         Engine.Image

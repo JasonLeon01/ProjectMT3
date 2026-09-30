@@ -1,3 +1,5 @@
+local Engine = require("Engine")
+local EventKeys = require("Source.Configs.EventKeys")
 local GameVariables = require("Source.Configs.GameVariables")
 local GameInstanceRecords = require("Source.Utils.GameInstance.Records")
 local GameInstanceSaveCodec = require("Source.Utils.GameInstance.SaveCodec")
@@ -126,6 +128,7 @@ function GameInstance:setPlayer(playerKey)
         if index > 1 then
             table.remove(self._playerKeys, index)
             table.insert(self._playerKeys, 1, playerKey)
+            Engine.publish(EventKeys.PartyChanged, { instance = self })
         end
         return
     end
@@ -145,6 +148,19 @@ end
 
 function GameInstance:getPlayers()
     return self._players
+end
+
+function GameInstance:rotatePlayers(right)
+    if #self._playerKeys < 2 then
+        return false
+    end
+    if right then
+        table.insert(self._playerKeys, 1, table.remove(self._playerKeys))
+    else
+        table.insert(self._playerKeys, table.remove(self._playerKeys, 1))
+    end
+    Engine.publish(EventKeys.PartyChanged, { instance = self })
+    return true
 end
 
 function GameInstance:getPlayerKeys()
@@ -174,6 +190,7 @@ function GameInstance:addPlayerByClass(playerClass, mapPath, position)
     player:setMapPosition(position)
     GameInstanceRecords.AppendPlayer(self._players, self._playerKeys, player)
     self._cachedMaps[GameInstanceRecords.RequirePlayerKey(player)] = MapPath.Normalise(mapPath)
+    Engine.publish(EventKeys.PartyChanged, { instance = self })
 end
 
 function GameInstance:removePlayerByClass(playerClass)
@@ -187,6 +204,7 @@ function GameInstance:removePlayerByClass(playerClass)
             self._players[playerKey] = nil
             self._cachedMaps[playerKey] = nil
             self._cachedTelepoints[playerKey] = nil
+            Engine.publish(EventKeys.PartyChanged, { instance = self })
             return
         end
     end

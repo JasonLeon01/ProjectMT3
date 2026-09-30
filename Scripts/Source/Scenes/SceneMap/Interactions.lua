@@ -9,6 +9,7 @@ local Teleporter = require("Source.MapActors.Teleporter")
 local RegionDict = require("Source.Configs.RegionDict")
 local MapConstants = require("Source.Configs.MapConstants")
 local MapClickAutoPath = require("Source.SceneComponents.MapClickAutoPath")
+local TransferRules = require("Source.Configs.TransferRules")
 
 local AudioManager = GlobalCore.AudioManager
 local Save = require("Source.Save")
@@ -193,12 +194,29 @@ end
 function Scene.ApplyPrimaryPlayer(self)
     self:cancelBattle()
     self.player = self.inst:getPlayer()
+    self.inst:setVariable("princesspart", self.player.ID == "Princess")
     self:_rebindPlayerToUI()
     local mapPath = assert(self.inst:getCurrentMapPath(), "Primary player has no stored map")
     local position = self.player:getMapPosition()
     self._cachedMapFile = nil
     self._currentRegion = nil
     self:gotoMapAndPos(mapPath, position)
+end
+
+---@param self  Source.Scenes.SceneMap.SceneMap
+---@param right boolean | nil
+---@return boolean
+function Scene.SwitchPlayer(self, right)
+    if #self.inst:getPlayerKeys() < 2 or self:isInputBlocked() or not self:_canOpenMenu() or self._battleActive
+        or self._gameOverRequest ~= nil or not self.player:getMoveEnabled() or self._mapInputBlockFrames > 0
+        or self._mapTransferInProgress or self._pendingTeleporterTransfer ~= nil or self._pendingWorldTransfer ~= nil then
+        return false
+    end
+    MapClickAutoPath.CancelForMap(self:getGameMap())
+    self.inst:rotatePlayers(right)
+    self:applyPrimaryPlayer()
+    self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
+    return true
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap
@@ -213,7 +231,7 @@ function Scene.RebindPlayerToUI(self)
             window:setPlayer(self.player)
         end
     end
-    self._playerHUD:setPlayer(self.player)
+    self._playerHUD:setInstance(self.inst)
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap
@@ -272,6 +290,10 @@ end
 ---@return boolean
 function Scene.ShowFloorTeleporter(self)
     if (not self:_canOpenMenu() and not self:_canOpenItemOverlay()) or not self.player:hasItem(FLOOR_TELEPORTER_ITEM_ID) then
+        return false
+    end
+    if TransferRules.IsForbidden(self:getGameMap()) then
+        AudioManager.playSound(GameSystem.GetBuzzerSE())
         return false
     end
     local window = self._windowFloorTeleporter:get()

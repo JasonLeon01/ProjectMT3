@@ -1,0 +1,40 @@
+{
+  "type": "uiAsset",
+  "palette": {
+    "exposed": true,
+    "displayName": "Party Avatar",
+    "category": "HUD"
+  },
+  "designSize": {
+    "width": 32,
+    "height": 32
+  },
+  "root": {
+    "name": "AvatarButton",
+    "controlId": "Engine.Button",
+    "properties": {
+      "texture": "/Game/Assets/Characters/actors/classic-cha-braver01.png",
+      "textureRect": [
+        0,
+        0,
+        32,
+        32
+      ],
+      "visible": true,
+      "hoverColour": [
+        238,
+        246,
+        255,
+        255
+      ],
+      "pressedColour": [
+        205,
+        220,
+        238,
+        255
+      ]
+    },
+    "editor": {},
+    "children": []
+  }
+}

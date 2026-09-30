@@ -7,24 +7,20 @@
 ---@field ui Internal.UI.PlayerAttrHUD
 local Window = {}
 
---- Construct a player attribute HUD bound to the given player instance.
----
---- - @param player  Target player whose attributes are displayed on this HUD
---- - @param openMenuCallback Callback invoked when the player avatar is clicked
----@param player           Source.MapActors.Player.Player
----@param openMenuCallback function | nil
+--- Construct the party HUD with menu and player-switch callbacks.
+---@param inst                 Source.GameInstance.GameInstance
+---@param openMenuCallback     function | nil
+---@param switchPlayerCallback fun(right: boolean): boolean | nil
 ---@return Source.Windows.PlayerAttrHUD
-function Window.new(player, openMenuCallback) end
+function Window.new(inst, openMenuCallback, switchPlayerCallback) end
 
---- Construct a player attribute HUD bound to the given player instance.
----
---- - @param player  Target player whose attributes are displayed on this HUD
---- - @param openMenuCallback Callback invoked when the player avatar is clicked
----@param player           Source.MapActors.Player.Player
----@param openMenuCallback function | nil
----@param ui               Internal.UI.PlayerAttrHUD
+--- Construct the party HUD with menu and player-switch callbacks.
+---@param inst                 Source.GameInstance.GameInstance
+---@param openMenuCallback     function | nil
+---@param switchPlayerCallback fun(right: boolean): boolean | nil
+---@param ui                   Internal.UI.PlayerAttrHUD
 ---@return Source.Windows.PlayerAttrHUD
-function Window.FromView(ui, player, openMenuCallback) end
+function Window.FromView(ui, inst, openMenuCallback, switchPlayerCallback) end
 
 function Window:bind() end
 
@@ -54,6 +50,8 @@ function Window:playBreathAnimation() end
 
 function Window:refresh() end
 
+function Window:refreshAvatars() end
+
 function Window:refreshBreath() end
 
 --- Ignore Ability System and player events from other battlers, then refresh the HUD.
@@ -66,10 +64,8 @@ function Window:refreshFromEvent(payload) end
 ---@return boolean
 function Window:refreshStates(language) end
 
---- Rebind the player whose values are displayed by this HUD.
----
---- - @param player Target player.
----@param player Source.MapActors.Player.Player
-function Window:setPlayer(player) end
+--- Rebind the party and its primary player, including after loading a save.
+---@param inst Source.GameInstance.GameInstance
+function Window:setInstance(inst) end
 
 return Window
