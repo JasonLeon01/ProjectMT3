@@ -189,7 +189,7 @@ bool AudioDevice::reinitialize()
     for (const auto& entry : instance->m_resources)
         entry.deinitializeFunc(entry.resource);
 
-        // Destroy the old engine
+    // Destroy the old engine
 #ifdef SFML_SYSTEM_HARMONY
     // Stop the renderer/null sink before invalidating its engine callback target.
     instance->m_playbackDevice.reset();
@@ -866,7 +866,7 @@ bool AudioDevice::initialize()
     // If this does cause issues we would have to expose setting this value
     // through the public API so the developer can set it to an appropriate
     // value depending on the audio data they intend to play
-    playbackDeviceConfig.periodSizeInFrames = 64;
+    playbackDeviceConfig.periodSizeInFrames = 256; // Set to 256 frames to support playing short audio clips without issues
 
     if (const auto result = ma_device_init(&*m_context, &playbackDeviceConfig, &*m_playbackDevice); result != MA_SUCCESS)
     {
