@@ -447,10 +447,10 @@
           {
             "nodeFunction": "GlobalFunctions.Video.PlayVideo",
             "params": [
-              "/Game/Assets/Videos/sample-5mb.mp4",
+              "/Game/Assets/Videos/tower-rising-2.5D.mp4",
               false,
               true,
-              "Data/Subtitles/Example.json"
+              ""
             ],
             "pos": [
               7200.0,
