@@ -440,7 +440,7 @@ return {
     ["S_DEATHCURSE"] = "死咒",
     ["S_DEATHCURSE_DESC"] = "如果我方防御不高于敌人攻击，则敌人伤害加倍。",
     ["S_DOMAIN"] = "领域",
-    ["S_DOMAIN_DESC"] = "玩家每次移动后，若处于敌人的{value}格曼哈顿领域范围内，敌人造成一次单回合伤害。",
+    ["S_DOMAIN_DESC"] = "玩家每次移动后，若处于敌人的{value}格范围内，敌人造成一次单回合伤害。",
     ["S_EMBER"] = "炽炎",
     ["S_EMBER_DESC"] = "死后会变成一块熔岩路障。",
     ["S_EVILEYE"] = "邪眼",

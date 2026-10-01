@@ -188,7 +188,7 @@ return {
     ["S_COMPETE"] = "Compete",
     ["S_COMPETE_DESC"] = "The enemy's ATK is treated as at least the opponent's ATK.",
     ["S_DOMAIN"] = "Domain",
-    ["S_DOMAIN_DESC"] = "After each player move, the enemy deals one-round damage while the player is within its {value}-cell Manhattan range.",
+    ["S_DOMAIN_DESC"] = "After each player move, the enemy deals one-round damage while the player is within its {value}-cell range.",
     ["S_FIRST"] = "FirstStrike",
     ["S_FIRST_DESC"] = "The enemy attacks once before the player's first attack.",
     ["S_FIXDMG"] = "FixedDMG",

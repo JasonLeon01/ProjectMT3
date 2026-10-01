@@ -8,8 +8,10 @@
 ---@field WindowFrame Engine.Window
 
 ---@class Internal.UIBase.GeneratedAssets.WindowBottle
----@field Bottle150Row Internal.UI.Parts.WindowBottle.BottleRow
----@field Bottle400Row Internal.UI.Parts.WindowBottle.BottleRow
+---@field Bottle150Row    Internal.UI.Parts.WindowBottle.BottleRow
+---@field Bottle400Row    Internal.UI.Parts.WindowBottle.BottleRow
+---@field WindowChrome    Internal.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Internal.UI.Parts.Shared.WindowPauseMark
 
 ---@class Internal.UI.WindowBottle: Internal.UIBase.UiView
 ---@field root     Engine.Canvas
