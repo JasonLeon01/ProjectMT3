@@ -53,6 +53,7 @@
 ---@field _windowEnemyEncyclopedia              Internal.UIBase.LazyWindow<Source.Windows.WindowEnemyEncyclopedia>
 ---@field _windowFloorTeleporter                Internal.UIBase.LazyWindow<Source.Windows.WindowFloorTeleporter>
 ---@field _windowMagicDoor                      Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor>
+---@field _windowBottle                         Internal.UIBase.LazyWindow<Source.Windows.WindowBottle>
 ---@field _windowHotkeys                        Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
 ---@field _shortcutMoveEnabledBeforeOpen        boolean
 ---@field _windowSaveLoad                       Internal.UIBase.LazyWindow<Source.Windows.WindowSaveLoad>
@@ -89,6 +90,9 @@ local Scene = {}
 
 ---@return boolean
 function Scene:showMagicDoor() end
+
+---@return boolean
+function Scene:showBottle() end
 
 ---@return boolean
 function Scene:showHotkeys() end

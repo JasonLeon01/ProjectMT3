@@ -1,0 +1,156 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 96,
+    "height": 96
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Window Bottle",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        96,
+        96
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "WindowFrame",
+        "controlId": "Engine.Window",
+        "properties": {
+          "size": [
+            96,
+            96
+          ],
+          "windowSkin": "",
+          "repeated": true
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 0,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Content",
+        "controlId": "Engine.Canvas",
+        "properties": {
+          "size": [
+            80,
+            80
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 8,
+            "top": 8,
+            "right": 8,
+            "bottom": 8
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "BottleList",
+            "controlId": "Engine.ListView",
+            "properties": {
+              "size": [
+                80,
+                80
+              ],
+              "defaultItemHeight": 40,
+              "fixItemHeight": true,
+              "columns": 1
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  1,
+                  1
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": [
+              {
+                "name": "Bottle150Row",
+                "controlId": "Project:Parts/WindowBottle/BottleRow",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "Bottle400Row",
+                "controlId": "Project:Parts/WindowBottle/BottleRow",
+                "properties": {},
+                "slot": {},
+                "editor": {},
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

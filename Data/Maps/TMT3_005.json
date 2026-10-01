@@ -8,7 +8,7 @@
     72,
     255
   ],
-  "bgm": "/Game/Assets/Musics/sound-2.mp3",
+  "bgm": "/Game/Assets/Musics/sound-3.mp3",
   "bgmFilter": {},
   "bgs": "",
   "bgsFilter": {},
@@ -1097,6 +1097,54 @@
         "position": [
           5,
           2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_7_1",
+        "position": [
+          7,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_7_6",
+        "position": [
+          7,
+          6
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_9_10",
+        "position": [
+          9,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire",
+        "tag": "Actors_BP_Fire_default_4_9",
+        "position": [
+          4,
+          9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_1_8",
+        "position": [
+          1,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_3_5",
+        "position": [
+          3,
+          5
         ]
       }
     ]

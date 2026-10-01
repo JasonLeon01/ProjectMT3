@@ -7,6 +7,7 @@ return {
     ["MTExample"] = 0,
     ["ShopPrice"] = 20,
     ["ShopPrice2"] = 50,
+    ["bravorcome"] = false,
     ["bravorshow"] = false,
     ["floor25Phase"] = 0,
     ["fly"] = false,

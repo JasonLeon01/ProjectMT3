@@ -117,7 +117,7 @@
             "nodeFunction": "GlobalFunctions.Scene.SelfRecordAndDestroy",
             "params": [],
             "pos": [
-              5040,
+              5760,
               314
             ]
           },
@@ -129,6 +129,16 @@
             ],
             "pos": [
               4320,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Scene.ShowTutorial",
+            "params": [
+              "TM_08"
+            ],
+            "pos": [
+              5040,
               314
             ]
           }
@@ -213,6 +223,13 @@
           },
           {
             "left": 9,
+            "right": 10,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 10,
             "right": 8,
             "leftOutPin": 0,
             "rightInPin": 0,

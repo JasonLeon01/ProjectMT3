@@ -74,6 +74,14 @@ function Windows.Create(self)
     local function onShortcutClose()
         self:_onMapShortcutClose()
     end
+    self._windowBottle = LazyWindow.new(function ()
+        local WindowBottle = require("Source.Windows.WindowBottle")
+
+        local window = WindowBottle.new(self.player, onShortcutClose)
+        window:setZOrder(MENU_Z_ORDER)
+        window:mount(manager)
+        return window
+    end)
     self._windowMagicDoor = LazyWindow.new(function ()
         local WindowMagicDoor = require("Source.Windows.WindowMagicDoor")
 
@@ -274,12 +282,12 @@ function Windows.Create(self)
     self._blockingWindows = {
         self._windowBattle, self._windowShop, self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia,
         self._windowFloorTeleporter, self._windowPlayerName, self._windowItem, self._windowEquip, self._windowSaveLoad,
-        self._configWindow, self._windowMagicDoor, self._windowHotkeys
+        self._configWindow, self._windowMagicDoor, self._windowBottle, self._windowHotkeys
     }
 end
 
 function Windows.CloseShortcuts(self)
-    for _, lazyWindow in ipairs({ self._windowMagicDoor, self._windowHotkeys }) do
+    for _, lazyWindow in ipairs({ self._windowMagicDoor, self._windowBottle, self._windowHotkeys }) do
         local window = lazyWindow:peek()
         if window ~= nil then
             window:close()
@@ -292,7 +300,7 @@ function Windows.Dispose(self)
         self._windowBattle, self._messageWindow, self._windowMenu, self._windowItem, self._windowEquip,
         self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowSaveLoad,
         self._windowShop, self._windowFloorTeleporter, self._configWindow, self._windowPlayerName, self._windowMagicDoor,
-        self._windowHotkeys
+        self._windowBottle, self._windowHotkeys
     }
     for _, window in ipairs(windows) do
         window:dispose()

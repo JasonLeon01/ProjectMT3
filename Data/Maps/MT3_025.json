@@ -882,7 +882,7 @@
     },
     "Teleportations_BP_Downstair_25_default_5_8": {
       "conditionVariable": "floor25Phase",
-      "conditionOperator": "\u003E",
+      "conditionOperator": "\u003E=",
       "conditionValue": 2
     }
   },

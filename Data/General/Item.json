@@ -33,6 +33,104 @@
     }
   },
   "members": {
+    "Bottle150": {
+      "name": "{BOTTLE_150}",
+      "desc": "{BOTTLE_150_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/103-05.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Player.HealPlayer",
+                "params": [
+                  150
+                ],
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "Bottle150",
+                  1
+                ],
+                "pos": [
+                  720.0,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
+    "Bottle400": {
+      "name": "{BOTTLE_400}",
+      "desc": "{BOTTLE_400_DESC}",
+      "usable": true,
+      "price": 0,
+      "icon": "/Game/Assets/Icons/103-06.png",
+      "cost": true,
+      "_graph": {
+        "nodeGraph": {
+          "onUse": {
+            "nodes": [
+              {
+                "nodeFunction": "GlobalFunctions.Player.HealPlayer",
+                "params": [
+                  400
+                ],
+                "pos": [
+                  0.0,
+                  0.0
+                ]
+              },
+              {
+                "nodeFunction": "GlobalFunctions.Player.RemoveItem",
+                "params": [
+                  "Bottle400",
+                  1
+                ],
+                "pos": [
+                  720.0,
+                  0.0
+                ]
+              }
+            ],
+            "links": [
+              {
+                "left": 0,
+                "right": 1,
+                "leftOutPin": 0,
+                "rightInPin": 0,
+                "linkType": "Exec"
+              }
+            ]
+          }
+        },
+        "startNodes": {
+          "onUse": 0
+        }
+      }
+    },
     "KEY_Y": {
       "name": "{KEY_Y}",
       "desc": "{KEY_Y_DESC}",

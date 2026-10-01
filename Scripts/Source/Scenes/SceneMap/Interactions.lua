@@ -223,7 +223,7 @@ end
 function Scene.RebindPlayerToUI(self)
     local windows = {
         self._windowItem, self._windowEquip, self._windowMenu, self._windowShop, self._windowAttrShop,
-        self._windowEnemyBook, self._windowPlayerName, self._windowMagicDoor
+        self._windowEnemyBook, self._windowPlayerName, self._windowMagicDoor, self._windowBottle
     }
     for _, lazyWindow in ipairs(windows) do
         local window = lazyWindow:peek()
@@ -251,7 +251,7 @@ function Scene.ShowEnemyBook(self)
 end
 
 ---@param self   Source.Scenes.SceneMap.SceneMap
----@param window Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor> | Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
+---@param window Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor> | Internal.UIBase.LazyWindow<Source.Windows.WindowBottle> | Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
 ---@return boolean
 local function openMapShortcut(self, window)
     if self:isInputBlocked() or not self:_canOpenMenu() or self._mapInputBlockFrames > 0 or self._mapTransferInProgress
@@ -273,6 +273,12 @@ function Scene.ShowMagicDoor(self)
         return false
     end
     return openMapShortcut(self, self._windowMagicDoor)
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
+---@return boolean
+function Scene.ShowBottle(self)
+    return openMapShortcut(self, self._windowBottle)
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap

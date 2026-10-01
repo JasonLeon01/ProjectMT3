@@ -9,6 +9,7 @@ local _METADATA = {
             "MTExample",
             "ShopPrice",
             "ShopPrice2",
+            "bravorcome",
             "bravorshow",
             "floor25Phase",
             "fly",
@@ -37,6 +38,9 @@ local _METADATA = {
         },
         ["ShopPrice2"] = {
             type = "int",
+        },
+        ["bravorcome"] = {
+            type = "bool",
         },
         ["bravorshow"] = {
             type = "bool",

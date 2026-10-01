@@ -1,0 +1,127 @@
+{
+  "type": "uiAsset",
+  "designSize": {
+    "width": 80,
+    "height": 40
+  },
+  "palette": {
+    "exposed": true,
+    "displayName": "Bottle Row",
+    "category": "Windows"
+  },
+  "root": {
+    "name": "Root",
+    "controlId": "Engine.Canvas",
+    "properties": {
+      "size": [
+        80,
+        40
+      ]
+    },
+    "editor": {},
+    "children": [
+      {
+        "name": "Icon",
+        "controlId": "Engine.FunctionalImage",
+        "properties": {
+          "texture": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0.5
+            ],
+            "max": [
+              0,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 32,
+            "bottom": 32
+          },
+          "alignment": [
+            0,
+            0.5
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Multiply",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 16,
+          "text": "X"
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0.5
+            ],
+            "max": [
+              0,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 36,
+            "top": 0,
+            "right": 12,
+            "bottom": 20
+          },
+          "alignment": [
+            0,
+            0.5
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Count",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 16
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              1,
+              0.5
+            ],
+            "max": [
+              1,
+              0.5
+            ]
+          },
+          "offsets": {
+            "left": 0,
+            "top": 0,
+            "right": 28,
+            "bottom": 20
+          },
+          "alignment": [
+            1,
+            0.5
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {
+          "previewText": "99"
+        },
+        "children": []
+      }
+    ]
+  }
+}

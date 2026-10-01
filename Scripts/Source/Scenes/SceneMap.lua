@@ -729,6 +729,10 @@ function Scene:showMagicDoor()
     return SceneMapInteractions.ShowMagicDoor(self)
 end
 
+function Scene:showBottle()
+    return SceneMapInteractions.ShowBottle(self)
+end
+
 function Scene:showHotkeys()
     return SceneMapInteractions.ShowHotkeys(self)
 end

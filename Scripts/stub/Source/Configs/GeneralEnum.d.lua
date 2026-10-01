@@ -128,6 +128,8 @@ local Equip = {}
 
 --- @brief Item member keys.
 ---@class Source.Configs.GeneralEnum.Item
+---@field Bottle150 string
+---@field Bottle400 string
 ---@field BreakIce string
 ---@field BreakLava string
 ---@field BreakWall string

@@ -90,6 +90,82 @@
               720,
               314
             ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Utils.IF",
+            "params": [
+              false
+            ],
+            "pos": [
+              1440,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Utils.GetGameVariable",
+            "params": [
+              "bravorcome",
+              false
+            ],
+            "pos": [
+              720,
+              954
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Utils.SetGameVariable",
+            "params": [
+              "bravorcome",
+              true
+            ],
+            "pos": [
+              2160,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.AddItem",
+            "params": [
+              "EnemyBook",
+              1
+            ],
+            "pos": [
+              2880,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.AddItem",
+            "params": [
+              "Teleport",
+              1
+            ],
+            "pos": [
+              3600,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.AddItem",
+            "params": [
+              "KEY_Y",
+              5
+            ],
+            "pos": [
+              4320,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.AddItem",
+            "params": [
+              "KEY_B",
+              1
+            ],
+            "pos": [
+              5040,
+              314
+            ]
           }
         ],
         "links": [
@@ -117,6 +193,55 @@
           {
             "left": 1,
             "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 3,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 4,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 4,
+            "right": 6,
+            "leftOutPin": 1,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 6,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 7,
+            "right": 8,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 8,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 9,
+            "right": 10,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"

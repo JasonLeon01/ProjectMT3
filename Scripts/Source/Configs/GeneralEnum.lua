@@ -117,6 +117,8 @@ local Equip = {
 }
 
 local Item = {
+    Bottle150 = "Bottle150",
+    Bottle400 = "Bottle400",
     BreakIce = "BreakIce",
     BreakLava = "BreakLava",
     BreakWall = "BreakWall",
