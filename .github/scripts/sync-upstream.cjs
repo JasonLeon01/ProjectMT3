@@ -6,7 +6,7 @@ const { execFileSync } = require('node:child_process');
 
 const fourHours = 4 * 60 * 60;
 
-function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirectories = [] }) {
+function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirectories = [], allowMissingRoot = false }) {
   function git(directory, ...args) {
     return execFileSync('git', ['-C', directory, ...args], { maxBuffer: 128 * 1024 * 1024 });
   }
@@ -17,7 +17,9 @@ function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirec
 
   function tree(directory, revision, root) {
     const entries = new Map();
-    const type = git(directory, 'cat-file', '-t', `${revision}:${root}`).toString().trim();
+    const rootEntry = git(directory, 'ls-tree', '-z', revision, '--', root).toString();
+    if (!rootEntry && allowMissingRoot) return entries;
+    const type = rootEntry.split(' ')[1];
     if (type !== 'tree') throw new Error(`Missing directory: ${revision}:${root}`);
     for (const record of git(directory, 'ls-tree', '-rz', revision, '--', `${root}/`).toString().split('\0')) {
       if (!record) continue;

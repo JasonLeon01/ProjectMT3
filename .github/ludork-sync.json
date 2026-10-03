@@ -8,6 +8,9 @@
   "internal": {
     "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
   },
+  "enums": {
+    "upstreamSha": "238375c8eb57b6dff7cccf2730ba56bfc0d02766"
+  },
   "globalStub": {
     "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
   },

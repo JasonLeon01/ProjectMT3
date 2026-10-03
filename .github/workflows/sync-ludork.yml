@@ -1,4 +1,4 @@
-name: Sync Ludork Engine, Global and Internal
+name: Sync Ludork Engine, Global, Internal and Enums
 
 on:
   schedule:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   sync:
-    name: Sync Engine, Global and Internal and update PR
+    name: Sync Engine, Global, Internal and Enums and update PR
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -37,7 +37,7 @@ jobs:
             https://github.com/JasonLeon01/Ludork.git "$upstream"
           echo "LUDORK_SYNC_REPOSITORY=$upstream" >> "$GITHUB_ENV"
 
-      - name: Check and apply changed Engine, Global, Internal and Lua stub files
+      - name: Check and apply changed Engine, Global, Internal, Enums and Lua stub files
         id: sync
         uses: actions/github-script@v8
         with:
@@ -58,18 +58,20 @@ jobs:
             :(exclude)Engine/ThirdParty/**
             Scripts/Global/
             Scripts/Internal/
+            Scripts/Enums/
             Scripts/stub/Global/
             Scripts/stub/Internal/
             .github/ludork-sync.json
-          commit-message: 'chore: sync Ludork Engine, Global, Internal and Lua stubs from ${{ steps.sync.outputs.upstream_sha }}'
-          title: 'chore: sync Ludork Engine, Global, Internal and Lua stubs'
+          commit-message: 'chore: sync Ludork Engine, Global, Internal, Enums and Lua stubs from ${{ steps.sync.outputs.upstream_sha }}'
+          title: 'chore: sync Ludork Engine, Global, Internal, Enums and Lua stubs'
           body: |
-            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/`, `Game/Scripts/{Global,Internal}/` into the corresponding `Scripts/` directories, and `Game/Scripts/stub/{Global,Internal}/` into the corresponding `Scripts/stub/` directories.
+            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/`, `Game/Scripts/{Global,Internal,Enums}/` into the corresponding `Scripts/` directories, and `Game/Scripts/stub/{Global,Internal}/` into the corresponding `Scripts/stub/` directories.
 
             - Preserve `Engine/ThirdParty/` and files unchanged upstream since the merged baseline.
             - Engine merged baseline: `${{ steps.sync.outputs.engine_baseline_sha }}`
             - Global merged baseline: `${{ steps.sync.outputs.global_baseline_sha }}`
             - Internal merged baseline: `${{ steps.sync.outputs.internal_baseline_sha }}`
+            - Enums merged baseline: `${{ steps.sync.outputs.enums_baseline_sha }}`
             - Global stub merged baseline: `${{ steps.sync.outputs.globalStub_baseline_sha }}`
             - Internal stub merged baseline: `${{ steps.sync.outputs.internalStub_baseline_sha }}`
             - Upstream: https://github.com/JasonLeon01/Ludork/commit/${{ steps.sync.outputs.upstream_sha }}
