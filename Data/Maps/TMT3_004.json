@@ -1005,14 +1005,6 @@
       },
       {
         "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
-        "tag": "Actors_BP_Barrier_50_default_3_9",
-        "position": [
-          3,
-          9
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Barriers.BP_Barrier_50",
         "tag": "Actors_BP_Barrier_50_default_6_9",
         "position": [
           6,
@@ -1145,6 +1137,14 @@
         "position": [
           8,
           1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
+        "tag": "Consumables_BP_Bottle_400_default_3_9",
+        "position": [
+          3,
+          9
         ]
       }
     ]

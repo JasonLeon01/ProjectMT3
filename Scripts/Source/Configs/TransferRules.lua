@@ -23,7 +23,8 @@ function TransferRules.IsForbidden(gameMap)
 
     local Enemy = require("Source.MapActors.Enemy")
     for _, actor in ipairs(gameMap:getAllActors()) do
-        if Class.isInstance(actor, Enemy) and not actor:isDestroyed() and actor:isVisibleInHierarchy() then
+        if Class.isInstance(actor, Enemy) and not actor:isDestroyed() and actor:isVisibleInHierarchy()
+            and gameMap:isActorVisibleOnMap(actor) then
             ---@cast actor Source.MapActors.Enemy
             if actor:getAbilitySystemComponent():hasMatchingGameplayTag(
                 GameplayConstants.SPECIAL_PREFIX .. GeneralEnum.Special.EvilEye

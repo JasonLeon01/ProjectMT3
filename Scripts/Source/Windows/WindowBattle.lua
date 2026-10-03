@@ -232,13 +232,13 @@ function Controller:open(player, enemy, onFinished)
             if controller._running then
                 controller.host:setActive(true)
                 controller.host:requestKeyboardFocus()
+                controller:schedule(Battle.startDelay, function ()
+                    controller:beginTurn(not enemyState.first)
+                end)
             end
         end)
     )
     self:playBreathAnimation()
-    self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function ()
-        self:beginTurn(not enemyState.first)
-    end)
 end
 
 function Controller:setPortrait(name, actor)
@@ -584,7 +584,6 @@ function Controller:receiveAttack(attacker, defender, damage, critical, attackSk
     end
 end
 
----@diagnostic disable-next-line: unused, Shared Controller action mutation.
 function Controller:applyAttackStates(attacker, defender)
     defender.poisoned = defender.poisoned + attacker.poisoning
     defender.weak = defender.weak + attacker.weaken
@@ -593,6 +592,12 @@ function Controller:applyAttackStates(attacker, defender)
     -- The snapshot already includes pre-existing Weak modifiers.
     defender.ATK = math.max(0, defender.ATK - attacker.weaken)
     defender.DEF = math.max(0, defender.DEF - attacker.weaken)
+    if attacker.poisoning > 0 or attacker.weaken > 0 then
+        local animation = Animation.new(Data.GetAnimation("special"), false)
+        local portrait = defender.isPlayer and self.ui.controls.PlayerPortrait or self.ui.controls.EnemyPortrait
+        animation:setPosition(portrait:getGlobalBounds():getCenter())
+        self.ui.controls["Content"]:addAnim(animation)
+    end
 end
 
 function Controller:refreshActionButton(name, selected, enabled)

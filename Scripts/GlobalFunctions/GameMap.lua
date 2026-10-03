@@ -13,6 +13,10 @@ local function getCurrentGameMap()
     return loadContext().RequireSceneMap():getGameMap()
 end
 
+function GameMap.GetCurrentGameMap()
+    return assert(getCurrentGameMap(), "Current scene has no game map")
+end
+
 function GameMap.GetActorByTag(tag)
     local gameMap = getCurrentGameMap()
     if gameMap == nil then

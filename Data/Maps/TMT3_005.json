@@ -996,14 +996,6 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.NPCs.BP_GoldShop_MT3",
-        "tag": "Actors_BP_GoldShop_MT3_default_5_9",
-        "position": [
-          6,
-          9
-        ]
-      },
-      {
         "bp": "Data.Blueprints.Doors.BP_Door_Y",
         "tag": "Doors_BP_Door_Y_default_9_9",
         "position": [
@@ -1145,6 +1137,14 @@
         "position": [
           3,
           5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.NPCs.BP_GoldShop_MT3_Bravor",
+        "tag": "NPCs_BP_GoldShop_MT3_Bravor_default_6_9",
+        "position": [
+          6,
+          9
         ]
       }
     ]

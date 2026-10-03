@@ -1,6 +1,15 @@
 local _METADATA = {
     GameMap = {
         attrs = {},
+        GetCurrentGameMap = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "gameMap",
+                gameMap = { "Global.GameMap", "GameMap" }
+            },
+            Pure = true
+        },
         GetActorByTag = {
             type = "function",
             parameters = {

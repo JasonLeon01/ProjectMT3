@@ -1043,6 +1043,14 @@
           5,
           0
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
+        "tag": "Consumables_BP_Bottle_400_default_2_8",
+        "position": [
+          2,
+          8
+        ]
       }
     ]
   },

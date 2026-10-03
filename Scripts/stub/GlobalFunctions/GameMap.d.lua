@@ -1,5 +1,9 @@
 ---@meta GlobalFunctions.GameMap
 
+---@brief Get the active scene's map. Raises an error when no map is active.
+---@return GameMap
+function GameMap.GetCurrentGameMap() end
+
 ---@brief Find an actor by tag on the current map.
 ---
 --- - @param tag The tag to search for.

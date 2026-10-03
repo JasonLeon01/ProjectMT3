@@ -20,7 +20,24 @@
       ]
     ],
     "tag": "",
-    "animatable": true
+    "animatable": true,
+    "emitterComp": {
+      "resource": "Burn",
+      "anchor": [
+        0.5,
+        0.75
+      ],
+      "offset": [
+        0,
+        0
+      ],
+      "rotation": 0,
+      "scale": [
+        1,
+        1
+      ],
+      "beforeActor": false
+    }
   },
   "graph": {
     "nodeGraph": {
@@ -52,8 +69,8 @@
               []
             ],
             "pos": [
-              -720.0,
-              564.0
+              -1440,
+              634
             ]
           },
           {
@@ -72,18 +89,144 @@
               null
             ],
             "pos": [
-              -360.0,
-              564.0
+              -720,
+              634
             ]
           },
           {
-            "nodeFunction": "GlobalFunctions.Player.AddHP",
+            "nodeFunction": "GlobalFunctions.Player.DamagePlayer",
             "params": [
-              -50
+              null
             ],
             "pos": [
-              720.0,
-              314.0
+              720,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Utils.GetSelfAttr",
+            "params": [
+              "emitterComp"
+            ],
+            "pos": [
+              720,
+              1274
+            ]
+          },
+          {
+            "nodeFunction": "Engine.EmitterComponent.getEmitter",
+            "params": [
+              null
+            ],
+            "pos": [
+              1440,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "Engine.Emitter.emit",
+            "params": [
+              null,
+              "Flames",
+              24
+            ],
+            "pos": [
+              3600,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "Engine.Emitter.emit",
+            "params": [
+              null,
+              "Embers",
+              16
+            ],
+            "pos": [
+              4320,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "Engine.Actor.getPosition",
+            "params": [
+              null
+            ],
+            "pos": [
+              2880,
+              2874
+            ]
+          },
+          {
+            "nodeFunction": "Global.GameMap.addDamageText",
+            "params": [
+              null,
+              null,
+              null,
+              null
+            ],
+            "pos": [
+              5040,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Player.GetPlayer",
+            "params": [],
+            "pos": [
+              0,
+              1274
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.GameMap.GetCurrentGameMap",
+            "params": [],
+            "pos": [
+              2880,
+              2234
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.Utils.GetGameVariable",
+            "params": [
+              "burnInMap",
+              50
+            ],
+            "pos": [
+              0,
+              954
+            ]
+          },
+          {
+            "nodeFunction": "GlobalFunctions.String.ToString",
+            "params": [
+              null
+            ],
+            "pos": [
+              2880,
+              2554
+            ]
+          },
+          {
+            "nodeFunction": "Engine.Emitter.emit",
+            "params": [
+              null,
+              "Ignition",
+              1
+            ],
+            "pos": [
+              2880,
+              314
+            ]
+          },
+          {
+            "nodeFunction": "Engine.Emitter.restart",
+            "params": [
+              null
+            ],
+            "pos": [
+              2160,
+              314
             ]
           }
         ],
@@ -110,8 +253,134 @@
             "linkType": "Params"
           },
           {
+            "left": 4,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 3,
+            "right": 5,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 15,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 6,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 7,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 7,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 10,
+            "right": 8,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 8,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 2,
+            "linkType": "Params"
+          },
+          {
+            "left": 10,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 3,
+            "linkType": "Params"
+          },
+          {
+            "left": 12,
+            "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 12,
+            "right": 13,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 13,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 1,
+            "linkType": "Params"
+          },
+          {
             "left": 1,
             "right": 3,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 11,
+            "right": 9,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 5,
+            "right": 14,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 14,
+            "right": 6,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Exec"
+          },
+          {
+            "left": 5,
+            "right": 15,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          },
+          {
+            "left": 15,
+            "right": 14,
             "leftOutPin": 0,
             "rightInPin": 0,
             "linkType": "Exec"

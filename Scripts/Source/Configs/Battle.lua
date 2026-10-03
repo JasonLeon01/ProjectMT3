@@ -100,6 +100,7 @@ Battle.defenseSkills = {
 }
 
 Battle.criticalFatigue = 5
+Battle.startDelay = 0.3
 Battle.attackInterval = 0.12
 Battle.attackExtraDelay = 0.10
 
