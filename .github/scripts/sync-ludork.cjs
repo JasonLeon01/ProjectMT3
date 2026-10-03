@@ -3,6 +3,17 @@
 const { execFileSync } = require('node:child_process');
 const { createSync } = require('./sync-upstream.cjs');
 
+const projectEnums = {
+  'Game/Scripts/Enums': {
+    directories: ['GeneralData'],
+    files: ['GeneralDataKey.lua', 'EventKey.lua'],
+  },
+  'Game/Scripts/stub/Enums': {
+    directories: ['GeneralData'],
+    files: ['GeneralDataKey.d.lua', 'EventKey.d.lua'],
+  },
+};
+
 const targets = [
   { stateKey: 'engine', sourceRoot: 'Game/Engine', targetRoot: 'Engine', excludedDirectories: ['ThirdParty'] },
   { stateKey: 'global', sourceRoot: 'Game/Scripts/Global', targetRoot: 'Scripts/Global' },
@@ -11,10 +22,18 @@ const targets = [
   { stateKey: 'enums', sourceRoot: 'Game/Scripts/Enums', targetRoot: 'Scripts/Enums', allowMissingRoot: true },
   { stateKey: 'globalStub', sourceRoot: 'Game/Scripts/stub/Global', targetRoot: 'Scripts/stub/Global' },
   { stateKey: 'internalStub', sourceRoot: 'Game/Scripts/stub/Internal', targetRoot: 'Scripts/stub/Internal' },
-].map(config => ({
-  ...config,
-  sync: createSync({ ...config, statePath: '.github/ludork-sync.json' }),
-}));
+].map(config => {
+  const localEnums = projectEnums[config.sourceRoot];
+  return {
+    ...config,
+    sync: createSync({
+      ...config,
+      excludedDirectories: [...(config.excludedDirectories ?? []), ...(localEnums?.directories ?? [])],
+      excludedFiles: [...(config.excludedFiles ?? []), ...(localEnums?.files ?? [])],
+      statePath: '.github/ludork-sync.json',
+    }),
+  };
+});
 
 function synchronize({ project, upstream, eventName, now = Date.now() }) {
   if (!['schedule', 'workflow_dispatch'].includes(eventName)) throw new Error(`Unsupported event: ${eventName}`);

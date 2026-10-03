@@ -13,6 +13,15 @@
 ---@alias Engine.__ArrayElement_e59385bd2e6a sf.Texture|nil
 ---@alias Engine.__ArrayElement_bdf072f4f9bb string|sf.Image|nil
 
+---@class Engine.ActionKind
+---@field KeyOrScan Engine.ActionKind
+---@field Key Engine.ActionKind
+---@field Scan Engine.ActionKind
+---@field MouseButton Engine.ActionKind
+---@field JoystickButton Engine.ActionKind
+---@field JoystickAxis Engine.ActionKind
+---@field TouchTap Engine.ActionKind
+
 ---@class Engine.ImageDrawAs
 ---@field Image Engine.ImageDrawAs
 ---@field Tile Engine.ImageDrawAs
@@ -135,6 +144,7 @@
 ---@field RuntimeIdentity Engine.RuntimeIdentity
 ---@field RuntimeObject Engine.RuntimeObject
 ---@field RuntimeValue Engine.RuntimeValue
+---@field ActionKind Engine.ActionKind
 ---@field ImageDrawAs Engine.ImageDrawAs
 ---@field getAnimationVisualDuration fun(animationData: Engine.AnimationSourceData): number
 ---@field ZeroVector2f sf.Vector2f
@@ -155,7 +165,6 @@
 ---@field C_CompressAnimation fun(frameCount: integer, frameStep: number, frameRate: integer, timeLines: Engine.AnimationTimeline[], assets: string[], imageFormat: string): number, string[], Engine.AnimationSoundEntry[]
 ---@field compressAnimation fun(source: Engine.AnimationSourceData|nil, imageFormat?: string): Engine.AnimationData
 ---@field InputType table<string, Engine.InputNamedValue>
----@field ActionKind table<string, integer>
 ---@field AxisComparison table<string, fun(arg1: number, arg2: number): boolean>
 ---@field inputService fun(): Engine.Service
 ---@field FocusDirection table<string, string>
@@ -235,6 +244,7 @@
 ---@type EngineModule
 Engine = {}
 
+Engine.ActionKind = {}
 Engine.ImageDrawAs = {}
 
 Engine.TextConfig = {}
@@ -667,9 +677,6 @@ Engine.Direction = nil
 
 ---@type table<string, Engine.InputNamedValue>
 Engine.InputType = nil
-
----@type table<string, integer>
-Engine.ActionKind = nil
 
 ---@type table<string, fun(arg1: number, arg2: number): boolean>
 Engine.AxisComparison = nil
@@ -2096,7 +2103,7 @@ function InjectedInputEvent.init(self, values) end
 Engine.InjectedInputEvent = InjectedInputEvent
 
 ---@class Engine.InputActionKey
----@field kind InputActionKind
+---@field kind Engine.ActionKind
 ---@field name string
 ---@field code integer
 ---@field threshold number

@@ -30,7 +30,7 @@ function Window:getVisible() end
 
 function Window:hideImmediate() end
 
----@param transitionProfile string | nil
+---@param transitionProfile Enums.WindowTransitionProfile | nil
 ---@param dockPosition      sf.Vector2f | nil
 function Window:open(transitionProfile, dockPosition) end
 

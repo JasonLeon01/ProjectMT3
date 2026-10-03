@@ -14,7 +14,7 @@ function Controller:init(player, onClose) end
 
 function Controller:bind() end
 
----@param payload table
+---@param payload Source.Configs.EventChangePayload
 function Controller:onPlayerChanged(payload) end
 
 ---@param player Source.MapActors.Player.Player

@@ -1432,9 +1432,10 @@ local _METADATA = {
         attrs = { "direction", "directionFix", "animateWithoutMoving" },
         InvalidVars = { "defaultRect" },
         direction = {
-            type = "int",
+            type = {
+                enum = "Enums.Engine.Direction",
+            },
             default = 0,
-            Meta = { DropBox = { 0, 1, 2, 3 } },
         },
         directionFix = {
             type = "bool",
@@ -2497,7 +2498,9 @@ local _METADATA = {
     InputActionKey = {
         attrs = { "kind", "name", "code", "threshold" },
         kind = {
-            type = "InputActionKind",
+            type = {
+                enum = "Enums.Engine.ActionKind",
+            },
         },
         name = {
             type = "string",
@@ -2626,7 +2629,9 @@ local _METADATA = {
         },
         getKeyPressed = {
             type = "function",
-            parameters = { "self", "key", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, key = "int", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "self", "key", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, key = {
+                enum = "Enums.sf.Keyboard.Key",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -2635,7 +2640,9 @@ local _METADATA = {
         },
         getScanPressed = {
             type = "function",
-            parameters = { "self", "scan", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, scan = "sf.Keyboard.Scancode", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "self", "scan", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, scan = {
+                enum = "Enums.sf.Keyboard.Scan",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -2644,7 +2651,9 @@ local _METADATA = {
         },
         getKeyReleased = {
             type = "function",
-            parameters = { "self", "key", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, key = "int", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "self", "key", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, key = {
+                enum = "Enums.sf.Keyboard.Key",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -2653,7 +2662,9 @@ local _METADATA = {
         },
         getScanReleased = {
             type = "function",
-            parameters = { "self", "scan", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, scan = "sf.Keyboard.Scancode", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "self", "scan", "handled", "alt", "ctrl", "shift", "system", self = { "Engine", "Service" }, scan = {
+                enum = "Enums.sf.Keyboard.Scan",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -2676,7 +2687,9 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {
                 "return",
-                ["return"] = "int",
+                ["return"] = {
+                enum = "Enums.sf.Mouse.Wheel",
+            },
             },
             Pure = true,
         },
@@ -2732,7 +2745,9 @@ local _METADATA = {
         },
         getMouseButtonPressed = {
             type = "function",
-            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = "int", handled = "bool" },
+            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = {
+                enum = "Enums.sf.Mouse.Button",
+            }, handled = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -2741,7 +2756,9 @@ local _METADATA = {
         },
         getMouseButtonReleased = {
             type = "function",
-            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = "int", handled = "bool" },
+            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = {
+                enum = "Enums.sf.Mouse.Button",
+            }, handled = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -3038,7 +3055,9 @@ local _METADATA = {
         },
         isKeyTriggered = {
             type = "function",
-            parameters = { "self", "key", "alt", "ctrl", "shift", "system", "handled", "repeatDelay", "repeatInterval", self = { "Engine", "Service" }, key = "int", alt = "bool", ctrl = "bool", shift = "bool", system = "bool", handled = "bool", repeatDelay = "float", repeatInterval = "float" },
+            parameters = { "self", "key", "alt", "ctrl", "shift", "system", "handled", "repeatDelay", "repeatInterval", self = { "Engine", "Service" }, key = {
+                enum = "Enums.sf.Keyboard.Key",
+            }, alt = "bool", ctrl = "bool", shift = "bool", system = "bool", handled = "bool", repeatDelay = "float", repeatInterval = "float" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -3099,7 +3118,9 @@ local _METADATA = {
         },
         isMouseButtonTriggered = {
             type = "function",
-            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = "int", handled = "bool" },
+            parameters = { "self", "button", "handled", self = { "Engine", "Service" }, button = {
+                enum = "Enums.sf.Mouse.Button",
+            }, handled = "bool" },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -3108,7 +3129,9 @@ local _METADATA = {
         },
         isMouseButtonDown = {
             type = "function",
-            parameters = { "self", "button", self = { "Engine", "Service" }, button = "int" },
+            parameters = { "self", "button", self = { "Engine", "Service" }, button = {
+                enum = "Enums.sf.Mouse.Button",
+            } },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -3304,7 +3327,9 @@ local _METADATA = {
     JoystickAxisEvent = {
         attrs = { "axis", "position" },
         axis = {
-            type = "int",
+            type = {
+                enum = "Enums.sf.Joystick.Axis",
+            },
         },
         position = {
             type = "float",
@@ -4839,7 +4864,9 @@ local _METADATA = {
         },
         requestDirectionalFocusMove = {
             type = "function",
-            parameters = { "self", "direction", self = { "Engine", "FunctionalBase" }, direction = "string" },
+            parameters = { "self", "direction", self = { "Engine", "FunctionalBase" }, direction = {
+                enum = "Enums.Engine.FocusDirection",
+            } },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
@@ -5204,7 +5231,9 @@ local _METADATA = {
         bases = { { "Engine", "SpriteBase" } },
         attrs = { "drawAs" },
         drawAs = {
-            type = "int",
+            type = {
+                enum = "Enums.Engine.ImageDrawAs",
+            },
         },
         getDrawAs = {
             type = "function",
@@ -5212,13 +5241,17 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {
                 "return",
-                ["return"] = "int",
+                ["return"] = {
+                enum = "Enums.Engine.ImageDrawAs",
+            },
             },
             Pure = true,
         },
         setDrawAs = {
             type = "function",
-            parameters = { "self", "drawAs", self = { "Engine", "Image" }, drawAs = "int" },
+            parameters = { "self", "drawAs", self = { "Engine", "Image" }, drawAs = {
+                enum = "Enums.Engine.ImageDrawAs",
+            } },
             default = { [1] = "self" },
             ["return"] = {},
         },
@@ -5530,7 +5563,9 @@ local _METADATA = {
             default = 1.0,
         },
         lineAlignment = {
-            type = "int",
+            type = {
+                enum = "Enums.sf.Text.LineAlignment",
+            },
         },
         outline = {
             type = { "Engine", "TextOutlineConfig" },
@@ -5839,7 +5874,9 @@ local _METADATA = {
             type = "sf.Font",
         },
         lineAlignment = {
-            type = "int",
+            type = {
+                enum = "Enums.sf.Text.LineAlignment",
+            },
         },
         defaultStyle = {
             type = { "Engine", "TextStyle" },
@@ -6556,7 +6593,9 @@ local _METADATA = {
     KeyHint = {
         attrs = { "Keyboard", "Joystick" },
         Keyboard = {
-            type = "int",
+            type = {
+                enum = "Enums.sf.Keyboard.Key",
+            },
         },
         Joystick = {
             type = { "Engine", "InputNamedValue" },
@@ -6854,9 +6893,12 @@ local _METADATA = {
             parameters = { "self", "localName", "propertyId", "value", self = { "Engine", "AssetInstance" }, localName = "string", propertyId = "string", value = {
                 union = {
                     "nil",
-                    "int",
+                    {
+                        enum = "Enums.Engine.ImageDrawAs",
+                    },
                     "bool",
                     "float",
+                    "int",
                     "string",
                     "sf.Vector2f",
                     "sf.Vector2u",
@@ -6924,7 +6966,9 @@ local _METADATA = {
             type = "sf.Vector2f",
         },
         button = {
-            type = "int",
+            type = {
+                enum = "Enums.sf.Mouse.Button",
+            },
         },
         delta = {
             type = "float",
@@ -7833,7 +7877,9 @@ local _METADATA = {
         },
         getKeyPressed = {
             type = "function",
-            parameters = { "key", "handled", "alt", "ctrl", "shift", "system", key = "int", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "key", "handled", "alt", "ctrl", "shift", "system", key = {
+                enum = "Enums.sf.Keyboard.Key",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -7841,7 +7887,9 @@ local _METADATA = {
         },
         getScanPressed = {
             type = "function",
-            parameters = { "scan", "handled", "alt", "ctrl", "shift", "system", scan = "sf.Keyboard.Scancode", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "scan", "handled", "alt", "ctrl", "shift", "system", scan = {
+                enum = "Enums.sf.Keyboard.Scan",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -7849,7 +7897,9 @@ local _METADATA = {
         },
         getKeyReleased = {
             type = "function",
-            parameters = { "key", "handled", "alt", "ctrl", "shift", "system", key = "int", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "key", "handled", "alt", "ctrl", "shift", "system", key = {
+                enum = "Enums.sf.Keyboard.Key",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -7857,7 +7907,9 @@ local _METADATA = {
         },
         getScanReleased = {
             type = "function",
-            parameters = { "scan", "handled", "alt", "ctrl", "shift", "system", scan = "sf.Keyboard.Scancode", handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
+            parameters = { "scan", "handled", "alt", "ctrl", "shift", "system", scan = {
+                enum = "Enums.sf.Keyboard.Scan",
+            }, handled = "bool", alt = "bool", ctrl = "bool", shift = "bool", system = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -7877,7 +7929,9 @@ local _METADATA = {
             parameters = {},
             ["return"] = {
                 "return",
-                ["return"] = "int",
+                ["return"] = {
+                enum = "Enums.sf.Mouse.Wheel",
+            },
             },
             Pure = true,
         },
@@ -7928,7 +7982,9 @@ local _METADATA = {
         },
         getMouseButtonPressed = {
             type = "function",
-            parameters = { "button", "handled", button = "int", handled = "bool" },
+            parameters = { "button", "handled", button = {
+                enum = "Enums.sf.Mouse.Button",
+            }, handled = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -7936,7 +7992,9 @@ local _METADATA = {
         },
         getMouseButtonReleased = {
             type = "function",
-            parameters = { "button", "handled", button = "int", handled = "bool" },
+            parameters = { "button", "handled", button = {
+                enum = "Enums.sf.Mouse.Button",
+            }, handled = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -8201,7 +8259,9 @@ local _METADATA = {
         },
         isKeyTriggered = {
             type = "function",
-            parameters = { "key", "alt", "ctrl", "shift", "system", "handled", "repeatDelay", "repeatInterval", key = "int", alt = "bool", ctrl = "bool", shift = "bool", system = "bool", handled = "bool", repeatDelay = "float", repeatInterval = "float" },
+            parameters = { "key", "alt", "ctrl", "shift", "system", "handled", "repeatDelay", "repeatInterval", key = {
+                enum = "Enums.sf.Keyboard.Key",
+            }, alt = "bool", ctrl = "bool", shift = "bool", system = "bool", handled = "bool", repeatDelay = "float", repeatInterval = "float" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -8256,7 +8316,9 @@ local _METADATA = {
         },
         isMouseButtonTriggered = {
             type = "function",
-            parameters = { "button", "handled", button = "int", handled = "bool" },
+            parameters = { "button", "handled", button = {
+                enum = "Enums.sf.Mouse.Button",
+            }, handled = "bool" },
             ["return"] = {
                 "return",
                 ["return"] = "bool",
@@ -8264,7 +8326,9 @@ local _METADATA = {
         },
         isMouseButtonDown = {
             type = "function",
-            parameters = { "button", button = "int" },
+            parameters = { "button", button = {
+                enum = "Enums.sf.Mouse.Button",
+            } },
             ["return"] = {
                 "return",
                 ["return"] = "bool",

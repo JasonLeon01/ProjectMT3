@@ -59,8 +59,16 @@ jobs:
             Scripts/Global/
             Scripts/Internal/
             Scripts/Enums/
+            :(exclude)Scripts/Enums/GeneralData
+            :(exclude)Scripts/Enums/GeneralData/**
+            :(exclude)Scripts/Enums/GeneralDataKey.lua
+            :(exclude)Scripts/Enums/EventKey.lua
             Scripts/stub/Global/
             Scripts/stub/Internal/
+            :(exclude)Scripts/stub/Enums/GeneralData
+            :(exclude)Scripts/stub/Enums/GeneralData/**
+            :(exclude)Scripts/stub/Enums/GeneralDataKey.d.lua
+            :(exclude)Scripts/stub/Enums/EventKey.d.lua
             .github/ludork-sync.json
           commit-message: 'chore: sync Ludork Engine, Global, Internal, Enums and Lua stubs from ${{ steps.sync.outputs.upstream_sha }}'
           title: 'chore: sync Ludork Engine, Global, Internal, Enums and Lua stubs'
@@ -68,6 +76,7 @@ jobs:
             Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/`, `Game/Scripts/{Global,Internal,Enums}/` into the corresponding `Scripts/` directories, and `Game/Scripts/stub/{Global,Internal}/` into the corresponding `Scripts/stub/` directories.
 
             - Preserve `Engine/ThirdParty/` and files unchanged upstream since the merged baseline.
+            - Preserve the project's generated `Scripts/Enums/GeneralData/` and `Scripts/Enums/GeneralDataKey.lua`, its custom `Scripts/Enums/EventKey.lua`, and their corresponding `Scripts/stub/Enums/` declarations. Other shared and native enums continue to sync.
             - Engine merged baseline: `${{ steps.sync.outputs.engine_baseline_sha }}`
             - Global merged baseline: `${{ steps.sync.outputs.global_baseline_sha }}`
             - Internal merged baseline: `${{ steps.sync.outputs.internal_baseline_sha }}`

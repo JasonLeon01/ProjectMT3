@@ -1790,7 +1790,9 @@ local _METADATA = {
         attrs = {},
         load = {
             type = "function",
-            parameters = { "shaderPath", "shaderType", shaderPath = "string", shaderType = "int" },
+            parameters = { "shaderPath", "shaderType", shaderPath = "string", shaderType = {
+                enum = "Enums.sf.Shader.Type",
+            } },
             default = {  },
             defaultUnset = { "shaderType" },
             ["return"] = {
@@ -2376,7 +2378,9 @@ local _METADATA = {
         attrs = {},
         setWeather = {
             type = "function",
-            parameters = { "weatherType", "power", "maxCount", weatherType = "int", power = "float", maxCount = "int" },
+            parameters = { "weatherType", "power", "maxCount", weatherType = {
+                enum = "Enums.GlobalCore.WeatherType",
+            }, power = "float", maxCount = "int" },
             ["return"] = {},
         },
         clearWeather = {
@@ -2399,7 +2403,9 @@ local _METADATA = {
             parameters = {},
             ["return"] = {
                 "return",
-                ["return"] = "int",
+                ["return"] = {
+                enum = "Enums.GlobalCore.WeatherType",
+            },
             },
             Pure = true,
         },

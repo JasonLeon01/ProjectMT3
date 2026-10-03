@@ -1,14 +1,14 @@
 local Engine = require("Engine")
 local GlobalCore = require("GlobalCore")
 local Data = require("Source.Data")
-local GeneralEnum = require("Source.Configs.GeneralEnum")
+local Item = require("Enums.GeneralData.Item")
 local GameSystem = require("Source.System")
 local Ui = require("Internal.UIBase.Ui")
 local View = require("Internal.UI.WindowMagicDoor")
 
 local Input = Engine.Input
 local AudioManager = GlobalCore.AudioManager
-local ITEM_ID = GeneralEnum.Item.SDoor
+local ITEM_ID = Item.SDoor
 
 ---@class Source.Windows.WindowMagicDoor.Controller
 local Controller = {}

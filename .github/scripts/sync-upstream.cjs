@@ -6,13 +6,14 @@ const { execFileSync } = require('node:child_process');
 
 const fourHours = 4 * 60 * 60;
 
-function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirectories = [], allowMissingRoot = false }) {
+function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirectories = [], excludedFiles = [], allowMissingRoot = false }) {
   function git(directory, ...args) {
     return execFileSync('git', ['-C', directory, ...args], { maxBuffer: 128 * 1024 * 1024 });
   }
 
   function included(name) {
-    return !excludedDirectories.some(directory => name === directory || name.startsWith(`${directory}/`));
+    return !excludedFiles.includes(name)
+      && !excludedDirectories.some(directory => name === directory || name.startsWith(`${directory}/`));
   }
 
   function tree(directory, revision, root) {

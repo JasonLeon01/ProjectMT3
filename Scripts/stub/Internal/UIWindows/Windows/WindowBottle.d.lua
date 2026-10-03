@@ -20,7 +20,7 @@ function Window:bind() end
 
 function Window:close() end
 
----@param payload table
+---@param payload Source.Configs.EventChangePayload
 function Window:onPlayerChanged(payload) end
 
 function Window:onReturn() end
