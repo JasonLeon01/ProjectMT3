@@ -1,15 +1,14 @@
 local GlobalCore = require("GlobalCore")
-local GeneralEnum = require("Source.Configs.GeneralEnum")
+local Special = require("Enums.GeneralData.Special")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 local GameplayAbility = GlobalCore.GameplayAbility
 local GameplayAbilityResult = GlobalCore.GameplayAbilityResult
-local Special = GeneralEnum.Special
 
 ---@class (partial) Source.Gameplay.SpecialAbilities.VampireAbility
 local VampireAbility = {}
 
----@param damage number
+---@param damage    number
 ---@param magnitude number
 ---@return integer
 function VampireAbility.CalculateHealing(damage, magnitude)

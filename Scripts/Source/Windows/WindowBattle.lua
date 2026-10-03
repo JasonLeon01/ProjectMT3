@@ -12,7 +12,7 @@ local Effects = require("Source.Gameplay.Effects")
 local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
 local PoisonedAbility = require("Source.Gameplay.SpecialAbilities.PoisonedAbility")
 local VampireAbility = require("Source.Gameplay.SpecialAbilities.VampireAbility")
-local Special = require("Source.Configs.GeneralEnum").Special
+local Special = require("Enums.GeneralData.Special")
 
 ---@type fun(value: string): string
 local LOC = Locale.ApplyStringLocaleFormat
@@ -341,10 +341,12 @@ function Controller:calculateDamage(attacker, defender, critical, attackSkill)
     return damage, base
 end
 
+---@diagnostic disable-next-line: unused, Shared Controller action calculation.
 function Controller:skillBreathCost(state, units)
     return math.floor(state.breathLimit / 6) * (units or 1)
 end
 
+---@diagnostic disable-next-line: unused, Shared Controller action calculation.
 function Controller:canAffordSkill(state, cost)
     return cost > 0 and state.breath >= cost
 end

@@ -3,9 +3,7 @@
 
 ---@brief Integrated shop UI with tabs, item list, and item details.
 ---@class Source.Windows.WindowShop: Engine.Canvas, Internal.UIBase.Ui.Window
----@field ui             Internal.UI.WindowShop
----@field SHOP_MODE_BUY  "buy"
----@field SHOP_MODE_SELL "sell"
+---@field ui Internal.UI.WindowShop
 local Window = {}
 
 ---@param player  Source.MapActors.Player.Player
@@ -67,7 +65,7 @@ function Window:open(buyItemIDs, canSell) end
 
 function Window:refreshLocale() end
 
----@param mode string
+---@param mode Enums.ShopMode
 function Window:setMode(mode) end
 
 ---@param player Source.MapActors.Player.Player

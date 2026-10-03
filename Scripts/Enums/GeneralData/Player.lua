@@ -2,4 +2,5 @@
 
 return {
     Bravor = "Bravor",
+    Princess = "Princess",
 }

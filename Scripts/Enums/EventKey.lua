@@ -1,5 +1,6 @@
 return {
     LocaleChanged = "LocaleChanged",
     AbilitySystemChanged = "AbilitySystemChanged",
-    PlayerChanged = "PlayerChanged"
+    PlayerChanged = "PlayerChanged",
+    PartyChanged = "PartyChanged"
 }

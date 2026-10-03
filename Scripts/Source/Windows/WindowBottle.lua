@@ -1,7 +1,8 @@
 local GlobalCore = require("GlobalCore")
+local PlayerChangeKind = require("Enums.PlayerChangeKind")
 local Data = require("Source.Data")
-local EventKeys = require("Source.Configs.EventKeys")
-local GeneralEnum = require("Source.Configs.GeneralEnum")
+local EventKey = require("Enums.EventKey")
+local Item = require("Enums.GeneralData.Item")
 local GameSystem = require("Source.System")
 local IconTexture = require("Internal.UIBase.IconTexture")
 local Ui = require("Internal.UIBase.Ui")
@@ -10,7 +11,7 @@ local BottleRowController = require("Source.Windows.WindowBottle.BottleRow.Contr
 local WindowSelectable = require("Internal.UIBase.WindowSelectable")
 
 local AudioManager = GlobalCore.AudioManager
-local ITEM_IDS = { GeneralEnum.Item.Bottle150, GeneralEnum.Item.Bottle400 }
+local ITEM_IDS = { Item.Bottle150, Item.Bottle400 }
 
 ---@class Source.Windows.WindowBottle.Controller
 local Controller = {}
@@ -26,17 +27,18 @@ function Controller:init(player, onClose)
             iconTexture = IconTexture.Load(Data.GetGeneralItemData(itemID).icon),
             count = player:getItemCount(itemID)
         })
+        ---@cast row Source.Windows.WindowBottle.BottleRow.Controller
         row.ui.root:addConfirmCallback(self:bindCallback(Controller.useSelectedItem))
     end
     self._rows:layout()
 end
 
 function Controller:bind()
-    self:subscribe(EventKeys.PlayerChanged, self:bindCallback(Controller.onPlayerChanged))
+    self:subscribe(EventKey.PlayerChanged, self:bindCallback(Controller.onPlayerChanged))
 end
 
 function Controller:onPlayerChanged(payload)
-    if payload.owner == self._player and payload.kind == EventKeys.PlayerChangeKind.Inventory then
+    if payload.owner == self._player and payload.kind == PlayerChangeKind.Inventory then
         self:refreshItems()
     end
 end
@@ -48,7 +50,7 @@ end
 
 function Controller:refreshItems()
     for index, itemID in ipairs(ITEM_IDS) do
-        local row = self._rows.items[index]
+        local row = assert(self._rows.items[index])
         row.model.iconTexture = IconTexture.Load(Data.GetGeneralItemData(itemID).icon)
         row.model.count = self._player:getItemCount(itemID)
         row:prepare()

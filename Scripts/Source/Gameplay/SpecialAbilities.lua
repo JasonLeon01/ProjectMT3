@@ -1,5 +1,5 @@
 local GlobalCore = require("GlobalCore")
-local GeneralEnum = require("Source.Configs.GeneralEnum")
+local Special = require("Enums.GeneralData.Special")
 local AmbushAbility = require("Source.Gameplay.SpecialAbilities.AmbushAbility")
 local CompeteAbility = require("Source.Gameplay.SpecialAbilities.CompeteAbility")
 local HardAbility = require("Source.Gameplay.SpecialAbilities.HardAbility")
@@ -14,7 +14,6 @@ local FixDmgAbility = require("Source.Gameplay.SpecialAbilities.FixDmgAbility")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 local GameplayEffect = GlobalCore.GameplayEffect
-local Special = GeneralEnum.Special
 
 local SpecialAbilities = {}
 
@@ -53,7 +52,10 @@ local abilityTypes = {
 
 ---@type table<string, boolean>
 local movementSpecialIDs = {
-    [Special.Ambush] = true, [Special.Domain] = true, [Special.Flank] = true, [Special.Blockade] = true
+    [Special.Ambush] = true,
+    [Special.Domain] = true,
+    [Special.Flank] = true,
+    [Special.Blockade] = true
 }
 
 function SpecialAbilities.CreateEffect(specialID, magnitude)

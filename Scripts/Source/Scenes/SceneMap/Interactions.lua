@@ -3,19 +3,18 @@ local GlobalCore = require("GlobalCore")
 local ConditionalActor = require("Source.MapActors.ConditionalActor")
 local GameSystem = require("Source.System")
 local LocaleCore = require("Source.Locale.Core")
----@type { Item: Source.Configs.GeneralEnum.Item }
-local GeneralEnum = require("Source.Configs.GeneralEnum")
+local Item = require("Enums.GeneralData.Item")
 local Teleporter = require("Source.MapActors.Teleporter")
 local RegionDict = require("Source.Configs.RegionDict")
 local MapConstants = require("Source.Configs.MapConstants")
 local MapClickAutoPath = require("Source.SceneComponents.MapClickAutoPath")
 local TransferRules = require("Source.Configs.TransferRules")
 
-local AudioManager = GlobalCore.AudioManager
 local Save = require("Source.Save")
-local WindowTransition = require("Internal.UIBase.WindowTransition")
+local WindowTransitionProfile = require("Enums.WindowTransitionProfile")
 local WindowSaveSlot = require("Source.Windows.WindowSaveLoad.Slot")
 
+local AudioManager = GlobalCore.AudioManager
 local Node = Engine.Node
 local Transition = GlobalCore.Transition
 ---@type fun(value: string): string
@@ -25,8 +24,8 @@ local MAP_TRANSITION_NAME = ""
 local MAP_TRANSITION_TIME = 0.5
 local MAP_INPUT_BLOCK_FRAMES = 2
 local WINDOW_CLOSE_INPUT_BLOCK_FRAMES = 1
-local ENEMY_BOOK_ITEM_ID = GeneralEnum.Item.EnemyBook
-local FLOOR_TELEPORTER_ITEM_ID = GeneralEnum.Item.Teleport
+local ENEMY_BOOK_ITEM_ID = Item.EnemyBook
+local FLOOR_TELEPORTER_ITEM_ID = Item.Teleport
 
 local Scene = {}
 
@@ -269,7 +268,7 @@ end
 ---@param self Source.Scenes.SceneMap.SceneMap
 ---@return boolean
 function Scene.ShowMagicDoor(self)
-    if not self.player:hasItem(GeneralEnum.Item.SDoor) then
+    if not self.player:hasItem(Item.SDoor) then
         return false
     end
     return openMapShortcut(self, self._windowMagicDoor)
@@ -355,7 +354,7 @@ function Scene.ProcessPendingSaveLoadOpen(self)
     self._pendingSaveLoadOpen = nil
     self._saveLoadMoveEnabledBeforeOpen = self.player:getMoveEnabled()
     self.player:setMoveEnabled(false)
-    self._windowSaveLoad:get():open(WindowTransition.DEFAULT, mode)
+    self._windowSaveLoad:get():open(WindowTransitionProfile.DEFAULT, mode)
     self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
 end
 
@@ -368,7 +367,7 @@ function Scene.OpenItemUI(self)
     AudioManager.playSound(GameSystem.GetDecisionSE())
     self._itemMoveEnabledBeforeOpen = self.player:getMoveEnabled()
     self.player:setMoveEnabled(false)
-    self._windowItem:get():open(WindowTransition.DEFAULT)
+    self._windowItem:get():open(WindowTransitionProfile.DEFAULT)
     self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
     return true
 end
@@ -382,7 +381,7 @@ function Scene.OpenEquipUI(self)
     AudioManager.playSound(GameSystem.GetDecisionSE())
     self._equipMoveEnabledBeforeOpen = self.player:getMoveEnabled()
     self.player:setMoveEnabled(false)
-    self._windowEquip:get():open(WindowTransition.DEFAULT)
+    self._windowEquip:get():open(WindowTransitionProfile.DEFAULT)
     self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
     return true
 end

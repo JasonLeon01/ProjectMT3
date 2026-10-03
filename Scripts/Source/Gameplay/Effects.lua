@@ -1,24 +1,25 @@
 local Engine = require("Engine")
 local GlobalCore = require("GlobalCore")
+local AbilitySystemChangeKind = require("Enums.AbilitySystemChangeKind")
 local GeneralDataGraphAbility = require("Source.Gameplay.GeneralDataGraphAbility")
 local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
 local Data = require("Source.Data")
-local EventKeys = require("Source.Configs.EventKeys")
+local EventKey = require("Enums.EventKey")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
 
 local GameplayEffect = GlobalCore.GameplayEffect
 local GameplayEffectSpec = GlobalCore.GameplayEffectSpec
 local Effects = {}
 
----@param target  Source.Battler.Battler
+---@param target   Source.Battler.Battler
 ---@param stateID? string
 local function publishStateChanged(target, stateID)
     if target.getLoading ~= nil and target:getLoading() then
         return
     end
-    Engine.publish(EventKeys.AbilitySystemChanged, {
+    Engine.publish(EventKey.AbilitySystemChanged, {
         owner = target,
-        kind = EventKeys.AbilitySystemChangeKind.State,
+        kind = AbilitySystemChangeKind.State,
         name = stateID
     })
 end

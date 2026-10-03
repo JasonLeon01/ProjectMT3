@@ -1,11 +1,8 @@
+local Special = require("Enums.GeneralData.Special")
 local Logging = require("Global.Utils.Logging")
 local Data = require("Source.Data")
----@type { Special: Source.Configs.GeneralEnum.Special }
-local GeneralEnum = require("Source.Configs.GeneralEnum")
 local Item = require("Source.MapActors.Item")
 local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
-
-local Special = GeneralEnum.Special
 
 local DefeatSpawns = {}
 
