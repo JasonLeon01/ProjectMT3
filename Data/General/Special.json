@@ -86,77 +86,77 @@
     "Mucus": {
       "name": "{S_MUCUS}",
       "desc": "{S_MUCUS_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Mucus.png"
     },
     "SureKill": {
       "name": "{S_SUREKILL}",
       "desc": "{S_SUREKILL_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/SureKill.png"
     },
     "DeathCurse": {
       "name": "{S_DEATHCURSE}",
       "desc": "{S_DEATHCURSE_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/DeathCurse.png"
     },
     "Berserk": {
       "name": "{S_BERSERK}",
       "desc": "{S_BERSERK_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Berserk.png"
     },
     "Ambush": {
       "name": "{S_AMBUSH}",
       "desc": "{S_AMBUSH_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Ambush.png"
     },
     "EvilEye": {
       "name": "{S_EVILEYE}",
       "desc": "{S_EVILEYE_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/EvilEye.png"
     },
     "Frost": {
       "name": "{S_FROST}",
       "desc": "{S_FROST_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Frost.png"
     },
     "Thunder": {
       "name": "{S_THUNDER}",
       "desc": "{S_THUNDER_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Thunder.png"
     },
     "Ember": {
       "name": "{S_EMBER}",
       "desc": "{S_EMBER_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Ember.png"
     },
     "Glacial": {
       "name": "{S_GLACIAL}",
       "desc": "{S_GLACIAL_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Glacial.png"
     },
     "Burn": {
       "name": "{S_BURN}",
       "desc": "{S_BURN_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Burn.png"
     },
     "BurstFlame": {
       "name": "{S_BURSTFLAME}",
       "desc": "{S_BURSTFLAME_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/BurstFlame.png"
     },
     "AuraField": {
       "name": "{S_AURAFIELD}",
       "desc": "{S_AURAFIELD_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/AuraField.png"
     },
     "ArmorBreak": {
       "name": "{S_ARMORBREAK}",
       "desc": "{S_ARMORBREAK_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/ArmorBreak.png"
     },
     "Snowland": {
       "name": "{S_SNOWLAND}",
       "desc": "{S_SNOWLAND_DESC}",
-      "icon": ""
+      "icon": "/Game/Assets/Icons/Specials/Snowland.png"
     }
   }
 }
