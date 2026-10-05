@@ -28,11 +28,11 @@
       "valueType": "int"
     },
     "AnimationKey": {
-      "type": "string",
-      "defaultValue": "",
-      "reference": {
-        "kind": "animation"
-      }
+      "type": {
+        "enum": "Enums.Animation",
+        "valueType": "string"
+      },
+      "defaultValue": ""
     },
     "fatiguePlus": {
       "type": "int",

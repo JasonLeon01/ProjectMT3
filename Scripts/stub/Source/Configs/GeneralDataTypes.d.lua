@@ -4,7 +4,7 @@
 ---@class Source.Configs.GeneralDataTypes.ClassAttributeSet: GlobalCore.AttributeSet
 ---@field ID              string
 ---@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
+---@field SCHEMA          table<string, { type: string | table, default: any }>
 ---@field name            string
 ---@field desc            string
 ---@field slot            table<string, string>
@@ -14,7 +14,7 @@ local ClassAttributeSet = {}
 ---@class Source.Configs.GeneralDataTypes.EnemyAttributeSet: GlobalCore.AttributeSet
 ---@field ID               string
 ---@field ATTRIBUTE_NAMES  string[]
----@field SCHEMA           table<string, { type: string|table, default: any }>
+---@field SCHEMA           table<string, { type: string | table, default: any }>
 ---@field name             string
 ---@field desc             string
 ---@field MAXHP            integer
@@ -24,22 +24,22 @@ local ClassAttributeSet = {}
 ---@field GOLD             integer
 ---@field breathLimit      integer
 ---@field drops            table<string, sf.Vector2i>
----@field special          table<string, any>
----@field ANIMATION_KEY    string
----@field CritAnimationKey string
+---@field special          table<Enums.GeneralData.Special, any>
+---@field ANIMATION_KEY    Enums.Animation
+---@field CritAnimationKey Enums.Animation
 ---@type Source.Configs.GeneralDataTypes.EnemyAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.EnemyAttributeSet>
 local EnemyAttributeSet = {}
 
 ---@class Source.Configs.GeneralDataTypes.EquipAttributeSet: GlobalCore.AttributeSet
 ---@field ID              string
 ---@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
+---@field SCHEMA          table<string, { type: string | table, default: any }>
 ---@field name            string
 ---@field desc            string
 ---@field icon            string
 ---@field slot            string
 ---@field attrPlus        table<string, integer>
----@field AnimationKey    string
+---@field AnimationKey    Enums.Animation
 ---@field fatiguePlus     integer
 ---@field breathMinus     integer
 ---@type Source.Configs.GeneralDataTypes.EquipAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.EquipAttributeSet>
@@ -48,7 +48,7 @@ local EquipAttributeSet = {}
 ---@class Source.Configs.GeneralDataTypes.ItemAttributeSet: GlobalCore.AttributeSet
 ---@field ID              string
 ---@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
+---@field SCHEMA          table<string, { type: string | table, default: any }>
 ---@field name            string
 ---@field desc            string
 ---@field usable          boolean
@@ -61,10 +61,10 @@ local ItemAttributeSet = {}
 ---@class Source.Configs.GeneralDataTypes.PlayerAttributeSet: GlobalCore.AttributeSet
 ---@field ID               string
 ---@field ATTRIBUTE_NAMES  string[]
----@field SCHEMA           table<string, { type: string|table, default: any }>
+---@field SCHEMA           table<string, { type: string | table, default: any }>
 ---@field name             string
 ---@field desc             string
----@field CLASS            string
+---@field CLASS            Enums.GeneralData.Class
 ---@field MAXHP            integer
 ---@field HP               integer
 ---@field ATK              integer
@@ -75,15 +75,15 @@ local ItemAttributeSet = {}
 ---@field breath           integer
 ---@field breathLimit      integer
 ---@field MAGIC            integer
----@field ANIMATION_KEY    string
----@field CritAnimationKey string
+---@field ANIMATION_KEY    Enums.Animation
+---@field CritAnimationKey Enums.Animation
 ---@type Source.Configs.GeneralDataTypes.PlayerAttributeSet & Class.ClassType<Source.Configs.GeneralDataTypes.PlayerAttributeSet>
 local PlayerAttributeSet = {}
 
 ---@class Source.Configs.GeneralDataTypes.SpecialAttributeSet: GlobalCore.AttributeSet
 ---@field ID              string
 ---@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
+---@field SCHEMA          table<string, { type: string | table, default: any }>
 ---@field name            string
 ---@field desc            string
 ---@field icon            string
@@ -93,7 +93,7 @@ local SpecialAttributeSet = {}
 ---@class Source.Configs.GeneralDataTypes.StateAttributeSet: GlobalCore.AttributeSet
 ---@field ID              string
 ---@field ATTRIBUTE_NAMES string[]
----@field SCHEMA          table<string, { type: string|table, default: any }>
+---@field SCHEMA          table<string, { type: string | table, default: any }>
 ---@field name            string
 ---@field desc            string
 ---@field icon            string
