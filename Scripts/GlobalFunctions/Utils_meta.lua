@@ -211,7 +211,7 @@ local _METADATA = {
                 "position",
                 "rotation",
                 "scale",
-                animName = "string",
+                animName = { enum = "Enums.Animation", valueType = "string" },
                 position = "sf.Vector2f",
                 rotation = "float",
                 scale = "sf.Vector2f"
@@ -231,14 +231,6 @@ local _METADATA = {
             ExecSplit = {
                 "default",
                 default = "nil"
-            },
-            Meta = {
-                GeneralDataVars = {
-                    {
-                        "animName",
-                        "ANIMATION"
-                    }
-                }
             }
         },
         AddAnimOn = {
@@ -248,7 +240,7 @@ local _METADATA = {
                 "actorTag",
                 "rotation",
                 "scale",
-                animName = "string",
+                animName = { enum = "Enums.Animation", valueType = "string" },
                 actorTag = "string",
                 rotation = "float",
                 scale = "sf.Vector2f"
@@ -264,55 +256,31 @@ local _METADATA = {
             ExecSplit = {
                 "default",
                 default = "nil"
-            },
-            Meta = {
-                GeneralDataVars = {
-                    {
-                        "animName",
-                        "ANIMATION"
-                    }
-                }
             }
         },
         GetAnimLength = {
             type = "function",
             parameters = {
                 "animName",
-                animName = "string"
+                animName = { enum = "Enums.Animation", valueType = "string" }
             },
             ["return"] = {
                 "value",
                 value = "float"
             },
-            Pure = true,
-            Meta = {
-                GeneralDataVars = {
-                    {
-                        "animName",
-                        "ANIMATION"
-                    }
-                }
-            }
+            Pure = true
         },
         GetAnimVisualLength = {
             type = "function",
             parameters = {
                 "animName",
-                animName = "string"
+                animName = { enum = "Enums.Animation", valueType = "string" }
             },
             ["return"] = {
                 "value",
                 value = "float"
             },
-            Pure = true,
-            Meta = {
-                GeneralDataVars = {
-                    {
-                        "animName",
-                        "ANIMATION"
-                    }
-                }
-            }
+            Pure = true
         },
         SUPER = {
             type = "function",

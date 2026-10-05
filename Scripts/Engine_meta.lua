@@ -1568,9 +1568,11 @@ local _METADATA = {
         bases = { { "Engine", "Component" } },
         attrs = { "resource", "anchor", "offset", "rotation", "scale", "beforeActor" },
         resource = {
-            type = "string",
+            type = {
+                enum = "Enums.Particle",
+                valueType = "string",
+            },
             default = "",
-            Meta = { GeneralDataVars = "PARTICLE" },
         },
         anchor = {
             type = "sf.Vector2f",

@@ -6,11 +6,7 @@ const { createSync } = require('./sync-upstream.cjs');
 const projectEnums = {
   'Game/Scripts/Enums': {
     directories: ['GeneralData'],
-    files: ['GeneralDataKey.lua', 'EventKey.lua'],
-  },
-  'Game/Scripts/stub/Enums': {
-    directories: ['GeneralData'],
-    files: ['GeneralDataKey.d.lua', 'EventKey.d.lua'],
+    files: ['GeneralDataKey.lua', 'Animation.lua', 'Particle.lua', 'EventKey.lua'],
   },
 };
 

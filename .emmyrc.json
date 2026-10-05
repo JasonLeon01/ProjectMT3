@@ -21,6 +21,12 @@
         ],
         "library": [
             "./Scripts/stub"
+        ],
+        "moduleMap": [
+            {
+                "pattern": "^Scripts[.]Enums[.](.*)$",
+                "replace": "Enums.$1"
+            }
         ]
     }
 }

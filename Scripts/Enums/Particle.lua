@@ -2,6 +2,8 @@
 
 ---@enum Enums.Particle
 local Particle = {
+    Burn = "Burn",
+    CrystalShatter = "CrystalShatter",
     ResidentAura = "ResidentAura",
     Smoke = "Smoke",
     Sparks = "Sparks",
