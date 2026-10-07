@@ -1,6 +1,6 @@
 {
   "engine": {
-    "upstreamSha": "4a1dbd9dce6a31ee2541fecd9a4ca8fde0ac9494"
+    "upstreamSha": "9b0a1ebbd85c4aef6487e89e6106070170b4af33"
   },
   "global": {
     "upstreamSha": "d121c6e6510b751ed41a6a526cc4348730b6ab06"
@@ -12,7 +12,7 @@
     "upstreamSha": "4a1dbd9dce6a31ee2541fecd9a4ca8fde0ac9494"
   },
   "globalStub": {
-    "upstreamSha": "612e8c5e932823341c83114357dcca8e0eef002f"
+    "upstreamSha": "9b0a1ebbd85c4aef6487e89e6106070170b4af33"
   },
   "internalStub": {
     "upstreamSha": "7e2306ae46d0253c12bff7c2afce7a008c882d7c"
