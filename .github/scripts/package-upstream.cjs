@@ -13,6 +13,14 @@ function isCompletedMainRun(run, repository) {
   return run.status === 'completed' && run.head_branch === 'main' && allowedEvents.has(run.event)
     && run.head_repository?.full_name === `${repository.owner}/${repository.repo}`;
 }
+function pageItems(data, key) {
+  // Octokit may leave an Actions response wrapped instead of normalizing it.
+  const items = Array.isArray(data) ? data : data?.[key];
+  if (!Array.isArray(items)) {
+    throw new Error(`Invalid GitHub Actions ${key} page: expected an array (received keys: ${Object.keys(data ?? {}).join(', ')}).`);
+  }
+  return items;
+}
 
 async function selectArtifact(github, head, platform = 'windows-x64') {
   const target = {
@@ -21,26 +29,45 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
   }[platform];
   if (!target) throw new Error(`Unsupported Ludork artifact platform: ${platform}`);
   const workflows = new Set(['export-editor.yml', target.workflow].map(file => `.github/workflows/${file}`));
-  // Repository-wide pagination interleaves dual- and single-platform runs newest first.
-  // The target platform can be usable even when the other platform failed.
-  for await (const page of github.paginate.iterator(github.rest.actions.listWorkflowRunsForRepo, {
-    ...upstream, branch: 'main', status: 'completed', per_page: 100,
+  const checkedRuns = new Set();
+  const isPlatformArtifact = (artifact, sha) => artifact.name === `Ludork-editor-${platform}-${sha}`
+    || (platform === 'windows-x64' && windowsArchivePattern.test(artifact.name));
+  const isUnexpired = artifact => !artifact.expired && Date.parse(artifact.expires_at) > Date.now();
+  // Search existing packages newest first, across all pages. Scheduled runs that
+  // skip packaging have no artifacts and must not hide an earlier usable build.
+  for await (const page of github.paginate.iterator(github.rest.actions.listArtifactsForRepo, {
+    ...upstream, per_page: 100,
   })) {
-    for (const run of page.data) {
-      if (!isCompletedMainRun(run, upstream) || !workflows.has(run.path)) continue;
+    for (const artifact of pageItems(page.data, 'artifacts')) {
+      const source = artifact.workflow_run;
+      if (!source || source.head_branch !== 'main' || !isUnexpired(artifact)
+          || !isPlatformArtifact(artifact, source.head_sha) || checkedRuns.has(source.id)) continue;
+      checkedRuns.add(source.id);
+      const { data: run } = await github.rest.actions.getWorkflowRun({ ...upstream, run_id: source.id });
+      const skip = reason => console.info(`Skipping Ludork ${platform} run ${run.id}: ${reason}`);
+      if (!isCompletedMainRun(run, upstream) || !workflows.has(run.path)) {
+        skip(`ineligible run (status=${run.status}, branch=${run.head_branch}, event=${run.event}, repository=${run.head_repository?.full_name}, workflow=${run.path})`);
+        continue;
+      }
+      // The target platform can be usable even when the other platform failed.
       const jobs = await github.paginate(github.rest.actions.listJobsForWorkflowRun, {
         ...upstream, run_id: run.id, filter: 'latest', per_page: 100,
-      });
+      }, response => pageItems(response.data, 'jobs'));
       if (!jobs.some(job => (job.name === target.job || job.name.endsWith(` / ${target.job}`))
-          && job.conclusion === 'success')) continue;
-      const name = `Ludork-editor-${platform}-${requireSha(run.head_sha)}`;
+          && job.conclusion === 'success')) {
+        skip(`no successful ${target.job} job; jobs=${JSON.stringify(jobs.map(({ name, conclusion }) => ({ name, conclusion })))}`);
+        continue;
+      }
+      const sha = requireSha(run.head_sha);
       const artifacts = await github.paginate(github.rest.actions.listWorkflowRunArtifacts, {
         ...upstream, run_id: run.id, per_page: 100,
-      });
+      }, response => pageItems(response.data, 'artifacts'));
       // upload-artifact with archive: false uses the filename and ignores name.
-      const matches = artifacts.filter(artifact => artifact.name === name
-        || (platform === 'windows-x64' && windowsArchivePattern.test(artifact.name)));
-      if (matches.length !== 1 || matches[0].expired || !(Date.parse(matches[0].expires_at) > Date.now())) continue;
+      const matches = artifacts.filter(artifact => isPlatformArtifact(artifact, sha));
+      if (matches.length !== 1 || !isUnexpired(matches[0])) {
+        skip(`expected one unexpired editor artifact; matches=${JSON.stringify(matches.map(({ id, name, expired, expires_at }) => ({ id, name, expired, expires_at })))}`);
+        continue;
+      }
       return {
         ludork_sha: run.head_sha, ludork_run_id: String(run.id), ludork_artifact_id: String(matches[0].id),
       };

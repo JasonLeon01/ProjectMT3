@@ -102,7 +102,16 @@ function TutorialController:update()
         return
     end
     local config = Config[request.key]
-    self._window:get():open(config.rect, LOC(config.text))
+    local text = LOC(config.text)
+    if text == "" then
+        request.finished = true
+        self._requests[request.key] = nil
+        if #self._queue == 0 then
+            self:_restoreMovement()
+        end
+        return
+    end
+    self._window:get():open(config.rect, text)
     if self._player == nil then
         self._player = scene:getGameMap():getPlayer()
         if self._player ~= nil then

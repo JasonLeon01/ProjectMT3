@@ -182,7 +182,7 @@ function Controller:setBattleText(name, text)
     if name:match("Name$") then
         local area = assert(self.ui.controls[name .. "Area"])
         ---@cast area Engine.Canvas
-        text = Engine.TextLayout.fitPlainText(text, area:getSize().x, control)
+        text = Engine.TextLayout.wrapPlainText(text, area:getSize().x, control)
     end
     self:setText(name, text)
     self.view:reflow()

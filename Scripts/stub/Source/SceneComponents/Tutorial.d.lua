@@ -31,6 +31,7 @@ function TutorialController:getScene() end
 function TutorialController:request(key) end
 
 --- Advance the queue after scene transitions; record a key only when its contraction starts.
+--- Empty final localised text completes the request without displaying or recording it.
 function TutorialController:update() end
 
 function TutorialController:refreshLocale() end
