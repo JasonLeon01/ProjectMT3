@@ -19,6 +19,12 @@ function Window.FromView(ui) end
 
 function Window:bind() end
 
+---@brief Get the result of a selection dialogue.
+---
+--- - @return The selected option index, or nil if no selection has been made.
+--- Dismiss an interrupted dialogue without invoking its completion callback.
+function Window:cancelDialogue() end
+
 ---@param index integer | nil
 function Window:cancelSelection(index) end
 
@@ -32,9 +38,6 @@ function Window:confirmMessage() end
 ---@return sf.FloatRect
 function Window:getSelectionLayoutRect(index) end
 
----@brief Get the result of a selection dialogue.
----
---- - @return The selected option index, or nil if no selection has been made.
 ---@return integer | nil
 function Window:getSelectionResult() end
 

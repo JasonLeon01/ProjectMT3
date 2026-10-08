@@ -36,6 +36,9 @@ function Window:closeByCancel() end
 
 function Window:confirmItem() end
 
+--- Immediately dismiss the window without invoking its completion callback.
+function Window:dismiss() end
+
 ---@return Source.Windows.WindowShopDetail
 function Window:getDetailWindow() end
 

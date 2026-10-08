@@ -1320,7 +1320,10 @@ local _METADATA = {
                 list = "sf.Vector2i",
             } },
             default = { [1] = "self", [2] = {} },
-            ["return"] = {},
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "AsyncOperation" },
+            },
             Meta = { MoveRouteVars = { "route" } },
             ExecSplit = { "default", default = "nil" },
         },

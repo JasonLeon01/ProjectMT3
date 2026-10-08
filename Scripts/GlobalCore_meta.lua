@@ -1967,7 +1967,7 @@ local _METADATA = {
             defaultUnset = { "interval", "task" },
             ["return"] = {
                 "return",
-                ["return"] = "function",
+                ["return"] = { "Engine", "AsyncOperation" },
             },
             Latent = true,
             LatentStates = { "TimeUp", TimeUp = true },
@@ -2262,12 +2262,18 @@ local _METADATA = {
             parameters = { "transitionResource", "transitionTime", transitionResource = "sf.Texture", transitionTime = "float" },
             default = { [2] = 1.0 },
             defaultUnset = { "transitionResource" },
-            ["return"] = {},
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "AsyncOperation" },
+            },
         },
         freezeTransitionBackground = {
             type = "function",
             parameters = {},
-            ["return"] = {},
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "AsyncOperation" },
+            },
         },
         isTransitionBackgroundFrozen = {
             type = "function",
@@ -2297,7 +2303,10 @@ local _METADATA = {
             parameters = { "transitionName", "transitionTime", transitionName = "string", transitionTime = "float" },
             default = { [2] = 1.0 },
             defaultUnset = { "transitionName" },
-            ["return"] = {},
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "AsyncOperation" },
+            },
         },
         cancelPendingTransition = {
             type = "function",

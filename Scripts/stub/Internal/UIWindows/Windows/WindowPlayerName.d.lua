@@ -33,6 +33,9 @@ function Window:close() end
 --- Commits only a Unicode-trimmed, non-empty draft of at most 32 graphemes.
 function Window:confirm() end
 
+--- Immediately dismiss the window without invoking its completion callback.
+function Window:dismiss() end
+
 function Window:dispose() end
 
 ---@return string

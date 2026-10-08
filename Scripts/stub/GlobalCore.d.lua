@@ -1696,13 +1696,15 @@ function SceneBase:setEmitterMap(map) end
 ---@param task? function
 ---@param params? any[]
 ---@param blocking? boolean
----@return fun(): boolean
+---@return Engine.AsyncOperation
 function SceneBase:addTimer(interval, task, params, blocking) end
 ---@param interval number
 ---@param task any
 ---@param blocking boolean
----@return fun(): boolean
+---@return Engine.AsyncOperation
 function SceneBase:addTimer(interval, task, blocking) end
+---@return nil
+function SceneBase:cancelTimers() end
 ---@return boolean blocked
 function SceneBase:isInputBlocked() end
 ---@param anim GlobalCore.Animation|nil
@@ -1809,9 +1811,9 @@ GlobalCore.System = System
 local Transition = {}
 ---@param transitionResource? sf.Texture|nil
 ---@param transitionTime? number
----@return nil
+---@return Engine.AsyncOperation
 function Transition.setTransition(transitionResource, transitionTime) end
----@return nil
+---@return Engine.AsyncOperation
 function Transition.freezeTransitionBackground() end
 ---@return boolean
 function Transition.isTransitionBackgroundFrozen() end
@@ -1821,7 +1823,7 @@ function Transition.isTransitionBackgroundFreezePending() end
 function Transition.cancelTransitionBackgroundFreeze() end
 ---@param transitionName? string|nil
 ---@param transitionTime? number
----@return nil
+---@return Engine.AsyncOperation
 function Transition.requestTransition(transitionName, transitionTime) end
 ---@return nil
 function Transition.cancelPendingTransition() end
