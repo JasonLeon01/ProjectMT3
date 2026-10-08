@@ -3,7 +3,7 @@
 ---@enum Enums.GeneralData.State
 local State = {
     Poisoned = "Poisoned",
-    Weak = "Weak"
+    Weak = "Weak",
 }
 
 return State

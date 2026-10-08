@@ -24,7 +24,7 @@ local Item = {
     Teleport = "Teleport",
     UpFly = "UpFly",
     WeakEase = "WeakEase",
-    WeakRelease = "WeakRelease"
+    WeakRelease = "WeakRelease",
 }
 
 return Item

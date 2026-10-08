@@ -3,7 +3,7 @@
 ---@enum Enums.GeneralData.Player
 local Player = {
     Bravor = "Bravor",
-    Princess = "Princess"
+    Princess = "Princess",
 }
 
 return Player

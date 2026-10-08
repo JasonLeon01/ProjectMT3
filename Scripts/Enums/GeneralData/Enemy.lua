@@ -94,7 +94,8 @@ local Enemy = {
     E89_jianwang = "E89_jianwang",
     E90_jianshenshashi = "E90_jianshenshashi",
     E91_moshenxieduo = "E91_moshenxieduo",
-    E92_yonghengzhiyao = "E92_yonghengzhiyao"
+    E92_yonghengzhiyao = "E92_yonghengzhiyao",
+    ZHANWEI = "ZHANWEI",
 }
 
 return Enemy

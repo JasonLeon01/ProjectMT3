@@ -1561,6 +1561,20 @@
       },
       "ANIMATION_KEY": "56_damofa",
       "CritAnimationKey": "57_damofa2"
+    },
+    "ZHANWEI": {
+      "name": "占位用挡路怪",
+      "desc": "NEW ENEMY DESC",
+      "MAXHP": 99999,
+      "ATK": 9999,
+      "DEF": 9999,
+      "EXP": 0,
+      "GOLD": 0,
+      "breathLimit": 1,
+      "drops": {},
+      "special": {},
+      "ANIMATION_KEY": "10_lei",
+      "CritAnimationKey": "11_lei2"
     }
   }
 }

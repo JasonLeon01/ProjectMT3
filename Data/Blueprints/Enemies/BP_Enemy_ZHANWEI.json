@@ -1,16 +1,15 @@
 {
-  "parent": "Source.MapActors.SWall",
+  "parent": "Source.MapActors.Enemy",
   "attrs": {
     "material": {
-      "lightBlock": 0.64,
+      "lightBlock": 0.4,
       "mirror": false,
-      "reflectionStrength": 0.5,
+      "reflectionStrength": 0.0,
       "opacity": 1.0,
-      "speedRate": 1.0
+      "speedRate": 1.5
     },
-    "collisionEnabled": true,
-    "tickable": false,
-    "texturePath": "/Game/Assets/Characters/blocks/classic-doors-002-single.png",
+    "texturePath": "/Game/Assets/Characters/enemies/RPMAX-龙.png",
+    "ID": "ZHANWEI",
     "defaultRect": [
       [
         0,

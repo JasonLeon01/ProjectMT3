@@ -11,10 +11,12 @@
 ---@field CriticalButtonSelected     Engine.Image
 ---@field DefenseSkillButton         Engine.Button
 ---@field DefenseSkillButtonSelected Engine.Image
+---@field EnemyATKDelta              Engine.PlainText
 ---@field EnemyATKLabel              Engine.PlainText
 ---@field EnemyATKValue              Engine.PlainText
 ---@field EnemyBREATHLabel           Engine.PlainText
 ---@field EnemyBreathBar             Engine.ProgressBar
+---@field EnemyDEFDelta              Engine.PlainText
 ---@field EnemyDEFLabel              Engine.PlainText
 ---@field EnemyDEFValue              Engine.PlainText
 ---@field EnemyFATIGUELabel          Engine.PlainText
@@ -24,10 +26,12 @@
 ---@field EnemyName                  Engine.PlainText
 ---@field EnemyNameArea              Engine.Canvas
 ---@field EnemyPortrait              Engine.CharacterView
+---@field PlayerATKDelta             Engine.PlainText
 ---@field PlayerATKLabel             Engine.PlainText
 ---@field PlayerATKValue             Engine.PlainText
 ---@field PlayerBREATHLabel          Engine.PlainText
 ---@field PlayerBreathBar            Engine.ProgressBar
+---@field PlayerDEFDelta             Engine.PlainText
 ---@field PlayerDEFLabel             Engine.PlainText
 ---@field PlayerDEFValue             Engine.PlainText
 ---@field PlayerFATIGUELabel         Engine.PlainText

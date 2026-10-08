@@ -85,6 +85,32 @@
       "AnimationKey": "26_dunsui",
       "fatiguePlus": 20,
       "breathMinus": 1
+    },
+    "YuRen": {
+      "name": "{YUREN}",
+      "desc": "{YUREN_DESC}",
+      "icon": "/Game/Assets/Icons/彩虹岛精灵石15.png",
+      "slot": "weapon",
+      "attrPlus": {
+        "ATK": 8,
+        "MAGIC": 2
+      },
+      "AnimationKey": "waterspread",
+      "fatiguePlus": 35,
+      "breathMinus": 1
+    },
+    "JingMu": {
+      "name": "{JINGMU}",
+      "desc": "{JINGMU_DESC}",
+      "icon": "/Game/Assets/Icons/彩虹岛盾牌18.png",
+      "slot": "shield",
+      "attrPlus": {
+        "DEF": 8,
+        "MAGIC": 2
+      },
+      "AnimationKey": "26_dunsui",
+      "fatiguePlus": 20,
+      "breathMinus": 1
     }
   },
   "events": [

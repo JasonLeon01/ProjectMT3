@@ -7,7 +7,7 @@ local Particle = {
     ResidentAura = "ResidentAura",
     Smoke = "Smoke",
     Sparks = "Sparks",
-    UiSparkle = "UiSparkle"
+    UiSparkle = "UiSparkle",
 }
 
 return Particle

@@ -3,7 +3,9 @@
 ---@enum Enums.GeneralData.Equip
 local Equip = {
     HuiMu = "HuiMu",
-    HuiRen = "HuiRen"
+    HuiRen = "HuiRen",
+    JingMu = "JingMu",
+    YuRen = "YuRen",
 }
 
 return Equip

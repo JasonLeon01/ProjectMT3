@@ -74,13 +74,15 @@ local function createState(actor, player)
             actor, "shield", Battle.defenseSkills
         )
     end
+    local attack = (not player and SpecialAbilities.GetMagnitude(abilitySystem, Special.Ambush) ~= nil)
+        and attributes.ATK * 2 or attributes.ATK
     return {
         HP = player and attributes.HP or attributes.MAXHP,
         MAXHP = attributes.MAXHP,
-        ATK = (not player and SpecialAbilities.GetMagnitude(abilitySystem, Special.Ambush) ~= nil)
-            and attributes.ATK * 2
-            or attributes.ATK,
+        ATK = attack,
         DEF = attributes.DEF,
+        initialATK = attack,
+        initialDEF = attributes.DEF,
         MAGIC = player and attributes.MAGIC or 0,
         breath = player and attributes.breath or 0,
         breathLimit = attributes.breathLimit,
@@ -132,11 +134,15 @@ function Controller:init(scene)
     self._retreatRequested = false
     self._watchStops = {}
     self._actionButtonColours = {}
+    self._fatigueColours = {}
     self._breathColours = { Lit = {}, Dim = {} }
     self._particles = self.ui.controls["Content"]:getParticleSystem()
 end
 
 function Controller:bind()
+    for _, side in ipairs({ "Player", "Enemy" }) do
+        self._fatigueColours[side] = self.ui.controls[side .. "FATIGUEValue"]:getColour():copy()
+    end
     local critical = self:bindCallback(Controller.requestCritical)
     local attackSkill = self:bindCallback(Controller.requestAttackSkill)
     local defenseSkill = self:bindCallback(Controller.requestDefenseSkill)
@@ -270,6 +276,17 @@ function Controller:observeState(state, side)
     for _, field in ipairs({ "HP", "ATK", "DEF", "fatigue" }) do
         self._watchStops[#self._watchStops + 1] = self:watch(state, field, function (controller, value)
             controller:setBattleText(side .. (field == "fatigue" and "FATIGUE" or field) .. "Value", tostring(value))
+            if field == "ATK" or field == "DEF" then
+                controller:refreshAttributeDelta(side, state, field)
+            elseif field == "fatigue" then
+                controller.ui.controls[side .. "FATIGUEValue"]:setColour(
+                    state.fatigue >= Battle.skillFatigueLimit and sf.Color.Yellow or controller._fatigueColours[side]
+                )
+                if state.isPlayer and state.fatigue >= Battle.skillFatigueLimit then
+                    controller._attackSkillSelected = false
+                    controller._defenseSkillSelected = false
+                end
+            end
             controller:refreshCritical()
         end)
     end
@@ -279,6 +296,46 @@ function Controller:observeState(state, side)
             controller:refreshCritical()
         end)
     end
+end
+
+function Controller:refreshAttributeDelta(side, state, field)
+    local delta = state[field] - state["initial" .. field]
+    local name = side .. field .. "Delta"
+    local label = self.ui.controls[name]
+    ---@cast label Engine.PlainText
+    label:setVisible(delta ~= 0)
+    label:setColour(delta > 0 and sf.Color.Green or sf.Color.Red)
+    self:setBattleText(name, delta > 0 and "+" .. tostring(delta) or tostring(delta))
+    self:layoutAttributeDeltas()
+end
+
+function Controller:layoutAttributeDeltas()
+    for _, side in ipairs({ "Player", "Enemy" }) do
+        for _, field in ipairs({ "ATK", "DEF" }) do
+            local value = self.ui.controls[side .. field .. "Value"]
+            local label = self.ui.controls[side .. field .. "Delta"]
+            ---@cast value Engine.PlainText
+            ---@cast label Engine.PlainText
+            local bounds = value:getGlobalBounds()
+            local labelSize = label:getSize()
+            local middle = self.ui.controls["Content"]:getSize().x / 2
+            local x = side == "Enemy" and bounds.position.x + bounds.size.x + 2
+                or bounds.position.x - labelSize.x - 2
+            local y = bounds.position.y
+            if (side == "Enemy" and x + labelSize.x > middle)
+                or (side == "Player" and x < middle) then
+                -- Keep long values and their small deltas out of the opposing column.
+                x = side == "Enemy" and bounds.position.x + bounds.size.x - labelSize.x or bounds.position.x
+                y = y - labelSize.y - 2
+            end
+            label:setPosition(sf.Vector2f.new(x, y))
+        end
+    end
+end
+
+function Controller:onTick(deltaTime)
+    WindowBase.onTick(self.host, deltaTime)
+    self:layoutAttributeDeltas()
 end
 
 function Controller:onHPChanged(side, delta)
@@ -358,12 +415,14 @@ end
 
 function Controller:canAttackSkill(attacker, defender)
     return attacker.isPlayer and attacker.attackSkill ~= nil
+        and attacker.fatigue < Battle.skillFatigueLimit
         and self:canAffordSkill(attacker, self:skillBreathCost(attacker, attacker.attackSkillBreathMinus))
         and self:calculateDamage(attacker, defender, false, true) > 0
 end
 
 function Controller:canDefenseSkill(state)
     return state.isPlayer and state.defenseSkill ~= nil
+        and state.fatigue < Battle.skillFatigueLimit
         and self:canAffordSkill(state, self:skillBreathCost(state, state.defenseSkillBreathMinus))
 end
 
@@ -426,14 +485,14 @@ function Controller:beginTurn(playerTurn, remainingHits)
     if player == nil or enemy == nil then
         return
     end
-    if playerTurn and player.frozenTurns > 0 then
-        player.frozenTurns = player.frozenTurns - 1
+    local attacker = playerTurn and player or enemy
+    if remainingHits == nil and attacker.frozenTurns > 0 then
+        attacker.frozenTurns = attacker.frozenTurns - 1
         self:schedule(Battle.attackInterval + Battle.attackExtraDelay, function ()
-            self:beginTurn(false)
+            self:beginTurn(not playerTurn)
         end)
         return
     end
-    local attacker = playerTurn and player or enemy
     local defender = playerTurn and enemy or player
     local hits = playerTurn and 1 or (remainingHits or attacker.hitCount)
     local attackSkill = false
@@ -550,13 +609,6 @@ function Controller:receiveAttack(attacker, defender, damage, critical, attackSk
         elseif critical then
             attacker.breath = attacker.isPlayer and attacker.breath - self:skillBreathCost(attacker) or 0
             attacker.fatigue = attacker.fatigue + Battle.criticalFatigue
-            if attacker.thunder > 0 and defender.isPlayer then
-                defender.breath = math.max(0, defender.breath - math.floor(defender.breathLimit / 3))
-                defender.fatigue = defender.fatigue + attacker.thunder
-            end
-            if attacker.frost and defender.isPlayer then
-                defender.frozenTurns = 1
-            end
         else
             local player = assert(self._player)
             local _, _, _, defense = Battle.GetRealAttrInfo(attacker, defender)
@@ -574,15 +626,43 @@ function Controller:receiveAttack(attacker, defender, damage, critical, attackSk
         self:changeHP(defender, -PoisonedAbility.CalculateDamage(damage, defender.poisoned))
     end
     self:changeHP(attacker, VampireAbility.CalculateHealing(lostHP, attacker.vampire))
-    self:applyAttackStates(attacker, defender)
-    if not attacker.isPlayer then
-        defender.fatigue = defender.fatigue + attacker.mucus
+    local guard = defenseSkill and defender.defenseSkill or nil
+    if guard ~= nil and guard.immuneAttackEffects then
+        if critical and guard.reflectCriticalEffects then
+            self:applyAttackEffects(attacker, attacker, true)
+        end
+    else
+        self:applyAttackEffects(attacker, defender, critical)
+    end
+    if attackSkill then
+        local skill = assert(attacker.attackSkill)
+        if skill.conversion ~= nil then
+            local attackGain, defenseLoss = skill.conversion(attacker)
+            attacker.ATK = attacker.ATK + attackGain
+            attacker.DEF = math.max(0, attacker.DEF - defenseLoss)
+        end
     end
     if attacker.burn then
         attacker.burnHits = attacker.burnHits + 1
     end
     if critical and attacker.berserk then
         self:changeHP(attacker, -math.floor(attacker.HP / 2))
+    end
+end
+
+function Controller:applyAttackEffects(attacker, target, critical)
+    self:applyAttackStates(attacker, target)
+    if not attacker.isPlayer then
+        target.fatigue = target.fatigue + attacker.mucus
+        if critical then
+            if attacker.thunder > 0 then
+                target.breath = math.max(0, target.breath - math.floor(target.breathLimit / 3))
+                target.fatigue = target.fatigue + attacker.thunder
+            end
+            if attacker.frost then
+                target.frozenTurns = 1
+            end
+        end
     end
 end
 

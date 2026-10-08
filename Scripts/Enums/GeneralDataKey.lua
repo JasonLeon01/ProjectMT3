@@ -8,7 +8,7 @@ local GeneralDataKey = {
     Item = "Item",
     Player = "Player",
     Special = "Special",
-    State = "State"
+    State = "State",
 }
 
 return GeneralDataKey

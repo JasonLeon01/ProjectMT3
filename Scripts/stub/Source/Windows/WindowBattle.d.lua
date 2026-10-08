@@ -27,6 +27,8 @@
 ---@field hitCount                 integer
 ---@field ATK                      integer
 ---@field DEF                      integer
+---@field initialATK               integer
+---@field initialDEF               integer
 ---@field MAGIC                    integer
 ---@field breath                   integer
 ---@field breathLimit              integer
@@ -59,6 +61,7 @@
 ---@field _retreatRequested     boolean
 ---@field _watchStops           (fun())[]
 ---@field _actionButtonColours  table<string, sf.Color>
+---@field _fatigueColours       table<string, sf.Color>
 ---@field _breathColours        table<string, sf.Color[]>
 ---@field _particles            Engine.ParticleSystem
 ---@field _playerActor          Source.MapActors.Player.Player | nil
@@ -83,6 +86,13 @@ function Controller:setPortrait(name, actor) end
 ---@param state Source.Windows.WindowBattle.BattlerState
 ---@param side  "Player" | "Enemy"
 function Controller:observeState(state, side) end
+---@param side "Player" | "Enemy"
+---@param state Source.Windows.WindowBattle.BattlerState
+---@param field "ATK" | "DEF"
+function Controller:refreshAttributeDelta(side, state, field) end
+function Controller:layoutAttributeDeltas() end
+---@param deltaTime number
+function Controller:onTick(deltaTime) end
 ---@param side  "Player" | "Enemy"
 ---@param delta integer
 function Controller:onHPChanged(side, delta) end
@@ -93,6 +103,10 @@ function Controller:changeHP(state, delta) end
 ---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
 function Controller:applyAttackStates(attacker, defender) end
+---@param attacker Source.Windows.WindowBattle.BattlerState
+---@param target Source.Windows.WindowBattle.BattlerState
+---@param critical boolean
+function Controller:applyAttackEffects(attacker, target, critical) end
 ---@param delay  number
 ---@param action fun()
 function Controller:schedule(delay, action) end

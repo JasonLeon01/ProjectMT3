@@ -5,6 +5,9 @@ local Battle = {}
 
 ---@class Source.Configs.Battle.Skill
 ---@field apply fun(value: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
+---@field conversion? fun(state: Source.Windows.WindowBattle.BattlerState): integer, integer
+---@field immuneAttackEffects? boolean
+---@field reflectCriticalEffects? boolean
 
 Battle.huiRenMultiplierCeil = 2
 
@@ -68,6 +71,18 @@ Battle.enemy = {
 
 ---@type table<string, Source.Configs.Battle.Skill | nil>
 Battle.attackSkills = {
+    YuRen = {
+        apply = function (damage)
+            return math.floor(damage * 1.5)
+        end,
+        conversion = function (state)
+            local tier = math.min(math.floor(math.max(state.MAGIC, 0) / 10), 7)
+            local defense = math.max(state.DEF, 0)
+            -- Combine 8% * (1.10 + 0.25 * tier / 7) and 8% - 3% * tier / 7
+            -- before dividing, so exact integer boundaries do not round up by one.
+            return math.floor(defense * (154 + 5 * tier) / 1750), math.ceil(defense * (56 - 3 * tier) / 700)
+        end
+    },
     HuiRen = {
         apply = function (damage, attacker, defender)
             damage = math.max(0, damage)
@@ -81,24 +96,45 @@ Battle.attackSkills = {
     }
 }
 
+---@param basic number
+---@param maximumExtra number
+---@return fun(damage: number, attacker: Source.Windows.WindowBattle.BattlerState, defender: Source.Windows.WindowBattle.BattlerState): number
+local function magicDefense(basic, maximumExtra)
+    return function (damage, attacker, defender)
+        damage = math.max(0, damage)
+        if damage == 0 then
+            return 0
+        end
+        local atk, _, _, def = Battle.GetRealAttrInfo(attacker, defender)
+        local k = 15
+        ---@type number
+        local ratio = 0
+        if defender.MAGIC > 0 and atk > def then
+            if def <= 0 then
+                ratio = 1
+            else
+                local X = k * (defender.MAGIC / def) * (math.max(0, atk - def) / atk)
+                ratio = X / (1 + X)
+            end
+        end
+        local extra = maximumExtra * ratio
+        return math.round(damage * (1 - (basic + extra)))
+    end
+end
+
 ---@type table<string, Source.Configs.Battle.Skill | nil>
 Battle.defenseSkills = {
     HuiMu = {
-        apply = function (damage, attacker, defender)
-            damage = math.max(0, damage)
-            if damage == 0 then
-                return 0
-            end
-            local atk, _, _, def = Battle.GetRealAttrInfo(attacker, defender)
-            local basic = 0.2
-            local k = 15
-            local X = k * (defender.MAGIC / def) * (math.max(0, atk - def) / atk)
-            local extra = 0.2 * X / (1 + X)
-            return math.round(damage * (1 - (basic + extra)))
-        end
+        apply = magicDefense(0.2, 0.2)
+    },
+    JingMu = {
+        apply = magicDefense(0.15, 0.15),
+        immuneAttackEffects = true,
+        reflectCriticalEffects = true
     }
 }
 
+Battle.skillFatigueLimit = 70
 Battle.criticalFatigue = 5
 Battle.startDelay = 0.3
 Battle.attackInterval = 0.12

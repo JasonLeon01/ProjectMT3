@@ -395,6 +395,50 @@
             "children": []
           },
           {
+            "name": "EnemyATKDelta",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 8,
+              "outlineThickness": 0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 160,
+                "top": 72,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "+8"
+            },
+            "children": []
+          },
+          {
             "name": "EnemyDEFLabel",
             "controlId": "Engine.PlainText",
             "properties": {
@@ -477,6 +521,50 @@
             },
             "editor": {
               "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "EnemyDEFDelta",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 8,
+              "outlineThickness": 0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 160,
+                "top": 96,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "-8"
             },
             "children": []
           },
@@ -979,6 +1067,50 @@
             "children": []
           },
           {
+            "name": "PlayerATKDelta",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 8,
+              "outlineThickness": 0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 193,
+                "top": 72,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "+8"
+            },
+            "children": []
+          },
+          {
             "name": "PlayerDEFLabel",
             "controlId": "Engine.PlainText",
             "properties": {
@@ -1061,6 +1193,50 @@
             },
             "editor": {
               "previewText": "100"
+            },
+            "children": []
+          },
+          {
+            "name": "PlayerDEFDelta",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 8,
+              "outlineThickness": 0,
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "visible": false
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 193,
+                "top": 96,
+                "right": 64,
+                "bottom": 24
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "-8"
             },
             "children": []
           },

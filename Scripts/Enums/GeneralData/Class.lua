@@ -3,7 +3,7 @@
 ---@enum Enums.GeneralData.Class
 local Class = {
     Princess = "Princess",
-    Warrior = "Warrior"
+    Warrior = "Warrior",
 }
 
 return Class

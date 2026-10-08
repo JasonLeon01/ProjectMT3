@@ -326,130 +326,130 @@
         [
           null,
           null,
-          7,
+          6,
           null,
           null,
           null,
           null,
           null,
           null,
-          7,
+          6,
           null
         ],
         [
           null,
           null,
           null,
-          7,
+          6,
           null,
-          7,
-          7,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          7,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          7,
-          7
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          7,
-          null,
-          null,
-          null,
-          null,
-          7,
-          null
-        ],
-        [
-          7,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          7,
-          null
-        ],
-        [
-          null,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          null,
-          null,
-          7,
-          null
-        ],
-        [
-          null,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
-          7,
-          null
-        ],
-        [
-          null,
-          null,
-          7,
-          null,
-          7,
-          null,
-          7,
+          6,
+          6,
           null,
           null,
           null,
           null
         ],
         [
+          6,
           null,
-          7,
+          6,
           null,
+          6,
           null,
-          7,
+          6,
           null,
-          7,
-          null,
-          7,
-          7,
-          7
+          6,
+          6,
+          6
         ],
         [
-          7,
           null,
           null,
-          7,
-          null,
-          7,
           null,
           null,
-          7,
+          6,
+          null,
+          null,
+          null,
+          null,
+          6,
+          null
+        ],
+        [
+          6,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          6,
+          null
+        ],
+        [
+          null,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          null,
+          null,
+          6,
+          null
+        ],
+        [
+          null,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          6,
+          null
+        ],
+        [
+          null,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          6,
+          null,
+          null,
+          6,
+          null,
+          6,
+          null,
+          6,
+          6,
+          6
+        ],
+        [
+          6,
+          null,
+          null,
+          6,
+          null,
+          6,
+          null,
+          null,
+          6,
           null,
           null
         ],
@@ -459,7 +459,7 @@
           null,
           null,
           null,
-          7,
+          6,
           null,
           null,
           null,
@@ -1050,6 +1050,62 @@
         "position": [
           2,
           8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_2_7",
+        "position": [
+          2,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_1_8",
+        "position": [
+          1,
+          8
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_0_2",
+        "position": [
+          0,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_6_7",
+        "position": [
+          6,
+          7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Left",
+        "tag": "Actors_BP_Fire_Left_default_8_4",
+        "position": [
+          8,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_6_1",
+        "position": [
+          6,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Actors.BP_Fire_Right",
+        "tag": "Actors_BP_Fire_Right_default_5_9",
+        "position": [
+          5,
+          9
         ]
       }
     ]

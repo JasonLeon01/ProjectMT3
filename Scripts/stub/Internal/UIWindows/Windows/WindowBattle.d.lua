@@ -19,6 +19,11 @@ function Window.FromView(ui, scene) end
 function Window:addBreath(state, amount) end
 
 ---@param attacker Source.Windows.WindowBattle.BattlerState
+---@param target   Source.Windows.WindowBattle.BattlerState
+---@param critical boolean
+function Window:applyAttackEffects(attacker, target, critical) end
+
+---@param attacker Source.Windows.WindowBattle.BattlerState
 ---@param defender Source.Windows.WindowBattle.BattlerState
 function Window:applyAttackStates(attacker, defender) end
 
@@ -81,6 +86,8 @@ function Window:getBreathBox(kind) end
 ---@return Engine.Canvas
 function Window:getBreathCanvas(kind, index) end
 
+function Window:layoutAttributeDeltas() end
+
 ---@param attacker      Source.Windows.WindowBattle.BattlerState
 ---@param defender      Source.Windows.WindowBattle.BattlerState
 ---@param remainingHits integer
@@ -96,6 +103,9 @@ function Window:onHPChanged(side, delta) end
 
 ---@param kwargs Engine.UiInputEventArguments
 function Window:onKeyDown(kwargs) end
+
+---@param deltaTime number
+function Window:onTick(deltaTime) end
 
 ---@param player     Source.MapActors.Player.Player
 ---@param enemy      Source.MapActors.Enemy
@@ -125,6 +135,11 @@ function Window:refresh() end
 ---@param selected boolean
 ---@param enabled  boolean | nil
 function Window:refreshActionButton(name, selected, enabled) end
+
+---@param side  "Player" | "Enemy"
+---@param state Source.Windows.WindowBattle.BattlerState
+---@param field "ATK" | "DEF"
+function Window:refreshAttributeDelta(side, state, field) end
 
 ---@param side  "Player" | "Enemy"
 ---@param state Source.Windows.WindowBattle.BattlerState

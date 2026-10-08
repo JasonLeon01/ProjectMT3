@@ -29,7 +29,7 @@ local Special = {
     SureKill = "SureKill",
     Thunder = "Thunder",
     Vampire = "Vampire",
-    Weaken = "Weaken"
+    Weaken = "Weaken",
 }
 
 return Special

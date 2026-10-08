@@ -1,20 +1,20 @@
 {
-  "parent": "Source.MapActors.SWall",
+  "parent": "Source.MapActors.Equip",
   "attrs": {
+    "ID": "YuRen",
     "material": {
-      "lightBlock": 0.64,
+      "lightBlock": 0.24,
       "mirror": false,
       "reflectionStrength": 0.5,
       "opacity": 1.0,
       "speedRate": 1.0
     },
     "collisionEnabled": true,
-    "tickable": false,
-    "texturePath": "/Game/Assets/Characters/blocks/classic-doors-002-single.png",
+    "texturePath": "/Game/Assets/Characters/equips/彩虹岛精灵石.png",
     "defaultRect": [
       [
-        0,
-        0,
+        64,
+        96,
         32,
         32
       ]
@@ -23,15 +23,15 @@
   },
   "graph": {
     "nodeGraph": {
-      "onCollision": {
-        "nodes": [],
-        "links": []
-      },
       "onCreate": {
         "nodes": [],
         "links": []
       },
       "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onEquip": {
         "nodes": [],
         "links": []
       },
@@ -50,16 +50,21 @@
       "onTick": {
         "nodes": [],
         "links": []
+      },
+      "onUnequip": {
+        "nodes": [],
+        "links": []
       }
     },
     "startNodes": {
-      "onCollision": null,
       "onCreate": null,
       "onDestroy": null,
+      "onEquip": null,
       "onFixedTick": null,
       "onLateTick": null,
       "onOverlap": null,
-      "onTick": null
+      "onTick": null,
+      "onUnequip": null
     }
   },
   "type": "blueprint"
