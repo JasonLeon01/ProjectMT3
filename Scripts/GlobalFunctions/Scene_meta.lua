@@ -4,7 +4,7 @@ local _METADATA = {
         ShowTutorial = {
             type = "function",
             parameters = { "key", key = "string" },
-            ["return"] = { "return", ["return"] = "function" },
+            ["return"] = { "return", ["return"] = { "Engine", "AsyncOperation" } },
             Latent = true,
             LatentStates = { "Finished", Finished = { true } }
         },
@@ -58,7 +58,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -92,7 +92,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -117,7 +117,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -144,7 +144,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -184,7 +184,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -222,7 +222,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -270,7 +270,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -625,7 +625,7 @@ local _METADATA = {
         OpenPlayerName = {
             type = "function",
             parameters = {},
-            ["return"] = { "return", ["return"] = "function" },
+            ["return"] = { "return", ["return"] = { "Engine", "AsyncOperation" } },
             Latent = true,
             LatentStates = { "Closed", Closed = { true } }
         },
@@ -643,7 +643,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -684,7 +684,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {
@@ -723,7 +723,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "return",
-                ["return"] = "function"
+                ["return"] = { "Engine", "AsyncOperation" }
             },
             Latent = true,
             LatentStates = {

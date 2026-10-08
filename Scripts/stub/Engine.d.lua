@@ -128,6 +128,7 @@
 ---@field Vector4Curve Engine.Vector4Curve
 ---@field Vector4CurveData Engine.Vector4CurveData
 ---@field Vector4CurveKey Engine.Vector4CurveKey
+---@field AsyncOperation Engine.AsyncOperation
 ---@field BPBase Engine.BPBase
 ---@field Component Engine.Component
 ---@field EditorLiveDebug Engine.EditorLiveDebug
@@ -1264,10 +1265,15 @@ function Actor:isMoving() end
 ---@return boolean isInRoute
 function Actor:isInRoute() end
 ---@param route? sf.Vector2i[]|nil
----@return nil
+---@return Engine.AsyncOperation
 function Actor:setRoute(route) end
 ---@return sf.Vector2i[]|nil route
 function Actor:getRoute() end
+---@return nil
+function Actor:cancelAsyncOperations() end
+---@param operation Engine.AsyncOperation|nil
+---@return nil
+function Actor:trackAsyncOperation(operation) end
 ---@return boolean moveEnabled
 function Actor:getMoveEnabled() end
 ---@param enabled boolean
@@ -4648,6 +4654,35 @@ function Vector4CurveKey.new(values) end
 function Vector4CurveKey.init(self, values) end
 Engine.Vector4CurveKey = Vector4CurveKey
 
+---@class Engine.AsyncOperation : Engine.RuntimeObject
+local AsyncOperation = {}
+--- Create an operation; an optional poll runs once per logic frame until
+--- settlement.
+---@param poll? fun(arg1: Engine.AsyncOperation): nil
+---@return Engine.AsyncOperation
+function AsyncOperation.new(poll) end
+--- Publish an intermediate Blueprint execution value without completing the
+--- operation.
+---@param value any
+---@return nil
+function AsyncOperation:emit(value) end
+--- Complete once, retaining the result for every waiter, including late
+--- waiters.
+---@param result? any
+---@return nil
+function AsyncOperation:complete(result) end
+--- Cancel pending waiters without completing their execution flow.
+---@return nil
+function AsyncOperation:cancel() end
+--- Return pending, completed or cancelled.
+---@return string
+function AsyncOperation:getStatus() end
+--- Read the completed result; pending and cancelled operations raise an
+--- error.
+---@return any
+function AsyncOperation:getResult() end
+Engine.AsyncOperation = AsyncOperation
+
 ---@class Engine.BPBase
 local BPBase = {}
 ---@return Engine.BPBase
@@ -4974,17 +5009,17 @@ function LatentManager.new() end
 function LatentManager.init(self) end
 ---@param graph Engine.Graph|nil
 ---@param key string
----@param condition any
+---@param operation Engine.AsyncOperation|nil
 ---@param localRef any
 ---@param index integer
 ---@param cache table<integer|string, NodeResult>
 ---@return nil
-function LatentManager:add(graph, key, condition, localRef, index, cache) end
+function LatentManager:add(graph, key, operation, localRef, index, cache) end
 ---@return nil
 function LatentManager:update() end
----@param condition function
+---@param operation Engine.AsyncOperation|nil
 ---@return nil
-function LatentManager:cancel(condition) end
+function LatentManager:cancel(operation) end
 Engine.LatentManager = LatentManager
 
 ---@class Engine.Node : Engine.RuntimeObject

@@ -38,6 +38,9 @@ function Window:closeByCancel() end
 ---@brief Confirm the selected attribute purchase or Leave command.
 function Window:confirmItem() end
 
+--- Immediately dismiss the window without invoking its completion callback.
+function Window:dismiss() end
+
 function Window:dispose() end
 
 ---@param abilityKey       string

@@ -119,6 +119,7 @@ end
 
 function Scene:onQuit()
     SceneMapWindows.CloseShortcuts(self)
+    SceneMapInteractions.CancelAsyncOperations(self)
     self._tutorials:cancel()
     self:cancelBattle()
     ManagerFunctions.stopVoice()
@@ -129,6 +130,7 @@ function Scene:onQuit()
 end
 
 function Scene:onDestroy()
+    SceneMapInteractions.CancelAsyncOperations(self)
     self._tutorials:dispose()
     self:cancelBattle()
     LiveDebug.UnbindScene(self)
@@ -283,6 +285,8 @@ end
 
 function Scene:loadMap(mapPath, initialPosition)
     SceneMapWindows.CloseShortcuts(self)
+    self:cancelTimers()
+    SceneMapInteractions.CancelAsyncOperations(self)
     self._tutorials:cancel()
     self:cancelBattle()
     Logging.info("Loading map: %s", mapPath)
@@ -707,6 +711,10 @@ end
 
 function Scene:showMessage(name, message, refActor, localeArgs)
     return SceneMapInteractions.ShowMessage(self, name, message, refActor, localeArgs)
+end
+
+function Scene:showVoiceMessage(name, message, voiceFileName, refActor, minDistance, spatial)
+    return SceneMapInteractions.ShowVoiceMessage(self, name, message, voiceFileName, refActor, minDistance, spatial)
 end
 
 function Scene:showSelection(name, options, refActor, allowCancel, localeArgs)
