@@ -3,7 +3,7 @@
     "upstreamSha": "9b0a1ebbd85c4aef6487e89e6106070170b4af33"
   },
   "global": {
-    "upstreamSha": "d121c6e6510b751ed41a6a526cc4348730b6ab06"
+    "upstreamSha": "31c1092fce4358475298c1ae0bbc0f9e3e39562c"
   },
   "internal": {
     "upstreamSha": "7e2306ae46d0253c12bff7c2afce7a008c882d7c"
@@ -12,7 +12,7 @@
     "upstreamSha": "4a1dbd9dce6a31ee2541fecd9a4ca8fde0ac9494"
   },
   "globalStub": {
-    "upstreamSha": "9b0a1ebbd85c4aef6487e89e6106070170b4af33"
+    "upstreamSha": "31c1092fce4358475298c1ae0bbc0f9e3e39562c"
   },
   "internalStub": {
     "upstreamSha": "7e2306ae46d0253c12bff7c2afce7a008c882d7c"
