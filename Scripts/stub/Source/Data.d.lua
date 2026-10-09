@@ -17,19 +17,19 @@
 ---@field outlineThickness? number
 
 ---@class Source.Data.EnemySpecialValues
----@field Poisoning? integer
----@field Weaken?    integer
----@field Hard?      boolean
----@field Magic?     boolean
----@field MultiHit?  integer
----@field Compete?   boolean
----@field Domain?    integer
----@field Flank?     boolean
----@field Blockade?  boolean
+---@field Poisoning?  integer
+---@field Weaken?     integer
+---@field Hard?       boolean
+---@field Magic?      boolean
+---@field MultiHit?   integer
+---@field Compete?    boolean
+---@field Domain?     integer
+---@field Flank?      boolean
+---@field Blockade?   boolean
 ---@field Reborn?     string
 ---@field Vampire?    number
 ---@field First?      boolean
----@field FixDmg?     number|string
+---@field FixDmg?     number | string
 ---@field Mucus?      integer
 ---@field SureKill?   boolean
 ---@field DeathCurse? boolean
@@ -434,5 +434,14 @@ function Data.GenActorFromClassName(className, tag) end
 ---@param classVarChanges table<string, Source.Data.ClassVarValue> | nil
 ---@return Engine.Actor | nil
 function Data.GenActorFromData(actorData, layerName, classVarChanges) end
+
+--- Read static first-frame appearance without creating an Actor or instantiating its graph.
+---@param classPath       string
+---@param classVarChanges table<string, Source.Data.ClassVarValue> | nil
+---@return Source.Data.ActorPreviewData | nil
+function Data.GetActorPreviewData(classPath, classVarChanges) end
+
+--- Release class appearance templates at the end of a preview cache lifetime.
+function Data.ClearActorPreviewCache() end
 
 return Data
