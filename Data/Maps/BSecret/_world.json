@@ -1,0 +1,14 @@
+{
+  "type": "worldMap",
+  "worldName": "{BSECRET}",
+  "width": 256,
+  "height": 192,
+  "fog": "",
+  "fogPower": 0,
+  "fogOx": 0,
+  "fogOy": 0,
+  "fogDistort": 0,
+  "panorama": "",
+  "layerOrder": [],
+  "placements": []
+}
