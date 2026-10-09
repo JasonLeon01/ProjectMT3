@@ -1289,69 +1289,12 @@
         }
       }
     },
-    "ReflectionNet": {
-      "name": "{REFLECTION_NET}",
-      "desc": "{REFLECTION_NET_DESC}",
-      "usable": true,
-      "price": 0,
-      "icon": "/Game/Assets/Icons/mting-1279.png",
-      "cost": true,
-      "_graph": {
-        "nodeGraph": {
-          "onUse": {
-            "nodes": [],
-            "links": []
-          }
-        },
-        "startNodes": {
-          "onUse": null
-        }
-      }
-    },
-    "ItemBag": {
-      "name": "{ITEM_BAG}",
-      "desc": "{ITEM_BAG_DESC}",
-      "usable": true,
-      "price": 0,
-      "icon": "/Game/Assets/Icons/mting-1265.png",
-      "cost": true,
-      "_graph": {
-        "nodeGraph": {
-          "onUse": {
-            "nodes": [],
-            "links": []
-          }
-        },
-        "startNodes": {
-          "onUse": null
-        }
-      }
-    },
     "EternalIce": {
       "name": "{ETERNAL_ICE}",
       "desc": "{ETERNAL_ICE_DESC}",
       "usable": true,
       "price": 0,
       "icon": "/Game/Assets/Icons/classic-items-2-0.png",
-      "cost": true,
-      "_graph": {
-        "nodeGraph": {
-          "onUse": {
-            "nodes": [],
-            "links": []
-          }
-        },
-        "startNodes": {
-          "onUse": null
-        }
-      }
-    },
-    "DivineShield": {
-      "name": "{DIVINE_SHIELD}",
-      "desc": "{DIVINE_SHIELD_DESC}",
-      "usable": true,
-      "price": 0,
-      "icon": "/Game/Assets/Icons/mting-1280.png",
       "cost": true,
       "_graph": {
         "nodeGraph": {
