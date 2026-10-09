@@ -11,6 +11,7 @@ return {
     ["bravorcome"] = false,
     ["bravorshow"] = false,
     ["burnInMap"] = 50,
+    ["burnWhenHasSnow"] = 10,
     ["floor25Phase"] = 0,
     ["fly"] = false,
     ["mbook"] = false,

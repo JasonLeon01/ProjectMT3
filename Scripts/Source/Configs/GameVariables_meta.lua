@@ -13,6 +13,7 @@ local _METADATA = {
             "bravorcome",
             "bravorshow",
             "burnInMap",
+            "burnWhenHasSnow",
             "floor25Phase",
             "fly",
             "mbook",
@@ -51,6 +52,9 @@ local _METADATA = {
             type = "bool",
         },
         ["burnInMap"] = {
+            type = "int",
+        },
+        ["burnWhenHasSnow"] = {
             type = "int",
         },
         ["floor25Phase"] = {
