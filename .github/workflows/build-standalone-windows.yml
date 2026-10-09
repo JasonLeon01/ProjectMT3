@@ -3,6 +3,8 @@ name: Build Windows Standalone
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.github/**'
   workflow_dispatch:
 
 permissions:
@@ -15,8 +17,14 @@ concurrency:
   queue: max
 
 jobs:
+  daily:
+    name: Check first daily push
+    uses: ./.github/workflows/daily-push-gate.yml
+
   check:
     name: Select package inputs
+    needs: daily
+    if: needs.daily.outputs.should_run == 'true'
     uses: ./.github/workflows/package-inputs.yml
     with:
       platform: windows-x64
