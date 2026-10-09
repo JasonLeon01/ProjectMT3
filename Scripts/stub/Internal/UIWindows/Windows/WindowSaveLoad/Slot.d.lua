@@ -22,15 +22,10 @@ function Window.new(owner) end
 ---@return Source.Windows.WindowSaveSlot
 function Window.FromView(ui, owner) end
 
-function Window:bind() end
-
 ---@param slot integer
 function Window:confirmSlot(slot) end
 
 function Window:dispose() end
-
----@return boolean
-function Window:isReady() end
 
 ---@param kwargs Engine.UiInputEventArguments
 function Window:onKeyDown(kwargs) end
