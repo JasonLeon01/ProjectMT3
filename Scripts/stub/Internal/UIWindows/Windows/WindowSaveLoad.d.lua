@@ -87,19 +87,14 @@ function Window:notifySlotIndexMaybeChanged(index) end
 ---@param slot integer
 function Window:onSlotConfirm(slot) end
 
-function Window:onSlotsReady() end
-
 ---@brief Apply a zero-based tab selection without changing slot cursor or scroll state.
 ---@param index integer
 function Window:onTabSelected(index) end
 
----@param _ number
-function Window:onTick(_) end
-
 ---@brief Open the save/load UI with the slot list focused.
 ---
 --- Defaults to Load. Pass `"save"` to open the Save tab when tabs are present.
---- Selects the latest existing save, or the first slot when none exists.
+--- Selects the latest existing save before showing the window, or the first slot when none exists.
 ---@param transitionProfile Enums.WindowTransitionProfile | nil
 ---@param initialMode       "load" | "save" | nil
 ---@param dockPosition      sf.Vector2f | nil
