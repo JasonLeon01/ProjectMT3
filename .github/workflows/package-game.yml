@@ -5,6 +5,12 @@ on:
     branches: [main]
     paths-ignore:
       - '.github/**'
+      - '**/*.md'
+      - '.vscode/**'
+      - '.gitignore'
+      - '.emmyrc.json'
+      - '.clang-format'
+      - '.clang-tidy'
   workflow_dispatch:
 
 permissions:
@@ -17,14 +23,8 @@ concurrency:
   queue: max
 
 jobs:
-  daily:
-    name: Check first daily push
-    uses: ./.github/workflows/daily-push-gate.yml
-
   check:
     name: Select package inputs
-    needs: daily
-    if: needs.daily.outputs.should_run == 'true'
     uses: ./.github/workflows/package-inputs.yml
     secrets:
       LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
