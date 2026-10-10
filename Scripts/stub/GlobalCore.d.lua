@@ -71,6 +71,7 @@
 ---@field TimerEntry GlobalCore.TimerEntry
 ---@field MapPanoramaSettings GlobalCore.MapPanoramaSettings
 ---@field PanoramaController GlobalCore.PanoramaController
+---@field PreviewSprite GlobalCore.PreviewSprite
 ---@field RuntimeDiagnostics GlobalCore.RuntimeDiagnostics
 ---@field SceneBase GlobalCore.SceneBase
 ---@field SceneManager GlobalCore.SceneManager
@@ -968,12 +969,18 @@ function GameMapRenderer.init(self, map, tilemap, camera, layerNames, coverAlpha
 ---@param camera GlobalCore.Camera|nil
 ---@return nil
 function GameMapRenderer:setCamera(camera) end
+---@param sprites GlobalCore.PreviewSprite[]
+---@return nil
+function GameMapRenderer:setPreviewSprites(sprites) end
+---@param visibility boolean[]
+---@return nil
+function GameMapRenderer:setPreviewVisibility(visibility) end
 ---@param target sf.RenderTarget
 ---@param states sf.RenderStates
 ---@param applyPlayerCover boolean
 ---@param shaderTime number
 ---@param materialRevision integer
----@param drawLayerEffects fun(arg1: string): nil
+---@param drawLayerEffects fun(arg1: string): nil|nil
 ---@return nil
 function GameMapRenderer:drawContent(target, states, applyPlayerCover, shaderTime, materialRevision, drawLayerEffects) end
 ---@param target sf.RenderTarget
@@ -1663,6 +1670,29 @@ function PanoramaController.isActive() end
 ---@return nil
 function PanoramaController.drawUnderlay(camera, ambientLight) end
 GlobalCore.PanoramaController = PanoramaController
+
+---@class GlobalCore.PreviewSprite
+---@field layer string
+---@field texture sf.Texture|nil
+---@field rect sf.IntRect
+---@field position sf.Vector2f
+---@field mapPosition sf.Vector2i
+---@field translation sf.Vector2f
+---@field rotation number
+---@field scale sf.Vector2f
+---@field origin sf.Vector2f
+---@field visible boolean
+---@field hue number
+---@field shaderPath string
+---@field parentIndex integer
+local PreviewSprite = {}
+---@param values table
+---@return GlobalCore.PreviewSprite
+function PreviewSprite.new(values) end
+---@param self GlobalCore.PreviewSprite
+---@param values table
+function PreviewSprite.init(self, values) end
+GlobalCore.PreviewSprite = PreviewSprite
 
 ---@class GlobalCore.RuntimeDiagnostics
 local RuntimeDiagnostics = {}

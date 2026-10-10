@@ -42,8 +42,9 @@ function Window:onTick(deltaTime) end
 ---@brief Rebuild the list from map key/name pairs.
 ---
 --- - @param entries Region map entries to display.
----@param entries table
-function Window:refreshMaps(entries) end
+---@param entries        table
+---@param selectedMapKey string | nil Final selection before the preview is refreshed.
+function Window:refreshMaps(entries, selectedMapKey) end
 
 function Window:refreshRows() end
 
