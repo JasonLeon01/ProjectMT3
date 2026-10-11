@@ -3,10 +3,22 @@ local GlobalCore = require("GlobalCore")
 local Tutorial = require("Global.Tutorial")
 local Config = require("Source.Configs.Tutorial")
 local Locale = require("Source.Locale.Core")
+local InputPresentation = require("Source.Utils.InputPresentation")
 local LazyWindow = require("Internal.UIBase.LazyWindow")
 
 ---@type fun(value: string): string
 local LOC = Locale.ApplyStringLocaleFormat
+
+---@param value string | fun(): string
+---@return string
+local function resolveText(value)
+    if Class.isInstance(value, "function") then
+        ---@cast value fun(): string
+        return LOC(value())
+    end
+    ---@cast value string
+    return LOC(value)
+end
 
 ---@param key      string
 ---@param finished boolean
@@ -38,6 +50,7 @@ function TutorialController:init(scene)
     self._player = nil
     self._moveEnabled = false
     self._disposed = false
+    self._inputDevice = InputPresentation.GetDevice()
     self._window = LazyWindow.new(function ()
         local WindowTutorial = require("Source.Windows.WindowTutorial")
 
@@ -82,6 +95,10 @@ function TutorialController:update()
     if self._disposed then
         return
     end
+    if self._inputDevice ~= InputPresentation.GetDevice() then
+        self._inputDevice = InputPresentation.GetDevice()
+        self:refreshLocale()
+    end
     local window = self._window:peek()
     if self._current ~= nil and window ~= nil and window:isFinished() then
         self._current.operation:complete(true)
@@ -105,7 +122,7 @@ function TutorialController:update()
         return
     end
     local config = Config[request.key]
-    local text = LOC(config.text)
+    local text = resolveText(config.text)
     if text == "" then
         request.operation:complete(true)
         self._requests[request.key] = nil
@@ -129,7 +146,7 @@ end
 function TutorialController:refreshLocale()
     local window = self._window:peek()
     if self._current ~= nil and window ~= nil then
-        window:refreshText(LOC(Config[self._current.key].text))
+        window:refreshText(resolveText(Config[self._current.key].text))
     end
 end
 

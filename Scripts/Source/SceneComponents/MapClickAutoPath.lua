@@ -1,13 +1,12 @@
 local Engine = require("Engine")
-local GlobalCore = require("GlobalCore")
 local ComponentBase = require("Global.Components.ComponentBase")
 local Pool = require("Global.Pool")
 local MovementSpecials = require("Source.Utils.MovementSpecials")
 local MapClickAutoPathRuntime = require("Source.SceneComponents.MapClickAutoPathRuntime")
+local MapInput = require("Source.Utils.MapInput")
 
 local Input = Engine.Input
 local Actor = Engine.Actor
-local Display = GlobalCore.Display
 local NEIGHBOUR_OFFSET_DOWN = sf.Vector2i.new(0, 1)
 local NEIGHBOUR_OFFSET_UP = sf.Vector2i.new(0, -1)
 local NEIGHBOUR_OFFSET_RIGHT = sf.Vector2i.new(1, 0)
@@ -398,30 +397,7 @@ end
 ---@param positionY number
 ---@return sf.Vector2i | nil
 function MapClickAutoPath:_getInputMapPosition(positionX, positionY)
-    local scale = Display.getScale()
-    if scale > 0.0 then
-        positionX = math.floor(positionX / scale)
-        positionY = math.floor(positionY / scale)
-    end
-    local mapViewRect = self._parent:getMapViewRect()
-    local mapViewPixel = Pool.Get("sf.Vector2i", sf.Vector2i, {
-        x = positionX,
-        y = positionY
-    })
-    if not mapViewRect:contains(mapViewPixel) then
-        Pool.Put("sf.Vector2i", mapViewPixel)
-        return nil
-    end
-    mapViewPixel.x = mapViewPixel.x - mapViewRect.position.x
-    mapViewPixel.y = mapViewPixel.y - mapViewRect.position.y
-    local camera = assert(self._parent:getCamera(), "Map click pathfinding requires a camera")
-    local worldPos = camera:mapPixelToCoords(mapViewPixel)
-    Pool.Put("sf.Vector2i", mapViewPixel)
-    local mapPosition = sf.Vector2i.new(
-        math.floor(worldPos.x / Engine.GetCellSize()), math.floor(worldPos.y / Engine.GetCellSize())
-    )
-    ---@cast mapPosition sf.Vector2i
-    return mapPosition
+    return MapInput.GetMapPosition(self._parent, positionX, positionY)
 end
 
 ---@param position sf.Vector2i

@@ -54,6 +54,9 @@
 ---@field ui                    Internal.UI.WindowBattle
 ---@field _scene                Source.Gameplay.GameplayScene
 ---@field _generation           integer
+---@field _inputDevice          Engine.InputHintDevice | nil
+---@field _attackSkillKeys      Engine.InputActionKey[]
+---@field _defenseSkillKeys     Engine.InputActionKey[]
 ---@field _running              boolean
 ---@field _criticalSelected     boolean
 ---@field _attackSkillSelected  boolean
@@ -86,7 +89,7 @@ function Controller:setPortrait(name, actor) end
 ---@param state Source.Windows.WindowBattle.BattlerState
 ---@param side  "Player" | "Enemy"
 function Controller:observeState(state, side) end
----@param side "Player" | "Enemy"
+---@param side  "Player" | "Enemy"
 ---@param state Source.Windows.WindowBattle.BattlerState
 ---@param field "ATK" | "DEF"
 function Controller:refreshAttributeDelta(side, state, field) end
@@ -104,7 +107,7 @@ function Controller:changeHP(state, delta) end
 ---@param defender Source.Windows.WindowBattle.BattlerState
 function Controller:applyAttackStates(attacker, defender) end
 ---@param attacker Source.Windows.WindowBattle.BattlerState
----@param target Source.Windows.WindowBattle.BattlerState
+---@param target   Source.Windows.WindowBattle.BattlerState
 ---@param critical boolean
 function Controller:applyAttackEffects(attacker, target, critical) end
 ---@param delay  number
@@ -190,6 +193,7 @@ function Controller:refreshActionButton(name, selected, enabled) end
 function Controller:refreshCritical() end
 function Controller:playBreathAnimation() end
 function Controller:refreshLocale() end
+function Controller:refreshInputHints() end
 function Controller:bind() end
 function Controller:refresh() end
 function Controller:dispose() end

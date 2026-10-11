@@ -1,10 +1,11 @@
 ---@meta
 
 ---@class Source.Windows.WindowHotkeys.Controller: Internal.UIBase.UiController
----@field ui       Internal.UI.WindowHotkeys
----@field host     Source.Windows.WindowHotkeys
----@field _onClose fun()
----@field ENTRIES  string[]
+---@field ui           Internal.UI.WindowHotkeys
+---@field host         Source.Windows.WindowHotkeys
+---@field _inputDevice Engine.InputHintDevice | nil
+---@field _onClose     fun()
+---@field ENTRIES      string[]
 local Controller = {}
 
 ---@param onClose fun()
@@ -14,6 +15,9 @@ function Controller:init(onClose) end
 function Controller:open(mapRect) end
 
 function Controller:refreshLocale() end
+
+---@param deltaTime number
+function Controller:onTick(deltaTime) end
 function Controller:close() end
 
 ---@param kwargs Engine.UiInputEventArguments

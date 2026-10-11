@@ -147,6 +147,8 @@ function Window:refreshBreath(side, state) end
 
 function Window:refreshCritical() end
 
+function Window:refreshInputHints() end
+
 function Window:refreshLocale() end
 
 function Window:requestAttackSkill() end

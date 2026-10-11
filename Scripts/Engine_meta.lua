@@ -2582,6 +2582,18 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {},
         },
+        getInputHintDevice = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                enum = "Enums.Engine.InputHintDevice",
+            },
+            },
+            Pure = true,
+        },
         isFocused = {
             type = "function",
             parameters = { "self", self = { "Engine", "Service" } },
@@ -2843,6 +2855,25 @@ local _METADATA = {
                 "return",
                 ["return"] = "bool",
             },
+        },
+        isTouchLongPressed = {
+            type = "function",
+            parameters = { "self", "handled", self = { "Engine", "Service" }, handled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getTouchLongPressPosition = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "Service" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
         },
         isTouchEnded = {
             type = "function",
@@ -7835,6 +7866,17 @@ local _METADATA = {
             parameters = { "value", value = "bool" },
             ["return"] = {},
         },
+        getInputHintDevice = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = {
+                enum = "Enums.Engine.InputHintDevice",
+            },
+            },
+            Pure = true,
+        },
         isFocused = {
             type = "function",
             parameters = {},
@@ -8070,6 +8112,23 @@ local _METADATA = {
                 "return",
                 ["return"] = "bool",
             },
+        },
+        isTouchLongPressed = {
+            type = "function",
+            parameters = { "handled", handled = "bool" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+        },
+        getTouchLongPressPosition = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Vector2i",
+            },
+            Pure = true,
         },
         isTouchEnded = {
             type = "function",

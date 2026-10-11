@@ -22,6 +22,9 @@
 ---@field BreathLit           Engine.WrapBox
 ---@field Canvas              Engine.Canvas
 ---@field Canvas2             Engine.Canvas
+---@field ControlsButton      Engine.Button
+---@field ControlsButtonArea  Engine.Canvas
+---@field ControlsText        Engine.PlainText
 ---@field DefDebuff           Engine.PlainText
 ---@field DefLabel            Engine.PlainText
 ---@field DefValue            Engine.PlainText
@@ -39,7 +42,6 @@
 ---@field MagicLabel          Engine.PlainText
 ---@field MagicValue          Engine.PlainText
 ---@field MapName             Engine.PlainText
----@field PlainText           Engine.PlainText
 ---@field PlayerName          Engine.PlainText
 ---@field Root                Engine.Canvas
 ---@field StateHost           Engine.Canvas

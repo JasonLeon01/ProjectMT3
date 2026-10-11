@@ -42,6 +42,7 @@
 ---@field _mapBuilder                           Source.SceneComponents.SceneMapBuilder
 ---@field _mapAudio                             Source.SceneComponents.SceneMapAudioController
 ---@field _mapMessages                          Source.SceneComponents.MapMessages
+---@field _messageGesture                       Source.SceneComponents.MapMessageGesture
 ---@field _windowInscription                    Internal.UIBase.LazyWindow<Source.Windows.WindowInscription>
 ---@field _tutorials                            Source.SceneComponents.Tutorial
 ---@field _playerHUD                            Source.Windows.PlayerAttrHUD

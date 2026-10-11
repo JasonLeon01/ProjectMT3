@@ -11,16 +11,18 @@ local Window = {}
 ---@param inst                 Source.GameInstance.GameInstance
 ---@param openMenuCallback     function | nil
 ---@param switchPlayerCallback fun(right: boolean): boolean | nil
+---@param openControlsCallback fun() | nil
 ---@return Source.Windows.PlayerAttrHUD
-function Window.new(inst, openMenuCallback, switchPlayerCallback) end
+function Window.new(inst, openMenuCallback, switchPlayerCallback, openControlsCallback) end
 
 --- Construct the party HUD with menu and player-switch callbacks.
 ---@param inst                 Source.GameInstance.GameInstance
 ---@param openMenuCallback     function | nil
 ---@param switchPlayerCallback fun(right: boolean): boolean | nil
+---@param openControlsCallback fun() | nil
 ---@param ui                   Internal.UI.PlayerAttrHUD
 ---@return Source.Windows.PlayerAttrHUD
-function Window.FromView(ui, inst, openMenuCallback, switchPlayerCallback) end
+function Window.FromView(ui, inst, openMenuCallback, switchPlayerCallback, openControlsCallback) end
 
 function Window:bind() end
 
@@ -44,6 +46,8 @@ function Window:getPlayer() end
 ---@param deltaTime number
 function Window:onTick(deltaTime) end
 
+function Window:openControls() end
+
 function Window:openMenu() end
 
 function Window:playBreathAnimation() end
@@ -59,6 +63,8 @@ function Window:refreshBreath() end
 --- - @param payload EventBus payload. Locale events have no owner; player and ability events include `owner`.
 ---@param payload Source.Configs.EventChangePayload | { language: string } | nil
 function Window:refreshFromEvent(payload) end
+
+function Window:refreshInputHints() end
 
 ---@param language string | nil
 ---@return boolean

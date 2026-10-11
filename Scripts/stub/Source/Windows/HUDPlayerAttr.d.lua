@@ -5,6 +5,8 @@
 ---@class Source.Windows.PlayerAttrHUD.Controller: Internal.UIBase.UiController
 ---@field host                   Source.Windows.PlayerAttrHUD
 ---@field _player                Source.MapActors.Player.Player
+---@field _inputDevice           Engine.InputHintDevice | nil
+---@field _openControlsCallback  fun() | nil
 ---@field _openMenuCallback      function | nil
 ---@field ui                     Internal.UI.PlayerAttrHUD
 ---@field refreshEvents          string[]
@@ -36,7 +38,8 @@ local Controller = {}
 ---@param inst                 Source.GameInstance.GameInstance
 ---@param openMenuCallback     function | nil
 ---@param switchPlayerCallback fun(right: boolean): boolean | nil
-function Controller:init(inst, openMenuCallback, switchPlayerCallback) end
+---@param openControlsCallback fun() | nil
+function Controller:init(inst, openMenuCallback, switchPlayerCallback, openControlsCallback) end
 
 --- Rebind the party and its primary player, including after loading a save.
 ---@param inst Source.GameInstance.GameInstance
@@ -66,6 +69,8 @@ function Controller:onTick(deltaTime) end
 function Controller:getPlayer() end
 
 function Controller:openMenu() end
+function Controller:openControls() end
+function Controller:refreshInputHints() end
 
 function Controller:bind() end
 

@@ -1650,63 +1650,9 @@
         "children": []
       },
       {
-        "name": "PlainText",
-        "controlId": "Engine.PlainText",
-        "properties": {
-          "visible": true,
-          "rotation": 0,
-          "scale": [
-            1,
-            1
-          ],
-          "origin": [
-            0,
-            0
-          ],
-          "textConfig": "",
-          "font": "",
-          "characterSize": 22,
-          "bold": true,
-          "italic": false,
-          "underlined": false,
-          "strikeThrough": false,
-          "slantAngle": 0,
-          "fillColor": [
-            255,
-            255,
-            255,
-            255
-          ],
-          "letterSpacing": 1.1,
-          "lineSpacing": 1,
-          "lineAlignment": "default",
-          "outlineColor": [
-            0,
-            0,
-            0,
-            255
-          ],
-          "outlineThickness": 0,
-          "glowEnabled": false,
-          "glowColor": [
-            255,
-            255,
-            255,
-            0
-          ],
-          "glowRadius": 0,
-          "glowIntensity": 0,
-          "gradientEnabled": false,
-          "gradientDirection": "vertical",
-          "gradientCurve": "",
-          "text": "- Press H -",
-          "colour": [
-            255,
-            255,
-            255,
-            255
-          ]
-        },
+        "name": "ControlsButtonArea",
+        "controlId": "Engine.Canvas",
+        "properties": {},
         "slot": {
           "anchors": {
             "min": [
@@ -1719,22 +1665,139 @@
             ]
           },
           "offsets": {
-            "left": -4,
-            "top": -4,
-            "right": 100,
-            "bottom": 34
+            "left": 0,
+            "top": 0,
+            "right": 128,
+            "bottom": 32
           },
           "alignment": [
             1,
             1
           ],
-          "autoSize": true,
+          "autoSize": false,
           "zOrder": 0
         },
-        "editor": {
-          "previewText": "- Press H -"
-        },
-        "children": []
+        "editor": {},
+        "children": [
+          {
+            "name": "ControlsButton",
+            "controlId": "Engine.Button",
+            "properties": {},
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  1,
+                  1
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 0
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "ControlsText",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "visible": true,
+              "rotation": 0,
+              "scale": [
+                1,
+                1
+              ],
+              "origin": [
+                0,
+                0
+              ],
+              "textConfig": "",
+              "font": "",
+              "characterSize": 18,
+              "bold": true,
+              "italic": false,
+              "underlined": false,
+              "strikeThrough": false,
+              "slantAngle": 0,
+              "fillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "letterSpacing": 1.1,
+              "lineSpacing": 1,
+              "lineAlignment": "default",
+              "outlineColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "outlineThickness": 0,
+              "glowEnabled": false,
+              "glowColor": [
+                255,
+                255,
+                255,
+                0
+              ],
+              "glowRadius": 0,
+              "glowIntensity": 0,
+              "gradientEnabled": false,
+              "gradientDirection": "vertical",
+              "gradientCurve": "",
+              "text": "",
+              "colour": [
+                255,
+                255,
+                255,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0.5,
+                  0.5
+                ],
+                "max": [
+                  0.5,
+                  0.5
+                ]
+              },
+              "offsets": {
+                "left": 0,
+                "top": 0,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 0
+            },
+            "editor": {
+              "previewText": "操作说明"
+            },
+            "children": []
+          }
+        ]
       }
     ]
   },
