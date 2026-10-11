@@ -9,6 +9,21 @@ on:
         type: string
         required: false
         default: ''
+    secrets:
+      LUDORK_ACTIONS_TOKEN:
+        required: false
+      AOS_ALIAS:
+        required: false
+      AOS_KEY_PASSWORD:
+        required: false
+      AOS_KEY_STORE_PASSWORD:
+        required: false
+      AOS_SIGNING_KEY:
+        required: false
+      LUDORK_SERVER_URL:
+        required: true
+      LUDORK_SERVER_KEY:
+        required: true
 
 permissions:
   contents: read
@@ -131,6 +146,9 @@ jobs:
           AOS_KEY_PASSWORD: ${{ secrets.AOS_KEY_PASSWORD }}
           AOS_KEY_STORE_PASSWORD: ${{ secrets.AOS_KEY_STORE_PASSWORD }}
           AOS_SIGNING_KEY: ${{ secrets.AOS_SIGNING_KEY }}
+          LUDORK_SERVER_ENABLED: '1'
+          LUDORK_SERVER_URL: ${{ secrets.LUDORK_SERVER_URL }}
+          LUDORK_SERVER_KEY: ${{ secrets.LUDORK_SERVER_KEY }}
         run: |
           bash .github/scripts/package-android.sh \
             "$GITHUB_WORKSPACE" \

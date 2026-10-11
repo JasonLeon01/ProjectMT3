@@ -9,6 +9,13 @@ on:
         type: string
         required: false
         default: ''
+    secrets:
+      LUDORK_ACTIONS_TOKEN:
+        required: false
+      LUDORK_SERVER_URL:
+        required: true
+      LUDORK_SERVER_KEY:
+        required: true
 
 permissions:
   contents: read
@@ -65,6 +72,10 @@ jobs:
           arch: amd64
       - name: Clean build and validate Windows package
         shell: pwsh
+        env:
+          LUDORK_SERVER_ENABLED: '1'
+          LUDORK_SERVER_URL: ${{ secrets.LUDORK_SERVER_URL }}
+          LUDORK_SERVER_KEY: ${{ secrets.LUDORK_SERVER_KEY }}
         run: |
           & ./.github/scripts/package-windows.ps1 `
             -ProjectDirectory $env:GITHUB_WORKSPACE `

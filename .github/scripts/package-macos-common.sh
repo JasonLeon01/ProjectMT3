@@ -56,6 +56,11 @@ package_exit() {
 
 init_package() {
     package_platform=$1
+    require_environment LUDORK_SERVER_URL LUDORK_SERVER_KEY
+    if [[ "${LUDORK_SERVER_ENABLED:-}" != 1 ]]; then
+        echo 'CI packaging requires LUDORK_SERVER_ENABLED=1.' >&2
+        return 1
+    fi
     require_environment GITHUB_WORKSPACE RUNNER_TEMP PROJECT_SHA LUDORK_SHA LUDORK_CHECKED_SHA LUDORK_RUN_ID LUDORK_ARTIFACT_ID
     [[ "${GITHUB_ACTIONS:-}" == true && "$(uname -s)" == Darwin && "$(uname -m)" == arm64 ]]
     project=$(cd -- "$2" && pwd)
@@ -81,6 +86,10 @@ init_package() {
     rm "$work/mounted"
     test -x "$work/tools/ScriptTools/ScriptTools"
     test -x "$work/tools/luac"
+    if ! "$work/tools/ScriptTools/ScriptTools" server-config --help >/dev/null 2>&1; then
+        echo 'This Ludork artifact lacks server-config support. Publish a new Ludork tools artifact with server-config support.' >&2
+        return 1
+    fi
 }
 
 decode_secret() {

@@ -66,6 +66,10 @@ jobs:
           arch: amd64
       - name: Clean build and validate standalone project
         shell: pwsh
+        env:
+          LUDORK_SERVER_ENABLED: '1'
+          LUDORK_SERVER_URL: ${{ secrets.LUDORK_SERVER_URL }}
+          LUDORK_SERVER_KEY: ${{ secrets.LUDORK_SERVER_KEY }}
         run: |
           & ./.github/scripts/package-windows.ps1 `
             -ProjectDirectory $env:GITHUB_WORKSPACE `
