@@ -67,6 +67,8 @@ init_package() {
     artifact=$(cd -- "$3" && pwd)
     output=$4
     ci="$project/.github/scripts/package-ci.py"
+    LUDORK_SERVER_URL=$(python3 "$ci" server-url)
+    export LUDORK_SERVER_URL
     python3 "$ci" clean "$project" "$output"
     cleanup_package_work "$package_platform"
     work="$RUNNER_TEMP/projectmt3-$package_platform-work"

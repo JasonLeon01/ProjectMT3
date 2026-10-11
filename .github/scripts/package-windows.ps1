@@ -57,6 +57,8 @@ if ($LASTEXITCODE -ne 0) {
 
 $packer = Join-Path $LudorkDirectory 'tools/pack_project.bat'
 $ci = Join-Path $ProjectDirectory '.github/scripts/package-ci.py'
+$env:LUDORK_SERVER_URL = & python $ci server-url
+if ($LASTEXITCODE -ne 0) { throw 'Server URL preparation failed.' }
 & python $ci clean $ProjectDirectory $OutputDirectory
 if ($LASTEXITCODE -ne 0) { throw 'Clean build preparation failed.' }
 if ($Mode -eq 'standalone') {

@@ -27,6 +27,15 @@ def require(condition, message):
         raise ValueError(message)
 
 
+def server_url():
+    url = os.environ.get("LUDORK_SERVER_URL", "")
+    require(bool(url), "Missing required environment variable: LUDORK_SERVER_URL")
+    # Secrets may contain host[:port]/project; leave full validation to Ludork.
+    if not re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*://", url):
+        url = "http://" + url
+    return url
+
+
 def clean(project, output):
     require(os.environ.get("GITHUB_ACTIONS") == "true", "Cleanup is only allowed on CI")
     project = project.resolve()
@@ -286,6 +295,7 @@ def metadata(project, output, platform, artifact=None, signed=False, notarized=F
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
+    sub.add_parser("server-url")
     for command in ("clean", "metadata", "prepare-standalone"):
         item = sub.add_parser(command)
         item.add_argument("project", type=Path)
@@ -302,7 +312,9 @@ def main():
     hap_parser.add_argument("path", type=Path)
     hap_parser.add_argument("project", type=Path)
     args = parser.parse_args()
-    if args.command == "clean":
+    if args.command == "server-url":
+        print(server_url())
+    elif args.command == "clean":
         clean(args.project, args.output)
     elif args.command == "prepare-standalone":
         prepare_standalone(args.project, args.output)
