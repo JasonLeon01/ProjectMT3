@@ -9,6 +9,27 @@ on:
         type: string
         required: false
         default: ''
+    secrets:
+      LUDORK_ACTIONS_TOKEN:
+        required: false
+      APPLE_TEAM_ID:
+        required: false
+      IOS_SIGNING_CERTIFICATE:
+        required: false
+      IOS_SIGNING_CERTIFICATE_PASSWORD:
+        required: false
+      IOS_PROVISIONING_PROFILE:
+        required: false
+      APP_STORE_CONNECT_KEY_ID:
+        required: false
+      APP_STORE_CONNECT_ISSUER_ID:
+        required: false
+      APP_STORE_CONNECT_PRIVATE_KEY:
+        required: false
+      LUDORK_SERVER_URL:
+        required: true
+      LUDORK_SERVER_KEY:
+        required: true
 
 permissions:
   contents: read
@@ -88,6 +109,9 @@ jobs:
           IOS_TESTFLIGHT_GROUP: ${{ vars.IOS_TESTFLIGHT_GROUP }}
           IOS_USES_NON_EXEMPT_ENCRYPTION: ${{ vars.IOS_USES_NON_EXEMPT_ENCRYPTION }}
           IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE: ${{ vars.IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE }}
+          LUDORK_SERVER_ENABLED: '1'
+          LUDORK_SERVER_URL: ${{ secrets.LUDORK_SERVER_URL }}
+          LUDORK_SERVER_KEY: ${{ secrets.LUDORK_SERVER_KEY }}
         run: |
           bash .github/scripts/package-ios.sh \
             "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-ios-artifact" "$RUNNER_TEMP/projectmt3-ios-package"

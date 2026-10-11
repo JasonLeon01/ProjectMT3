@@ -331,7 +331,7 @@ function Scene.ShowEnemyBook(self)
 end
 
 ---@param self   Source.Scenes.SceneMap.SceneMap
----@param window Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor> | Internal.UIBase.LazyWindow<Source.Windows.WindowBottle> | Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys>
+---@param window Internal.UIBase.LazyWindow<Source.Windows.WindowMagicDoor> | Internal.UIBase.LazyWindow<Source.Windows.WindowBottle> | Internal.UIBase.LazyWindow<Source.Windows.WindowHotkeys> | Internal.UIBase.LazyWindow<Source.Windows.WindowInscription>
 ---@return boolean
 local function openMapShortcut(self, window)
     if self:isInputBlocked() or not self:_canOpenMenu() or self._mapInputBlockFrames > 0 or self._mapTransferInProgress
@@ -365,6 +365,16 @@ end
 ---@return boolean
 function Scene.ShowHotkeys(self)
     return openMapShortcut(self, self._windowHotkeys)
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
+---@return boolean
+function Scene.ShowMessages(self)
+    if self._mapMessages.submitting then
+        self._mapMessages:tip("MESSAGES_SENDING")
+        return true
+    end
+    return openMapShortcut(self, self._windowInscription)
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap

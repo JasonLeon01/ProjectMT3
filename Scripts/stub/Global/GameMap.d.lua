@@ -42,6 +42,7 @@
 ---@field [7] number
 
 ---@class (partial) GameMap: GlobalCore.GameMapBase
+---@field _billboardOverlayLayers   table<string, boolean>
 ---@field DefaultCoverAlpha         integer
 ---@field HideDisconnectedRegions   boolean                                                                                                                                                         Hide tile-disconnected areas outside the player or preview observer region; defaults to false.
 ---@field MapViewRect               sf.IntRect                                                                                                                                                      Logical-screen rectangle occupied by the map canvas; defaults to `(192, 32, 416, 416)`.
@@ -69,6 +70,15 @@
 ---@field mapName                   string
 ---@field new                       fun(mapName: string, tilemap: Engine.Tilemap, camera?: GlobalCore.Camera, previewOnly?: boolean, sparseWorldConfig?: Global.GameMap.SparseWorldConfig): GameMap
 local GameMap = {}
+
+--- Add an empty session billboard layer first, drawing its text above terrain.
+---@param name string
+function GameMap:prependBillboardLayer(name) end
+
+--- Spawn a session-only actor outside world-region persistence and streaming ownership.
+---@param actor Engine.Actor
+---@param layer string
+function GameMap:spawnTransientActor(actor, layer) end
 
 ---@brief Construct a game map.
 ---

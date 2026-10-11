@@ -19,6 +19,7 @@ local RegionTitleController = require("Source.Scenes.SceneMap.RegionTitle.Contro
 local PlayerAttrHUD = require("Source.Windows.HUDPlayerAttr")
 local SceneMapWindows = require("Source.Scenes.SceneMap.Windows")
 local TutorialController = require("Source.SceneComponents.Tutorial")
+local MapMessages = require("Source.SceneComponents.MapMessages")
 
 local Input = Engine.Input
 local Display = GlobalCore.Display
@@ -65,6 +66,7 @@ function Scene:onCreate()
     self.player = self.inst:getPlayer()
     self._mapBuilder = SceneMapBuilder.new()
     self._mapAudio = SceneMapAudioController.new()
+    self._mapMessages = MapMessages.new(self)
     ---@type Source.Scenes.SceneMap.SceneMap[]
     local sceneRef = setmetatable({ self }, { __mode = "v" })
     self._playerHUD = PlayerAttrHUD.new(
@@ -118,6 +120,7 @@ function Scene:onCreate()
 end
 
 function Scene:onQuit()
+    self._mapMessages:cancel()
     SceneMapWindows.CloseShortcuts(self)
     SceneMapInteractions.CancelAsyncOperations(self)
     self._tutorials:cancel()
@@ -130,6 +133,7 @@ function Scene:onQuit()
 end
 
 function Scene:onDestroy()
+    self._mapMessages:cancel()
     SceneMapInteractions.CancelAsyncOperations(self)
     self._tutorials:dispose()
     self:cancelBattle()
@@ -153,6 +157,7 @@ function Scene:onDestroy()
 end
 
 function Scene:refreshLocale()
+    self._mapMessages:refreshLocale()
     self._tutorials:refreshLocale()
     local messageWindow = self._messageWindow:peek()
     if self._dialogueLocaleSource ~= nil and messageWindow ~= nil and messageWindow:isInDialogue() then
@@ -173,7 +178,7 @@ function Scene:refreshLocale()
     local windows = {
         self._windowBattle, self._windowItem, self._windowEquip, self._windowShop, self._windowAttrShop,
         self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowFloorTeleporter, self._windowPlayerName,
-        self._windowHotkeys
+        self._windowHotkeys, self._windowInscription
     }
     for _, lazyWindow in ipairs(windows) do
         local window = lazyWindow:peek()
@@ -284,6 +289,7 @@ function Scene:cancelBattle()
 end
 
 function Scene:loadMap(mapPath, initialPosition)
+    self._mapMessages:cancel()
     SceneMapWindows.CloseShortcuts(self)
     self:cancelTimers()
     SceneMapInteractions.CancelAsyncOperations(self)
@@ -353,7 +359,12 @@ function Scene:loadMap(mapPath, initialPosition)
         kind = PlayerChangeKind.Map
     })
     Logging.info("Loaded map %s in %.3fs", mapFile, perfCounter() - startTime)
+    self._mapMessages:beginMap(gameMap, mapFile)
     return mapFile
+end
+
+function Scene:showMessages()
+    return SceneMapInteractions.ShowMessages(self)
 end
 
 function Scene:_updateWorldEnvironment(deltaTime, force)

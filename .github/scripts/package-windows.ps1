@@ -8,6 +8,15 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+foreach ($variable in @('LUDORK_SERVER_URL', 'LUDORK_SERVER_KEY')) {
+    if (-not [Environment]::GetEnvironmentVariable($variable)) {
+        throw "Missing required environment variable: $variable"
+    }
+}
+if ($env:LUDORK_SERVER_ENABLED -ne '1') {
+    throw 'CI packaging requires LUDORK_SERVER_ENABLED=1.'
+}
+
 $archives = @(Get-ChildItem -LiteralPath $LudorkDirectory -Filter 'Ludork-editor-*-windows-x64.7z' -File)
 if ($archives.Count -gt 0) {
     if ($archives.Count -ne 1) {
@@ -40,6 +49,12 @@ foreach ($variable in @('PROJECT_SHA', 'LUDORK_SHA', 'LUDORK_CHECKED_SHA', 'LUDO
     }
 }
 
+$scriptTools = Join-Path $LudorkDirectory 'tools/ScriptTools/ScriptTools.exe'
+& $scriptTools server-config --help *> $null
+if ($LASTEXITCODE -ne 0) {
+    throw 'This Ludork artifact lacks server-config support. Publish a new Ludork tools artifact with server-config support.'
+}
+
 $packer = Join-Path $LudorkDirectory 'tools/pack_project.bat'
 $ci = Join-Path $ProjectDirectory '.github/scripts/package-ci.py'
 & python $ci clean $ProjectDirectory $OutputDirectory
@@ -47,12 +62,20 @@ if ($LASTEXITCODE -ne 0) { throw 'Clean build preparation failed.' }
 if ($Mode -eq 'standalone') {
     $standaloneBuilder = Join-Path $LudorkDirectory 'tools/build_standalone.bat'
     $standaloneDirectory = Join-Path $OutputDirectory 'ProjectMT3'
-    & $standaloneBuilder $ProjectDirectory $standaloneDirectory Release
+    try {
+        & $standaloneBuilder $ProjectDirectory $standaloneDirectory Release
+        if ($LASTEXITCODE -ne 0) {
+            throw "Ludork standalone build failed with exit code $LASTEXITCODE"
+        }
+    } finally {
+        & $scriptTools server-config cleanup $ProjectDirectory
+        if ($LASTEXITCODE -ne 0) { throw 'Server configuration cleanup failed.' }
+    }
 } else {
     & $packer --dev --encrypt-data --compile-lua --use-ldpak $ProjectDirectory $OutputDirectory
-}
-if ($LASTEXITCODE -ne 0) {
-    throw "Ludork packaging failed with exit code $LASTEXITCODE"
+    if ($LASTEXITCODE -ne 0) {
+        throw "Ludork packaging failed with exit code $LASTEXITCODE"
+    }
 }
 
 # Ludork chooses the game directory name from the project's application name.
@@ -70,7 +93,6 @@ $metadataOptions = @()
 if ($Mode -eq 'standalone') {
     & python $ci prepare-standalone $ProjectDirectory $gameDirectory
     if ($LASTEXITCODE -ne 0) { throw 'Standalone project preparation failed.' }
-    $scriptTools = Join-Path $LudorkDirectory 'tools/ScriptTools/ScriptTools.exe'
     & $scriptTools ui-preview validate $gameDirectory
     if ($LASTEXITCODE -ne 0) { throw 'Standalone UI preview validation failed.' }
     $metadataOptions = @('--standalone')

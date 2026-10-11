@@ -1,0 +1,16 @@
+{
+  "parent": "Engine.Actor",
+  "attrs": {
+    "texturePath": "",
+    "animatable": false,
+    "collisionEnabled": false,
+    "tickable": false,
+    "visible": true,
+    "billboardComp": {
+      "showRange": 128,
+      "items": [{ "kind": "text", "text": "", "fontSize": 12, "color": [255, 255, 255, 255] }]
+    }
+  },
+  "graph": { "nodeGraph": {}, "startNodes": {} },
+  "type": "blueprint"
+}

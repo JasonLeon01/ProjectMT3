@@ -9,6 +9,25 @@ on:
         type: string
         required: false
         default: ''
+    secrets:
+      LUDORK_ACTIONS_TOKEN:
+        required: false
+      APPLE_TEAM_ID:
+        required: false
+      MACOS_SIGNING_CERTIFICATE:
+        required: false
+      MACOS_SIGNING_CERTIFICATE_PASSWORD:
+        required: false
+      APP_STORE_CONNECT_KEY_ID:
+        required: false
+      APP_STORE_CONNECT_ISSUER_ID:
+        required: false
+      APP_STORE_CONNECT_PRIVATE_KEY:
+        required: false
+      LUDORK_SERVER_URL:
+        required: true
+      LUDORK_SERVER_KEY:
+        required: true
 
 permissions:
   contents: read
@@ -67,6 +86,9 @@ jobs:
           APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          LUDORK_SERVER_ENABLED: '1'
+          LUDORK_SERVER_URL: ${{ secrets.LUDORK_SERVER_URL }}
+          LUDORK_SERVER_KEY: ${{ secrets.LUDORK_SERVER_KEY }}
         run: |
           bash .github/scripts/package-macos.sh \
             "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-macos-artifact" "$RUNNER_TEMP/projectmt3-macos-package"

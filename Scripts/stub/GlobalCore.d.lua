@@ -14,6 +14,24 @@
 
 ---@alias SceneRuntime GlobalCore.SceneBase
 
+---@class GlobalCore.ServerNetworkState
+---@field Normal GlobalCore.ServerNetworkState
+---@field Weak GlobalCore.ServerNetworkState
+---@field Disconnected GlobalCore.ServerNetworkState
+
+---@class GlobalCore.ServerErrorCode
+---@field None GlobalCore.ServerErrorCode
+---@field Disabled GlobalCore.ServerErrorCode
+---@field InvalidArgument GlobalCore.ServerErrorCode
+---@field AuthenticationFailed GlobalCore.ServerErrorCode
+---@field InvalidWriteToken GlobalCore.ServerErrorCode
+---@field Timeout GlobalCore.ServerErrorCode
+---@field ConnectionFailed GlobalCore.ServerErrorCode
+---@field InvalidResponse GlobalCore.ServerErrorCode
+---@field StorageFailure GlobalCore.ServerErrorCode
+---@field ServerFailure GlobalCore.ServerErrorCode
+---@field RateLimited GlobalCore.ServerErrorCode
+
 ---@class GlobalCore.WeatherType
 ---@field NONE GlobalCore.WeatherType
 ---@field RAIN GlobalCore.WeatherType
@@ -76,12 +94,24 @@
 ---@field SceneBase GlobalCore.SceneBase
 ---@field SceneManager GlobalCore.SceneManager
 ---@field ScreenEffects GlobalCore.ScreenEffects
+---@field ServerAccountListResult GlobalCore.ServerAccountListResult
+---@field ServerAccountResult GlobalCore.ServerAccountResult
+---@field ServerConnectionResult GlobalCore.ServerConnectionResult
+---@field ServerFieldEntry GlobalCore.ServerFieldEntry
+---@field ServerFieldListResult GlobalCore.ServerFieldListResult
+---@field ServerReadResult GlobalCore.ServerReadResult
+---@field ServerResult GlobalCore.ServerResult
+---@field ServerTokenResult GlobalCore.ServerTokenResult
+---@field ServerWriteToken GlobalCore.ServerWriteToken
+---@field Server GlobalCore.Server
 ---@field System GlobalCore.System
 ---@field Transition GlobalCore.Transition
 ---@field UIManager GlobalCore.UIManager
 ---@field WeatherController GlobalCore.WeatherController
 ---@field WorldStreamingState GlobalCore.WorldStreamingState
 ---@field WorldStreamingStats GlobalCore.WorldStreamingStats
+---@field ServerNetworkState GlobalCore.ServerNetworkState
+---@field ServerErrorCode GlobalCore.ServerErrorCode
 ---@field WeatherType GlobalCore.WeatherType
 ---@field WorldRegionState GlobalCore.WorldRegionState
 ---@field WorldRegionDemand GlobalCore.WorldRegionDemand
@@ -90,6 +120,8 @@
 ---@type GlobalCoreModule
 GlobalCore = {}
 
+GlobalCore.ServerNetworkState = {}
+GlobalCore.ServerErrorCode = {}
 GlobalCore.WeatherType = {}
 GlobalCore.WorldRegionState = {}
 GlobalCore.WorldRegionDemand = {}
@@ -1806,6 +1838,114 @@ function ScreenEffects.stopShake() end
 ---@return boolean
 function ScreenEffects.isShaking() end
 GlobalCore.ScreenEffects = ScreenEffects
+
+---@class GlobalCore.ServerAccountListResult : GlobalCore.ServerResult
+---@field accounts string[]
+local ServerAccountListResult = {}
+GlobalCore.ServerAccountListResult = ServerAccountListResult
+
+---@class GlobalCore.ServerAccountResult : GlobalCore.ServerResult
+--- Whether the account data directory exists; meaningful only on success.
+---@field exists boolean
+local ServerAccountResult = {}
+GlobalCore.ServerAccountResult = ServerAccountResult
+
+---@class GlobalCore.ServerConnectionResult : GlobalCore.ServerResult
+---@field state GlobalCore.ServerNetworkState
+---@field roundTripMs number|nil
+local ServerConnectionResult = {}
+GlobalCore.ServerConnectionResult = ServerConnectionResult
+
+---@class GlobalCore.ServerFieldEntry
+---@field key string
+---@field value Engine.RuntimeDataValue
+local ServerFieldEntry = {}
+GlobalCore.ServerFieldEntry = ServerFieldEntry
+
+---@class GlobalCore.ServerFieldListResult : GlobalCore.ServerResult
+---@field entries GlobalCore.ServerFieldEntry[]
+---@field nextCursor string|nil
+local ServerFieldListResult = {}
+GlobalCore.ServerFieldListResult = ServerFieldListResult
+
+---@class GlobalCore.ServerReadResult : GlobalCore.ServerResult
+---@field found boolean
+---@field value Engine.RuntimeDataValue
+local ServerReadResult = {}
+GlobalCore.ServerReadResult = ServerReadResult
+
+---@class GlobalCore.ServerResult : Engine.RuntimeObject
+---@field ok boolean
+---@field code GlobalCore.ServerErrorCode
+---@field message string
+--- Present only when a write is rejected by the rate limit.
+---@field retryAfterSeconds integer|nil
+local ServerResult = {}
+GlobalCore.ServerResult = ServerResult
+
+---@class GlobalCore.ServerTokenResult : GlobalCore.ServerResult
+---@field token GlobalCore.ServerWriteToken|nil
+local ServerTokenResult = {}
+GlobalCore.ServerTokenResult = ServerTokenResult
+
+--- Opaque account-scoped capability, valid for one write for at most 60
+--- seconds.
+---@class GlobalCore.ServerWriteToken : Engine.RuntimeObject
+local ServerWriteToken = {}
+GlobalCore.ServerWriteToken = ServerWriteToken
+
+--- Asynchronous access to the server configured when the project is packaged.
+--- Callbacks run on the game logic thread after completing the operation with
+--- the same result object. The default Entry enables these operation updates.
+---@class GlobalCore.Server
+local Server = {}
+--- List accounts, optionally filtered by category. Nil or zero selects all;
+--- a positive integer samples distinct accounts. Pass nil for omissions.
+---@param sampleCount integer|nil
+---@param categoryFilter string|nil
+---@param onCompleted fun(arg1: GlobalCore.ServerAccountListResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.ListAccountsAsync(sampleCount, categoryFilter, onCompleted) end
+--- List fields in descending UTF-8 byte order, strictly before beforeKey.
+--- Nil limit selects 50; explicit limits must be between 1 and 100.
+---@param accountId string
+---@param category string
+---@param beforeKey string|nil
+---@param limit integer|nil
+---@param onCompleted fun(arg1: GlobalCore.ServerFieldListResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.ListFieldsAsync(accountId, category, beforeKey, limit, onCompleted) end
+--- Query account existence without creating or reserving the account.
+---@param accountId string
+---@param onCompleted fun(arg1: GlobalCore.ServerAccountResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.CheckAccountExistsAsync(accountId, onCompleted) end
+--- Read a field; found distinguishes an absent field from JSON null.
+---@param accountId string
+---@param category string
+---@param field string
+---@param onCompleted fun(arg1: GlobalCore.ServerReadResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.ReadFieldAsync(accountId, category, field, onCompleted) end
+--- Acquire one account-scoped write capability with a 60-second lifetime.
+---@param accountId string
+---@param onCompleted fun(arg1: GlobalCore.ServerTokenResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.AcquireWriteTokenAsync(accountId, onCompleted) end
+--- Consume a capability once. A failed or timed-out write is never retried.
+---@param token GlobalCore.ServerWriteToken|nil
+---@param category string
+---@param field string
+---@param value Engine.RuntimeDataValue
+---@param onCompleted fun(arg1: GlobalCore.ServerResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.WriteFieldAsync(token, category, field, value, onCompleted) end
+--- Probe the configured service. Normal is at most 300 ms, Weak at most
+--- 3000 ms, and Disconnected means no valid health response in that time.
+---@param onCompleted fun(arg1: GlobalCore.ServerConnectionResult|nil): nil
+---@return Engine.AsyncOperation
+function Server.CheckConnectionAsync(onCompleted) end
+GlobalCore.Server = Server
 
 ---@class GlobalCore.System
 local System = {}

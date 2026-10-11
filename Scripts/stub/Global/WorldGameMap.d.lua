@@ -192,6 +192,9 @@
 ---@field new                          fun(config: Source.SceneComponents.WorldMapData, regionFactory: fun(region: Source.SceneComponents.WorldRegionData, data: Source.SceneComponents.SerializedMapData, priorityRect: Global.WorldGeometry.CellRect | nil): Global.WorldGameMap.RegionBuildState, reservedTags?: string[]): Global.WorldGameMap.WorldGameMap
 local WorldGameMap = {}
 
+---@param name string
+function WorldGameMap:prependBillboardLayer(name) end
+
 ---@param config        Source.SceneComponents.WorldMapData
 ---@param regionFactory fun(region: Source.SceneComponents.WorldRegionData, data: Source.SceneComponents.SerializedMapData, priorityRect: Global.WorldGeometry.CellRect | nil): Global.WorldGameMap.RegionBuildState
 ---@param reservedTags? string[]
