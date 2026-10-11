@@ -5,11 +5,16 @@
 ---@field host         Source.Windows.WindowHotkeys
 ---@field _inputDevice Engine.InputHintDevice | nil
 ---@field _onClose     fun()
----@field ENTRIES      string[]
+---@field ENTRIES      string[][]
 local Controller = {}
 
 ---@param onClose fun()
 function Controller:init(onClose) end
+
+function Controller:bind() end
+
+---@param index integer
+function Controller:onTabSelected(index) end
 
 ---@param mapRect sf.IntRect
 function Controller:open(mapRect) end
