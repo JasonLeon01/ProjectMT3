@@ -4,6 +4,7 @@ local Render = require("Global.Utils.Render")
 local Data = require("Source.Data")
 local Battle = require("Source.Configs.Battle")
 local Locale = require("Source.Locale.Core")
+local InputPresentation = require("Source.Utils.InputPresentation")
 local WindowBase = require("Internal.UIBase.WindowBase")
 local Ui = require("Internal.UIBase.Ui")
 local View = require("Internal.UI.WindowBattle")
@@ -75,7 +76,8 @@ local function createState(actor, player)
         )
     end
     local attack = (not player and SpecialAbilities.GetMagnitude(abilitySystem, Special.Ambush) ~= nil)
-        and attributes.ATK * 2 or attributes.ATK
+        and attributes.ATK * 2
+        or attributes.ATK
     return {
         HP = player and attributes.HP or attributes.MAXHP,
         MAXHP = attributes.MAXHP,
@@ -128,6 +130,23 @@ function Controller:init(scene)
     self._scene = scene
     self._generation = 0
     self._running = false
+    self._inputDevice = nil
+    self._attackSkillKeys = {
+        Engine.InputActionKey.new({
+            kind = Engine.ActionKind.JoystickAxis,
+            code = sf.Joystick.Axis.PovX,
+            threshold = -50,
+            comparison = Engine.AxisComparison.Less
+        })
+    }
+    self._defenseSkillKeys = {
+        Engine.InputActionKey.new({
+            kind = Engine.ActionKind.JoystickAxis,
+            code = sf.Joystick.Axis.PovX,
+            threshold = 50,
+            comparison = Engine.AxisComparison.Greater
+        })
+    }
     self._criticalSelected = false
     self._attackSkillSelected = false
     self._defenseSkillSelected = false
@@ -154,14 +173,15 @@ function Controller:bind()
         RetreatButton = retreat
     }) do
         local button = self.ui.controls[name]
-        ---@cast button Engine.Button | Engine.FunctionalPlainText
+        ---@cast button Engine.Button
         self._actionButtonColours[name] = button:getColour():copy()
+        button:setCanReceiveFocus(false)
         button:addClickCallback(action)
         button:addConfirmCallback(action)
         button:addKeyDownCallback(self:bindCallback(Controller.onKeyDown))
     end
-    local touchPosition = self.ui.controls["RetreatTouchArea"]:getPosition() - self.ui.controls["RetreatButton"]:getPosition()
-        - self.ui.controls["RetreatButton"]:getLocalBounds().position
+    local touchPosition = self.ui.controls["RetreatTouchArea"]:getPosition()
+        - self.ui.controls["RetreatButtonArea"]:getPosition()
     local touchSize = self.ui.controls["RetreatTouchArea"]:getSize()
     self.ui.controls["RetreatButton"]:setTouchHitBounds(
         sf.FloatRect.new(touchPosition, sf.Vector2f.new(touchSize.x, touchSize.y))
@@ -203,7 +223,8 @@ function Controller:refreshLocale()
             )
         end
     end
-    self:setText("RetreatButton", LOC("BATTLE_RETREAT"))
+    self:setText("RetreatText", LOC("BATTLE_RETREAT"))
+    self:refreshInputHints()
     if self._playerActor ~= nil and self._enemyActor ~= nil then
         self:setBattleText("PlayerName", self._playerActor:getDisplayName())
         self:setBattleText("EnemyName", LOC(self._enemyActor.attributes.name))
@@ -319,11 +340,9 @@ function Controller:layoutAttributeDeltas()
             local bounds = value:getGlobalBounds()
             local labelSize = label:getSize()
             local middle = self.ui.controls["Content"]:getSize().x / 2
-            local x = side == "Enemy" and bounds.position.x + bounds.size.x + 2
-                or bounds.position.x - labelSize.x - 2
+            local x = side == "Enemy" and bounds.position.x + bounds.size.x + 2 or bounds.position.x - labelSize.x - 2
             local y = bounds.position.y
-            if (side == "Enemy" and x + labelSize.x > middle)
-                or (side == "Player" and x < middle) then
+            if (side == "Enemy" and x + labelSize.x > middle) or (side == "Player" and x < middle) then
                 -- Keep long values and their small deltas out of the opposing column.
                 x = side == "Enemy" and bounds.position.x + bounds.size.x - labelSize.x or bounds.position.x
                 y = y - labelSize.y - 2
@@ -333,7 +352,17 @@ function Controller:layoutAttributeDeltas()
     end
 end
 
+function Controller:refreshInputHints()
+    self._inputDevice = InputPresentation.GetDevice()
+    self.ui.controls.RetreatButton:setGamepadButton(
+        self._inputDevice == Engine.InputHintDevice.Gamepad and Engine.JoystickButton.getB() or nil
+    )
+end
+
 function Controller:onTick(deltaTime)
+    if self._inputDevice ~= InputPresentation.GetDevice() then
+        self:refreshInputHints()
+    end
     WindowBase.onTick(self.host, deltaTime)
     self:layoutAttributeDeltas()
 end
@@ -414,15 +443,13 @@ function Controller:canCritical(attacker, defender)
 end
 
 function Controller:canAttackSkill(attacker, defender)
-    return attacker.isPlayer and attacker.attackSkill ~= nil
-        and attacker.fatigue < Battle.skillFatigueLimit
+    return attacker.isPlayer and attacker.attackSkill ~= nil and attacker.fatigue < Battle.skillFatigueLimit
         and self:canAffordSkill(attacker, self:skillBreathCost(attacker, attacker.attackSkillBreathMinus))
         and self:calculateDamage(attacker, defender, false, true) > 0
 end
 
 function Controller:canDefenseSkill(state)
-    return state.isPlayer and state.defenseSkill ~= nil
-        and state.fatigue < Battle.skillFatigueLimit
+    return state.isPlayer and state.defenseSkill ~= nil and state.fatigue < Battle.skillFatigueLimit
         and self:canAffordSkill(state, self:skillBreathCost(state, state.defenseSkillBreathMinus))
 end
 
@@ -464,13 +491,15 @@ end
 
 function Controller:onKeyDown(_kwargs)
     if not self._running then return end
-    if Input.getKeyPressed(sf.Keyboard.Key.Q, true) then
+    if Input.getKeyPressed(sf.Keyboard.Key.Q, true)
+        or Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getB(), true) then
         self:requestRetreat()
-    elseif Input.getKeyPressed(sf.Keyboard.Key.C, true) then
+    elseif Input.getKeyPressed(sf.Keyboard.Key.C, true)
+        or Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getA(), true) then
         self:requestCritical()
-    elseif Input.getKeyPressed(sf.Keyboard.Key.Z, true) then
+    elseif Input.getKeyPressed(sf.Keyboard.Key.Z, true) or Input.isActionTriggered(self._attackSkillKeys, true) then
         self:requestAttackSkill()
-    elseif Input.getKeyPressed(sf.Keyboard.Key.X, true) then
+    elseif Input.getKeyPressed(sf.Keyboard.Key.X, true) or Input.isActionTriggered(self._defenseSkillKeys, true) then
         self:requestDefenseSkill()
     end
 end

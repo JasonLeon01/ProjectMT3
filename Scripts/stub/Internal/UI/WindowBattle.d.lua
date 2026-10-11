@@ -41,7 +41,9 @@
 ---@field PlayerName                 Engine.PlainText
 ---@field PlayerNameArea             Engine.Canvas
 ---@field PlayerPortrait             Engine.CharacterView
----@field RetreatButton              Engine.FunctionalPlainText
+---@field RetreatButton              Engine.Button
+---@field RetreatButtonArea          Engine.Canvas
+---@field RetreatText                Engine.PlainText
 ---@field RetreatTouchArea           Engine.Canvas
 ---@field Root                       Engine.Canvas
 ---@field WindowFrame                Engine.Window

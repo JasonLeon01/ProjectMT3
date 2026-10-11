@@ -20,6 +20,7 @@ local PlayerAttrHUD = require("Source.Windows.HUDPlayerAttr")
 local SceneMapWindows = require("Source.Scenes.SceneMap.Windows")
 local TutorialController = require("Source.SceneComponents.Tutorial")
 local MapMessages = require("Source.SceneComponents.MapMessages")
+local MapMessageGesture = require("Source.SceneComponents.MapMessageGesture")
 
 local Input = Engine.Input
 local Display = GlobalCore.Display
@@ -67,6 +68,7 @@ function Scene:onCreate()
     self._mapBuilder = SceneMapBuilder.new()
     self._mapAudio = SceneMapAudioController.new()
     self._mapMessages = MapMessages.new(self)
+    self._messageGesture = MapMessageGesture.new(self)
     ---@type Source.Scenes.SceneMap.SceneMap[]
     local sceneRef = setmetatable({ self }, { __mode = "v" })
     self._playerHUD = PlayerAttrHUD.new(
@@ -83,6 +85,10 @@ function Scene:onCreate()
                 return scene:switchPlayer(right)
             end
             return false
+        end,
+        function ()
+            local scene = sceneRef[1]
+            if scene ~= nil then scene:showHotkeys() end
         end
     )
     self._dialogueLocaleSource = nil
@@ -120,6 +126,7 @@ function Scene:onCreate()
 end
 
 function Scene:onQuit()
+    self._messageGesture:cancel()
     self._mapMessages:cancel()
     SceneMapWindows.CloseShortcuts(self)
     SceneMapInteractions.CancelAsyncOperations(self)
@@ -133,6 +140,7 @@ function Scene:onQuit()
 end
 
 function Scene:onDestroy()
+    self._messageGesture:cancel()
     self._mapMessages:cancel()
     SceneMapInteractions.CancelAsyncOperations(self)
     self._tutorials:dispose()
@@ -199,6 +207,11 @@ function Scene:onInput()
     if self:isInputBlocked() then
         return
     end
+    if Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getY(), false) and self:showMessages() then
+        Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getY(), true)
+    elseif Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getX(), false) and self:showHotkeys() then
+        Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getX(), true)
+    end
     local HotKey = require("Source.Configs.HotKey")
 
     for key, hotKeyConfig in pairs(HotKey) do
@@ -222,6 +235,7 @@ end
 
 function Scene:onTick(deltaTime)
     self._tutorials:update()
+    self._messageGesture:update()
     self._mapAudio:onTick(deltaTime)
     if self._dialogueLocaleSource ~= nil and not self:_isInDialogue() then
         self._dialogueLocaleSource = nil
@@ -289,6 +303,7 @@ function Scene:cancelBattle()
 end
 
 function Scene:loadMap(mapPath, initialPosition)
+    self._messageGesture:cancel()
     self._mapMessages:cancel()
     SceneMapWindows.CloseShortcuts(self)
     self:cancelTimers()

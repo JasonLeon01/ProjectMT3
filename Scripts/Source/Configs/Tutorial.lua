@@ -1,3 +1,5 @@
+local InputPresentation = require("Source.Utils.InputPresentation")
+
 ---@type table<string, Source.Configs.Tutorial.Entry>
 local Tutorial = {
     TM_01 = {
@@ -14,39 +16,27 @@ local Tutorial = {
     },
     TM_04 = {
         rect = sf.IntRect.new(512, 448, 128, 32),
-        text = (function ()
-            if LUDORK_MOBILE then
-                return ""
-            end
-            return "{TM_04}"
-        end)()
+        text = function ()
+            return InputPresentation.ResolveText("{TM_04}", "{TM_04_G}", "{TM_04_M}")
+        end
     },
     TM_05 = {
         rect = sf.IntRect.new(160, 80, 320, 64),
-        text = (function ()
-            if LUDORK_MOBILE then
-                return "{TM_05_M}"
-            end
-            return "{TM_05}"
-        end)()
+        text = function ()
+            return InputPresentation.ResolveText("{TM_05}", "{TM_05_G}", "{TM_05_M}")
+        end
     },
     TM_06 = {
         rect = sf.IntRect.new(16, 16, 32, 32),
-        text = (function ()
-            if LUDORK_DESKTOP then
-                return "{TM_06_D}"
-            end
-            return "{TM_06}"
-        end)()
+        text = function ()
+            return InputPresentation.ResolveText("{TM_06_D}", "{TM_06}", "{TM_06}")
+        end
     },
     TM_07 = {
         rect = sf.IntRect.new(16, 16, 32, 32),
-        text = (function ()
-            if LUDORK_MOBILE then
-                return ""
-            end
-            return "{TM_07}"
-        end)()
+        text = function ()
+            return InputPresentation.ResolveText("{TM_07}", "{TM_07_MENU}", "{TM_07_MENU}")
+        end
     }
 }
 

@@ -52,6 +52,8 @@ function View:init(instance)
         PlayerNameArea = assert(self.instance:requireControl("PlayerNameArea")),
         PlayerPortrait = assert(self.instance:requireControl("PlayerPortrait")),
         RetreatButton = assert(self.instance:requireControl("RetreatButton")),
+        RetreatButtonArea = assert(self.instance:requireControl("RetreatButtonArea")),
+        RetreatText = assert(self.instance:requireControl("RetreatText")),
         RetreatTouchArea = assert(self.instance:requireControl("RetreatTouchArea")),
         Root = assert(self.instance:requireControl("Root")),
         WindowFrame = assert(self.instance:requireControl("WindowFrame"))

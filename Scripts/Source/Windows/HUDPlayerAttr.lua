@@ -8,6 +8,7 @@ local GeneralDataTypes = require("Source.Configs.GeneralDataTypes")
 local Effects = require("Source.Gameplay.Effects")
 local LocaleCore = require("Source.Locale.Core")
 local NumberFormat = require("Source.Utils.NumberFormat")
+local InputPresentation = require("Source.Utils.InputPresentation")
 local IconTexture = require("Internal.UIBase.IconTexture")
 local PlayerStateRowController = require("Source.Windows.HUDPlayerAttr.PlayerStateRow.Controller")
 local Ui = require("Internal.UIBase.Ui")
@@ -59,11 +60,13 @@ local Controller = {}
 
 Controller.refreshEvents = { EventKey.LocaleChanged, EventKey.AbilitySystemChanged, EventKey.PlayerChanged }
 
-function Controller:init(inst, openMenuCallback, switchPlayerCallback)
+function Controller:init(inst, openMenuCallback, switchPlayerCallback, openControlsCallback)
     self._inst = inst
     self._player = inst:getPlayer()
     self._openMenuCallback = openMenuCallback
     self._switchPlayerCallback = switchPlayerCallback
+    self._openControlsCallback = openControlsCallback
+    self._inputDevice = nil
     self._avatarSize = self.ui.controls["Avatar"]:getSize():copy()
     self._namePosition = self.ui.controls["PlayerName"]:getPosition():copy()
     self._avatarWidth = self._avatarSize.x
@@ -103,6 +106,9 @@ function Controller:refreshFromEvent(payload)
 end
 
 function Controller:onTick(deltaTime)
+    if self._inputDevice ~= InputPresentation.GetDevice() then
+        self:refreshInputHints()
+    end
     self:_layoutAvatars()
     if LUDORK_MOBILE then
         self:_updateAvatarTouch()
@@ -125,6 +131,24 @@ function Controller:openMenu()
     if self._openMenuCallback ~= nil then
         self._openMenuCallback()
     end
+end
+
+function Controller:openControls()
+    if self._openControlsCallback ~= nil then
+        self._openControlsCallback()
+    end
+end
+
+function Controller:refreshInputHints()
+    local device = InputPresentation.GetDevice()
+    self:setText("ControlsText", LOC("CONTROLS_TITLE"))
+    if self._inputDevice ~= device then
+        self._inputDevice = device
+        self.ui.controls.ControlsButton:setGamepadButton(
+            device == Engine.InputHintDevice.Gamepad and Engine.JoystickButton.getX() or nil
+        )
+    end
+    self.view:reflow()
 end
 
 function Controller:refreshAvatars()
@@ -233,7 +257,10 @@ end
 
 function Controller:bind()
     self:refreshAvatars()
-    self:setProperty("PlainText", "visible", not LUDORK_MOBILE)
+    self.ui.controls.ControlsButton:setCanReceiveFocus(false)
+    self.ui.controls.ControlsButton:addClickCallback(self:bindCallback(Controller.openControls))
+    self.ui.controls.ControlsButton:addConfirmCallback(self:bindCallback(Controller.openControls))
+    self:refreshInputHints()
     self:subscribe(EventKey.PartyChanged, self:bindCallback(Controller._onPartyChanged))
     for _, kind in ipairs({ "Lit", "Dim" }) do
         local colours = {}
@@ -294,6 +321,7 @@ function Controller:refreshStates(language)
 end
 
 function Controller:refresh()
+    self:refreshInputHints()
     local layoutDirty = false
     local language = LocaleCore.GetLanguage()
     local localeChanged = self._language ~= language

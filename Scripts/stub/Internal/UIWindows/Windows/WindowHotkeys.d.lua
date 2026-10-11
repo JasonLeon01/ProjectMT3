@@ -26,6 +26,9 @@ function Window:onMouseButtonDown(kwargs) end
 
 function Window:onReturn() end
 
+---@param deltaTime number
+function Window:onTick(deltaTime) end
+
 ---@param mapRect sf.IntRect
 function Window:open(mapRect) end
 

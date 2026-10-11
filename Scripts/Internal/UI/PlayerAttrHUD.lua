@@ -31,6 +31,9 @@ function View:init(instance)
         BreathLit = assert(self.instance:requireControl("BreathLit")),
         Canvas = assert(self.instance:requireControl("Canvas")),
         Canvas2 = assert(self.instance:requireControl("Canvas2")),
+        ControlsButton = assert(self.instance:requireControl("ControlsButton")),
+        ControlsButtonArea = assert(self.instance:requireControl("ControlsButtonArea")),
+        ControlsText = assert(self.instance:requireControl("ControlsText")),
         DefDebuff = assert(self.instance:requireControl("DefDebuff")),
         DefLabel = assert(self.instance:requireControl("DefLabel")),
         DefValue = assert(self.instance:requireControl("DefValue")),
@@ -48,7 +51,6 @@ function View:init(instance)
         MagicLabel = assert(self.instance:requireControl("MagicLabel")),
         MagicValue = assert(self.instance:requireControl("MagicValue")),
         MapName = assert(self.instance:requireControl("MapName")),
-        PlainText = assert(self.instance:requireControl("PlainText")),
         PlayerName = assert(self.instance:requireControl("PlayerName")),
         Root = assert(self.instance:requireControl("Root")),
         StateHost = assert(self.instance:requireControl("StateHost"))

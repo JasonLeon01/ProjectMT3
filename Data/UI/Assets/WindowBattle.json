@@ -1879,25 +1879,9 @@
             "children": []
           },
           {
-            "name": "RetreatButton",
-            "controlId": "Engine.FunctionalPlainText",
-            "properties": {
-              "text": "",
-              "characterSize": 22,
-              "outlineThickness": 1,
-              "outlineColor": [
-                0,
-                0,
-                0,
-                255
-              ],
-              "colour": [
-                255,
-                255,
-                0,
-                255
-              ]
-            },
+            "name": "RetreatButtonArea",
+            "controlId": "Engine.Canvas",
+            "properties": {},
             "slot": {
               "anchors": {
                 "min": [
@@ -1922,10 +1906,89 @@
               "autoSize": false,
               "zOrder": 0
             },
-            "editor": {
-              "previewText": "~撤退~"
-            },
-            "children": []
+            "editor": {},
+            "children": [
+              {
+                "name": "RetreatButton",
+                "controlId": "Engine.Button",
+                "properties": {},
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0,
+                      0
+                    ],
+                    "max": [
+                      1,
+                      1
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0
+                  },
+                  "alignment": [
+                    0,
+                    0
+                  ],
+                  "autoSize": false,
+                  "zOrder": 0
+                },
+                "editor": {},
+                "children": []
+              },
+              {
+                "name": "RetreatText",
+                "controlId": "Engine.PlainText",
+                "properties": {
+                  "text": "",
+                  "characterSize": 22,
+                  "outlineThickness": 1,
+                  "outlineColor": [
+                    0,
+                    0,
+                    0,
+                    255
+                  ],
+                  "colour": [
+                    255,
+                    255,
+                    0,
+                    255
+                  ]
+                },
+                "slot": {
+                  "anchors": {
+                    "min": [
+                      0.5,
+                      0.5
+                    ],
+                    "max": [
+                      0.5,
+                      0.5
+                    ]
+                  },
+                  "offsets": {
+                    "left": 0,
+                    "top": 0,
+                    "right": 0,
+                    "bottom": 0
+                  },
+                  "alignment": [
+                    0.5,
+                    0.5
+                  ],
+                  "autoSize": true,
+                  "zOrder": 0
+                },
+                "editor": {
+                  "previewText": "撤退"
+                },
+                "children": []
+              }
+            ]
           },
           {
             "name": "WindowPauseMark",

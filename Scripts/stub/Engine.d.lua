@@ -22,6 +22,11 @@
 ---@field JoystickAxis Engine.ActionKind
 ---@field TouchTap Engine.ActionKind
 
+---@class Engine.InputHintDevice
+---@field KeyboardMouse Engine.InputHintDevice
+---@field Gamepad Engine.InputHintDevice
+---@field Touch Engine.InputHintDevice
+
 ---@class Engine.ImageDrawAs
 ---@field Image Engine.ImageDrawAs
 ---@field Tile Engine.ImageDrawAs
@@ -146,6 +151,7 @@
 ---@field RuntimeObject Engine.RuntimeObject
 ---@field RuntimeValue Engine.RuntimeValue
 ---@field ActionKind Engine.ActionKind
+---@field InputHintDevice Engine.InputHintDevice
 ---@field ImageDrawAs Engine.ImageDrawAs
 ---@field getAnimationVisualDuration fun(animationData: Engine.AnimationSourceData): number
 ---@field ZeroVector2f sf.Vector2f
@@ -246,6 +252,7 @@
 Engine = {}
 
 Engine.ActionKind = {}
+Engine.InputHintDevice = {}
 Engine.ImageDrawAs = {}
 
 Engine.TextConfig = {}
@@ -2162,6 +2169,8 @@ function Service:injectEvent(event) end
 ---@param value boolean
 ---@return nil
 function Service:setUseInjectedMouseOnly(value) end
+---@return Engine.InputHintDevice
+function Service:getInputHintDevice() end
 ---@return boolean
 function Service:isFocused() end
 ---@return boolean
@@ -2245,6 +2254,11 @@ function Service:isTouchBegan(handled) end
 ---@param handled? boolean
 ---@return boolean
 function Service:isTouchTap(handled) end
+---@param handled? boolean
+---@return boolean
+function Service:isTouchLongPressed(handled) end
+---@return sf.Vector2i|nil
+function Service:getTouchLongPressPosition() end
 ---@return boolean
 function Service:isTouchEnded() end
 ---@return boolean
@@ -5095,6 +5109,8 @@ function Engine.Input.injectEvent(event) end
 ---@param value boolean
 ---@return nil
 function Engine.Input.setUseInjectedMouseOnly(value) end
+---@return Engine.InputHintDevice
+function Engine.Input.getInputHintDevice() end
 ---@return boolean
 function Engine.Input.isFocused() end
 ---@return boolean
@@ -5178,6 +5194,11 @@ function Engine.Input.isTouchBegan(handled) end
 ---@param handled? boolean
 ---@return boolean
 function Engine.Input.isTouchTap(handled) end
+---@param handled? boolean
+---@return boolean
+function Engine.Input.isTouchLongPressed(handled) end
+---@return sf.Vector2i|nil
+function Engine.Input.getTouchLongPressPosition() end
 ---@return boolean
 function Engine.Input.isTouchEnded() end
 ---@return boolean

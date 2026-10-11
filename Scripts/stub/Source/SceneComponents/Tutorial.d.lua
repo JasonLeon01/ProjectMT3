@@ -14,6 +14,7 @@
 ---@field _window           Internal.UIBase.LazyWindow<Source.Windows.WindowTutorial>
 ---@field _player           Source.MapActors.Player.Player | nil
 ---@field _moveEnabled      boolean
+---@field _inputDevice      Engine.InputHintDevice
 ---@field _disposed         boolean
 ---@field _unregister       fun()
 local TutorialController = {}
