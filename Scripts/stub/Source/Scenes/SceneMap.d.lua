@@ -41,6 +41,8 @@
 ---@field _gameOverRequest                      { player: Source.MapActors.Player.Player, gameMap: GameMap } | nil
 ---@field _mapBuilder                           Source.SceneComponents.SceneMapBuilder
 ---@field _mapAudio                             Source.SceneComponents.SceneMapAudioController
+---@field _mapMessages                          Source.SceneComponents.MapMessages
+---@field _windowInscription                    Internal.UIBase.LazyWindow<Source.Windows.WindowInscription>
 ---@field _tutorials                            Source.SceneComponents.Tutorial
 ---@field _playerHUD                            Source.Windows.PlayerAttrHUD
 ---@field _messageWindow                        Internal.UIBase.LazyWindow<Source.Windows.WindowMessage>
@@ -94,6 +96,9 @@
 ---@field _equipMoveEnabledBeforeOpen           boolean
 ---@field _saveLoadMoveEnabledBeforeOpen        boolean
 local Scene = {}
+
+---@return boolean
+function Scene:showMessages() end
 
 ---@return boolean
 function Scene:showMagicDoor() end

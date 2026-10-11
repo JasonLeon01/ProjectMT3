@@ -83,6 +83,7 @@ function GameMap:init(mapName, tilemap, camera, previewOnly, sparseWorldConfig)
         self._layersTopFirst[#self._layersTopFirst + 1] = self._tilemap:getLayer(layerNames[index])
     end
     self._actors = {}
+    self._billboardOverlayLayers = {}
     self._particleSystem = nil
     if not self._previewOnly then
         self._particleSystem = Engine.ParticleSystem.new()
@@ -154,6 +155,42 @@ end
 ---@diagnostic disable-next-line: unused
 function GameMap:isWorldMap()
     return false
+end
+
+function GameMap:prependBillboardLayer(name)
+    if table.contains(self._layerNames, name) then return end
+    self._billboardOverlayLayers[name] = true
+    local source = assert(self._tilemap:getLayer(assert(self._layerNames[1])))
+    local size = self:getSize()
+    local data = Engine.TileLayerData.new(name, source:getData().layerTileset, size.x, size.y)
+    local layer = assert(source:rebuild(data, {}, {}))
+    local layers = { layer }
+    for _, existingName in ipairs(self._layerNames) do
+        layers[#layers + 1] = assert(self._tilemap:getLayer(existingName))
+    end
+    self:_resetTransparentTiles()
+    self._tilemap = Engine.Tilemap.new(layers)
+    self._layerNames = self._tilemap:getLayerNameList()
+    self._layersTopFirst = {}
+    for index = #layers, 1, -1 do
+        self._layersTopFirst[#self._layersTopFirst + 1] = layers[index]
+    end
+    self:setTilemap(self._tilemap)
+    local renderLayers = {}
+    for _, layerName in ipairs(self._layerNames) do
+        if not self._billboardOverlayLayers[layerName] then renderLayers[#renderLayers + 1] = layerName end
+    end
+    self._renderer = GameMapRenderer.new(
+        self, self._tilemap, self._camera, renderLayers, self.DefaultCoverAlpha, self._previewOnly
+    )
+    for actor in pairs(self._actorPixelShatterByActor) do
+        self._renderer:setActorEffectHidden(actor, true)
+    end
+    self:markPassabilityDirty()
+end
+
+function GameMap:spawnTransientActor(actor, layer)
+    GameMapActors.SpawnActor(self, actor, layer, true)
 end
 
 function GameMap:updateAutoTileAnimation(deltaTime)
@@ -354,6 +391,14 @@ function GameMap:show()
     end
     if renderCameraFrame and self._camera ~= nil then
         self:drawMapContent(assert(self._camera:getRenderTexture()), self._camera:getRenderStates(), true)
+        -- Session billboard layers remain first in map order, but text must appear above terrain.
+        for layerName in pairs(self._billboardOverlayLayers) do
+            for _, actor in ipairs(self._actors[layerName] or {}) do
+                if self:_isBillboardActorVisible(actor, layerName) then
+                    actor:drawBillboard(assert(self._camera:getRenderTexture()), self._camera:getRenderStates())
+                end
+            end
+        end
     elseif renderCameraFrame then
         self:_resetTransparentTiles()
     end

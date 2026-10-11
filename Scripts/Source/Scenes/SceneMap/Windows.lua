@@ -98,6 +98,13 @@ function Windows.Create(self)
         window:mount(manager)
         return window
     end)
+    self._windowInscription = LazyWindow.new(function ()
+        local WindowInscription = require("Source.Windows.WindowInscription")
+        local window = WindowInscription.new(self._mapMessages, onShortcutClose)
+        window:setZOrder(MENU_Z_ORDER)
+        window:mount(manager)
+        return window
+    end)
     self._windowBattle = LazyWindow.new(function ()
         local WindowBattle = require("Source.Windows.WindowBattle")
         local window = WindowBattle.new(self)
@@ -282,11 +289,13 @@ function Windows.Create(self)
     self._blockingWindows = {
         self._windowBattle, self._windowShop, self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia,
         self._windowFloorTeleporter, self._windowPlayerName, self._windowItem, self._windowEquip, self._windowSaveLoad,
-        self._configWindow, self._windowMagicDoor, self._windowBottle, self._windowHotkeys
+        self._configWindow, self._windowMagicDoor, self._windowBottle, self._windowHotkeys, self._windowInscription
     }
 end
 
 function Windows.CloseShortcuts(self)
+    local messages = self._windowInscription:peek()
+    if messages ~= nil then messages:dismiss() end
     for _, lazyWindow in ipairs({ self._windowMagicDoor, self._windowBottle, self._windowHotkeys }) do
         local window = lazyWindow:peek()
         if window ~= nil then
@@ -300,7 +309,7 @@ function Windows.Dispose(self)
         self._windowBattle, self._messageWindow, self._windowMenu, self._windowItem, self._windowEquip,
         self._windowAttrShop, self._windowEnemyBook, self._windowEnemyEncyclopedia, self._windowSaveLoad,
         self._windowShop, self._windowFloorTeleporter, self._configWindow, self._windowPlayerName, self._windowMagicDoor,
-        self._windowBottle, self._windowHotkeys
+        self._windowBottle, self._windowHotkeys, self._windowInscription
     }
     for _, window in ipairs(windows) do
         window:dispose()
