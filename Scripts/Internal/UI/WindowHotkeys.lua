@@ -10,9 +10,11 @@ View.designSize = sf.Vector2f.new(352, 352)
 function View:init(instance)
     UiView.init(self, instance)
     local controls = {
+        ContentWindowFrame = assert(self.instance:requireControl("ContentWindowFrame")),
         Root = assert(self.instance:requireControl("Root")),
         Rows = assert(self.instance:requireControl("Rows")),
         Scroll = assert(self.instance:requireControl("Scroll")),
+        Tabs = assert(self.instance:requireControl("Tabs")),
         WindowFrame = assert(self.instance:requireControl("WindowFrame"))
     }
     ---@cast controls Internal.UIBase.GeneratedControls.WindowHotkeys

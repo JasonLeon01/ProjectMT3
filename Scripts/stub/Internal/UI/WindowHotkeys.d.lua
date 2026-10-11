@@ -2,10 +2,12 @@
 ---@meta Internal.UI.WindowHotkeys
 
 ---@class Internal.UIBase.GeneratedControls.WindowHotkeys
----@field Root        Engine.Canvas
----@field Rows        Engine.WrapBox
----@field Scroll      Engine.ScrollBox
----@field WindowFrame Engine.Window
+---@field ContentWindowFrame Engine.Window
+---@field Root               Engine.Canvas
+---@field Rows               Engine.WrapBox
+---@field Scroll             Engine.ScrollBox
+---@field Tabs               Engine.TabView
+---@field WindowFrame        Engine.Window
 
 ---@class Internal.UIBase.GeneratedAssets.WindowHotkeys
 

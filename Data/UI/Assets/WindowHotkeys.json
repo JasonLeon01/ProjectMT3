@@ -26,7 +26,7 @@
         "properties": {
           "size": [
             352,
-            352
+            64
           ],
           "windowSkin": "",
           "repeated": true
@@ -39,14 +39,14 @@
             ],
             "max": [
               1,
-              1
+              0
             ]
           },
           "offsets": {
             "left": 0,
             "top": 0,
             "right": 0,
-            "bottom": 0
+            "bottom": 64
           },
           "alignment": [
             0,
@@ -59,12 +59,49 @@
         "children": []
       },
       {
+        "name": "ContentWindowFrame",
+        "controlId": "Engine.Window",
+        "properties": {
+          "size": [352, 288],
+          "windowSkin": "",
+          "repeated": true
+        },
+        "slot": {
+          "anchors": { "min": [0, 0], "max": [1, 1] },
+          "offsets": { "left": 0, "top": 64, "right": 0, "bottom": 0 },
+          "alignment": [0, 0],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": []
+      },
+      {
+        "name": "Tabs",
+        "controlId": "Engine.TabView",
+        "properties": {
+          "size": [320, 32],
+          "windowSkin": "",
+          "characterSize": 22,
+          "items": ["#DAILY", "#BATTLE"]
+        },
+        "slot": {
+          "anchors": { "min": [0, 0], "max": [1, 0] },
+          "offsets": { "left": 16, "top": 16, "right": 16, "bottom": 32 },
+          "alignment": [0, 0],
+          "autoSize": false,
+          "zOrder": 1
+        },
+        "editor": {},
+        "children": []
+      },
+      {
         "name": "Scroll",
         "controlId": "Engine.ScrollBox",
         "properties": {
           "size": [
             320,
-            320
+            256
           ],
           "windowSkin": ""
         },
@@ -81,7 +118,7 @@
           },
           "offsets": {
             "left": 16,
-            "top": 16,
+            "top": 80,
             "right": 16,
             "bottom": 16
           },
@@ -100,7 +137,7 @@
             "properties": {
               "size": [
                 320,
-                320
+                256
               ],
               "count": 0,
               "spacing": [

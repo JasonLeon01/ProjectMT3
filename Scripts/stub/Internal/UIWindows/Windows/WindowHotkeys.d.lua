@@ -3,7 +3,7 @@
 
 ---@class Source.Windows.WindowHotkeys: Engine.Canvas, Internal.UIBase.Ui.Window
 ---@field ui      Internal.UI.WindowHotkeys
----@field ENTRIES string[]
+---@field ENTRIES string[][]
 local Window = {}
 
 ---@param onClose fun()
@@ -15,6 +15,8 @@ function Window.new(onClose) end
 ---@return Source.Windows.WindowHotkeys
 function Window.FromView(ui, onClose) end
 
+function Window:bind() end
+
 function Window:close() end
 
 ---@param kwargs Engine.UiInputEventArguments
@@ -25,6 +27,9 @@ function Window:onKeyDown(kwargs) end
 function Window:onMouseButtonDown(kwargs) end
 
 function Window:onReturn() end
+
+---@param index integer
+function Window:onTabSelected(index) end
 
 ---@param deltaTime number
 function Window:onTick(deltaTime) end
