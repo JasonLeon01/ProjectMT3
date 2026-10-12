@@ -489,14 +489,25 @@ function Scene:_renderHandle(deltaTime)
         self._pendingQuickSave = false
         return
     end
-    if self._pendingMenuOpen then
-        self._pendingMenuOpen = false
+    local openMenu = self._pendingMenuOpen
+    local saveLoadMode = self._pendingSaveLoadOpen
+    local quickSave = self._pendingQuickSave
+    self._pendingMenuOpen = false
+    self._pendingSaveLoadOpen = nil
+    self._pendingQuickSave = false
+    if openMenu or saveLoadMode ~= nil or quickSave then
+        if not SceneMapInteractions.PrepareMapShortcut(self) then
+            return
+        end
         Scene.CaptureScreenSnapshot()
-        self._windowMenu:get():open()
-    elseif self._pendingSaveLoadOpen ~= nil or self._pendingQuickSave then
-        Scene.CaptureScreenSnapshot()
-        self:_processPendingSaveLoadOpen()
-        self:_processPendingQuickSave()
+        if openMenu then
+            self._windowMenu:get():open()
+        else
+            self._pendingSaveLoadOpen = saveLoadMode
+            self._pendingQuickSave = quickSave
+            self:_processPendingSaveLoadOpen()
+            self:_processPendingQuickSave()
+        end
     end
 end
 

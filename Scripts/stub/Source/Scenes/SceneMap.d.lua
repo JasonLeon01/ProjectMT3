@@ -98,7 +98,7 @@
 ---@field _saveLoadMoveEnabledBeforeOpen        boolean
 local Scene = {}
 
---- Moving steps, pending movement settlement and projectiles block shortcuts only.
+--- Pending movement settlement and projectiles block shortcuts only.
 --- Movement keeps using isInputBlocked.
 ---@return boolean
 function Scene:_areMapShortcutsBlocked() end

@@ -153,8 +153,16 @@ function Player:_onArrivedAtMapCell()
 end
 
 function Player:hasPendingMovementSpecials()
-    -- Stopping mid-step snaps to a cell without recording an arrival.
-    return self:isMoving() or bool(self._movementSpecialPath)
+    return bool(self._movementSpecialPath)
+end
+
+function Player:settleMovementSpecials()
+    if not self:hasPendingMovementSpecials() then
+        return
+    end
+    local MovementSpecials = require("Source.Utils.MovementSpecials")
+
+    MovementSpecials.NotifyPlayerMovementFinished(self, self:consumeMovementSpecialPath())
 end
 
 function Player:consumeMovementSpecialPath()
@@ -200,11 +208,7 @@ function Player:setClassPath(classPath)
 end
 
 function Player:onFixedTick(_fixedDelta)
-    if bool(self._movementSpecialPath) then
-        local MovementSpecials = require("Source.Utils.MovementSpecials")
-
-        MovementSpecials.NotifyPlayerMovementFinished(self, self:consumeMovementSpecialPath())
-    end
+    self:settleMovementSpecials()
     if self._wasMovingOnLastFixedTick and not self:isMoving() then
         self
             :getAbilitySystemComponent()
