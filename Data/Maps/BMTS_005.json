@@ -327,10 +327,114 @@
           null,
           null,
           null,
+          5,
+          null,
+          null,
+          5,
+          null,
+          null,
+          5,
+          null
+        ],
+        [
+          5,
+          null,
+          5,
           null,
           null,
           null,
           null,
+          5,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          5,
+          null,
+          5,
+          5,
+          null,
+          null,
+          null,
+          null,
+          5
+        ],
+        [
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          5,
+          null,
+          null,
+          5,
+          null
+        ],
+        [
+          null,
+          null,
+          5,
+          null,
+          5,
+          5,
+          null,
+          5,
+          5,
+          null,
+          null
+        ],
+        [
+          5,
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          5
+        ],
+        [
+          null,
+          null,
+          null,
+          null,
+          5,
+          5,
+          5,
+          null,
+          5,
+          null,
+          null
+        ],
+        [
+          null,
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          5,
+          null,
+          5,
+          null
+        ],
+        [
+          5,
+          5,
+          null,
+          null,
+          null,
+          null,
+          5,
           null,
           null,
           null,
@@ -340,128 +444,24 @@
           null,
           null,
           null,
+          5,
+          null,
+          5,
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null
+          5,
+          5
         ],
         [
           null,
+          5,
           null,
           null,
+          5,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
+          5,
           null,
           null,
           null
@@ -633,6 +633,30 @@
         "position": [
           0,
           0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Downstair",
+        "tag": "Teleportations_BP_Downstair_default_10_0",
+        "position": [
+          10,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren_archer",
+        "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_9_5",
+        "position": [
+          9,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_ZHANWEI",
+        "tag": "Enemies_BP_Enemy_ZHANWEI_default_8_10",
+        "position": [
+          8,
+          10
         ]
       }
     ]

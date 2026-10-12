@@ -175,6 +175,7 @@ return {
     ["E40_KULOU"] = "Skeleton",
     ["E41_JIANTOUGUAI"] = "Conehead",
     ["E42_SHOUREN"] = "Orc",
+    ["E42_SHOUREN_ARCHER"] = "Orc Archer",
     ["E43_XIESHILAIMU"] = "Crab Slime",
     ["E44_GAOJIGONGBING"] = "Elite Archer",
     ["E45_SHUAIRUOJINWEIBING"] = "Frail Sentinel",
