@@ -1,10 +1,12 @@
 ---@meta Source.Gameplay.SpecialAbilities.AmbushAbility
 
 ---@class Source.Gameplay.SpecialAbilities.AmbushAbility: GlobalCore.GameplayAbility
----@field new fun(): Source.Gameplay.SpecialAbilities.AmbushAbility
+---@field _projectileTexture string
+---@field new fun(projectileImage: string): Source.Gameplay.SpecialAbilities.AmbushAbility
 local AmbushAbility = {}
 
-function AmbushAbility:init() end
+---@param projectileImage string
+function AmbushAbility:init(projectileImage) end
 
 ---@param abilitySystem GlobalCore.AbilitySystemComponent
 ---@param eventData     GlobalCore.GameplayEventData

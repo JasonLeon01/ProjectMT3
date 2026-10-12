@@ -54,6 +54,7 @@
 ---@field _player                   Engine.Actor | nil
 ---@field _scene                    GlobalCore.SceneBase | nil
 ---@field _particleSystem           Engine.ParticleSystem | nil
+---@field _pendingProjectiles       table<Engine.Particle, boolean>
 ---@field _actorPixelShatterShader  sf.Shader | nil
 ---@field _actorPixelShatterEffects table<string, Global.CustomEffects.ActorPixelShatterEffect[]>
 ---@field _actorPixelShatterByActor table<Engine.Actor, Global.CustomEffects.ActorPixelShatterEffect>
@@ -106,6 +107,20 @@ function GameMap:_isBillboardActorVisible(actor, layerName) end
 function GameMap:updateAutoTileAnimation(deltaTime) end
 
 function GameMap:disposeStreaming() end
+
+--- Return the runtime map's particle system; preview maps have no particle system.
+---@return Engine.ParticleSystem
+function GameMap:getParticleSystem() end
+
+--- Keep map shortcuts blocked until this projectile's hit or cancellation is settled.
+---@param particle Engine.Particle
+function GameMap:trackProjectile(particle) end
+
+---@param particle Engine.Particle
+function GameMap:untrackProjectile(particle) end
+
+---@return boolean
+function GameMap:hasPendingProjectiles() end
 
 function GameMap:drawMapFogOverlay() end
 

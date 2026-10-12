@@ -18,8 +18,8 @@ local GameplayEffect = GlobalCore.GameplayEffect
 local SpecialAbilities = {}
 
 local abilityTypes = {
-    [Special.Ambush] = function ()
-        return AmbushAbility.new()
+    [Special.Ambush] = function (magnitude)
+        return AmbushAbility.new(magnitude)
     end,
     [Special.Compete] = function ()
         return CompeteAbility.new()

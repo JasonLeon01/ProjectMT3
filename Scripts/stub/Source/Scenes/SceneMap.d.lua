@@ -98,6 +98,16 @@
 ---@field _saveLoadMoveEnabledBeforeOpen        boolean
 local Scene = {}
 
+--- Moving steps, pending movement settlement and projectiles block shortcuts only.
+--- Movement keeps using isInputBlocked.
+---@return boolean
+function Scene:_areMapShortcutsBlocked() end
+
+---@param player Source.MapActors.Player.Player
+---@param damage integer
+---@return integer | nil
+function Scene:applyExternalBattleDamage(player, damage) end
+
 ---@return boolean
 function Scene:showMessages() end
 

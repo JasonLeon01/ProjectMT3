@@ -387,6 +387,15 @@ function Controller:changeHP(state, delta)
     return state.HP - before
 end
 
+function Controller:applyExternalDamage(player, damage)
+    if not self._running or player ~= self._playerActor then
+        return nil
+    end
+    local state = assert(self._player)
+    self:changeHP(state, -damage)
+    return state.HP
+end
+
 function Controller:schedule(delay, action)
     local generation = self._generation
     self._scene:addTimer(

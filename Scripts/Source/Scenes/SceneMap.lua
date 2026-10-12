@@ -204,7 +204,7 @@ function Scene:onFixedTick(fixedDelta)
 end
 
 function Scene:onInput()
-    if self:isInputBlocked() then
+    if self:isInputBlocked() or self:_areMapShortcutsBlocked() then
         return
     end
     if Input.isAnyJoystickButtonTriggered(Engine.JoystickButton.getY(), false) and self:showMessages() then
@@ -300,6 +300,18 @@ function Scene:cancelBattle()
     local window = self._windowBattle:peek()
     if window ~= nil then window:cancel() end
     self.player:setMoveEnabled(self._battleMoveEnabled)
+end
+
+function Scene:applyExternalBattleDamage(player, damage)
+    if not self._battleActive or player ~= self.player then
+        return nil
+    end
+    local window = assert(self._windowBattle:peek(), "Active battle requires its window")
+    local hp = window:applyExternalDamage(player, damage)
+    if hp ~= nil and hp <= 0 or player.attributes.HP <= 0 then
+        self:cancelBattle()
+    end
+    return hp
 end
 
 function Scene:loadMap(mapPath, initialPosition)
@@ -471,6 +483,12 @@ function Scene:_renderHandle(deltaTime)
     super(Scene, self)._renderHandle(deltaTime)
     self:_processPendingTeleporterTransfer()
     self:_processPendingWorldTransfer()
+    if self:_areMapShortcutsBlocked() then
+        self._pendingMenuOpen = false
+        self._pendingSaveLoadOpen = nil
+        self._pendingQuickSave = false
+        return
+    end
     if self._pendingMenuOpen then
         self._pendingMenuOpen = false
         Scene.CaptureScreenSnapshot()
@@ -513,14 +531,24 @@ function Scene.IsMenuOpenTriggered()
 end
 
 ---@return boolean
+function Scene:_areMapShortcutsBlocked()
+    return self._gameMap ~= nil
+        and (self.player:hasPendingMovementSpecials() or self._gameMap:hasPendingProjectiles())
+end
+
+---@return boolean
 function Scene:_canOpenMenu()
-    return not self._tutorials:isBlocking() and not self._pendingMenuOpen and self._pendingSaveLoadOpen == nil
+    return not self:_areMapShortcutsBlocked() and not self._tutorials:isBlocking()
+        and not self._pendingMenuOpen and self._pendingSaveLoadOpen == nil
         and not self._pendingQuickSave and not self:_isMenuBlocking() and not self:_isInDialogue()
         and not self:_hasVisibleBlockingWindow()
 end
 
 ---@return boolean
 function Scene:_canOpenItemOverlay()
+    if self:_areMapShortcutsBlocked() then
+        return false
+    end
     local menu = self._windowMenu:peek()
     local item = self._windowItem:peek()
     return menu ~= nil and menu:getVisible() and item ~= nil and item:getVisible() and not self:_isInDialogue()

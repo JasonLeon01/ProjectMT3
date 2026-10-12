@@ -85,6 +85,7 @@ function GameMap:init(mapName, tilemap, camera, previewOnly, sparseWorldConfig)
     self._actors = {}
     self._billboardOverlayLayers = {}
     self._particleSystem = nil
+    self._pendingProjectiles = {}
     if not self._previewOnly then
         self._particleSystem = Engine.ParticleSystem.new()
     end
@@ -197,8 +198,12 @@ function GameMap:updateAutoTileAnimation(deltaTime)
     self._tilemap:updateAutoTileAnimation(deltaTime)
 end
 
----@diagnostic disable-next-line: unused
 function GameMap:disposeStreaming()
+    if self._particleSystem ~= nil then
+        self._particleSystem:clear()
+    end
+    self._pendingProjectiles = {}
+    self:setScene(nil)
 end
 
 ---@diagnostic disable-next-line: unused
@@ -262,6 +267,22 @@ end
 
 function GameMap:getScene()
     return self._scene
+end
+
+function GameMap:getParticleSystem()
+    return assert(self._particleSystem, "Preview maps do not have a particle system")
+end
+
+function GameMap:trackProjectile(particle)
+    self._pendingProjectiles[particle] = true
+end
+
+function GameMap:untrackProjectile(particle)
+    self._pendingProjectiles[particle] = nil
+end
+
+function GameMap:hasPendingProjectiles()
+    return next(self._pendingProjectiles) ~= nil
 end
 
 function GameMap:setScene(scene)

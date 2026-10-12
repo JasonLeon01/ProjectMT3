@@ -9,8 +9,19 @@ local GameplayAbilityResult = GlobalCore.GameplayAbilityResult
 ---@class (partial) Source.Gameplay.SpecialAbilities.AmbushAbility
 local AmbushAbility = {}
 
-function AmbushAbility:init()
+function AmbushAbility:init(projectileImage)
     GameplayAbility.init(self, {})
+    assert(Class.isInstance(projectileImage, "string"), "Ambush special requires a projectile image filename")
+    -- Any-valued General Data can store string literals with their quotes.
+    local first = projectileImage:sub(1, 1)
+    if first == '"' or first == "'" then
+        projectileImage = Engine.Eval(projectileImage, {})
+    end
+    assert(
+        Class.isInstance(projectileImage, "string") and bool(projectileImage),
+        "Ambush special requires a non-empty projectile image filename"
+    )
+    self._projectileTexture = "/Game/Assets/System/" .. projectileImage
     self.id = GameplayConstants.SPECIAL_PREFIX .. Special.Ambush
     self.triggerTags = { GameplayConstants.COMBAT_RESOLVE_ATTACK_EVENT, GameplayConstants.MOVEMENT_QUERY_HAZARD_EVENT }
 end
@@ -39,7 +50,7 @@ function AmbushAbility:activate(_abilitySystem, eventData)
     return assert(GameplayAbilityResult.Success("MovementHazard", {
             active = active,
             special = Special.Ambush,
-            magnitude = nil,
+            projectileTexture = self._projectileTexture,
             damage = damage
         }))
 end
