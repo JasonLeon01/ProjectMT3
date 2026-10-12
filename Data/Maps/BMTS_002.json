@@ -327,9 +327,9 @@
           null,
           5,
           null,
+          5,
           null,
-          null,
-          null,
+          5,
           null,
           null,
           null,
@@ -343,10 +343,23 @@
           null,
           null,
           null,
+          5,
+          5,
+          null,
+          5,
+          null
+        ],
+        [
+          null,
+          5,
+          5,
+          5,
+          5,
           null,
           null,
           null,
           null,
+          5,
           null
         ],
         [
@@ -356,9 +369,22 @@
           null,
           null,
           null,
+          5,
+          5,
+          null,
+          null,
+          5
+        ],
+        [
+          null,
+          5,
+          null,
+          5,
+          5,
           null,
           null,
           null,
+          5,
           null,
           null
         ],
@@ -368,9 +394,9 @@
           null,
           null,
           null,
+          5,
           null,
-          null,
-          null,
+          5,
           null,
           null,
           null
@@ -379,14 +405,27 @@
           null,
           5,
           null,
+          5,
           null,
           null,
+          5,
           null,
           null,
-          null,
-          null,
-          null,
+          5,
           null
+        ],
+        [
+          null,
+          5,
+          5,
+          null,
+          5,
+          null,
+          null,
+          5,
+          5,
+          null,
+          5
         ],
         [
           null,
@@ -395,7 +434,7 @@
           null,
           null,
           null,
-          null,
+          5,
           null,
           null,
           null,
@@ -404,15 +443,15 @@
         [
           null,
           5,
+          5,
+          null,
+          5,
           null,
           null,
           null,
+          5,
           null,
-          null,
-          null,
-          null,
-          null,
-          null
+          5
         ],
         [
           null,
@@ -420,48 +459,9 @@
           null,
           null,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
           5,
           null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
           5,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          5,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
           null,
           null,
           null
@@ -633,6 +633,46 @@
         "position": [
           0,
           0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Upstair",
+        "tag": "Teleportations_BP_Upstair_default_6_5",
+        "position": [
+          6,
+          5
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Downstair",
+        "tag": "Teleportations_BP_Downstair_default_6_10",
+        "position": [
+          6,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren_archer",
+        "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_7_4",
+        "position": [
+          7,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren_archer",
+        "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_2_3",
+        "position": [
+          2,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_2_2",
+        "tag": "Consumables_BP_Gem_2_2_default_0_5",
+        "position": [
+          0,
+          5
         ]
       }
     ]

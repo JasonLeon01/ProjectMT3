@@ -59,5 +59,29 @@ return {
         "TMT3_003",
         "TMT3_002",
         "TMT3_001"
+    },
+    BMTSIDE = {
+        "BMTS_001",
+        "BMTS_002",
+        "BMTS_003",
+        "BMTS_004",
+        "BMTS_005",
+        "BMTS_006",
+        "BMTS_007",
+        "BMTS_008",
+        "BMTS_009",
+        "BMTS_010"
+    },
+    PMTSIDE = {
+        "PMTS_001",
+        "PMTS_002",
+        "PMTS_003",
+        "PMTS_004",
+        "PMTS_005",
+        "PMTS_006",
+        "PMTS_007",
+        "PMTS_008",
+        "PMTS_009",
+        "PMTS_010"
     }
 }

@@ -152,6 +152,11 @@ function Player:_onArrivedAtMapCell()
     self._movementSpecialPath[#self._movementSpecialPath + 1] = position:copy()
 end
 
+function Player:hasPendingMovementSpecials()
+    -- Stopping mid-step snaps to a cell without recording an arrival.
+    return self:isMoving() or bool(self._movementSpecialPath)
+end
+
 function Player:consumeMovementSpecialPath()
     local path = {}
     path, self._movementSpecialPath = self._movementSpecialPath, path

@@ -2,6 +2,7 @@
 
 ---@enum Enums.Particle
 local Particle = {
+    AmbushHit = "AmbushHit",
     Burn = "Burn",
     CrystalShatter = "CrystalShatter",
     ResidentAura = "ResidentAura",

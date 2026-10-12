@@ -49,4 +49,9 @@ function GameplayScene:requestBattle(player, enemy)
     error("GameplayScene.requestBattle must be implemented")
 end
 
+---@diagnostic disable-next-line: unused
+function GameplayScene:applyExternalBattleDamage(player, damage)
+    error("GameplayScene.applyExternalBattleDamage must be implemented")
+end
+
 return class(GameplayScene, SceneBase)

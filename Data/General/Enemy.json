@@ -449,7 +449,7 @@
       "breathLimit": 60,
       "drops": {},
       "special": {
-        "Ambush": "",
+        "Ambush": "\u0022arrow.png\u0022",
         "First": ""
       },
       "ANIMATION_KEY": "24_gongjian",
@@ -769,7 +769,7 @@
       "breathLimit": 50,
       "drops": {},
       "special": {
-        "Ambush": ""
+        "Ambush": "\u0022arrow.png\u0022"
       },
       "ANIMATION_KEY": "24_gongjian",
       "CritAnimationKey": "25_gongjian2"
@@ -1481,7 +1481,7 @@
       "breathLimit": 250,
       "drops": {},
       "special": {
-        "Ambush": ""
+        "Ambush": "\u0022arrow.png\u0022"
       },
       "ANIMATION_KEY": "64_jianshen",
       "CritAnimationKey": "65_jianshen2"
@@ -1575,6 +1575,22 @@
       "special": {},
       "ANIMATION_KEY": "10_lei",
       "CritAnimationKey": "11_lei2"
+    },
+    "E42_shouren_archer": {
+      "name": "{E42_SHOUREN_ARCHER}",
+      "desc": "{E42_SHOUREN_ARCHER_DESC}",
+      "MAXHP": 160,
+      "ATK": 165,
+      "DEF": 115,
+      "EXP": 0,
+      "GOLD": 11,
+      "breathLimit": 38,
+      "drops": {},
+      "special": {
+        "Ambush": "\u0022arrow.png\u0022"
+      },
+      "ANIMATION_KEY": "24_gongjian",
+      "CritAnimationKey": "25_gongjian2"
     }
   }
 }

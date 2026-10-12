@@ -27,6 +27,11 @@ function Window:applyAttackEffects(attacker, target, critical) end
 ---@param defender Source.Windows.WindowBattle.BattlerState
 function Window:applyAttackStates(attacker, defender) end
 
+---@param player Source.MapActors.Player.Player
+---@param damage integer
+---@return integer | nil
+function Window:applyExternalDamage(player, damage) end
+
 ---@param playerTurn    boolean
 ---@param remainingHits integer | nil
 function Window:beginTurn(playerTurn, remainingHits) end

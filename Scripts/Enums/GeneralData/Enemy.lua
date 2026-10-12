@@ -45,6 +45,7 @@ local Enemy = {
     E40_kulou = "E40_kulou",
     E41_jiantouguai = "E41_jiantouguai",
     E42_shouren = "E42_shouren",
+    E42_shouren_archer = "E42_shouren_archer",
     E43_xieshilaimu = "E43_xieshilaimu",
     E44_gaojigongbing = "E44_gaojigongbing",
     E45_shuairuojinweibing = "E45_shuairuojinweibing",

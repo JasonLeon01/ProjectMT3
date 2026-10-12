@@ -6,11 +6,14 @@ local Effects = require("Source.Gameplay.Effects")
 local MotaBattleAbility = require("Source.Gameplay.MotaBattleAbility")
 local GameplayScene = require("Source.Gameplay.GameplayScene")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
+local AmbushProjectile = require("Source.CustomParticles.AmbushProjectile")
 
 local GameplayAbilityResult = GlobalCore.GameplayAbilityResult
 local GameplayEventData = GlobalCore.GameplayEventData
 
 local MovementSpecials = {}
+local AMBUSH_HIT_DURATION = 0.2
+local AMBUSH_HIT_PARTICLES = 16
 
 ---@param x integer
 ---@param y integer
@@ -120,7 +123,8 @@ function MovementSpecials.Preview(enemies, player, playerPosition, ignoredEnemie
                     sources[#sources + 1] = {
                         enemy = enemy,
                         special = result.data.special,
-                        damage = result.data.damage
+                        damage = result.data.damage,
+                        projectileTexture = result.data.projectileTexture
                     }
                 end
             end
@@ -178,6 +182,42 @@ function MovementSpecials.CollectEnemies(gameMap)
     return enemies
 end
 
+---@param scene Source.Gameplay.GameplayScene
+---@param gameMap GameMap
+---@param player Source.MapActors.Player.Player
+---@param damage integer
+---@param sources Source.Utils.MovementSpecials.DangerSource[]
+---@param visualDuration number
+local function applyDamage(scene, gameMap, player, damage, sources, visualDuration)
+    local source = assert(sources[1], "Movement damage requires at least one source")
+    local eventData = GameplayEventData.new(
+        source.enemy, player, "Event.Movement.HazardDamage", { sources = sources }
+    )
+    Effects.ApplyInstantModifier(player, "Movement.HazardDamage", "HP", "Add", -damage, eventData)
+    gameMap:addDamageText(tostring(damage), player:getPosition(), player)
+    local battleHP = scene:applyExternalBattleDamage(player, damage)
+    if player.attributes.HP <= 0 or battleHP ~= nil and battleHP <= 0 then
+        player:setAttr("HP", 0)
+        scene:requestGameOver(player, visualDuration)
+    end
+end
+
+---@param scene Source.Gameplay.GameplayScene
+---@param gameMap GameMap
+---@param player Source.MapActors.Player.Player
+---@param source Source.Utils.MovementSpecials.DangerSource
+local function launchAmbush(scene, gameMap, player, source)
+    local halfCell = Engine.GetCellSize() * 0.5
+    local startPosition = source.enemy:getPosition() + sf.Vector2f.new(halfCell, halfCell)
+    AmbushProjectile.Emit(gameMap, assert(source.projectileTexture), startPosition, player, function ()
+        local component = assert(player.emitterComp, "Player requires an ambush hit emitter component")
+        local emitter = assert(component:getEmitter(), "Player ambush hit emitter is unavailable")
+        emitter:emit("Flash", 1)
+        emitter:emit("Hit", AMBUSH_HIT_PARTICLES)
+        applyDamage(scene, gameMap, player, source.damage, { source }, AMBUSH_HIT_DURATION)
+    end)
+end
+
 function MovementSpecials.Commit(player, pathPositions)
     local gameMap = player:getMap()
     ---@type Source.MapActors.Enemy[]
@@ -222,22 +262,27 @@ function MovementSpecials.Commit(player, pathPositions)
     local animationLength = 0.0
     local playerPosition = player:getPosition()
     local seenEnemies = {}
+    local instantDamage = 0
+    local instantSources = {}
     for _, source in ipairs(allSources) do
-        if not seenEnemies[source.enemy] then
-            seenEnemies[source.enemy] = true
-            local animation = source.enemy:playAttackAnimationAt(scene, playerPosition)
-            if animation ~= nil then
-                animationLength = math.max(animationLength, animation:getVisualDuration())
+        if source.special == Special.Ambush then
+            if source.damage > 0 then
+                launchAmbush(scene, gameMap, player, source)
+            end
+        else
+            instantDamage = instantDamage + source.damage
+            instantSources[#instantSources + 1] = source
+            if not seenEnemies[source.enemy] then
+                seenEnemies[source.enemy] = true
+                local animation = source.enemy:playAttackAnimationAt(scene, playerPosition)
+                if animation ~= nil then
+                    animationLength = math.max(animationLength, animation:getVisualDuration())
+                end
             end
         end
     end
-    local eventData = GameplayEventData.new(
-        allSources[1].enemy, player, "Event.Movement.HazardDamage", { sources = allSources }
-    )
-    Effects.ApplyInstantModifier(player, "Movement.HazardDamage", "HP", "Add", -totalDamage, eventData)
-    gameMap:addDamageText(tostring(totalDamage), player:getPosition(), player)
-    if player.attributes.HP <= 0 then
-        scene:requestGameOver(player, animationLength)
+    if instantDamage > 0 then
+        applyDamage(scene, gameMap, player, instantDamage, instantSources, animationLength)
     end
     return assert(GameplayAbilityResult.Success("MovementHazardCommitted", {
             damage = totalDamage,

@@ -74,6 +74,11 @@
 ---@field _onFinished           Source.Windows.WindowBattle.Finished | nil
 local Controller = {}
 
+---@param player Source.MapActors.Player.Player
+---@param damage integer
+---@return integer | nil
+function Controller:applyExternalDamage(player, damage) end
+
 ---@param scene Source.Gameplay.GameplayScene
 function Controller:init(scene) end
 ---@param player     Source.MapActors.Player.Player

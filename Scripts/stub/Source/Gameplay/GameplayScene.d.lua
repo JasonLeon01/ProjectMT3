@@ -47,4 +47,10 @@ function GameplayScene:requestGameOver(player, delay) end
 ---@return boolean
 function GameplayScene:requestBattle(player, enemy) end
 
+--- Synchronise map damage with a running battle's HP snapshot.
+---@param player Source.MapActors.Player.Player
+---@param damage integer
+---@return integer | nil hp Remaining battle HP, or nil when no matching battle is active.
+function GameplayScene:applyExternalBattleDamage(player, damage) end
+
 return GameplayScene

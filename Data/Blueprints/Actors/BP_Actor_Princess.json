@@ -12,6 +12,14 @@
     "speed": 160,
     "texturePath": "/Game/Assets/Characters/actors/Princess001.png",
     "ID": "Princess",
+    "emitterComp": {
+      "resource": "AmbushHit",
+      "anchor": [0.5, 0.5],
+      "offset": [0, 0],
+      "rotation": 0,
+      "scale": [1, 1],
+      "beforeActor": false
+    },
     "lightComp": {
       "lightColour": [
         255,

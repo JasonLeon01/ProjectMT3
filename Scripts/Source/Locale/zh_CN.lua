@@ -217,6 +217,8 @@ return {
     ["E41_JIANTOUGUAI"] = "尖头怪",
     ["E41_JIANTOUGUAI_DESC"] = "这是一个尖头怪。",
     ["E42_SHOUREN"] = "兽人",
+    ["E42_SHOUREN_ARCHER"] = "兽人弓兵",
+    ["E42_SHOUREN_ARCHER_DESC"] = "这是一个兽人弓兵。",
     ["E42_SHOUREN_DESC"] = "这是一个兽人。",
     ["E43_XIESHILAIMU"] = "蟹史莱姆",
     ["E43_XIESHILAIMU_DESC"] = "这是一个蟹史莱姆。",

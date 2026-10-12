@@ -1,0 +1,368 @@
+{
+  "type": "particle",
+  "name": "AmbushHit",
+  "simulationRate": 60,
+  "seed": 137,
+  "tracks": [
+    {
+      "name": "Hit",
+      "enabled": true,
+      "mode": "emission",
+      "delay": 0,
+      "duration": 0.01,
+      "loop": false,
+      "prewarm": false,
+      "capacity": 96,
+      "count": 16,
+      "rate": 0,
+      "distanceRate": 0,
+      "bursts": [],
+      "shape": "point",
+      "extent": [
+        32,
+        32
+      ],
+      "radius": 16,
+      "innerRadius": 8,
+      "direction": -90,
+      "spread": 180,
+      "lifetime": [
+        0.14,
+        0.18
+      ],
+      "speed": [
+        110,
+        180
+      ],
+      "sizeMin": [
+        4,
+        12
+      ],
+      "sizeMax": [
+        6,
+        20
+      ],
+      "rotation": [
+        0,
+        360
+      ],
+      "angularVelocity": [
+        0,
+        0
+      ],
+      "colourMin": [
+        255,
+        220,
+        130,
+        255
+      ],
+      "colourMax": [
+        255,
+        255,
+        230,
+        255
+      ],
+      "gravity": [
+        0,
+        0
+      ],
+      "radialAcceleration": 0,
+      "tangentialAcceleration": 0,
+      "damping": 2,
+      "texture": "/Game/Assets/Particles/Spark.png",
+      "textureRect": [
+        450,
+        40,
+        352,
+        1160
+      ],
+      "columns": 1,
+      "rows": 1,
+      "frameCount": 1,
+      "frameRate": 0,
+      "randomStartFrame": false,
+      "frameLoop": true,
+      "space": "local",
+      "scaleMode": "hierarchy",
+      "blend": "add",
+      "offset": [
+        0,
+        0
+      ],
+      "rotationOffset": 0,
+      "scale": [
+        1,
+        1
+      ],
+      "curves": {
+        "alpha": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 0.55,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        },
+        "sizeX": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 0.35,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0.45,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        },
+        "sizeY": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 0.35,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0.45,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Flash",
+      "enabled": true,
+      "mode": "emission",
+      "delay": 0,
+      "duration": 0.01,
+      "loop": false,
+      "prewarm": false,
+      "capacity": 8,
+      "count": 1,
+      "rate": 0,
+      "distanceRate": 0,
+      "bursts": [],
+      "shape": "point",
+      "extent": [
+        32,
+        32
+      ],
+      "radius": 16,
+      "innerRadius": 8,
+      "direction": -90,
+      "spread": 180,
+      "lifetime": [
+        0.1,
+        0.1
+      ],
+      "speed": [
+        0,
+        0
+      ],
+      "sizeMin": [
+        32,
+        32
+      ],
+      "sizeMax": [
+        32,
+        32
+      ],
+      "rotation": [
+        0,
+        0
+      ],
+      "angularVelocity": [
+        0,
+        0
+      ],
+      "colourMin": [
+        255,
+        235,
+        175,
+        240
+      ],
+      "colourMax": [
+        255,
+        235,
+        175,
+        240
+      ],
+      "gravity": [
+        0,
+        0
+      ],
+      "radialAcceleration": 0,
+      "tangentialAcceleration": 0,
+      "damping": 2,
+      "texture": "/Game/Assets/Particles/Glow.png",
+      "textureRect": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "columns": 1,
+      "rows": 1,
+      "frameCount": 1,
+      "frameRate": 0,
+      "randomStartFrame": false,
+      "frameLoop": true,
+      "space": "local",
+      "scaleMode": "hierarchy",
+      "blend": "add",
+      "offset": [
+        0,
+        0
+      ],
+      "rotationOffset": 0,
+      "scale": [
+        1,
+        1
+      ],
+      "curves": {
+        "alpha": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 0.3,
+              "value": 0.85,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 0,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        },
+        "sizeX": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 0.65,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 0.25,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 1.15,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        },
+        "sizeY": {
+          "type": "curve",
+          "defaultValue": 1,
+          "preInfinity": "constant",
+          "postInfinity": "constant",
+          "keys": [
+            {
+              "time": 0,
+              "value": 0.65,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 0.25,
+              "value": 1,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            },
+            {
+              "time": 1,
+              "value": 1.15,
+              "interpolation": "linear",
+              "arriveTangent": 0,
+              "leaveTangent": 0
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

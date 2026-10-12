@@ -65,6 +65,10 @@ function Player.MeetPlayer(actors, player) end
 ---@param tag     string
 function Player:init(texture, tag) end
 
+--- A step is still moving or arrived cells are waiting for movement-special settlement.
+---@return boolean
+function Player:hasPendingMovementSpecials() end
+
 ---@brief Take and clear the map cells arrived at during the current move.
 ---
 --- - @return Arrived map cells in order, excluding the movement start cell.

@@ -4,6 +4,7 @@
 ---@field enemy   Source.MapActors.Enemy
 ---@field special string
 ---@field damage  integer
+---@field projectileTexture string | nil
 
 ---@class Source.Utils.MovementSpecials.PreviewContext
 ---@field player        Source.MapActors.Player.Player
