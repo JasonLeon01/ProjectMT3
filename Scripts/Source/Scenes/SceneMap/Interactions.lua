@@ -110,6 +110,46 @@ local function restoreHotkeyOverlayMove(self, previousEnabled)
 end
 
 ---@param self Source.Scenes.SceneMap.SceneMap
+---@param allowItemOverlay boolean | nil
+---@return boolean
+local function canUseMapShortcut(self, allowItemOverlay)
+    return GlobalCore.SceneManager.getScene() == self
+        and not self:isInputBlocked() and not self._battleActive and self._gameOverRequest == nil
+        and not self._mapTransferInProgress and self._pendingTeleporterTransfer == nil
+        and self._pendingWorldTransfer == nil
+        and (self:_canOpenMenu() or allowItemOverlay == true and self:_canOpenItemOverlay())
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
+---@param allowItemOverlay boolean | nil
+---@return boolean
+function Scene.PrepareMapShortcut(self, allowItemOverlay)
+    if not canUseMapShortcut(self, allowItemOverlay) then
+        return false
+    end
+    local gameMap = self:getGameMap()
+    local player = assert(gameMap:getPlayer(), "Map shortcut requires a player")
+    local function isCurrentPlayer()
+        return not player:isDestroyed() and self.player == player and self:getGameMap() == gameMap
+            and player:getMap() == gameMap
+    end
+    MapClickAutoPath.CancelForMap(gameMap)
+    if not isCurrentPlayer() then
+        return false
+    end
+    ---@cast player Source.MapActors.Player.Player
+    if player:isMoving() then
+        player:stop()
+    end
+    if not isCurrentPlayer() then
+        return false
+    end
+    -- Native stop may arrive at a new cell before the next fixed tick.
+    player:settleMovementSpecials()
+    return isCurrentPlayer() and player.attributes.HP > 0 and canUseMapShortcut(self, allowItemOverlay)
+end
+
+---@param self Source.Scenes.SceneMap.SceneMap
 function Scene.GetGameMap(self)
     assert(self._gameMap ~= nil, "Scene map is not loaded")
     return self._gameMap
@@ -292,7 +332,9 @@ function Scene.SwitchPlayer(self, right)
         or self._mapTransferInProgress or self._pendingTeleporterTransfer ~= nil or self._pendingWorldTransfer ~= nil then
         return false
     end
-    MapClickAutoPath.CancelForMap(self:getGameMap())
+    if not Scene.PrepareMapShortcut(self) then
+        return false
+    end
     self.inst:rotatePlayers(right)
     self:applyPrimaryPlayer()
     self:_blockMapInput(MAP_INPUT_BLOCK_FRAMES)
@@ -317,7 +359,7 @@ end
 ---@param self Source.Scenes.SceneMap.SceneMap
 ---@return boolean
 function Scene.ShowEnemyBook(self)
-    if (not self:_canOpenMenu() and not self:_canOpenItemOverlay()) or not self.player:hasItem(ENEMY_BOOK_ITEM_ID) then
+    if not self.player:hasItem(ENEMY_BOOK_ITEM_ID) or not Scene.PrepareMapShortcut(self, true) then
         return false
     end
     local window = self._windowEnemyBook:get()
@@ -338,7 +380,9 @@ local function openMapShortcut(self, window)
         or self._pendingTeleporterTransfer ~= nil or self._pendingWorldTransfer ~= nil then
         return false
     end
-    MapClickAutoPath.CancelForMap(self:getGameMap())
+    if not Scene.PrepareMapShortcut(self) then
+        return false
+    end
     self._shortcutMoveEnabledBeforeOpen = self.player:getMoveEnabled()
     self.player:setMoveEnabled(false)
     window:get():open(self:getGameMap():getMapViewRect())
@@ -390,6 +434,9 @@ function Scene.ShowFloorTeleporter(self)
     end
     if TransferRules.IsForbidden(self:getGameMap()) then
         AudioManager.playSound(GameSystem.GetBuzzerSE())
+        return false
+    end
+    if not Scene.PrepareMapShortcut(self, true) then
         return false
     end
     local window = self._windowFloorTeleporter:get()
@@ -452,7 +499,7 @@ end
 ---@param self Source.Scenes.SceneMap.SceneMap
 ---@return boolean
 function Scene.OpenItemUI(self)
-    if not self:_canOpenMenu() then
+    if not Scene.PrepareMapShortcut(self) then
         return false
     end
     AudioManager.playSound(GameSystem.GetDecisionSE())
@@ -466,7 +513,7 @@ end
 ---@param self Source.Scenes.SceneMap.SceneMap
 ---@return boolean
 function Scene.OpenEquipUI(self)
-    if not self:_canOpenMenu() then
+    if not Scene.PrepareMapShortcut(self) then
         return false
     end
     AudioManager.playSound(GameSystem.GetDecisionSE())
@@ -507,7 +554,7 @@ end
 ---@param self Source.Scenes.SceneMap.SceneMap
 ---@return boolean
 function Scene.QuickLoad(self)
-    if not self:_canOpenMenu() then
+    if not Scene.PrepareMapShortcut(self) then
         return false
     end
     local slot = Save.FindLatestSlot(WindowSaveSlot.MAX_SAVE_SLOTS)

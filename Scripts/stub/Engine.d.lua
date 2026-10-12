@@ -177,10 +177,10 @@
 ---@field FocusDirection table<string, string>
 ---@field TextConfig table
 ---@field TextLayout table
+---@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field DefaultFontSize integer
 ---@field DefaultFont sf.Font|nil
 ---@field DefaultWindowskinName string|nil
----@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field _default_bus Engine.EventBus
 ---@field eventBus fun(): Engine.EventBus
 ---@field subscribe fun(event: string, handler: fun(arg1: any): nil, priority?: integer): integer
@@ -1318,6 +1318,12 @@ function Actor:getMoveEnabled() end
 ---@param enabled boolean
 ---@return nil
 function Actor:setMoveEnabled(enabled) end
+--- @brief Cancel movement and snap to the nearest map cell.
+---
+--- An interrupted step that enters a new cell dispatches overlap and
+--- arrival callbacks once, after movement is cleared and occupancy is
+--- updated. Stopping without entering a new cell does not dispatch arrival
+--- callbacks.
 ---@return nil
 function Actor:stop() end
 ---@return sf.Vector2f|nil velocity
