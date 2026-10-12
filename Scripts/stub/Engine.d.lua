@@ -223,6 +223,10 @@
 ---@field ManhattanDistance fun(left: sf.Vector2i, right: sf.Vector2i): integer
 ---@field CanvasRenderStates fun(): sf.RenderStates
 ---@field BuildPixelGridVertices fun(origin: sf.Vector2f, size: sf.Vector2u): sf.VertexArray
+---@field loadData fun(path: string): Engine.RuntimeDataValue
+---@field saveData fun(path: string, value: Engine.RuntimeDataValue): nil
+---@field dataExists fun(path: string): boolean
+---@field decodeData fun(bytes: string): Engine.RuntimeDataValue
 ---@field getJSONData fun(filePath: string): Engine.RuntimeDataValue
 ---@field getJSONText fun(filePath: string): string
 ---@field jsonExists fun(filePath: string): boolean
@@ -542,18 +546,46 @@ function Engine.CanvasRenderStates() end
 ---@return sf.VertexArray
 function Engine.BuildPixelGridVertices(origin, size) end
 
+--- Loads JSON or binary LDC data. A missing .json path resolves to its .ldc
+--- alternative.
+---@param path string
+---@return Engine.RuntimeDataValue
+function Engine.loadData(path) end
+
+--- Writes JSON for .json paths or binary LDC for .ldc paths.
+---@param path string
+---@param value Engine.RuntimeDataValue
+---@return nil
+function Engine.saveData(path, value) end
+
+--- Checks the data path, including the .ldc alternative for a missing .json
+--- file.
+---@param path string
+---@return boolean
+function Engine.dataExists(path) end
+
+--- Decodes complete JSON or LDC file bytes without an intermediate JSON
+--- representation.
+---@param bytes string
+---@return Engine.RuntimeDataValue
+function Engine.decodeData(bytes) end
+
+--- Reads JSON from the exact path, without LDC resolution or decoding.
 ---@param filePath string
 ---@return Engine.RuntimeDataValue
 function Engine.getJSONData(filePath) end
 
+--- Reads text from the exact path without LDC resolution or decoding.
 ---@param filePath string
 ---@return string
 function Engine.getJSONText(filePath) end
 
+--- Checks only the exact path, without looking for an LDC alternative.
 ---@param filePath string
 ---@return boolean
 function Engine.jsonExists(filePath) end
 
+--- Writes JSON text regardless of the path extension.
 ---@param filePath string
 ---@param value Engine.RuntimeDataValue
 ---@return nil

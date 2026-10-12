@@ -119,13 +119,6 @@ function WorldGameMap:isWorldMap()
     return true
 end
 
-function WorldGameMap:prependBillboardLayer(name)
-    if self._worldLayerNames[name] then return end
-    self._billboardOverlayLayers[name] = true
-    self._worldLayerNames[name] = true
-    table.insert(self._worldLayerOrder, 1, name)
-end
-
 function WorldGameMap:getManifestPath()
     return self._worldManifestPath
 end
@@ -300,7 +293,7 @@ function WorldGameMap:ensureRegionLoadedAt(position)
     end
     if region.payload == nil then
         if region.publishState == nil then
-            local data = Engine.getJSONData(os.path.join(self._worldDataRoot, region.map))
+            local data = Engine.loadData(os.path.join(self._worldDataRoot, region.map))
             local priorityRect = self._camera ~= nil and self:_getVisibleCellRect()
                 or { x = position.x, y = position.y, width = 1, height = 1 }
             self:_beginRegionPublish(region, data, true, priorityRect)
