@@ -61,7 +61,6 @@
 ---@field FocusNeighbor GlobalCore.FocusNeighbor
 ---@field FocusTransition GlobalCore.FocusTransition
 ---@field FogController GlobalCore.FogController
----@field MapFogSettings GlobalCore.MapFogSettings
 ---@field GameMapBase GlobalCore.GameMapBase
 ---@field PathResult GlobalCore.PathResult
 ---@field GameMapRenderer GlobalCore.GameMapRenderer
@@ -78,8 +77,6 @@
 ---@field GameplayModifier GlobalCore.GameplayModifier
 ---@field Graphics GlobalCore.Graphics
 ---@field Light GlobalCore.Light
----@field LightOcclusionInput GlobalCore.LightOcclusionInput
----@field LightOcclusionResult GlobalCore.LightOcclusionResult
 ---@field AudioEffectControl GlobalCore.AudioEffectControl
 ---@field AudioManager GlobalCore.AudioManager
 ---@field FontManager GlobalCore.FontManager
@@ -652,50 +649,32 @@ GlobalCore.FocusTransition = FocusTransition
 
 ---@class GlobalCore.FogController
 local FogController = {}
----@param mapData GlobalCore.MapFogSettings
+---@return GlobalCore.FogController
+function FogController.new() end
+---@param self GlobalCore.FogController
+function FogController.init(self) end
+---@param settings Engine.MapFogSettings
 ---@return nil
-function FogController.applyFromMapData(mapData) end
----@param mapData GlobalCore.MapFogSettings
+function FogController:applyFromMapData(settings) end
+---@param settings Engine.MapFogSettings
 ---@return nil
-function FogController.applyWorldFromMapData(mapData) end
+function FogController:applyWorldFromMapData(settings) end
 ---@param key string
 ---@param cellRect sf.IntRect
----@param graphic string
----@param power number
----@param scrollX number
----@param scrollY number
----@param distort number
+---@param settings Engine.MapFogSettings
 ---@return nil
-function FogController.setWorldRegionFog(key, cellRect, graphic, power, scrollX, scrollY, distort) end
+function FogController:setWorldRegionFog(key, cellRect, settings) end
 ---@param key string
 ---@return nil
-function FogController.removeWorldRegionFog(key) end
----@param camera GlobalCore.Camera
+function FogController:removeWorldRegionFog(key) end
 ---@return nil
-function FogController.drawWorldOverlay(camera) end
----@return nil
-function FogController.clearFog() end
----@param deltaTime number
----@return nil
-function FogController.update(deltaTime) end
----@return nil
-function FogController.drawOverlay() end
+function FogController:clearFog() end
+---@return Engine.MapFogSettings
+function FogController:getSettings() end
+---@param key string
+---@return Engine.MapFogSettings|nil
+function FogController:getWorldRegionSettings(key) end
 GlobalCore.FogController = FogController
-
----@class GlobalCore.MapFogSettings
----@field fog string
----@field fogPower number
----@field fogOx number
----@field fogOy number
----@field fogDistort number
-local MapFogSettings = {}
----@param values table
----@return GlobalCore.MapFogSettings
-function MapFogSettings.new(values) end
----@param self GlobalCore.MapFogSettings
----@param values table
-function MapFogSettings.init(self, values) end
-GlobalCore.MapFogSettings = MapFogSettings
 
 --- @brief Native game map base for material queries and navigation
 ---
@@ -876,15 +855,6 @@ function GameMapBase:getSparseWorldRegionIndexAt(position) end
 function GameMapBase:clearSparseWorld() end
 ---@return integer
 function GameMapBase:getSparseOccupancyPageCount() end
----@param origin sf.Vector2i
----@param size sf.Vector2u
----@param actors GlobalCore.__ArrayElement_7ca009b07462[]
----@return sf.Texture|nil
-function GameMapBase:rebuildStaticLightOccupancy(origin, size, actors) end
----@param inputs GlobalCore.LightOcclusionInput[]
----@param visibleActors GlobalCore.__ArrayElement_7ca009b07462[]
----@return GlobalCore.LightOcclusionResult[]
-function GameMapBase:analyseLightOcclusion(inputs, visibleActors) end
 --- @brief Synchronise cached actor pointers from typed actor lists
 ---
 --- - @param actors Layer name to actor list mapping
@@ -1001,12 +971,21 @@ function GameMapRenderer.init(self, map, tilemap, camera, layerNames, coverAlpha
 ---@param camera GlobalCore.Camera|nil
 ---@return nil
 function GameMapRenderer:setCamera(camera) end
+---@param controller GlobalCore.FogController|nil
+---@return nil
+function GameMapRenderer:setFogController(controller) end
+---@param layers string[]
+---@return nil
+function GameMapRenderer:setLayerOrder(layers) end
 ---@param sprites GlobalCore.PreviewSprite[]
 ---@return nil
 function GameMapRenderer:setPreviewSprites(sprites) end
 ---@param visibility boolean[]
 ---@return nil
 function GameMapRenderer:setPreviewVisibility(visibility) end
+---@param filter fun(arg1: Engine.Actor, arg2: string): boolean
+---@return nil
+function GameMapRenderer:setActorVisibilityFilter(filter) end
 ---@param target sf.RenderTarget
 ---@param states sf.RenderStates
 ---@param applyPlayerCover boolean
@@ -1028,16 +1007,14 @@ function GameMapRenderer:drawActor(target, states, actor, actorAlpha, shaderTime
 function GameMapRenderer:setActorEffectHidden(actor, hidden) end
 ---@return nil
 function GameMapRenderer:resetTransparentTiles() end
----@param mapLights GlobalCore.Light[]
 ---@param ambientLight sf.Color
----@param materialRevision integer
+---@param shaderTime number
 ---@return nil
-function GameMapRenderer:renderLighting(mapLights, ambientLight, materialRevision) end
+function GameMapRenderer:composeFrame(ambientLight, shaderTime) end
 ---@param ambientLight sf.Color
+---@param shaderTime number
 ---@return nil
-function GameMapRenderer:refreshMaterialShader(ambientLight) end
----@return sf.Shader|nil
-function GameMapRenderer:getMaterialShader() end
+function GameMapRenderer:prewarm(ambientLight, shaderTime) end
 GlobalCore.GameMapRenderer = GameMapRenderer
 
 ---@class GlobalCore.AbilitySystemComponent : Engine.RuntimeObject
@@ -1425,28 +1402,6 @@ function Light:asDict() end
 function Light.fromDict(data) end
 GlobalCore.Light = Light
 
----@class GlobalCore.LightOcclusionInput
----@field light GlobalCore.Light
----@field owner Engine.Actor|nil
-local LightOcclusionInput = {}
----@param values table
----@return GlobalCore.LightOcclusionInput
-function LightOcclusionInput.new(values) end
----@param self GlobalCore.LightOcclusionInput
----@param values table
-function LightOcclusionInput.init(self, values) end
-GlobalCore.LightOcclusionInput = LightOcclusionInput
-
----@class GlobalCore.LightOcclusionResult
----@field hasStaticTransmissionLoss boolean
----@field occluders GlobalCore.__ArrayElement_7ca009b07462[]
----@field maskRect sf.FloatRect|nil
----@field dynamicOccupancy sf.Texture|nil
----@field dynamicOccupancyOrigin sf.Vector2f
----@field dynamicOccupancySize sf.Vector2f
-local LightOcclusionResult = {}
-GlobalCore.LightOcclusionResult = LightOcclusionResult
-
 ---@class GlobalCore.AudioEffectControl
 local AudioEffectControl = {}
 ---@return boolean
@@ -1697,10 +1652,8 @@ function PanoramaController.applyWorldFromMapData(mapData) end
 function PanoramaController.clear() end
 ---@return boolean
 function PanoramaController.isActive() end
----@param camera GlobalCore.Camera
----@param ambientLight sf.Color
----@return nil
-function PanoramaController.drawUnderlay(camera, ambientLight) end
+---@return string
+function PanoramaController.getPath() end
 GlobalCore.PanoramaController = PanoramaController
 
 ---@class GlobalCore.PreviewSprite
@@ -2140,11 +2093,6 @@ GlobalCore.WorldStreamingState = WorldStreamingState
 local WorldStreamingStats = {}
 GlobalCore.WorldStreamingStats = WorldStreamingStats
 
-
----@return GlobalCore.MapFogSettings
-function GlobalCore.MapFogSettings:copy() end
----@return GlobalCore.MapFogSettings
-function GlobalCore.MapFogSettings:deepcopy() end
 
 ---@return GlobalCore.PathResult
 function GlobalCore.PathResult:copy() end

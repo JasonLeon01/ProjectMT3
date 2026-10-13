@@ -17,7 +17,7 @@ uniform vec2 viewSinCos;
 uniform vec2 gridSize;
 uniform float cellSize;
 
-uniform vec3 ambientColor;
+uniform sampler2D ambientLight;
 uniform float preserveSourceAlpha;
 
 
@@ -117,7 +117,7 @@ void main() {
     } else {
         direct = texture2D(directLight, uv).rgb;
     }
-    vec3 lighting = clamp(ambientColor + direct, 0.0, 1.0);
+    vec3 lighting = clamp(texture2D(ambientLight, uv).rgb + direct, 0.0, 1.0);
     vec3 litColor = pixel.rgb * lighting;
 
     vec4 surface = SampleSurfaceMaskWorldTL(pixelPosTLWorld);

@@ -95,8 +95,8 @@ $metadataOptions = @()
 if ($Mode -eq 'standalone') {
     & python $ci prepare-standalone $ProjectDirectory $gameDirectory
     if ($LASTEXITCODE -ne 0) { throw 'Standalone project preparation failed.' }
-    & $scriptTools ui-preview validate $gameDirectory
-    if ($LASTEXITCODE -ne 0) { throw 'Standalone UI preview validation failed.' }
+    & $scriptTools preview validate $gameDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'Standalone preview validation failed.' }
     $metadataOptions = @('--standalone')
 } else {
     & python $ci validate $gameDirectory

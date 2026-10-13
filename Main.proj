@@ -1,4 +1,5 @@
 {
+  "version": "v1.0",
   "Cpp": true,
   "ffmpeg": true,
   "packaging": {

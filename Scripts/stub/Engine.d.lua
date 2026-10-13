@@ -64,6 +64,7 @@
 ---@field AnimationSegment Engine.AnimationSegment
 ---@field AnimationKeyFrame Engine.AnimationKeyFrame
 ---@field AnimationTimeTag Engine.AnimationTimeTag
+---@field MapFogSettings Engine.MapFogSettings
 ---@field RectBase Engine.RectBase
 ---@field TileLayerGraphics Engine.TileLayerGraphics
 ---@field InjectedInputEvent Engine.InjectedInputEvent
@@ -1938,6 +1939,23 @@ function AnimationTimeTag.new(values) end
 ---@param values table
 function AnimationTimeTag.init(self, values) end
 Engine.AnimationTimeTag = AnimationTimeTag
+
+---@class Engine.MapFogSettings
+---@field enabled boolean
+---@field colour sf.Color
+---@field density number
+---@field scale number
+---@field velocity sf.Vector2f
+---@field turbulence number
+---@field seed integer
+local MapFogSettings = {}
+---@param values table
+---@return Engine.MapFogSettings
+function MapFogSettings.new(values) end
+---@param self Engine.MapFogSettings
+---@param values table
+function MapFogSettings.init(self, values) end
+Engine.MapFogSettings = MapFogSettings
 
 --- @brief Utility for rendering nine-patch style rectangles
 ---
@@ -5434,6 +5452,11 @@ function Engine.AnimationKeyFrame:deepcopy() end
 function Engine.AnimationTimeTag:copy() end
 ---@return Engine.AnimationTimeTag
 function Engine.AnimationTimeTag:deepcopy() end
+
+---@return Engine.MapFogSettings
+function Engine.MapFogSettings:copy() end
+---@return Engine.MapFogSettings
+function Engine.MapFogSettings:deepcopy() end
 
 ---@return Engine.InjectedInputEvent
 function Engine.InjectedInputEvent:copy() end

@@ -138,6 +138,7 @@ function WorldGameMap:disposeStreaming()
         return
     end
     self._worldDisposed = true
+    GameMap.disposeStreaming(self)
     if self._worldStreamJob ~= nil then
         asyncio.cancel_file_batch(self._worldStreamJob)
         self._worldStreamJob = nil
