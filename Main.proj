@@ -8,5 +8,15 @@
   },
   "IndividualWindow": true,
   "lastFileExplorerPath": "Data/Blueprints/Enemies",
-  "lastOpenedMapKey": "MT3_000"
+  "lastOpenedMapKey": "MT3_000",
+  "editor": {
+    "mapViewport": {
+      "lit": true,
+      "realtime": true,
+      "showFog": true,
+      "showPanorama": true,
+      "showActorOrigins": true,
+      "showLightBounds": false
+    }
+  }
 }
