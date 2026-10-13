@@ -2314,6 +2314,37 @@ local _METADATA = {
             default = 0.0,
         },
     },
+    MapFogSettings = {
+        attrs = { "enabled", "colour", "density", "scale", "velocity", "turbulence", "seed" },
+        enabled = {
+            type = "bool",
+            default = false,
+        },
+        colour = {
+            type = "sf.Color",
+            default = { 255, 255, 255, 255 },
+        },
+        density = {
+            type = "float",
+            default = 0.5,
+        },
+        scale = {
+            type = "float",
+            default = 256.0,
+        },
+        velocity = {
+            type = "sf.Vector2f",
+            default = { 15.0, 15.0 },
+        },
+        turbulence = {
+            type = "float",
+            default = 0.5,
+        },
+        seed = {
+            type = "int",
+            default = 0,
+        },
+    },
     RectBase = {
         attrs = {},
         render = {

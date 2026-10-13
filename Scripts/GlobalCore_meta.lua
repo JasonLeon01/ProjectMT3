@@ -642,45 +642,25 @@ local _METADATA = {
         attrs = {},
         applyFromMapData = {
             type = "function",
-            parameters = { "mapData", mapData = { "GlobalCore", "MapFogSettings" } },
+            parameters = { "self", "settings", self = { "GlobalCore", "FogController" }, settings = { "Engine", "MapFogSettings" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
         clearFog = {
             type = "function",
-            parameters = {},
+            parameters = { "self", self = { "GlobalCore", "FogController" } },
+            default = { [1] = "self" },
             ["return"] = {},
         },
-        update = {
+        getSettings = {
             type = "function",
-            parameters = { "deltaTime", deltaTime = "float" },
-            ["return"] = {},
-        },
-        drawOverlay = {
-            type = "function",
-            parameters = {},
-            ["return"] = {},
-        },
-    },
-    MapFogSettings = {
-        attrs = { "fog", "fogPower", "fogOx", "fogOy", "fogDistort" },
-        fog = {
-            type = "string",
-        },
-        fogPower = {
-            type = "float",
-            default = 0.0,
-        },
-        fogOx = {
-            type = "float",
-            default = 0.0,
-        },
-        fogOy = {
-            type = "float",
-            default = 0.0,
-        },
-        fogDistort = {
-            type = "float",
-            default = 0.0,
+            parameters = { "self", self = { "GlobalCore", "FogController" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "MapFogSettings" },
+            },
+            Pure = true,
         },
     },
     GameMapBase = {
@@ -1944,6 +1924,15 @@ local _METADATA = {
             ["return"] = {
                 "return",
                 ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        getPath = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "string",
             },
             Pure = true,
         },

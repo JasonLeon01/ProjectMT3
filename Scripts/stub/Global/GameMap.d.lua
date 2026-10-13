@@ -1,48 +1,19 @@
 ---@meta Global.GameMap
 
 ---@alias Global.GameMap.TerrainTileID integer | string | nil
----@alias Global.GameMap.StaticTransmissionElement boolean | tuple<string | integer>
----@alias Global.GameMap.StaticTransmissionSignature tuple<Global.GameMap.StaticTransmissionElement>
 
 ---@brief Game map managing tile layers, actors, lights, collisions, and pathfinding.
 ---
 --- Provides the core gameplay map with lighting, occlusion, actor management,
 --- and pathfinding support. Integrates with Camera and SceneBase.
----@class GameMapCoverLayerState
----@field layer   Engine.TileLayer
----@field visible boolean
-
 ---@class Global.GameMap.SparseWorldConfig
 ---@field size        sf.Vector2u
 ---@field layerOrder  string[]
 ---@field regionRects sf.IntRect[]
 
----@class Global.GameMap.WorldTileMaskConfig
----@field targetSize     sf.Vector2f
----@field viewSize       sf.Vector2f
----@field viewPosition   sf.Vector2f
----@field viewRotation   number
----@field regionSize     sf.Vector2f
----@field regionPosition sf.Vector2f
-
----@alias Global.GameMap.LayerMaskTextureCacheEntry { [1]: integer, [2]: integer | boolean, [3]: sf.Texture, [4]: sf.Texture, [5]: sf.Texture }
-
----@class Global.GameMap.ActiveLight: GlobalCore.LightOcclusionInput
----@field light GlobalCore.Light
----@field owner Engine.Actor | nil
----@field rank  number | nil
-
----@class Global.GameMap.LightCacheEntry
----@field [1] number
----@field [2] number
----@field [3] number
----@field [4] number
----@field [5] number
----@field [6] number
----@field [7] number
-
 ---@class (partial) GameMap: GlobalCore.GameMapBase
----@field _billboardOverlayLayers   table<string, boolean>
+---@field _billboardOverlayLayers table<string, boolean>
+---@field _pendingProjectiles table<Engine.Particle, boolean>
 ---@field DefaultCoverAlpha         integer
 ---@field HideDisconnectedRegions   boolean                                                                                                                                                         Hide tile-disconnected areas outside the player or preview observer region; defaults to false.
 ---@field MapViewRect               sf.IntRect                                                                                                                                                      Logical-screen rectangle occupied by the map canvas; defaults to `(192, 32, 416, 416)`.
@@ -54,7 +25,6 @@
 ---@field _player                   Engine.Actor | nil
 ---@field _scene                    GlobalCore.SceneBase | nil
 ---@field _particleSystem           Engine.ParticleSystem | nil
----@field _pendingProjectiles       table<Engine.Particle, boolean>
 ---@field _actorPixelShatterShader  sf.Shader | nil
 ---@field _actorPixelShatterEffects table<string, Global.CustomEffects.ActorPixelShatterEffect[]>
 ---@field _actorPixelShatterByActor table<Engine.Actor, Global.CustomEffects.ActorPixelShatterEffect>
@@ -65,6 +35,7 @@
 ---@field _materialRevision         integer
 ---@field _tilePassableGrid         boolean[][] | nil
 ---@field _renderer                 GlobalCore.GameMapRenderer | nil
+---@field _fogController            GlobalCore.FogController
 ---@field _renderEffectTarget       sf.RenderTarget | nil
 ---@field _drawLayerEffects         fun(layerName: string)
 ---@field _billboardLayerVisible    fun(actor: Engine.Actor, layerName: string): boolean
@@ -98,7 +69,7 @@ function GameMap:init(mapName, tilemap, camera, previewOnly, sparseWorldConfig) 
 ---@return boolean
 function GameMap:isWorldMap() end
 
----@param actor     Engine.Actor
+---@param actor Engine.Actor
 ---@param layerName string
 ---@return boolean
 function GameMap:_isBillboardActorVisible(actor, layerName) end
@@ -121,8 +92,6 @@ function GameMap:untrackProjectile(particle) end
 
 ---@return boolean
 function GameMap:hasPendingProjectiles() end
-
-function GameMap:drawMapFogOverlay() end
 
 ---@param component ComponentBase
 function GameMap:addComponent(component) end
@@ -345,62 +314,6 @@ function GameMap:setTerrainTiles(layerName, positions, tileID) end
 ---@param terrainDestructions table<string, table<string, { position: sf.Vector2i, tileID: Global.GameMap.TerrainTileID }>>
 function GameMap:applyTerrainDestructions(terrainDestructions) end
 
----@brief Get all lights on the map.
----
---- - @return A list of Light objects.
----@return GlobalCore.Light[]
-function GameMap:getLights() end
-
----@brief Replace all lights on the map.
----
---- - @param lights The new list of Light objects.
----@param lights GlobalCore.Light[]
-function GameMap:setLights(lights) end
-
----@brief Add a light to the map.
----
---- - @param light The Light to add.
----@param light GlobalCore.Light
-function GameMap:addLight(light) end
-
----@brief Remove a light from the map.
----
---- - @param light The Light to remove.
----@param light GlobalCore.Light
-function GameMap:removeLight(light) end
-
----@brief Set the position of a light.
----
---- - @param light The light to modify.
---- - @param position The new position as an sf.Vector2f.
----@param light    GlobalCore.Light
----@param position sf.Vector2f
-function GameMap:setLightPosition(light, position) end
-
----@brief Set the colour of a light.
----
---- - @param light The light to modify.
---- - @param colour The new colour.
----@param light  GlobalCore.Light
----@param colour sf.Color
-function GameMap:setLightColour(light, colour) end
-
----@brief Set the radius of a light.
----
---- - @param light The light to modify.
---- - @param radius The new radius.
----@param light  GlobalCore.Light
----@param radius number
-function GameMap:setLightRadius(light, radius) end
-
----@brief Set the intensity of a light.
----
---- - @param light The light to modify.
---- - @param intensity The new intensity.
----@param light     GlobalCore.Light
----@param intensity number
-function GameMap:setLightIntensity(light, intensity) end
-
 ---@brief Get the ambient light colour.
 ---
 --- - @return The ambient light Colour.
@@ -412,6 +325,16 @@ function GameMap:getAmbientLight() end
 --- - @param ambientLight The new ambient light Colour.
 ---@param ambientLight sf.Color
 function GameMap:setAmbientLight(ambientLight) end
+
+---@return Engine.MapFogSettings
+function GameMap:getFogSettings() end
+
+---@param settings Engine.MapFogSettings
+function GameMap:setFogSettings(settings) end
+
+---@param path string
+---@return Engine.MapFogSettings | nil
+function GameMap:getRegionFogSettings(path) end
 
 ---@brief Get the map size in tiles.
 ---
@@ -623,7 +546,7 @@ function GameMap:drawMapContent(target, states, applyPlayerCover) end
 ---@brief Render the full map including layers, actors, lights, and particles.
 function GameMap:show() end
 
----@brief Refresh the material shader uniforms with current lighting data.
+---@brief Refresh material queries and invalidate passability data.
 function GameMap:refreshShader() end
 
 ---@brief Mark the passability cache as dirty for rebuild on next query.
