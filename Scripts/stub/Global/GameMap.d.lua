@@ -12,8 +12,6 @@
 ---@field regionRects sf.IntRect[]
 
 ---@class (partial) GameMap: GlobalCore.GameMapBase
----@field _billboardOverlayLayers table<string, boolean>
----@field _pendingProjectiles table<Engine.Particle, boolean>
 ---@field DefaultCoverAlpha         integer
 ---@field HideDisconnectedRegions   boolean                                                                                                                                                         Hide tile-disconnected areas outside the player or preview observer region; defaults to false.
 ---@field MapViewRect               sf.IntRect                                                                                                                                                      Logical-screen rectangle occupied by the map canvas; defaults to `(192, 32, 416, 416)`.
@@ -37,20 +35,12 @@
 ---@field _renderer                 GlobalCore.GameMapRenderer | nil
 ---@field _fogController            GlobalCore.FogController
 ---@field _renderEffectTarget       sf.RenderTarget | nil
----@field _drawLayerEffects         fun(layerName: string)
+---@field _drawLayerEffects         fun(layerName: string, target: sf.RenderTarget, states: sf.RenderStates)
+---@field _drawOverlay              fun()
 ---@field _billboardLayerVisible    fun(actor: Engine.Actor, layerName: string): boolean
 ---@field mapName                   string
 ---@field new                       fun(mapName: string, tilemap: Engine.Tilemap, camera?: GlobalCore.Camera, previewOnly?: boolean, sparseWorldConfig?: Global.GameMap.SparseWorldConfig): GameMap
 local GameMap = {}
-
---- Add an empty session billboard layer first, drawing its text above terrain.
----@param name string
-function GameMap:prependBillboardLayer(name) end
-
---- Spawn a session-only actor outside world-region persistence and streaming ownership.
----@param actor Engine.Actor
----@param layer string
-function GameMap:spawnTransientActor(actor, layer) end
 
 ---@brief Construct a game map.
 ---
@@ -78,20 +68,6 @@ function GameMap:_isBillboardActorVisible(actor, layerName) end
 function GameMap:updateAutoTileAnimation(deltaTime) end
 
 function GameMap:disposeStreaming() end
-
---- Return the runtime map's particle system; preview maps have no particle system.
----@return Engine.ParticleSystem
-function GameMap:getParticleSystem() end
-
---- Keep map shortcuts blocked until this projectile's hit or cancellation is settled.
----@param particle Engine.Particle
-function GameMap:trackProjectile(particle) end
-
----@param particle Engine.Particle
-function GameMap:untrackProjectile(particle) end
-
----@return boolean
-function GameMap:hasPendingProjectiles() end
 
 ---@param component ComponentBase
 function GameMap:addComponent(component) end
@@ -361,9 +337,9 @@ function GameMap:getMapViewRect() end
 ---@brief Get the topmost visible material at a position.
 ---
 --- - @param pos The map position.
---- - @return The top Material, or nil.
+--- - @return The top material resource path, or nil.
 ---@param pos sf.Vector2i
----@return Engine.Material | nil
+---@return string | nil
 function GameMap:getTopMaterial(pos) end
 
 ---@brief Find a path from start to goal using pathfinding.
@@ -494,26 +470,6 @@ function GameMap:getOverlaps(actor) end
 
 ---@brief Rebuild the flat actor list from all layers, including children.
 function GameMap:updateActorList() end
-
----@brief Get a 2D map of material property values.
----
---- - @param functionName The material property function name.
---- - @param invalidValue The default value for invalid positions.
---- - @return A 2D grid of property values.
----@param functionName string
----@param invalidValue number | boolean
----@return (number | boolean)[][]
-function GameMap:getMaterialPropertyMap(functionName, invalidValue) end
-
----@brief Get a light blocking map for a specific actor layer.
----
---- - @param layerName The layer name.
---- - @param size The map size.
---- - @return A 2D grid of light block values, or nil.
----@param layerName string
----@param size      sf.Vector2u
----@return number[][] | nil
-function GameMap:getActorLayerLightBlockMap(layerName, size) end
 
 ---@brief Update all actors, components, and particles each frame.
 ---
