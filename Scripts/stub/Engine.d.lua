@@ -55,7 +55,6 @@
 ---@field TileLayer Engine.TileLayer
 ---@field Tilemap Engine.Tilemap
 ---@field AutoTile Engine.AutoTile
----@field Material Engine.Material
 ---@field TileLayerData Engine.TileLayerData
 ---@field Tileset Engine.Tileset
 ---@field AnimationSoundEntry Engine.AnimationSoundEntry
@@ -1004,9 +1003,8 @@ Engine.SoundFilter = SoundFilter
 ---@field switchInterval number
 ---@field animatable boolean
 ---@field visible boolean
----@field material Engine.Material
----@field shaderPath string
----@field hue number
+---@field material string
+---@field materialParameters table<string, Engine.RuntimeDataValue>
 ---@field collisionEnabled boolean
 ---@field tickable boolean
 ---@field speed number
@@ -1050,15 +1048,6 @@ function Actor:isDestroyed() end
 ---@param destroyed boolean
 ---@return nil
 function Actor:markDestroyed(destroyed) end
----@param shaderPath string
----@return nil
-function Actor:setShaderPath(shaderPath) end
----@return string shaderPath
-function Actor:getShaderPath() end
----@return sf.Shader|nil shader
-function Actor:getShader() end
----@return boolean error
-function Actor:hasShaderError() end
 ---@param deltaTime number
 ---@return nil
 function Actor:update(deltaTime) end
@@ -1205,36 +1194,23 @@ function Actor:setTexture(texture, resetRect) end
 function Actor:setTextureRect(rectangle) end
 ---@return sf.IntRect
 function Actor:getTextureRect() end
----@return Engine.Material material
+---@return string material
 function Actor:getMaterial() end
----@param material Engine.Material|nil
+---@return sf.FloatRect
+function Actor:getMaterialBounds() end
+---@param material string
 ---@return nil
 function Actor:setMaterial(material) end
----@return number lightBlock
-function Actor:getLightBlock() end
----@param lightBlock number
+---@param id string
+---@return Engine.RuntimeDataValue
+function Actor:getMaterialParameter(id) end
+---@param id string
+---@param value Engine.RuntimeDataValue
 ---@return nil
-function Actor:setLightBlock(lightBlock) end
----@return boolean mirror
-function Actor:getMirror() end
----@param mirror boolean
+function Actor:setMaterialParameter(id, value) end
+---@param id string
 ---@return nil
-function Actor:setMirror(mirror) end
----@return number reflectionStrength
-function Actor:getReflectionStrength() end
----@param reflectionStrength number
----@return nil
-function Actor:setReflectionStrength(reflectionStrength) end
----@return number opacity
-function Actor:getOpacity() end
----@param opacity number
----@return nil
-function Actor:setOpacity(opacity) end
----@return boolean ignoreLighting
-function Actor:getIgnoreLighting() end
----@param ignoreLighting boolean
----@return nil
-function Actor:setIgnoreLighting(ignoreLighting) end
+function Actor:resetMaterialParameter(id) end
 ---@param graph Engine.Graph|nil
 ---@return nil
 function Actor:setGraph(graph) end
@@ -1370,7 +1346,7 @@ function ActorMapService:getCollision(actor, position) end
 ---@return Engine.Actor[]
 function ActorMapService:getOverlaps(actor) end
 ---@param position sf.Vector2i
----@return Engine.Material|nil
+---@return string|nil
 function ActorMapService:getTopMaterial(position) end
 ---@param actor Engine.Actor
 ---@return nil
@@ -1533,8 +1509,7 @@ Engine.LightComponent = LightComponent
 
 ---@class Engine.TileLayer : Engine.TileLayerGraphics
 ---@field visible boolean
----@field shaderPath string
----@field shader sf.Shader|nil
+---@field material string
 local TileLayer = {}
 ---@param data Engine.TileLayerData
 ---@param texture sf.Texture|nil
@@ -1592,36 +1567,6 @@ function TileLayer:hasContent(position) end
 ---@param directionIndex integer
 ---@return boolean
 function TileLayer:isDirectionPassable(position, directionIndex) end
----@param position sf.Vector2i
----@param propertyName string
----@return boolean|number|nil
-function TileLayer:getMaterialProperty(position, propertyName) end
----@param position sf.Vector2i
----@return number|nil lightBlock
-function TileLayer:getLightBlock(position) end
----@param position sf.Vector2i
----@return boolean|nil mirror
-function TileLayer:getMirror(position) end
----@param position sf.Vector2i
----@return number|nil reflectionStrength
-function TileLayer:getReflectionStrength(position) end
----@param position sf.Vector2i
----@return boolean|nil ignoreLighting
-function TileLayer:getIgnoreLighting(position) end
----@param position sf.Vector2i
----@return number|nil speedRate
-function TileLayer:getSpeedRate(position) end
----@param deltaTime number
----@return nil
-function TileLayer:updateShader(deltaTime) end
----@return sf.Shader|nil
-function TileLayer:getShader() end
----@return sf.Image|nil
-function TileLayer:getLightBlockImage() end
----@return sf.Image|nil
-function TileLayer:getReflectionStrengthImage() end
----@return sf.Image|nil
-function TileLayer:getIgnoreLightingImage() end
 ---@return sf.Vector2u
 function TileLayer:getGridSize() end
 ---@param position sf.Vector2i
@@ -1671,83 +1616,34 @@ Engine.Tilemap = Tilemap
 ---@field name string
 ---@field fileName string
 ---@field passable boolean
----@field material Engine.Material
+---@field material string
 local AutoTile = {}
 ---@param name? string
 ---@param fileName? string
 ---@param passable? boolean
----@param material? Engine.Material
+---@param material? string
 ---@return Engine.AutoTile
 function AutoTile.new(name, fileName, passable, material) end
 ---@param self Engine.AutoTile
 ---@param name? string
 ---@param fileName? string
 ---@param passable? boolean
----@param material? Engine.Material
+---@param material? string
 function AutoTile.init(self, name, fileName, passable, material) end
 --- @brief Serialize the material to a dictionary.
 ---
 --- - @return Dictionary containing all material fields
 ---
----@return table<string, string|boolean|table<string, boolean|number>>
+---@return table<string, string|boolean>
 function AutoTile:asDict() end
 --- @brief Create an auto-tile object from a raw data dictionary.
 ---
 --- - @param data Raw dictionary, e.g. loaded from JSON or .dat
 --- - @return The created auto-tile object
----@param data table<string, string|boolean|table<string, boolean|number>>
+---@param data table<string, string|boolean>
 ---@return Engine.AutoTile
 function AutoTile.fromData(data) end
 Engine.AutoTile = AutoTile
-
---- @brief Defines how an actor or tile interacts with
----
---- Applied per-actor or per-tile to control visual and
----@class Engine.Material
----@field lightBlock number
---- < transparent, 1.0 = fully opaque)
----@field mirror boolean
----@field reflectionStrength number
----@field opacity number
----@field speedRate number
----@field ignoreLighting boolean
-local Material = {}
----@param values table
----@return Engine.Material
-function Material.new(values) end
----@param lightBlock? number
----@param mirror? boolean
----@param reflectionStrength? number
----@param opacity? number
----@param speedRate? number
----@param ignoreLighting? boolean
----@return Engine.Material
-function Material.new(lightBlock, mirror, reflectionStrength, opacity, speedRate, ignoreLighting) end
----@param self Engine.Material
----@param values table
-function Material.init(self, values) end
----@param self Engine.Material
----@param lightBlock? number
----@param mirror? boolean
----@param reflectionStrength? number
----@param opacity? number
----@param speedRate? number
----@param ignoreLighting? boolean
-function Material.init(self, lightBlock, mirror, reflectionStrength, opacity, speedRate, ignoreLighting) end
---- @brief Serialize the material to a dictionary.
----
---- - @return Dictionary containing all material fields
----
----@return table<string, boolean|number>
-function Material:asDict() end
---- @brief Create a material object from a raw data dictionary.
----
---- - @param data Raw dictionary, e.g. loaded from JSON or .dat
---- - @return The created material object
----@param data table<string, boolean|number>
----@return Engine.Material
-function Material.fromData(data) end
-Engine.Material = Material
 
 --- @brief Tile layer data object.
 ---
@@ -1762,7 +1658,7 @@ Engine.Material = Material
 ---@field autoTilePool Engine.AutoTile[]
 ---@field autoTileKeys string[]
 ---@field layerTilesetKey string
----@field shaderPath string
+---@field material string
 local TileLayerData = {}
 ---@param layerName? string
 ---@param layerTileset? Engine.Tileset
@@ -1770,18 +1666,18 @@ local TileLayerData = {}
 ---@param autoTiles? Engine.__ArrayElement_e28ca36d39ef[][]
 ---@param autoTilePool? Engine.AutoTile[]
 ---@param autoTileKeys? string[]
----@param shaderPath? string
+---@param material? string
 ---@return Engine.TileLayerData
-function TileLayerData.new(layerName, layerTileset, tiles, autoTiles, autoTilePool, autoTileKeys, shaderPath) end
+function TileLayerData.new(layerName, layerTileset, tiles, autoTiles, autoTilePool, autoTileKeys, material) end
 ---@param layerName string
 ---@param layerTileset Engine.Tileset
 ---@param width integer
 ---@param height integer
 ---@param autoTilePool? Engine.AutoTile[]
 ---@param autoTileKeys? string[]
----@param shaderPath? string
+---@param material? string
 ---@return Engine.TileLayerData
-function TileLayerData.new(layerName, layerTileset, width, height, autoTilePool, autoTileKeys, shaderPath) end
+function TileLayerData.new(layerName, layerTileset, width, height, autoTilePool, autoTileKeys, material) end
 ---@param self Engine.TileLayerData
 ---@param layerName? string
 ---@param layerTileset? Engine.Tileset
@@ -1789,8 +1685,8 @@ function TileLayerData.new(layerName, layerTileset, width, height, autoTilePool,
 ---@param autoTiles? Engine.__ArrayElement_e28ca36d39ef[][]
 ---@param autoTilePool? Engine.AutoTile[]
 ---@param autoTileKeys? string[]
----@param shaderPath? string
-function TileLayerData.init(self, layerName, layerTileset, tiles, autoTiles, autoTilePool, autoTileKeys, shaderPath) end
+---@param material? string
+function TileLayerData.init(self, layerName, layerTileset, tiles, autoTiles, autoTilePool, autoTileKeys, material) end
 ---@param self Engine.TileLayerData
 ---@param layerName string
 ---@param layerTileset Engine.Tileset
@@ -1798,8 +1694,8 @@ function TileLayerData.init(self, layerName, layerTileset, tiles, autoTiles, aut
 ---@param height integer
 ---@param autoTilePool? Engine.AutoTile[]
 ---@param autoTileKeys? string[]
----@param shaderPath? string
-function TileLayerData.init(self, layerName, layerTileset, width, height, autoTilePool, autoTileKeys, shaderPath) end
+---@param material? string
+function TileLayerData.init(self, layerName, layerTileset, width, height, autoTilePool, autoTileKeys, material) end
 --- @brief Replace one rectangular block in both preallocated grids
 ---
 --- - @param x Zero-based destination column
@@ -1821,13 +1717,14 @@ Engine.TileLayerData = TileLayerData
 ---@field name string
 ---@field fileName string
 ---@field passable boolean[]
----@field materials Engine.Material[]
+---@field materials table<integer, string>
+--- < number
 ---@field dir4 boolean[][]
 local Tileset = {}
 ---@param name? string
 ---@param fileName? string
 ---@param passable? boolean[]
----@param materials? Engine.Material[]
+---@param materials? table<integer, string>
 ---@param dir4? boolean[][]
 ---@return Engine.Tileset
 function Tileset.new(name, fileName, passable, materials, dir4) end
@@ -1835,19 +1732,19 @@ function Tileset.new(name, fileName, passable, materials, dir4) end
 ---@param name? string
 ---@param fileName? string
 ---@param passable? boolean[]
----@param materials? Engine.Material[]
+---@param materials? table<integer, string>
 ---@param dir4? boolean[][]
 function Tileset.init(self, name, fileName, passable, materials, dir4) end
 --- @brief Serialize the tileset to a dictionary.
 ---
 --- - @return Dictionary containing all tileset fields
----@return table<string, string|boolean[]|table<string, boolean|number>[]|boolean[][]>
+---@return table<string, Engine.RuntimeDataValue>
 function Tileset:asDict() end
 --- @brief Create a tileset object from a raw data dictionary.
 ---
 --- - @param data Raw dictionary, e.g. loaded from JSON or .dat
 --- - @return The created tileset object
----@param data table<string, string|boolean[]|table<string, boolean|number>[]|boolean[][]>
+---@param data table<string, Engine.RuntimeDataValue>
 ---@return Engine.Tileset
 function Tileset.fromData(data) end
 Engine.Tileset = Tileset
@@ -2080,23 +1977,10 @@ function TileLayerGraphics:isPassable(position) end
 ---
 --- - @return Material, or `std::nullopt`
 ---@param position sf.Vector2i
----@return Engine.Material|nil
+---@return string|nil
 function TileLayerGraphics:getMaterial(position) end
---- @brief Build a light-block grid
----
---- - @return 2D light-block map
----@return number[][]
-function TileLayerGraphics:getLightBlockMap() end
---- @brief Build a reflection-strength grid
----
---- - @return 2D reflection-strength map
----@return number[][]
-function TileLayerGraphics:getReflectionStrengthMap() end
---- @brief Build an ignore-lighting grid
----
---- - @return 2D ignore-lighting map
----@return number[][]
-function TileLayerGraphics:getIgnoreLightingMap() end
+---@return integer
+function TileLayerGraphics:getTilesetTileCount() end
 --- @brief Advance autotile animation by an elapsed time
 ---
 --- Animation frames advance once per `frameInterval` seconds and the
@@ -3009,28 +2893,28 @@ local CharacterView = {}
 ---@param size? sf.Vector2f|nil
 ---@param animatable? boolean
 ---@param switchInterval? number
----@param shaderPath? string
----@param hue? number
+---@param material? string
+---@param materialParameters? table<string, Engine.RuntimeDataValue>
 ---@return Engine.CharacterView
-function CharacterView.new(texture, frameRect, size, animatable, switchInterval, shaderPath, hue) end
+function CharacterView.new(texture, frameRect, size, animatable, switchInterval, material, materialParameters) end
 ---@param self Engine.CharacterView
 ---@param texture sf.Texture|nil
 ---@param frameRect? sf.IntRect|nil
 ---@param size? sf.Vector2f|nil
 ---@param animatable? boolean
 ---@param switchInterval? number
----@param shaderPath? string
----@param hue? number
-function CharacterView.init(self, texture, frameRect, size, animatable, switchInterval, shaderPath, hue) end
+---@param material? string
+---@param materialParameters? table<string, Engine.RuntimeDataValue>
+function CharacterView.init(self, texture, frameRect, size, animatable, switchInterval, material, materialParameters) end
 ---@param texture sf.Texture|nil
 ---@param frameRect sf.IntRect
 ---@param characterScale sf.Vector2f
 ---@param animatable boolean
 ---@param switchInterval number
----@param shaderPath? string
----@param hue? number
+---@param material? string
+---@param materialParameters? table<string, Engine.RuntimeDataValue>
 ---@return nil
-function CharacterView:setCharacter(texture, frameRect, characterScale, animatable, switchInterval, shaderPath, hue) end
+function CharacterView:setCharacter(texture, frameRect, characterScale, animatable, switchInterval, material, materialParameters) end
 ---@param texture sf.Texture|nil
 ---@return nil
 function CharacterView:setCharacterTexture(texture) end
@@ -3059,15 +2943,15 @@ function CharacterView:setFrameRect(frameRect) end
 ---@return nil
 function CharacterView:resetFrameRectToTexture() end
 ---@return string
-function CharacterView:getShaderPath() end
----@param shaderPath string
+function CharacterView:getMaterial() end
+---@param material string
 ---@return nil
-function CharacterView:setShaderPath(shaderPath) end
----@return number
-function CharacterView:getHue() end
----@param hue number
+function CharacterView:setMaterial(material) end
+---@return table<string, Engine.RuntimeDataValue>
+function CharacterView:getMaterialParameters() end
+---@param parameters table<string, Engine.RuntimeDataValue>
 ---@return nil
-function CharacterView:setHue(hue) end
+function CharacterView:setMaterialParameters(parameters) end
 ---@return nil
 function CharacterView:resetAnimation() end
 ---@return sf.Vector2f
@@ -4368,7 +4252,7 @@ function AssetInstance:getNodeByName(name) end
 function AssetInstance:requireAsset(localName) end
 ---@param localName string
 ---@param propertyId string
----@param value nil|Engine.ImageDrawAs|boolean|number|integer|string|sf.Vector2f|sf.Vector2u|sf.IntRect|sf.Color|string[]
+---@param value nil|Engine.ImageDrawAs|boolean|number|integer|string|sf.Vector2f|sf.Vector2u|sf.IntRect|sf.Color|string[]|table<string, Engine.RuntimeDataValue>
 ---@return nil
 function AssetInstance:setProperty(localName, propertyId, value) end
 ---@param localName string

@@ -411,7 +411,7 @@ local _METADATA = {
         },
     },
     Actor = {
-        attrs = { "scriptMixin", "scriptPath", "tag", "switchInterval", "animatable", "visible", "material", "shaderPath", "hue", "collisionEnabled", "tickable", "speed", "autoSound", "autoSoundInterval", "autoSoundParams", "texturePath", "defaultRect", "defaultTranslation", "defaultRotation", "defaultScale", "defaultOrigin", "lightComp", "emitterComp", "billboardComp" },
+        attrs = { "scriptMixin", "scriptPath", "tag", "switchInterval", "animatable", "visible", "material", "materialParameters", "collisionEnabled", "tickable", "speed", "autoSound", "autoSoundInterval", "autoSoundParams", "texturePath", "defaultRect", "defaultTranslation", "defaultRotation", "defaultScale", "defaultOrigin", "lightComp", "emitterComp", "billboardComp" },
         scriptMixin = {
             type = "bool",
             default = false,
@@ -443,18 +443,15 @@ local _METADATA = {
             default = true,
         },
         material = {
-            type = { "Engine", "Material" },
-            default = {},
-        },
-        shaderPath = {
             type = "string",
             default = "",
-            Meta = { PathVars = "/Game/Assets/Shaders", PathFilter = "*.frag" },
+            Meta = { PathRoot = "Data", PathVars = "Data/Materials", PathFilter = "*.json" },
         },
-        hue = {
-            type = "float",
-            default = 0.0,
-            Meta = { ProgressVars = { 0.0, 360.0, 1.0 } },
+        materialParameters = {
+            type = {
+                dict = "any",
+            },
+            default = {},
         },
         collisionEnabled = {
             type = "bool",
@@ -585,43 +582,6 @@ local _METADATA = {
             parameters = { "self", "destroyed", self = { "Engine", "Actor" }, destroyed = "bool" },
             default = { [1] = "self" },
             ["return"] = {},
-        },
-        setShaderPath = {
-            type = "function",
-            parameters = { "self", "shaderPath", self = { "Engine", "Actor" }, shaderPath = "string" },
-            default = { [1] = "self" },
-            ["return"] = {},
-            ExecSplit = { "default", default = "nil" },
-        },
-        getShaderPath = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "shaderPath",
-                shaderPath = "string",
-            },
-            Pure = true,
-        },
-        getShader = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "shader",
-                shader = "sf.Shader",
-            },
-            Pure = true,
-        },
-        hasShaderError = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "error",
-                error = "bool",
-            },
-            Pure = true,
         },
         update = {
             type = "function",
@@ -1046,101 +1006,38 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {
                 "material",
-                material = { "Engine", "Material" },
+                material = "string",
             },
             Pure = true,
         },
         setMaterial = {
             type = "function",
-            parameters = { "self", "material", self = { "Engine", "Actor" }, material = { "Engine", "Material" } },
+            parameters = { "self", "material", self = { "Engine", "Actor" }, material = "string" },
             default = { [1] = "self" },
             ["return"] = {},
             ExecSplit = { "default", default = "nil" },
         },
-        getLightBlock = {
+        getMaterialParameter = {
             type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
+            parameters = { "self", "id", self = { "Engine", "Actor" }, id = "string" },
             default = { [1] = "self" },
             ["return"] = {
-                "lightBlock",
-                lightBlock = "float",
+                "return",
+                ["return"] = "any",
             },
             Pure = true,
         },
-        setLightBlock = {
+        setMaterialParameter = {
             type = "function",
-            parameters = { "self", "lightBlock", self = { "Engine", "Actor" }, lightBlock = "float" },
+            parameters = { "self", "id", "value", self = { "Engine", "Actor" }, id = "string", value = "any" },
             default = { [1] = "self" },
             ["return"] = {},
-            ExecSplit = { "default", default = "nil" },
         },
-        getMirror = {
+        resetMaterialParameter = {
             type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "mirror",
-                mirror = "bool",
-            },
-            Pure = true,
-        },
-        setMirror = {
-            type = "function",
-            parameters = { "self", "mirror", self = { "Engine", "Actor" }, mirror = "bool" },
+            parameters = { "self", "id", self = { "Engine", "Actor" }, id = "string" },
             default = { [1] = "self" },
             ["return"] = {},
-            ExecSplit = { "default", default = "nil" },
-        },
-        getReflectionStrength = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "reflectionStrength",
-                reflectionStrength = "float",
-            },
-            Pure = true,
-        },
-        setReflectionStrength = {
-            type = "function",
-            parameters = { "self", "reflectionStrength", self = { "Engine", "Actor" }, reflectionStrength = "float" },
-            default = { [1] = "self" },
-            ["return"] = {},
-            ExecSplit = { "default", default = "nil" },
-        },
-        getOpacity = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "opacity",
-                opacity = "float",
-            },
-            Pure = true,
-        },
-        setOpacity = {
-            type = "function",
-            parameters = { "self", "opacity", self = { "Engine", "Actor" }, opacity = "float" },
-            default = { [1] = "self" },
-            ["return"] = {},
-            ExecSplit = { "default", default = "nil" },
-        },
-        getIgnoreLighting = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Actor" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "ignoreLighting",
-                ignoreLighting = "bool",
-            },
-            Pure = true,
-        },
-        setIgnoreLighting = {
-            type = "function",
-            parameters = { "self", "ignoreLighting", self = { "Engine", "Actor" }, ignoreLighting = "bool" },
-            default = { [1] = "self" },
-            ["return"] = {},
-            ExecSplit = { "default", default = "nil" },
         },
         setGraph = {
             type = "function",
@@ -1636,14 +1533,14 @@ local _METADATA = {
     },
     TileLayer = {
         bases = { { "Engine", "TileLayerGraphics" } },
-        attrs = { "visible", "shaderPath" },
+        attrs = { "visible", "material" },
         visible = {
             type = "bool",
             default = true,
         },
-        shaderPath = {
+        material = {
             type = "string",
-            Meta = { PathVars = "/Game/Assets/Shaders", PathFilter = "*.frag" },
+            Meta = { PathRoot = "Data", PathVars = "Data/Materials", PathFilter = "*.json" },
         },
         getName = {
             type = "function",
@@ -1730,114 +1627,6 @@ local _METADATA = {
             ["return"] = {
                 "return",
                 ["return"] = "bool",
-            },
-            Pure = true,
-        },
-        getMaterialProperty = {
-            type = "function",
-            parameters = { "self", "position", "propertyName", self = { "Engine", "TileLayer" }, position = "sf.Vector2i", propertyName = "string" },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                union = { "bool", "float" },
-            },
-            },
-            Pure = true,
-        },
-        getLightBlock = {
-            type = "function",
-            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
-            default = { [1] = "self" },
-            ["return"] = {
-                "lightBlock",
-                lightBlock = "float",
-            },
-            Pure = true,
-        },
-        getMirror = {
-            type = "function",
-            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
-            default = { [1] = "self" },
-            ["return"] = {
-                "mirror",
-                mirror = "bool",
-            },
-            Pure = true,
-        },
-        getReflectionStrength = {
-            type = "function",
-            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
-            default = { [1] = "self" },
-            ["return"] = {
-                "reflectionStrength",
-                reflectionStrength = "float",
-            },
-            Pure = true,
-        },
-        getIgnoreLighting = {
-            type = "function",
-            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
-            default = { [1] = "self" },
-            ["return"] = {
-                "ignoreLighting",
-                ignoreLighting = "bool",
-            },
-            Pure = true,
-        },
-        getSpeedRate = {
-            type = "function",
-            parameters = { "self", "position", self = { "Engine", "TileLayer" }, position = "sf.Vector2i" },
-            default = { [1] = "self" },
-            ["return"] = {
-                "speedRate",
-                speedRate = "float",
-            },
-            Pure = true,
-        },
-        updateShader = {
-            type = "function",
-            parameters = { "self", "deltaTime", self = { "Engine", "TileLayer" }, deltaTime = "float" },
-            default = { [1] = "self" },
-            ["return"] = {},
-        },
-        getShader = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "TileLayer" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Shader",
-            },
-            Pure = true,
-        },
-        getLightBlockImage = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "TileLayer" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Image",
-            },
-            Pure = true,
-        },
-        getReflectionStrengthImage = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "TileLayer" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Image",
-            },
-            Pure = true,
-        },
-        getIgnoreLightingImage = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "TileLayer" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Image",
             },
             Pure = true,
         },
@@ -1961,7 +1750,8 @@ local _METADATA = {
             default = true,
         },
         material = {
-            type = { "Engine", "Material" },
+            type = "string",
+            Meta = { PathRoot = "Data", PathVars = "Data/Materials", PathFilter = "*.json" },
         },
         asDict = {
             type = "function",
@@ -1971,15 +1761,7 @@ local _METADATA = {
                 "return",
                 ["return"] = {
                 dict = {
-                    union = {
-                        "string",
-                        "bool",
-                        {
-                            dict = {
-                                union = { "bool", "float" },
-                            },
-                        },
-                    },
+                    union = { "string", "bool" },
                 },
             },
             },
@@ -1988,15 +1770,7 @@ local _METADATA = {
             type = "function",
             parameters = { "data", data = {
                 dict = {
-                    union = {
-                        "string",
-                        "bool",
-                        {
-                            dict = {
-                                union = { "bool", "float" },
-                            },
-                        },
-                    },
+                    union = { "string", "bool" },
                 },
             } },
             ["return"] = {
@@ -2005,60 +1779,8 @@ local _METADATA = {
             },
         },
     },
-    Material = {
-        attrs = { "lightBlock", "mirror", "reflectionStrength", "opacity", "speedRate", "ignoreLighting" },
-        lightBlock = {
-            type = "float",
-            default = 0.0,
-        },
-        mirror = {
-            type = "bool",
-            default = false,
-        },
-        reflectionStrength = {
-            type = "float",
-            default = 0.5,
-        },
-        opacity = {
-            type = "float",
-            default = 1.0,
-        },
-        speedRate = {
-            type = "float",
-            default = 1.0,
-        },
-        ignoreLighting = {
-            type = "bool",
-            default = false,
-        },
-        asDict = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "Material" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                dict = {
-                    union = { "bool", "float" },
-                },
-            },
-            },
-        },
-        fromData = {
-            type = "function",
-            parameters = { "data", data = {
-                dict = {
-                    union = { "bool", "float" },
-                },
-            } },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "Material" },
-            },
-        },
-    },
     TileLayerData = {
-        attrs = { "layerName", "layerTileset", "tiles", "autoTiles", "autoTilePool", "autoTileKeys", "layerTilesetKey", "shaderPath" },
+        attrs = { "layerName", "layerTileset", "tiles", "autoTiles", "autoTilePool", "autoTileKeys", "layerTilesetKey", "material" },
         layerName = {
             type = "string",
             default = "",
@@ -2096,10 +1818,10 @@ local _METADATA = {
             type = "string",
             default = "",
         },
-        shaderPath = {
+        material = {
             type = "string",
             default = "",
-            Meta = { PathVars = "/Game/Assets/Shaders", PathFilter = "*.frag" },
+            Meta = { PathRoot = "Data", PathVars = "Data/Materials", PathFilter = "*.json" },
         },
     },
     Tileset = {
@@ -2119,9 +1841,7 @@ local _METADATA = {
             },
         },
         materials = {
-            type = {
-                list = { "Engine", "Material" },
-            },
+            type = "any",
         },
         dir4 = {
             type = {
@@ -2137,52 +1857,14 @@ local _METADATA = {
             ["return"] = {
                 "return",
                 ["return"] = {
-                dict = {
-                    union = {
-                        "string",
-                        {
-                            list = "bool",
-                        },
-                        {
-                            list = {
-                                dict = {
-                                    union = { "bool", "float" },
-                                },
-                            },
-                        },
-                        {
-                            list = {
-                                list = "bool",
-                            },
-                        },
-                    },
-                },
+                dict = "any",
             },
             },
         },
         fromData = {
             type = "function",
             parameters = { "data", data = {
-                dict = {
-                    union = {
-                        "string",
-                        {
-                            list = "bool",
-                        },
-                        {
-                            list = {
-                                dict = {
-                                    union = { "bool", "float" },
-                                },
-                            },
-                        },
-                        {
-                            list = {
-                                list = "bool",
-                            },
-                        },
-                    },
-                },
+                dict = "any",
             } },
             ["return"] = {
                 "return",
@@ -2419,48 +2101,19 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {
                 "return",
-                ["return"] = { "Engine", "Material" },
+                ["return"] = "string",
             },
             Pure = true,
         },
-        getLightBlockMap = {
+        getTilesetTileCount = {
             type = "function",
             parameters = { "self", self = { "Engine", "TileLayerGraphics" } },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
-                ["return"] = {
-                list = {
-                    list = "float",
-                },
+                ["return"] = "int",
             },
-            },
-        },
-        getReflectionStrengthMap = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "TileLayerGraphics" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = {
-                    list = "float",
-                },
-            },
-            },
-        },
-        getIgnoreLightingMap = {
-            type = "function",
-            parameters = { "self", self = { "Engine", "TileLayerGraphics" } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = {
-                    list = "float",
-                },
-            },
-            },
+            Pure = true,
         },
         updateAutoTileAnimation = {
             type = "function",
@@ -3970,8 +3623,10 @@ local _METADATA = {
         attrs = {},
         setCharacter = {
             type = "function",
-            parameters = { "self", "texture", "frameRect", "characterScale", "animatable", "switchInterval", "shaderPath", "hue", self = { "Engine", "CharacterView" }, texture = "sf.Texture", frameRect = "sf.IntRect", characterScale = "sf.Vector2f", animatable = "bool", switchInterval = "float", shaderPath = "string", hue = "float" },
-            default = { [1] = "self", [7] = "", [8] = 0.0 },
+            parameters = { "self", "texture", "frameRect", "characterScale", "animatable", "switchInterval", "material", "materialParameters", self = { "Engine", "CharacterView" }, texture = "sf.Texture", frameRect = "sf.IntRect", characterScale = "sf.Vector2f", animatable = "bool", switchInterval = "float", material = "string", materialParameters = {
+                dict = "any",
+            } },
+            default = { [1] = "self", [7] = "", [8] = {} },
             defaultUnset = { "texture", "frameRect", "characterScale", "animatable", "switchInterval" },
             ["return"] = {},
         },
@@ -4061,7 +3716,7 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {},
         },
-        getShaderPath = {
+        getMaterial = {
             type = "function",
             parameters = { "self", self = { "Engine", "CharacterView" } },
             default = { [1] = "self" },
@@ -4071,25 +3726,29 @@ local _METADATA = {
             },
             Pure = true,
         },
-        setShaderPath = {
+        setMaterial = {
             type = "function",
-            parameters = { "self", "shaderPath", self = { "Engine", "CharacterView" }, shaderPath = "string" },
+            parameters = { "self", "material", self = { "Engine", "CharacterView" }, material = "string" },
             default = { [1] = "self" },
             ["return"] = {},
         },
-        getHue = {
+        getMaterialParameters = {
             type = "function",
             parameters = { "self", self = { "Engine", "CharacterView" } },
             default = { [1] = "self" },
             ["return"] = {
                 "return",
-                ["return"] = "float",
+                ["return"] = {
+                dict = "any",
+            },
             },
             Pure = true,
         },
-        setHue = {
+        setMaterialParameters = {
             type = "function",
-            parameters = { "self", "hue", self = { "Engine", "CharacterView" }, hue = "float" },
+            parameters = { "self", "parameters", self = { "Engine", "CharacterView" }, parameters = {
+                dict = "any",
+            } },
             default = { [1] = "self" },
             ["return"] = {},
         },
@@ -6973,6 +6632,9 @@ local _METADATA = {
                     "sf.Color",
                     {
                         list = "string",
+                    },
+                    {
+                        dict = "any",
                     },
                 },
             } },

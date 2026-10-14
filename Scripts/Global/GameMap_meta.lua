@@ -455,10 +455,7 @@ local _METADATA = {
             },
             ["return"] = {
                 "topMaterial",
-                topMaterial = {
-                    "Engine",
-                    "Material"
-                }
+                topMaterial = "string"
             },
             Pure = true
         },

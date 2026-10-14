@@ -278,8 +278,8 @@ function Controller:setPortrait(name, actor)
     local portrait = assert(self.ui.controls[name])
     ---@cast portrait Engine.CharacterView
     portrait:setCharacter(
-        visual.texture, frameRect, visual.scale, bool(visual.animatable), visual.switchInterval or 0.2,
-        visual.shaderPath or "", visual.hue or 0
+        visual.texture, frameRect, visual.scale, bool(visual.animatable), visual.switchInterval or 0.2, visual.material,
+        visual.materialParameters
     )
 end
 

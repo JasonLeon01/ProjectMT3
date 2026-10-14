@@ -76,6 +76,8 @@ function GameMap:init(mapName, tilemap, camera, previewOnly, sparseWorldConfig)
         self._layersTopFirst[#self._layersTopFirst + 1] = self._tilemap:getLayer(layerNames[index])
     end
     self._actors = {}
+    self._billboardOverlayLayers = {}
+    self._pendingProjectiles = {}
     self._particleSystem = nil
     if not self._previewOnly then
         self._particleSystem = Engine.ParticleSystem.new()
@@ -126,6 +128,15 @@ function GameMap:init(mapName, tilemap, camera, previewOnly, sparseWorldConfig)
     self._drawOverlay = function ()
         local gameMap = selfRef[1]
         if gameMap ~= nil and gameMap._camera ~= nil then
+            for layerName in pairs(gameMap._billboardOverlayLayers) do
+                for _, actor in ipairs(gameMap._actors[layerName] or {}) do
+                    if gameMap:_isBillboardActorVisible(actor, layerName) then
+                        actor:drawBillboard(
+                            assert(gameMap._camera:getRenderTexture()), gameMap._camera:getRenderStates()
+                        )
+                    end
+                end
+            end
             for _, component in ipairs(gameMap._components) do
                 component:onRender(gameMap._camera)
             end
@@ -155,12 +166,57 @@ function GameMap:isWorldMap()
     return false
 end
 
+function GameMap:prependBillboardLayer(name)
+    if table.contains(self._layerNames, name) then
+        return
+    end
+    self._billboardOverlayLayers[name] = true
+    local source = assert(self._tilemap:getLayer(assert(self._layerNames[1])))
+    local size = self:getSize()
+    local data = Engine.TileLayerData.new(name, source:getData().layerTileset, size.x, size.y)
+    local layer = assert(source:rebuild(data, {}, {}))
+    local layers = { layer }
+    for _, existingName in ipairs(self._layerNames) do
+        layers[#layers + 1] = assert(self._tilemap:getLayer(existingName))
+    end
+    self:_resetTransparentTiles()
+    self._tilemap = Engine.Tilemap.new(layers)
+    self._layerNames = self._tilemap:getLayerNameList()
+    self._layersTopFirst = {}
+    for index = #layers, 1, -1 do
+        self._layersTopFirst[#self._layersTopFirst + 1] = layers[index]
+    end
+    self:setTilemap(self._tilemap)
+    local renderLayers = {}
+    for _, layerName in ipairs(self._layerNames) do
+        if not self._billboardOverlayLayers[layerName] then
+            renderLayers[#renderLayers + 1] = layerName
+        end
+    end
+    self._renderer = GameMapRenderer.new(
+        self, self._tilemap, self._camera, renderLayers, self.DefaultCoverAlpha, self._previewOnly
+    )
+    self._renderer:setFogController(self._fogController)
+    for actor in pairs(self._actorPixelShatterByActor) do
+        self._renderer:setActorEffectHidden(actor, true)
+    end
+    self:markPassabilityDirty()
+end
+
+function GameMap:spawnTransientActor(actor, layer)
+    GameMapActors.SpawnActor(self, actor, layer, true)
+end
+
 function GameMap:updateAutoTileAnimation(deltaTime)
     self._tilemap:updateAutoTileAnimation(deltaTime)
 end
 
----@diagnostic disable-next-line: unused
 function GameMap:disposeStreaming()
+    if self._particleSystem ~= nil then
+        self._particleSystem:clear()
+    end
+    self._pendingProjectiles = {}
+    self:setScene(nil)
 end
 
 ---@diagnostic disable-next-line: unused
@@ -221,6 +277,22 @@ end
 
 function GameMap:getScene()
     return self._scene
+end
+
+function GameMap:getParticleSystem()
+    return assert(self._particleSystem, "Preview maps do not have a particle system")
+end
+
+function GameMap:trackProjectile(particle)
+    self._pendingProjectiles[particle] = true
+end
+
+function GameMap:untrackProjectile(particle)
+    self._pendingProjectiles[particle] = nil
+end
+
+function GameMap:hasPendingProjectiles()
+    return bool(self._pendingProjectiles)
 end
 
 function GameMap:setScene(scene)
