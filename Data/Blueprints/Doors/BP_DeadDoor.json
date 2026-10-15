@@ -7,16 +7,11 @@
     "switchInterval": 0.2,
     "animatable": false,
     "visible": true,
-    "material": {
+    "material": "Data/Materials/Global/Standard.json",
+    "materialParameters": {
       "lightBlock": 1,
-      "mirror": false,
-      "reflectionStrength": 0.5,
-      "opacity": 1,
-      "speedRate": 1,
-      "ignoreLighting": false
+      "hue": 0
     },
-    "shaderPath": "",
-    "hue": 0,
     "collisionEnabled": true,
     "tickable": false,
     "speed": 64,

@@ -75,6 +75,7 @@
 ---@field GameplayEffectSpec GlobalCore.GameplayEffectSpec
 ---@field GameplayEventData GlobalCore.GameplayEventData
 ---@field GameplayModifier GlobalCore.GameplayModifier
+---@field ActorPixelShatterShader GlobalCore.ActorPixelShatterShader
 ---@field Graphics GlobalCore.Graphics
 ---@field Light GlobalCore.Light
 ---@field AudioEffectControl GlobalCore.AudioEffectControl
@@ -721,21 +722,6 @@ function GameMapBase:generateDataFromMap(size, materialMap, smooth) end
 ---@param excludedAnchors? sf.Vector2i[]
 ---@return GlobalCore.PathResult
 function GameMapBase:findPathExt(start, goal, size, movingActor, excludedAnchors) end
---- @brief Build a 2D map of dynamic material property values
----
---- - @param width Grid width
---- - @param height Grid height
---- - @param propertyName Material property name to evaluate
---- - @param invalidValue Fallback value for invalid positions
----
---- - @return 2D property map
----
----@param width integer
----@param height integer
----@param propertyName string
----@param invalidValue boolean|number
----@return GlobalCore.__ArrayElement_503c540ee24d[][]
-function GameMapBase:getMaterialPropertyMapExt(width, height, propertyName, invalidValue) end
 --- @brief Recompute tile passability and actor occupancy caches
 ---
 --- - @param size Grid dimensions
@@ -991,7 +977,7 @@ function GameMapRenderer:setActorVisibilityFilter(filter) end
 ---@param applyPlayerCover boolean
 ---@param shaderTime number
 ---@param materialRevision integer
----@param drawLayerEffects fun(arg1: string): nil|nil
+---@param drawLayerEffects fun(arg1: string, arg2: sf.RenderTarget, arg3: sf.RenderStates): nil|nil
 ---@return nil
 function GameMapRenderer:drawContent(target, states, applyPlayerCover, shaderTime, materialRevision, drawLayerEffects) end
 ---@param target sf.RenderTarget
@@ -1009,8 +995,12 @@ function GameMapRenderer:setActorEffectHidden(actor, hidden) end
 function GameMapRenderer:resetTransparentTiles() end
 ---@param ambientLight sf.Color
 ---@param shaderTime number
+---@param applyPlayerCover boolean
+---@param materialRevision integer
+---@param drawLayerEffects fun(arg1: string, arg2: sf.RenderTarget, arg3: sf.RenderStates): nil|nil
+---@param drawOverlay fun(): nil|nil
 ---@return nil
-function GameMapRenderer:composeFrame(ambientLight, shaderTime) end
+function GameMapRenderer:renderFrame(ambientLight, shaderTime, applyPlayerCover, materialRevision, drawLayerEffects, drawOverlay) end
 ---@param ambientLight sf.Color
 ---@param shaderTime number
 ---@return nil
@@ -1286,6 +1276,15 @@ function GameplayModifier.new(values) end
 ---@param values table
 function GameplayModifier.init(self, values) end
 GlobalCore.GameplayModifier = GameplayModifier
+
+---@class GlobalCore.ActorPixelShatterShader
+local ActorPixelShatterShader = {}
+---@return sf.Shader|nil
+function ActorPixelShatterShader.load() end
+---@param shader sf.Shader|nil
+---@return nil
+function ActorPixelShatterShader.bindLighting(shader) end
+GlobalCore.ActorPixelShatterShader = ActorPixelShatterShader
 
 ---@class GlobalCore.Graphics
 local Graphics = {}
@@ -1667,8 +1666,8 @@ GlobalCore.PanoramaController = PanoramaController
 ---@field scale sf.Vector2f
 ---@field origin sf.Vector2f
 ---@field visible boolean
----@field hue number
----@field shaderPath string
+---@field material string
+---@field materialParameters table<string, Engine.RuntimeDataValue>
 ---@field parentIndex integer
 local PreviewSprite = {}
 ---@param values table

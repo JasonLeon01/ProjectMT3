@@ -1,12 +1,10 @@
 {
   "parent": "Source.MapActors.Enemy",
   "attrs": {
-    "material": {
+    "material": "Data/Materials/Global/Standard.json",
+    "materialParameters": {
       "lightBlock": 0.4,
-      "mirror": false,
-      "reflectionStrength": 0.0,
-      "opacity": 1.0,
-      "speedRate": 1.5
+      "hue": 256
     },
     "texturePath": "/Game/Assets/Characters/enemies/039-Monster091.png",
     "defaultRect": [
@@ -18,8 +16,7 @@
       ]
     ],
     "ID": "E74_shuairuozhangyu",
-    "tag": "",
-    "hue": 256
+    "tag": ""
   },
   "graph": {
     "nodeGraph": {

@@ -1,12 +1,9 @@
 {
   "parent": "Source.MapActors.SWall",
   "attrs": {
-    "material": {
-      "lightBlock": 0.64,
-      "mirror": false,
-      "reflectionStrength": 0.5,
-      "opacity": 1.0,
-      "speedRate": 1.0
+    "material": "Data/Materials/Global/Standard.json",
+    "materialParameters": {
+      "lightBlock": 0.64
     },
     "collisionEnabled": true,
     "tickable": false,

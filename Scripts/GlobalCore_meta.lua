@@ -692,23 +692,6 @@ local _METADATA = {
                 ["return"] = { "GlobalCore", "PathResult" },
             },
         },
-        getMaterialPropertyMapExt = {
-            type = "function",
-            parameters = { "self", "width", "height", "propertyName", "invalidValue", self = { "GlobalCore", "GameMapBase" }, width = "int", height = "int", propertyName = "string", invalidValue = {
-                union = { "bool", "float" },
-            } },
-            default = { [1] = "self" },
-            ["return"] = {
-                "return",
-                ["return"] = {
-                list = {
-                    list = {
-                        union = { "bool", "float" },
-                    },
-                },
-            },
-            },
-        },
         rebuildPassabilityCache = {
             type = "function",
             parameters = { "self", "size", self = { "GlobalCore", "GameMapBase" }, size = "sf.Vector2u" },
@@ -1301,6 +1284,22 @@ local _METADATA = {
             type = {
                 union = { "int", "float" },
             },
+        },
+    },
+    ActorPixelShatterShader = {
+        attrs = {},
+        load = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Shader",
+            },
+        },
+        bindLighting = {
+            type = "function",
+            parameters = { "shader", shader = "sf.Shader" },
+            ["return"] = {},
         },
     },
     Graphics = {

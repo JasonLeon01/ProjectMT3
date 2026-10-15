@@ -194,7 +194,7 @@ local function createWorldRegionBuildCoroutine(
             end
             local tileLayerData = Engine.TileLayerData.new(
                 layerData.layerName, layerTileset, data.width, data.height, autoTilePool, autoTileKeys,
-                tostring(layerData.shaderPath or "")
+                tostring(layerData.material or "")
             )
             tileLayerData.layerTilesetKey = layerData.layerTileset
             coroutine.yield("createTileLayerData")
@@ -599,11 +599,9 @@ function WorldRegionBuildState.Create(
             if state.layerBuildStates == nil then
                 return false
             end
-            if not state.actorPhaseComplete
-                or bool(state.readyActorRoots) or state.actorPublishQueue ~= nil then
+            if not state.actorPhaseComplete or bool(state.readyActorRoots) or state.actorPublishQueue ~= nil then
                 advance(deadline, true)
-                if not state.actorPhaseComplete
-                    or bool(state.readyActorRoots) or state.actorPublishQueue ~= nil then
+                if not state.actorPhaseComplete or bool(state.readyActorRoots) or state.actorPublishQueue ~= nil then
                     return false
                 end
             end
