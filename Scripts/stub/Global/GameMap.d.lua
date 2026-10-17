@@ -1,5 +1,56 @@
 ---@meta Global.GameMap
 
+---@class Global.GameMap.SerializedMapFogSettings
+---@field enabled    boolean
+---@field colour     integer[]
+---@field density    number
+---@field scale      number
+---@field velocity   number[]
+---@field turbulence number
+---@field seed       integer
+
+---@class Global.GameMap.MapEnvironmentData: Global.Audio.MapAudioData
+---@field fog      Engine.MapFogSettings
+---@field panorama string | nil
+
+---@alias Global.GameMap.SerializedTileCell integer | lightuserdata
+---@alias Global.GameMap.SerializedAutoTileCell integer | string | lightuserdata
+
+---@class Global.GameMap.SerializedTileRow
+---@field n         integer | nil
+---@field [integer] Global.GameMap.SerializedTileCell
+
+---@class Global.GameMap.SerializedAutoTileRow
+---@field n         integer | nil
+---@field [integer] Global.GameMap.SerializedAutoTileCell
+
+---@class Global.GameMap.MapLayerData
+---@field layerName    string
+---@field layerTileset string
+---@field visible      boolean | nil
+---@field tiles        Global.GameMap.SerializedTileRow[]
+---@field autoTiles    Global.GameMap.SerializedAutoTileRow[] | nil
+---@field material     string | nil
+
+---@class Global.GameMap.MapDataBase: Global.Audio.MapAudioData
+---@field type              "map" | nil
+---@field mapName           string
+---@field width             integer
+---@field height            integer
+---@field layerOrder        string[]
+---@field layers            table<string, Global.GameMap.MapLayerData>
+---@field BPClassVarChanged table<string, table<string, Global.Data.ClassVarValue>> | nil
+
+---@class Global.GameMap.SerializedMapData: Global.GameMap.MapDataBase
+---@field actors       table<string, Global.Data.SerializedActorData[]> | nil
+---@field ambientLight integer[] | nil
+---@field fog          Global.GameMap.SerializedMapFogSettings
+---@field panorama     string | nil
+
+---@class Global.GameMap.MapData: Global.GameMap.MapDataBase, Global.GameMap.MapEnvironmentData
+---@field actors       table<string, Global.Data.ActorData[]>
+---@field ambientLight sf.Color
+
 ---@alias Global.GameMap.TerrainTileID integer | string | nil
 
 ---@brief Game map managing tile layers, actors, lights, collisions, and pathfinding.
@@ -12,8 +63,6 @@
 ---@field regionRects sf.IntRect[]
 
 ---@class (partial) GameMap: GlobalCore.GameMapBase
----@field _billboardOverlayLayers   table<string, boolean>
----@field _pendingProjectiles       table<Engine.Particle, boolean>
 ---@field DefaultCoverAlpha         integer
 ---@field HideDisconnectedRegions   boolean                                                                                                                                                         Hide tile-disconnected areas outside the player or preview observer region; defaults to false.
 ---@field MapViewRect               sf.IntRect                                                                                                                                                      Logical-screen rectangle occupied by the map canvas; defaults to `(192, 32, 416, 416)`.
@@ -44,15 +93,6 @@
 ---@field new                       fun(mapName: string, tilemap: Engine.Tilemap, camera?: GlobalCore.Camera, previewOnly?: boolean, sparseWorldConfig?: Global.GameMap.SparseWorldConfig): GameMap
 local GameMap = {}
 
---- Add an empty session billboard layer first, drawing its text above terrain.
----@param name string
-function GameMap:prependBillboardLayer(name) end
-
---- Spawn a session-only actor outside world-region persistence and streaming ownership.
----@param actor Engine.Actor
----@param layer string
-function GameMap:spawnTransientActor(actor, layer) end
-
 ---@brief Construct a game map.
 ---
 --- - @param mapName The name of the map.
@@ -79,20 +119,6 @@ function GameMap:_isBillboardActorVisible(actor, layerName) end
 function GameMap:updateAutoTileAnimation(deltaTime) end
 
 function GameMap:disposeStreaming() end
-
---- Return the runtime map's particle system; preview maps have no particle system.
----@return Engine.ParticleSystem
-function GameMap:getParticleSystem() end
-
---- Keep map shortcuts blocked until this projectile's hit or cancellation is settled.
----@param particle Engine.Particle
-function GameMap:trackProjectile(particle) end
-
----@param particle Engine.Particle
-function GameMap:untrackProjectile(particle) end
-
----@return boolean
-function GameMap:hasPendingProjectiles() end
 
 ---@param component ComponentBase
 function GameMap:addComponent(component) end
