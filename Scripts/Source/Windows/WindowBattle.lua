@@ -1,6 +1,7 @@
 local Engine = require("Engine")
 local GlobalCore = require("GlobalCore")
 local Render = require("Global.Utils.Render")
+local GlobalData = require("Global.Data")
 local Data = require("Source.Data")
 local Battle = require("Source.Configs.Battle")
 local Locale = require("Source.Locale.Core")
@@ -588,7 +589,7 @@ function Controller:performAttack(attacker, defender, critical, remainingHits, a
     else
         key = attacker.animationKey
     end
-    local animation = Animation.new(Data.GetAnimation(key), false)
+    local animation = Animation.new(GlobalData.GetAnimation(key), false)
     local portrait = defender.isPlayer and self.ui.controls.PlayerPortrait or self.ui.controls.EnemyPortrait
     local position = portrait:getGlobalBounds():getCenter()
     animation:setPosition(position)
@@ -713,7 +714,7 @@ function Controller:applyAttackStates(attacker, defender)
     defender.ATK = math.max(0, defender.ATK - attacker.weaken)
     defender.DEF = math.max(0, defender.DEF - attacker.weaken)
     if attacker.poisoning > 0 or attacker.weaken > 0 then
-        local animation = Animation.new(Data.GetAnimation("special"), false)
+        local animation = Animation.new(GlobalData.GetAnimation("special"), false)
         local portrait = defender.isPlayer and self.ui.controls.PlayerPortrait or self.ui.controls.EnemyPortrait
         animation:setPosition(portrait:getGlobalBounds():getCenter())
         self.ui.controls["Content"]:addAnim(animation)
@@ -798,7 +799,7 @@ end
 
 function Controller:playBreathAnimation()
     for _, kind in ipairs({ "Lit", "Dim" }) do
-        local data = Data.GetAnimation("BattleBreath" .. kind)
+        local data = GlobalData.GetAnimation("BattleBreath" .. kind)
         for index = 1, self:getBreathBox(kind):getCount() do
             local canvas = self:getBreathCanvas(kind, index)
             canvas:clearAnims()

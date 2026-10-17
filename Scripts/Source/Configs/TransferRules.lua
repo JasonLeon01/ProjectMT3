@@ -1,4 +1,4 @@
-local MapPath = require("Source.Utils.MapPath")
+local MapPath = require("Global.Utils.MapPath")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
 local Special = require("Enums.GeneralData.Special")
 
@@ -13,7 +13,8 @@ function TransferRules.IsForbidden(gameMap)
     if table.contains(TransferRules.regions, instance:getCurrentRegion()) then
         return true
     end
-    if table.contains(TransferRules.maps, MapPath.WithoutExtension(instance:getCurrentMapPath())) then
+    local currentMap = instance:getCurrentMapPath()
+    if currentMap ~= nil and table.contains(TransferRules.maps, MapPath.WithoutExtension(currentMap)) then
         return true
     end
 

@@ -1,6 +1,6 @@
 local Engine = require("Engine")
 local WorldGeometry = require("Global.WorldGeometry")
-local MapPath = require("Source.Utils.MapPath")
+local MapPath = require("Global.Utils.MapPath")
 local System = require("Source.System")
 local MapConstants = require("Source.Configs.MapConstants")
 
@@ -243,7 +243,7 @@ function MapDataParser.NormaliseMap(data, buildAmbientLight)
         assert(seenLayers[layerName], "Map actor group is missing from layerOrder: " .. layerName)
     end
     local serializedActors = data.actors or {}
-    ---@type table<string, Source.Data.ActorData[]>
+    ---@type table<string, Global.Data.ActorData[]>
     local actors = {}
     for layerName, actorDatas in pairs(serializedActors) do
         local normalisedActorDatas = {}
@@ -255,7 +255,7 @@ function MapDataParser.NormaliseMap(data, buildAmbientLight)
             normalisedActorDatas[index] = { bp = actorData.bp, tag = actorData.tag, position = sf.Vector2u.new(x, y) }
         end
     end
-    ---@type Source.SceneComponents.MapData
+    ---@type Global.GameMap.MapData
     local mapData = {
         type = data.type,
         mapName = data.mapName,

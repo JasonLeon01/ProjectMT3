@@ -109,18 +109,17 @@ local function restoreHotkeyOverlayMove(self, previousEnabled)
     restorePlayerMovement(self, previousEnabled, WINDOW_CLOSE_INPUT_BLOCK_FRAMES)
 end
 
----@param self Source.Scenes.SceneMap.SceneMap
+---@param self             Source.Scenes.SceneMap.SceneMap
 ---@param allowItemOverlay boolean | nil
 ---@return boolean
 local function canUseMapShortcut(self, allowItemOverlay)
-    return GlobalCore.SceneManager.getScene() == self
-        and not self:isInputBlocked() and not self._battleActive and self._gameOverRequest == nil
-        and not self._mapTransferInProgress and self._pendingTeleporterTransfer == nil
+    return GlobalCore.SceneManager.getScene() == self and not self:isInputBlocked() and not self._battleActive
+        and self._gameOverRequest == nil and not self._mapTransferInProgress and self._pendingTeleporterTransfer == nil
         and self._pendingWorldTransfer == nil
         and (self:_canOpenMenu() or allowItemOverlay == true and self:_canOpenItemOverlay())
 end
 
----@param self Source.Scenes.SceneMap.SceneMap
+---@param self             Source.Scenes.SceneMap.SceneMap
 ---@param allowItemOverlay boolean | nil
 ---@return boolean
 function Scene.PrepareMapShortcut(self, allowItemOverlay)
@@ -130,8 +129,8 @@ function Scene.PrepareMapShortcut(self, allowItemOverlay)
     local gameMap = self:getGameMap()
     local player = assert(gameMap:getPlayer(), "Map shortcut requires a player")
     local function isCurrentPlayer()
-        return not player:isDestroyed() and self.player == player and self:getGameMap() == gameMap
-            and player:getMap() == gameMap
+        return not player:isDestroyed() and self.player == player
+            and self:getGameMap() == gameMap and player:getMap() == gameMap
     end
     MapClickAutoPath.CancelForMap(gameMap)
     if not isCurrentPlayer() then
@@ -1002,7 +1001,7 @@ end
 function Scene.IsMapPositionPassable(self, mapPath, actor, position)
     local mapFile, mapData = self._mapBuilder:loadMapData(mapPath, self:_getCurrentRegionMap())
     assert(mapData.type ~= "worldMap", "Floor passability preview does not support world manifests: " .. mapFile)
-    ---@cast mapData Source.SceneComponents.MapData
+    ---@cast mapData Global.GameMap.MapData
     local gameMap = self._mapBuilder:generateGameMap(mapData, nil, false, true)
     gameMap:applyTerrainDestructions(self.inst:getTerrainDestructions(mapFile))
     self._mapBuilder:applyAddedActors(gameMap, self.inst:getAddedActors(mapFile), false)
