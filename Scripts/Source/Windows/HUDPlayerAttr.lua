@@ -2,6 +2,7 @@ local Engine = require("Engine")
 local GlobalCore = require("GlobalCore")
 local State = require("Enums.GeneralData.State")
 local Item = require("Enums.GeneralData.Item")
+local GlobalData = require("Global.Data")
 local Data = require("Source.Data")
 local EventKey = require("Enums.EventKey")
 local GeneralDataTypes = require("Source.Configs.GeneralDataTypes")
@@ -486,7 +487,7 @@ end
 function Controller:playBreathAnimation()
     self._breathAnimElapsed = 0
     for _, kind in ipairs({ "Lit", "Dim" }) do
-        local data = Data.GetAnimation("BattleBreath" .. kind)
+        local data = GlobalData.GetAnimation("BattleBreath" .. kind)
         for index = 1, self:getBreathBox(kind):getCount() do
             local canvas = self:getBreathCanvas(kind, index)
             canvas:clearAnims()

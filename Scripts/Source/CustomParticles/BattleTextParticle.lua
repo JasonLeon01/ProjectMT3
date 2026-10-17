@@ -1,5 +1,5 @@
 local Engine = require("Engine")
-local Data = require("Source.Data")
+local Data = require("Global.Data")
 
 local BattleTextParticle = {}
 local DURATION = 0.25

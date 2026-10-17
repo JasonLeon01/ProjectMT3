@@ -10,10 +10,10 @@ local RegionDict = require("Source.Configs.RegionDict")
 local GameplayScene = require("Source.Gameplay.GameplayScene")
 local ConditionalActor = require("Source.MapActors.ConditionalActor")
 local Teleporter = require("Source.MapActors.Teleporter")
-local MapPath = require("Source.Utils.MapPath")
+local MapPath = require("Global.Utils.MapPath")
 local LiveDebug = require("Internal.LiveDebug")
 local SceneMapInteractions = require("Source.Scenes.SceneMap.Interactions")
-local SceneMapAudioController = require("Source.SceneComponents.MapAudio")
+local MapAudio = require("Global.Audio.MapAudio")
 local SceneMapBuilder = require("Source.SceneComponents.MapBuilder")
 local RegionTitleController = require("Source.Scenes.SceneMap.RegionTitle.Controller")
 local PlayerAttrHUD = require("Source.Windows.HUDPlayerAttr")
@@ -65,7 +65,7 @@ function Scene:onCreate()
     uiManager:setFocusNavigationEnabled(true)
     self.player = self.inst:getPlayer()
     self._mapBuilder = SceneMapBuilder.new()
-    self._mapAudio = SceneMapAudioController.new()
+    self._mapAudio = MapAudio.new()
     self._mapMessages = MapMessages.new(self)
     self._messageGesture = MapMessageGesture.new(self)
     ---@type Source.Scenes.SceneMap.SceneMap[]
@@ -326,10 +326,10 @@ function Scene:loadMap(mapPath, initialPosition)
     ---@type GameMap
     local gameMap
     if mapData.type == "worldMap" then
-        ---@cast mapData Source.SceneComponents.WorldMapData
+        ---@cast mapData Global.WorldGameMap.WorldMapData
         gameMap = self._mapBuilder:generateWorldGameMap(mapFile, mapData, self.inst, initialPosition)
     else
-        ---@cast mapData Source.SceneComponents.MapData
+        ---@cast mapData Global.GameMap.MapData
         gameMap = self._mapBuilder:generateGameMap(mapData, nil, false)
     end
     if self._gameMap ~= nil then
@@ -354,7 +354,7 @@ function Scene:loadMap(mapPath, initialPosition)
     self._worldAmbientTargetColour = nil
     self._worldAmbientTransitionElapsed = 0
     if not gameMap:isWorldMap() then
-        ---@cast mapData Source.SceneComponents.MapData
+        ---@cast mapData Global.GameMap.MapData
         local audioMapData = {
             bgm = mapData.bgm,
             bgmFilter = mapData.bgmFilter,
@@ -534,16 +534,14 @@ end
 
 ---@return boolean
 function Scene:_areMapShortcutsBlocked()
-    return self._gameMap ~= nil
-        and (self.player:hasPendingMovementSpecials() or self._gameMap:hasPendingProjectiles())
+    return self._gameMap ~= nil and (self.player:hasPendingMovementSpecials() or self._gameMap:hasPendingProjectiles())
 end
 
 ---@return boolean
 function Scene:_canOpenMenu()
-    return not self:_areMapShortcutsBlocked() and not self._tutorials:isBlocking()
-        and not self._pendingMenuOpen and self._pendingSaveLoadOpen == nil
-        and not self._pendingQuickSave and not self:_isMenuBlocking() and not self:_isInDialogue()
-        and not self:_hasVisibleBlockingWindow()
+    return not self:_areMapShortcutsBlocked() and not self._tutorials:isBlocking() and not self._pendingMenuOpen
+        and self._pendingSaveLoadOpen == nil and not self._pendingQuickSave and not self:_isMenuBlocking()
+        and not self:_isInDialogue() and not self:_hasVisibleBlockingWindow()
 end
 
 ---@return boolean

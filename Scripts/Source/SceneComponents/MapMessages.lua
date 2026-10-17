@@ -2,9 +2,9 @@ local Engine = require("Engine")
 local GlobalCore = require("GlobalCore")
 local Logging = require("Global.Utils.Logging")
 local Config = require("Source.Configs.Messages")
-local Data = require("Source.Data")
+local Data = require("Global.Data")
 local Locale = require("Source.Locale.Core")
-local MapPath = require("Source.Utils.MapPath")
+local MapPath = require("Global.Utils.MapPath")
 
 local Server = GlobalCore.Server
 local NetworkState = GlobalCore.ServerNetworkState

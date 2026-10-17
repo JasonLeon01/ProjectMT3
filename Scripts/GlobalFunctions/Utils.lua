@@ -33,7 +33,7 @@ end
 local Data
 local function loadData()
     if Data == nil then
-        Data = require("Source.Data")
+        Data = require("Global.Data")
     end
     return Data
 end
