@@ -88,12 +88,47 @@ local function queryEnemy(enemy, player, playerPosition, previewContext)
     return enemy:getAbilitySystemComponent():handleGameplayEvent(eventData)
 end
 
+---@param enemy  Source.MapActors.Enemy
+---@param player Source.MapActors.Player.Player
+---@return integer
+local function queryEnemyRadius(enemy, player)
+    local abilitySystem = enemy:getAbilitySystemComponent()
+    local queryAbilities = abilitySystem:getGameplayEventAbilities(GameplayConstants.MOVEMENT_QUERY_HAZARD_EVENT)
+    local boundsAbilities = abilitySystem:getGameplayEventAbilities(
+        GameplayConstants.MOVEMENT_QUERY_HAZARD_BOUNDS_EVENT
+    )
+    assert(bool(queryAbilities), "Movement hazard enemy must have a hazard query ability")
+    for _, spec in ipairs(queryAbilities) do
+        assert(table.contains(boundsAbilities, spec), "Every movement hazard ability must declare its query bounds")
+    end
+    local eventData = GameplayEventData.new(enemy, player, GameplayConstants.MOVEMENT_QUERY_HAZARD_BOUNDS_EVENT)
+    ---@type integer | nil
+    local radius
+    for _, result in ipairs(abilitySystem:handleGameplayEvent(eventData)) do
+        assert(
+            result.ok and result.code == "MovementHazardBounds",
+            "Movement hazard bounds query must return MovementHazardBounds"
+        )
+        local resultRadius = result.data.radius
+        assert(
+            Class.isInstance(resultRadius, "number") and math.type(resultRadius) == "integer" and resultRadius >= 0,
+            "Movement hazard bounds radius must be a non-negative integer"
+        )
+        ---@cast resultRadius integer
+        radius = math.max(radius or 0, resultRadius)
+    end
+    assert(radius, "Movement hazard enemy must declare its query bounds")
+    return radius
+end
+
 function MovementSpecials.CreatePreviewContext(enemies, player)
     local damageByEnemy = {}
+    local radiusByEnemy = {}
     for _, enemy in ipairs(enemies) do
+        radiusByEnemy[enemy] = queryEnemyRadius(enemy, player)
         damageByEnemy[enemy] = MotaBattleAbility.CalculateDamagePerRound(enemy, player)
     end
-    return { player = player, damageByEnemy = damageByEnemy }
+    return { player = player, damageByEnemy = damageByEnemy, radiusByEnemy = radiusByEnemy }
 end
 
 ---@param enemies        Source.MapActors.Enemy[]
@@ -182,17 +217,15 @@ function MovementSpecials.CollectEnemies(gameMap)
     return enemies
 end
 
----@param scene Source.Gameplay.GameplayScene
----@param gameMap GameMap
----@param player Source.MapActors.Player.Player
----@param damage integer
----@param sources Source.Utils.MovementSpecials.DangerSource[]
+---@param scene          Source.Gameplay.GameplayScene
+---@param gameMap        GameMap
+---@param player         Source.MapActors.Player.Player
+---@param damage         integer
+---@param sources        Source.Utils.MovementSpecials.DangerSource[]
 ---@param visualDuration number
 local function applyDamage(scene, gameMap, player, damage, sources, visualDuration)
     local source = assert(sources[1], "Movement damage requires at least one source")
-    local eventData = GameplayEventData.new(
-        source.enemy, player, "Event.Movement.HazardDamage", { sources = sources }
-    )
+    local eventData = GameplayEventData.new(source.enemy, player, "Event.Movement.HazardDamage", { sources = sources })
     Effects.ApplyInstantModifier(player, "Movement.HazardDamage", "HP", "Add", -damage, eventData)
     gameMap:addDamageText(tostring(damage), player:getPosition(), player)
     local battleHP = scene:applyExternalBattleDamage(player, damage)
@@ -202,10 +235,10 @@ local function applyDamage(scene, gameMap, player, damage, sources, visualDurati
     end
 end
 
----@param scene Source.Gameplay.GameplayScene
+---@param scene   Source.Gameplay.GameplayScene
 ---@param gameMap GameMap
----@param player Source.MapActors.Player.Player
----@param source Source.Utils.MovementSpecials.DangerSource
+---@param player  Source.MapActors.Player.Player
+---@param source  Source.Utils.MovementSpecials.DangerSource
 local function launchAmbush(scene, gameMap, player, source)
     local halfCell = Engine.GetCellSize() * 0.5
     local startPosition = source.enemy:getPosition() + sf.Vector2f.new(halfCell, halfCell)

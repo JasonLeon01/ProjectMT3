@@ -23,7 +23,10 @@ function AmbushAbility:init(projectileImage)
     )
     self._projectileTexture = "/Game/Assets/System/" .. projectileImage
     self.id = GameplayConstants.SPECIAL_PREFIX .. Special.Ambush
-    self.triggerTags = { GameplayConstants.COMBAT_RESOLVE_ATTACK_EVENT, GameplayConstants.MOVEMENT_QUERY_HAZARD_EVENT }
+    self.triggerTags = {
+        GameplayConstants.COMBAT_RESOLVE_ATTACK_EVENT, GameplayConstants.MOVEMENT_QUERY_HAZARD_EVENT,
+        GameplayConstants.MOVEMENT_QUERY_HAZARD_BOUNDS_EVENT
+    }
 end
 
 ---@diagnostic disable-next-line: unused, Gameplay Ability override intentionally ignores its receiver
@@ -31,6 +34,18 @@ function AmbushAbility:activate(_abilitySystem, eventData)
     if eventData.eventTag == GameplayConstants.COMBAT_RESOLVE_ATTACK_EVENT then
         eventData.payload.value = eventData.payload.value * 2
         return assert(GameplayAbilityResult.Success("AttackResolved", eventData.payload))
+    end
+    if eventData.eventTag == GameplayConstants.MOVEMENT_QUERY_HAZARD_BOUNDS_EVENT then
+        local player = eventData.target
+        local gameMap = player ~= nil and player:getMap() or nil
+        local radius = 0
+        if gameMap ~= nil then
+            local size = gameMap:getSize()
+            local mapRadius = math.max(size.x, size.y)
+            ---@cast mapRadius integer
+            radius = mapRadius
+        end
+        return assert(GameplayAbilityResult.Success("MovementHazardBounds", { radius = radius }))
     end
     local MovementSpecials = require("Source.Utils.MovementSpecials")
     local player = eventData.target
