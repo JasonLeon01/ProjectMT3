@@ -1056,6 +1056,14 @@ function AbilitySystemComponent:removeAbilitiesBySource(sourceKey) end
 ---@param eventData? GlobalCore.GameplayEventData|nil
 ---@return GlobalCore.GameplayAbilityResult|nil
 function AbilitySystemComponent:tryActivateAbility(abilityID, eventData) end
+--- @brief Return granted abilities subscribed to an event tag
+---
+--- Uses the same hierarchical tag matching and priority/grant ordering as
+--- handleGameplayEvent, without invoking canActivate or activate. The
+--- returned list contains the existing granted specs.
+---@param eventTag string
+---@return GlobalCore.__ArrayElement_0d75390c27b6[]
+function AbilitySystemComponent:getGameplayEventAbilities(eventTag) end
 ---@param eventData GlobalCore.GameplayEventData|nil
 ---@return GlobalCore.__ArrayElement_59256e57202e[]
 function AbilitySystemComponent:handleGameplayEvent(eventData) end

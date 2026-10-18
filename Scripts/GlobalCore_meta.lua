@@ -951,6 +951,18 @@ local _METADATA = {
                 ["return"] = { "GlobalCore", "GameplayAbilityResult" },
             },
         },
+        getGameplayEventAbilities = {
+            type = "function",
+            parameters = { "self", "eventTag", self = { "GlobalCore", "AbilitySystemComponent" }, eventTag = "string" },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = {
+                list = { "GlobalCore", "GameplayAbilitySpec" },
+            },
+            },
+            Pure = true,
+        },
         handleGameplayEvent = {
             type = "function",
             parameters = { "self", "eventData", self = { "GlobalCore", "AbilitySystemComponent" }, eventData = { "GlobalCore", "GameplayEventData" } },

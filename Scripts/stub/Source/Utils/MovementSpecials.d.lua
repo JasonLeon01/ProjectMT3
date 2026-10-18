@@ -1,14 +1,15 @@
 ---@meta Source.Utils.MovementSpecials
 
 ---@class Source.Utils.MovementSpecials.DangerSource
----@field enemy   Source.MapActors.Enemy
----@field special string
----@field damage  integer
+---@field enemy             Source.MapActors.Enemy
+---@field special           string
+---@field damage            integer
 ---@field projectileTexture string | nil
 
 ---@class Source.Utils.MovementSpecials.PreviewContext
 ---@field player        Source.MapActors.Player.Player
 ---@field damageByEnemy table<Source.MapActors.Enemy, integer>
+---@field radiusByEnemy table<Source.MapActors.Enemy, integer>
 
 local MovementSpecials = {}
 
@@ -23,6 +24,14 @@ function MovementSpecials.CollectEnemies(gameMap) end
 ---@return boolean
 function MovementSpecials.HasClearLine(gameMap, actor, fromPosition, toPosition) end
 
+---@brief Capture movement damage and query bounds for an unchanged player/enemy snapshot.
+--- Pass movement-hazard enemies, as returned by CollectEnemies.
+--- Every ability subscribed to Event.Movement.QueryHazard must also answer
+--- Event.Movement.QueryHazardBounds with a successful MovementHazardBounds result
+--- containing a non-negative integer radius. Missing or invalid bounds raise.
+--- The largest radius covers every contributing cell in an inclusive square
+--- around that enemy's map anchor; per-cell Preview still resolves exact damage.
+--- Recreate the context when player/enemy state or enemy membership changes.
 ---@param enemies Source.MapActors.Enemy[]
 ---@param player  Source.MapActors.Player.Player
 ---@return Source.Utils.MovementSpecials.PreviewContext
