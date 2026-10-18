@@ -49,6 +49,10 @@ foreach ($variable in @('PROJECT_SHA', 'LUDORK_SHA', 'LUDORK_CHECKED_SHA', 'LUDO
     }
 }
 
+if ($Mode -eq 'standalone' -and -not (Test-Path -LiteralPath (Join-Path $LudorkDirectory 'tools/pack_standalone.bat') -PathType Leaf)) {
+    throw 'This Ludork artifact lacks tools/pack_standalone.bat. Publish a new Ludork tools artifact with Standalone project packaging support.'
+}
+
 $scriptTools = Join-Path $LudorkDirectory 'tools/ScriptTools/ScriptTools.exe'
 & $scriptTools server-config --help *> $null
 if ($LASTEXITCODE -ne 0) {
@@ -62,16 +66,11 @@ if ($LASTEXITCODE -ne 0) { throw 'Server URL preparation failed.' }
 & python $ci clean $ProjectDirectory $OutputDirectory
 if ($LASTEXITCODE -ne 0) { throw 'Clean build preparation failed.' }
 if ($Mode -eq 'standalone') {
-    $standaloneBuilder = Join-Path $LudorkDirectory 'tools/build_standalone.bat'
+    $standalonePacker = Join-Path $LudorkDirectory 'tools/pack_standalone.bat'
     $standaloneDirectory = Join-Path $OutputDirectory 'ProjectMT3'
-    try {
-        & $standaloneBuilder $ProjectDirectory $standaloneDirectory Release
-        if ($LASTEXITCODE -ne 0) {
-            throw "Ludork standalone build failed with exit code $LASTEXITCODE"
-        }
-    } finally {
-        & $scriptTools server-config cleanup $ProjectDirectory
-        if ($LASTEXITCODE -ne 0) { throw 'Server configuration cleanup failed.' }
+    & $standalonePacker $ProjectDirectory $standaloneDirectory
+    if ($LASTEXITCODE -ne 0) {
+        throw "Ludork Standalone project packaging failed with exit code $LASTEXITCODE"
     }
 } else {
     & $packer --dev --encrypt-data --compile-lua --use-ldpak $ProjectDirectory $OutputDirectory
@@ -80,7 +79,7 @@ if ($Mode -eq 'standalone') {
     }
 }
 
-# Ludork chooses the game directory name from the project's application name.
+# Game packages use the application name; Standalone projects use the requested ProjectMT3 directory.
 $packages = @(Get-ChildItem -LiteralPath $OutputDirectory -Directory)
 if ($packages.Count -ne 1) {
     throw 'Expected exactly one game directory in the package output.'
@@ -93,8 +92,8 @@ foreach ($relativePath in @('Main.exe', 'Binaries/Main.exe')) {
 }
 $metadataOptions = @()
 if ($Mode -eq 'standalone') {
-    & python $ci prepare-standalone $ProjectDirectory $gameDirectory
-    if ($LASTEXITCODE -ne 0) { throw 'Standalone project preparation failed.' }
+    & python $ci validate-standalone $ProjectDirectory $gameDirectory
+    if ($LASTEXITCODE -ne 0) { throw 'Standalone project validation failed.' }
     & $scriptTools preview validate $gameDirectory
     if ($LASTEXITCODE -ne 0) { throw 'Standalone preview validation failed.' }
     $metadataOptions = @('--standalone')

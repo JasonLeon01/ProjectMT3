@@ -225,33 +225,14 @@ def validate_hap(hap, project):
     print("Validated Mobile HAP identity, runtime checksum and packed encrypted resources")
 
 
-def prepare_standalone(project, output):
-    def read_json(path):
-        return json.loads(path.read_text(encoding="utf-8"))
-
-    def write_json(path, data):
-        path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-
-    config = read_json(project / "Main.proj")
+def validate_standalone(project, output):
+    config = json.loads((project / "Main.proj").read_text(encoding="utf-8"))
     config["Cpp"] = False
     config.setdefault("packaging", {})["dev"] = False
-    write_json(output / "Main.proj", config)
-    shutil.copyfile(project / ".emmyrc.json", output / ".emmyrc.json")
-
-    vscode = output / ".vscode"
-    vscode.mkdir(exist_ok=True)
-    settings = read_json(project / ".vscode/settings.json")
-    write_json(vscode / "settings.json", {
-        key: value for key, value in settings.items() if key.startswith("Lua.") or key == "[lua]"
-    })
-    launch = read_json(project / ".vscode/launch.json")
-    launch["configurations"] = [item for item in launch["configurations"]
-                                if item.get("type") == "emmylua_attach" and item.get("request") == "attach"]
-    write_json(vscode / "launch.json", launch)
-    extensions = read_json(project / ".vscode/extensions.json")
-    write_json(vscode / "extensions.json", {
-        "recommendations": [item for item in extensions["recommendations"] if item == "tangzx.emmylua"]
-    })
+    actual = json.loads((output / "Main.proj").read_text(encoding="utf-8"))
+    require(actual == config, "Standalone Main.proj changed settings beyond Cpp and packaging.dev")
+    require((output / ".emmyrc.json").read_bytes() == (project / ".emmyrc.json").read_bytes(),
+            "Standalone EmmyLua configuration does not match the source")
 
     for group in GROUPS:
         require((output / group).is_dir(), f"Standalone resource directory missing: {group}")
@@ -261,7 +242,8 @@ def prepare_standalone(project, output):
     require((output / "Scripts/stub").is_dir(), "Standalone Lua stubs are missing")
     for name in ("Engine", "Application", "build", "bin", "Intermediate", "Cache", "Save", ".git"):
         require(not (output / name).exists(), f"Development/local directory in standalone project: {name}")
-    print("Prepared editable standalone project and Lua editor configuration")
+    require(not (output / "EditorCache/ProjectExport.json").exists(), "Source export state remains in Standalone project")
+    print("Validated editable Standalone project and preserved project settings")
 
 
 def metadata(project, output, platform, artifact=None, signed=False, notarized=False, standalone=False):
@@ -296,7 +278,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("server-url")
-    for command in ("clean", "metadata", "prepare-standalone"):
+    for command in ("clean", "metadata", "validate-standalone"):
         item = sub.add_parser(command)
         item.add_argument("project", type=Path)
         item.add_argument("output", type=Path)
@@ -316,8 +298,8 @@ def main():
         print(server_url())
     elif args.command == "clean":
         clean(args.project, args.output)
-    elif args.command == "prepare-standalone":
-        prepare_standalone(args.project, args.output)
+    elif args.command == "validate-standalone":
+        validate_standalone(args.project, args.output)
     elif args.command == "validate":
         validate(args.path)
     elif args.command == "validate-apk":
