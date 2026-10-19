@@ -76,4 +76,8 @@ function Window:setActive(active) end
 ---@param selectedIndex integer
 function Window:setMapKeyAndTelepoints(mapKey, entries, selectedIndex) end
 
+---@brief Set selector presentation before enabling input, including during the opening transition.
+---@param visible boolean
+function Window:setSelectorVisible(visible) end
+
 return Window

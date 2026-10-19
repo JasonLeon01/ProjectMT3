@@ -273,6 +273,8 @@ function Scene:switchPlayer(right) end
 function Scene:showEnemyBook() end
 
 ---@brief Show the visited-floor teleporter preview window.
+--- Requires the teleporter item and at least one recorded floor in the current region.
+--- A single available floor opens its telepoint list directly.
 ---@return boolean
 function Scene:showFloorTeleporter() end
 

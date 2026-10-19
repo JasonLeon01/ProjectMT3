@@ -5069,6 +5069,22 @@ local _METADATA = {
             default = { [1] = "self" },
             ["return"] = {},
         },
+        getChildScrollingEnabled = {
+            type = "function",
+            parameters = { "self", self = { "Engine", "ListView" } },
+            default = { [1] = "self" },
+            ["return"] = {
+                "return",
+                ["return"] = "bool",
+            },
+            Pure = true,
+        },
+        setChildScrollingEnabled = {
+            type = "function",
+            parameters = { "self", "enabled", self = { "Engine", "ListView" }, enabled = "bool" },
+            default = { [1] = "self" },
+            ["return"] = {},
+        },
         getChildren = {
             type = "function",
             parameters = { "self", self = { "Engine", "ListView" } },
