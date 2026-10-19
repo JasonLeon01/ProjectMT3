@@ -25,7 +25,7 @@ function Window.new(inst, loadPreview, onConfirm, onClose, resolvePreviewMapPath
 ---@return Source.Windows.WindowFloorTeleporter
 function Window.FromView(ui, inst, loadPreview, onConfirm, onClose, resolvePreviewMapPath, clearPreviewCache) end
 
----@brief Hide the telepoint selector and restore the overlapping visited-map list before moving input focus back to it.
+---@brief Return to the floor list, or close if this opening skipped map selection.
 ---
 --- - @param playCancelSE Whether to play the cancel sound.
 ---@param playCancelSE boolean | nil
@@ -115,11 +115,14 @@ function Window:notifyMapIndexMaybeChanged(index) end
 ---@param index integer | nil
 function Window:notifyTelepointIndexMaybeChanged(index) end
 
----@brief Open the floor teleporter with the floor list visible and the overlapping telepoint list hidden.
---- Select the current map's floor entry, falling back to the first entry if absent; reset the telepoint selector to its first entry.
+---@brief Open the current region's recorded floors, or play the buzzer and return false without opening if none are available.
+--- A single floor opens its telepoint selector directly; cancelling closes the window.
+--- Otherwise select the current map's floor entry, falling back to the first entry if absent.
+--- Telepoint selection starts at the first entry.
 ---
 --- - @param inst Optional current game instance to bind before opening.
 ---@param inst Source.GameInstance.GameInstance | nil
+---@return boolean
 function Window:open(inst) end
 
 ---@brief Refresh localised map and telepoint labels while preserving both selections and the active child window.

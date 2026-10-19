@@ -177,10 +177,10 @@
 ---@field FocusDirection table<string, string>
 ---@field TextConfig table
 ---@field TextLayout table
+---@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field DefaultFontSize integer
 ---@field DefaultFont sf.Font|nil
 ---@field DefaultWindowskinName string|nil
----@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field _default_bus Engine.EventBus
 ---@field eventBus fun(): Engine.EventBus
 ---@field subscribe fun(event: string, handler: fun(arg1: any): nil, priority?: integer): integer
@@ -3546,6 +3546,11 @@ function ListView:setSize(size) end
 ---@param columns integer
 ---@return nil
 function ListView:setColumns(columns) end
+---@return boolean
+function ListView:getChildScrollingEnabled() end
+---@param enabled boolean
+---@return nil
+function ListView:setChildScrollingEnabled(enabled) end
 ---@return Engine.__ArrayElement_8bc247c27a1e[]
 function ListView:getChildren() end
 ---@param child Engine.ControlBase|nil
