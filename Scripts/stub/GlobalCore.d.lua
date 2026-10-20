@@ -1914,14 +1914,6 @@ local System = {}
 ---@return nil
 function System.init(data, dataFilePath) end
 ---@return string
-function System.getScript() end
----@param value string
----@return nil
-function System.setScript(value) end
----@param value string
----@return nil
-function System.saveScript(value) end
----@return string
 function System.getLanguage() end
 ---@param value string
 ---@return nil

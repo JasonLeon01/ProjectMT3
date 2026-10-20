@@ -177,10 +177,10 @@
 ---@field FocusDirection table<string, string>
 ---@field TextConfig table
 ---@field TextLayout table
----@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field DefaultFontSize integer
 ---@field DefaultFont sf.Font|nil
 ---@field DefaultWindowskinName string|nil
+---@field instantiate fun(assetKey: string, logicalSize?: sf.Vector2u|nil): Engine.AssetInstance|nil
 ---@field _default_bus Engine.EventBus
 ---@field eventBus fun(): Engine.EventBus
 ---@field subscribe fun(event: string, handler: fun(arg1: any): nil, priority?: integer): integer
@@ -201,7 +201,7 @@
 ---@field warnOnce fun(key: string, message: string): nil
 ---@field getUserDataPath fun(appNameOverride?: string|nil): string
 ---@field getSavePath fun(appNameOverride?: string|nil): string
----@field getMainIniPath fun(appNameOverride?: string|nil): string
+---@field getMainConfigPath fun(appNameOverride?: string|nil): string
 ---@field getAnimationSourceRoot fun(): string
 ---@field getAnimationCacheRoot fun(appNameOverride?: string|nil): string
 ---@field assetExists fun(assetPath: string): boolean
@@ -438,7 +438,7 @@ function Engine.getSavePath(appNameOverride) end
 
 ---@param appNameOverride? string|nil
 ---@return string
-function Engine.getMainIniPath(appNameOverride) end
+function Engine.getMainConfigPath(appNameOverride) end
 
 ---@return string
 function Engine.getAnimationSourceRoot() end

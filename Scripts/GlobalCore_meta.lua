@@ -2346,24 +2346,6 @@ local _METADATA = {
             parameters = { "data", "dataFilePath", data = "ConfigParser", dataFilePath = "string" },
             ["return"] = {},
         },
-        getScript = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "string",
-            },
-        },
-        setScript = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
-        saveScript = {
-            type = "function",
-            parameters = { "value", value = "string" },
-            ["return"] = {},
-        },
         getLanguage = {
             type = "function",
             parameters = {},
