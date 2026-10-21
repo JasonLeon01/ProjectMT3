@@ -12,15 +12,14 @@ decode_secret APP_STORE_CONNECT_PRIVATE_KEY "$work/notary.p8"
 identity=$(python3 "$project/.github/scripts/package-apple.py" identity "$work/signing.p12" macos)
 printf '%s\n' "$MACOS_SIGNING_CERTIFICATE_PASSWORD" | \
     sh "$work/tools/pack_project.sh" --dev --encrypt-data --compile-lua --use-ldpak \
-        --ignore-environment --certificate "$work/signing.p12" --signing-identity "$identity" \
-        --notarize --notary-key "$work/notary.p8" --notary-key-id "$APP_STORE_CONNECT_KEY_ID" \
-        --notary-key-issuer "$APP_STORE_CONNECT_ISSUER_ID" "$project" "$work/dist"
+        --ignore-environment --certificate "$work/signing.p12" --signing-identity "$identity" "$project" "$work/dist"
 
 apps=("$work/dist"/*.app)
 [[ ${#apps[@]} == 1 ]]
 app=${apps[0]}
 python3 "$ci" validate "$app/Contents/Resources"
 codesign --verify --deep --strict --verbose=2 "$app"
+python3 "$project/.github/scripts/apple-service.py" notarize "$app" "$work"
 xcrun stapler validate "$app"
 spctl --assess --type execute --verbose=2 "$app"
 archive="$output/$(basename "$app" .app)-macos-arm64.zip"

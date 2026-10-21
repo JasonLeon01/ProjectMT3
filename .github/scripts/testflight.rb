@@ -2,6 +2,27 @@
 # API-only authentication: no Apple ID session, browser, 2FA or external review.
 require 'json'
 require 'spaceship'
+require 'timeout'
+
+# These are CI-level attempts after fastlane's own bounded request retries.
+def apple_request(label, deadline: nil)
+  attempt = 0
+  begin
+    raise 'Apple processing/group assignment exceeded 45 minutes' if deadline && Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+    attempt += 1
+    yield
+  rescue StandardError => error
+    timeout = error.is_a?(Timeout::Error) || error.is_a?(Faraday::TimeoutError) ||
+      error.is_a?(Spaceship::Client::AppleTimeoutError) || error.is_a?(Spaceship::Client::GatewayTimeoutError) ||
+      (error.is_a?(Spaceship::Client::InternalServerError) && error.message.match?(/\b504\b/))
+    raise unless timeout && attempt < 3
+    delay = 15 * attempt
+    raise if deadline && Process.clock_gettime(Process::CLOCK_MONOTONIC) + delay >= deadline
+    warn "#{label} timed out (attempt #{attempt}/3); retrying in #{delay}s"
+    sleep delay
+    retry
+  end
+end
 
 def connect
   Spaceship::ConnectAPI.token = Spaceship::ConnectAPI::Token.create(
@@ -68,53 +89,70 @@ def wait_for_internal_testing(context, output)
   deadline = Process.clock_gettime(Process::CLOCK_MONOTONIC) + 2700
   attached = false
   loop do
-    connect # Refresh the short-lived API token while Apple processes the upload.
-    builds = Spaceship::ConnectAPI::Build.all(
-      app_id: context.fetch('app_id'), version: context.fetch('version'),
-      build_number: context.fetch('build_number'), platform: 'IOS', limit: 200
-    )
-    raise 'Ambiguous uploaded build' if builds.length > 1
-    build = builds.first
-    if build
-      state = build.build_beta_detail&.internal_build_state
-      raise "Apple rejected this build: #{build.processing_state}/#{state}" if %w[FAILED INVALID].include?(build.processing_state) ||
-        %w[PROCESSING_EXCEPTION MISSING_EXPORT_COMPLIANCE IN_EXPORT_COMPLIANCE_REVIEW EXPIRED].include?(state) || build.expired
-      if build.processing_state == 'VALID' && %w[READY_FOR_BETA_TESTING IN_BETA_TESTING].include?(state)
-        app = Spaceship::ConnectAPI::App.find(context.fetch('bundle_id'))
-        group = app.get_beta_groups.find { |item| item.id == context.fetch('group_id') && item.is_internal_group }
-        raise 'Configured internal TestFlight group no longer exists' unless group
-        unless attached
-          build.add_beta_groups(beta_groups: [group]) unless group.fetch_builds.any? { |item| item.id == build.id }
-          attached = true
+    apple_request('TestFlight processing query', deadline: deadline) do
+      connect # Refresh the short-lived API token while Apple processes the upload.
+      builds = Spaceship::ConnectAPI::Build.all(
+        app_id: context.fetch('app_id'), version: context.fetch('version'),
+        build_number: context.fetch('build_number'), platform: 'IOS', limit: 200
+      )
+      raise 'Ambiguous uploaded build' if builds.length > 1
+      build = builds.first
+      if build
+        state = build.build_beta_detail&.internal_build_state
+        raise "Apple rejected this build: #{build.processing_state}/#{state}" if %w[FAILED INVALID].include?(build.processing_state) ||
+          %w[PROCESSING_EXCEPTION MISSING_EXPORT_COMPLIANCE IN_EXPORT_COMPLIANCE_REVIEW EXPIRED].include?(state) || build.expired
+        if build.processing_state == 'VALID' && %w[READY_FOR_BETA_TESTING IN_BETA_TESTING].include?(state)
+          app = Spaceship::ConnectAPI::App.find(context.fetch('bundle_id'))
+          group = app.get_beta_groups.find { |item| item.id == context.fetch('group_id') && item.is_internal_group }
+          raise 'Configured internal TestFlight group no longer exists' unless group
+          unless attached
+            build.add_beta_groups(beta_groups: [group]) unless group.fetch_builds.any? { |item| item.id == build.id }
+            attached = true
+          end
+          if group.fetch_builds.any? { |item| item.id == build.id }
+            context['build_id'] = build.id
+            report(context, output, 'ready')
+            return
+          end
         end
-        if group.fetch_builds.any? { |item| item.id == build.id }
-          context['build_id'] = build.id
-          report(context, output, 'ready')
-          return
-        end
+        puts "Apple processing: #{build.processing_state}/#{state || 'pending'}"
+      else
+        puts 'Waiting for the uploaded build to appear in App Store Connect'
       end
-      puts "Apple processing: #{build.processing_state}/#{state || 'pending'}"
-    else
-      puts 'Waiting for the uploaded build to appear in App Store Connect'
     end
     raise 'Apple processing/group assignment exceeded 45 minutes' if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
     sleep 30
   end
 end
 
+def uploaded?(context)
+  connect
+  builds = Spaceship::ConnectAPI::Build.all(
+    app_id: context.fetch('app_id'), version: context.fetch('version'),
+    build_number: context.fetch('build_number'), platform: 'IOS', limit: 200
+  )
+  return true unless builds.empty?
+  # BuildUpload appears before Build while Apple is processing a received IPA.
+  Spaceship::ConnectAPI.get_build_uploads(
+    app_id: context.fetch('app_id'), filter: { platform: 'IOS' }, limit: 200
+  ).all_pages.flat_map(&:to_models).any? { |item| item.cf_build_version == context.fetch('build_number') }
+end
+
 if $PROGRAM_NAME == __FILE__
   command, context_path, output = ARGV
-  raise 'Usage: testflight.rb <prepare|wait|failed> <context.json> <output>' unless %w[prepare wait failed].include?(command) && output
+  raise 'Usage: testflight.rb <prepare|wait|uploaded|failed> <context.json> <output>' unless %w[prepare wait uploaded failed].include?(command) && output
   context = JSON.parse(File.read(context_path))
   begin
     case command
     when 'prepare'
-      prepare(context)
+      apple_request('TestFlight preparation query') { prepare(context) }
       File.write(context_path, JSON.pretty_generate(context) + "\n")
       report(context, output, 'prepared')
     when 'wait'
       report(context, output, 'processing')
       wait_for_internal_testing(context, output)
+    when 'uploaded'
+      exit(apple_request('TestFlight upload query') { uploaded?(context) } ? 0 : 2)
     when 'failed'
       report(context, output, 'failed; see workflow logs')
     end

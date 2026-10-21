@@ -65,6 +65,7 @@ jobs:
       FASTLANE_SKIP_UPDATE_CHECK: 'true'
       FASTLANE_HIDE_CHANGELOG: 'true'
       FASTLANE_OPT_OUT_USAGE: 'true'
+      SPACESHIP_TIMEOUT: '120'
     steps:
       - uses: actions/checkout@v7
         with:

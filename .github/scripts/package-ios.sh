@@ -64,7 +64,6 @@ python3 "$ci" metadata "$project" "$output" ios-arm64 --artifact "$ipa" --signed
 
 # Only upload here; the API helper checks Apple processing and internal group
 # membership explicitly. Never ask pilot to submit an external beta review.
-fastlane pilot upload --ipa "$ipa" --api_key_path "$work/api-key.json" \
-    --skip_submission true --skip_waiting_for_build_processing true
+python3 "$project/.github/scripts/apple-service.py" upload "$ipa" "$work" "$output"
 rm -f -- "$ipa"
 ruby "$testflight" wait "$context" "$output"
