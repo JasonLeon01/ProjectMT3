@@ -24,7 +24,7 @@ function Window:isFinished() end
 ---@param deltaTime number
 function Window:onTick(deltaTime) end
 
---- Start a 0.25-second contraction. All input stays captured until confirmation or close.
+--- Start a contraction using SHRINK_DURATION. All input stays captured until confirmation or close.
 ---@param rect sf.IntRect
 ---@param text string
 function Window:open(rect, text) end
