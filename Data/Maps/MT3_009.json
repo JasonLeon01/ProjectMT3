@@ -1167,7 +1167,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E05_leishushi_default_2_1",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E05_leishushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E05_leishushi",
         "position": [
           2,
           1
@@ -1175,7 +1175,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E05_leishushi_default_3_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E05_leishushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E05_leishushi",
         "position": [
           3,
           6
@@ -1183,7 +1183,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E08_shilaimuren_default_1_4",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E08_shilaimuren",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E08_shilaimuren",
         "position": [
           1,
           4
@@ -1191,7 +1191,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E09_sangshi_default_1_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E09_sangshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E09_sangshi",
         "position": [
           1,
           8
@@ -1199,7 +1199,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E09_sangshi_default_3_2",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E09_sangshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E09_sangshi",
         "position": [
           3,
           2
@@ -1207,7 +1207,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E10_dabianfu_default_3_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E10_dabianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E10_dabianfu",
         "position": [
           3,
           9
@@ -1231,7 +1231,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E12_qishi_default_3_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E12_qishi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E12_qishi",
         "position": [
           3,
           5
@@ -1239,7 +1239,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E13_shuangshoujianshi_default_3_7",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E13_shuangshoujianshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E13_shuangshoujianshi",
         "position": [
           3,
           7
@@ -1247,7 +1247,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E14_kuloushibing_default_8_10",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E14_kuloushibing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E14_kuloushibing",
         "position": [
           8,
           10
@@ -1255,7 +1255,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E14_kuloushibing_default_2_10",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E14_kuloushibing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E14_kuloushibing",
         "position": [
           2,
           10
@@ -1263,7 +1263,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E15_kuloujiazhoushi_default_7_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E15_kuloujiazhoushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E15_kuloujiazhoushi",
         "position": [
           7,
           5
@@ -1279,7 +1279,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E16_zhongjishouwei_default_4_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E16_zhongjishouwei",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E16_zhongjishouwei",
         "position": [
           4,
           3
@@ -1287,7 +1287,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E15_kuloujiazhoushi_default_5_2",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E15_kuloujiazhoushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E15_kuloujiazhoushi",
         "position": [
           5,
           2
@@ -1335,7 +1335,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E17_tieqishi_default_7_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E17_tieqishi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E17_tieqishi",
         "position": [
           7,
           6
@@ -1343,7 +1343,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E11_shitouguai_default_1_2",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E11_shitouguai",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E11_shitouguai",
         "position": [
           1,
           2
@@ -1351,7 +1351,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E18_hongbianfu_default_7_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E18_hongbianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E18_hongbianfu",
         "position": [
           7,
           9
@@ -1359,7 +1359,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E19_zhangyuzai_default_8_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E19_zhangyuzai",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E19_zhangyuzai",
         "position": [
           8,
           8
@@ -1367,7 +1367,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E20_shilaimukuangren_default_10_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E20_shilaimukuangren",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E20_shilaimukuangren",
         "position": [
           10,
           3
@@ -1383,7 +1383,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E13_shuangshoujianshi_default_10_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E13_shuangshoujianshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E13_shuangshoujianshi",
         "position": [
           10,
           8
@@ -1391,7 +1391,7 @@
       },
       {
         "tag": "MT3_009.BP_Enemy_E19_zhangyuzai_default_10_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E19_zhangyuzai",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E19_zhangyuzai",
         "position": [
           10,
           6
@@ -1407,7 +1407,7 @@
       },
       {
         "tag": "Enemies_BP_Enemy_E16_zhongjishouwei_default_6_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E16_zhongjishouwei",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E16_zhongjishouwei",
         "position": [
           6,
           3

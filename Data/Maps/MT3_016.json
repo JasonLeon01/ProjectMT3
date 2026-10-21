@@ -654,7 +654,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E26_shixuebianfu_default_2_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E26_shixuebianfu",
         "position": [
           2,
           9
@@ -662,7 +662,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E25_moyushilaimu_default_8_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E25_moyushilaimu",
         "position": [
           8,
           6
@@ -670,7 +670,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E24_gongbing_default_9_7",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "position": [
           9,
           7
@@ -678,7 +678,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E24_gongbing_default_10_2",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "position": [
           10,
           2
@@ -686,7 +686,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E23_sangshijianshi_default_5_0",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E23_sangshijianshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E23_sangshijianshi",
         "position": [
           5,
           0
@@ -694,7 +694,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E23_sangshijianshi_default_3_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E23_sangshijianshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E23_sangshijianshi",
         "position": [
           4,
           5
@@ -702,7 +702,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E20_shilaimukuangren_default_2_0",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E20_shilaimukuangren",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E20_shilaimukuangren",
         "position": [
           1,
           5
@@ -710,7 +710,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E22_yanshushi_default_10_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E22_yanshushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E22_yanshushi",
         "position": [
           10,
           9
@@ -742,7 +742,7 @@
       },
       {
         "tag": "MT3_016.BP_Enemy_E22_yanshushi_default_5_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E22_yanshushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E22_yanshushi",
         "position": [
           3,
           6
@@ -941,7 +941,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E27_kulouxiaoduizhang",
         "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_7_3",
         "position": [
           7,
@@ -949,7 +949,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E27_kulouxiaoduizhang",
         "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_6_9",
         "position": [
           6,
@@ -973,7 +973,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E31_huiqishi",
         "tag": "Enemies_BP_Enemy_E31_huiqishi_default_4_5",
         "position": [
           4,
@@ -982,14 +982,14 @@
       },
       {
         "tag": "Enemies_BP_Enemy_E26_shixuebianfu_default_10_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E26_shixuebianfu",
         "position": [
           10,
           5
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E30_baiyiwei",
         "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_2_0",
         "position": [
           2,
@@ -997,7 +997,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "tag": "Enemies_BP_Enemy_E24_gongbing_default_3_1",
         "position": [
           3,

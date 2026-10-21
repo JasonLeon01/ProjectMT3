@@ -656,7 +656,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren_archer",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren_archer",
         "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_9_5",
         "position": [
           9,
@@ -669,6 +669,54 @@
         "position": [
           8,
           10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren",
+        "tag": "Enemies_BPart_BP_Enemy_E42_shouren_default_1_1",
+        "position": [
+          1,
+          1
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E50_xunjiequan",
+        "tag": "Enemies_BPart_BP_Enemy_E50_xunjiequan_default_1_5",
+        "position": [
+          1,
+          4
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
+        "tag": "Consumables_BP_Bottle_400_default_0_3",
+        "position": [
+          0,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Gem_1_2",
+        "tag": "Consumables_BP_Gem_1_2_default_1_2",
+        "position": [
+          1,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
+        "tag": "Consumables_BP_Bottle_400_default_2_0",
+        "position": [
+          2,
+          0
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Doors.BP_Door_Y",
+        "tag": "Doors_BP_Door_Y_default_1_5",
+        "position": [
+          1,
+          5
         ]
       }
     ]

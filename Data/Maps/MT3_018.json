@@ -726,7 +726,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E28_fengwushi_default_5_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E28_fengwushi",
         "position": [
           5,
           6
@@ -734,7 +734,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E27_kulouxiaoduizhang_default_1_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E27_kulouxiaoduizhang",
         "position": [
           1,
           9
@@ -742,7 +742,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E27_kulouxiaoduizhang_default_9_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E27_kulouxiaoduizhang",
         "position": [
           9,
           3
@@ -750,7 +750,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E26_shixuebianfu_default_7_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E26_shixuebianfu",
         "position": [
           7,
           9
@@ -758,7 +758,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E26_shixuebianfu_default_7_0",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E26_shixuebianfu",
         "position": [
           7,
           0
@@ -766,7 +766,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E25_moyushilaimu_default_1_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E25_moyushilaimu",
         "position": [
           1,
           3
@@ -774,7 +774,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E26_shixuebianfu_default_2_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E26_shixuebianfu",
         "position": [
           2,
           5
@@ -798,7 +798,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E23_sangshijianshi_default_10_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E23_sangshijianshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E23_sangshijianshi",
         "position": [
           10,
           5
@@ -806,7 +806,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E23_sangshijianshi_default_6_7",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E23_sangshijianshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E23_sangshijianshi",
         "position": [
           6,
           7
@@ -814,7 +814,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E22_yanshushi_default_9_9",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E22_yanshushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E22_yanshushi",
         "position": [
           9,
           9
@@ -822,7 +822,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E24_gongbing_default_10_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "position": [
           10,
           8
@@ -894,7 +894,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E25_moyushilaimu_default_4_1",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E25_moyushilaimu",
         "position": [
           4,
           1
@@ -958,7 +958,7 @@
       },
       {
         "tag": "MT3_019.BP_Enemy_E24_gongbing_default_0_7",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "position": [
           0,
           7
@@ -966,7 +966,7 @@
       },
       {
         "tag": "Enemies_BP_Enemy_E28_fengwushi_default_7_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E28_fengwushi",
         "position": [
           7,
           6
