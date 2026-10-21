@@ -664,7 +664,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren_archer",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren_archer",
         "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_5_1",
         "position": [
           5,
@@ -672,7 +672,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E42_shouren_archer",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren_archer",
         "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_3_3",
         "position": [
           3,

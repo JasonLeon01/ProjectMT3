@@ -700,7 +700,7 @@
     "default": [
       {
         "tag": "YMFS",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E32_youmingfashi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E32_youmingfashi",
         "position": [
           5,
           5

@@ -854,7 +854,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E03_shuishushi_default_0_1",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E03_shuishushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E03_shuishushi",
         "position": [
           0,
           1
@@ -862,7 +862,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E03_shuishushi_default_1_0",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E03_shuishushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E03_shuishushi",
         "position": [
           1,
           0
@@ -870,7 +870,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E03_shuishushi_default_9_0",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E03_shuishushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E03_shuishushi",
         "position": [
           9,
           0
@@ -878,7 +878,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E01_hongseshilaimu_default_7_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E01_hongseshilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E01_hongseshilaimu",
         "position": [
           7,
           3
@@ -886,7 +886,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E01_hongseshilaimu_default_2_1",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E01_hongseshilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E01_hongseshilaimu",
         "position": [
           2,
           1
@@ -894,7 +894,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E02_bianfu_default_4_0",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E02_bianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E02_bianfu",
         "position": [
           4,
           0
@@ -902,7 +902,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E02_bianfu_default_2_5",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E02_bianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E02_bianfu",
         "position": [
           2,
           5
@@ -910,7 +910,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E07_heiseshilaimu_default_1_3",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E07_heiseshilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E07_heiseshilaimu",
         "position": [
           1,
           3
@@ -918,7 +918,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E07_heiseshilaimu_default_6_1",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E07_heiseshilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E07_heiseshilaimu",
         "position": [
           6,
           1
@@ -926,7 +926,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E07_heiseshilaimu_default_2_10",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E07_heiseshilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E07_heiseshilaimu",
         "position": [
           2,
           10
@@ -942,7 +942,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E06_kulou_default_4_4",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E06_kulou",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E06_kulou",
         "position": [
           4,
           4
@@ -950,7 +950,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E04_shouwei_default_5_7",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E04_shouwei",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E04_shouwei",
         "position": [
           5,
           7
@@ -958,7 +958,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E05_leishushi_default_0_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E05_leishushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E05_leishushi",
         "position": [
           0,
           8
@@ -966,7 +966,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E08_shilaimuren_default_8_6",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E08_shilaimuren",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E08_shilaimuren",
         "position": [
           8,
           6
@@ -974,7 +974,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E08_shilaimuren_default_6_8",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E08_shilaimuren",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E08_shilaimuren",
         "position": [
           6,
           8
@@ -982,7 +982,7 @@
       },
       {
         "tag": "MT3_004.BP_Enemy_E09_sangshi_default_9_10",
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E09_sangshi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E09_sangshi",
         "position": [
           9,
           10

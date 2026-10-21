@@ -841,7 +841,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E30_baiyiwei",
         "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_3_2",
         "position": [
           3,
@@ -849,7 +849,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E30_baiyiwei",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E30_baiyiwei",
         "tag": "Enemies_BP_Enemy_E30_baiyiwei_default_5_2",
         "position": [
           5,
@@ -857,7 +857,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E31_huiqishi",
         "tag": "Enemies_BP_Enemy_E31_huiqishi_default_1_4",
         "position": [
           1,
@@ -865,7 +865,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E26_shixuebianfu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E26_shixuebianfu",
         "tag": "Enemies_BP_Enemy_E26_shixuebianfu_default_3_9",
         "position": [
           3,
@@ -873,7 +873,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "tag": "Enemies_BP_Enemy_E24_gongbing_default_3_7",
         "position": [
           3,
@@ -881,7 +881,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E28_fengwushi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E28_fengwushi",
         "tag": "Enemies_BP_Enemy_E28_fengwushi_default_4_6",
         "position": [
           4,
@@ -889,7 +889,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E24_gongbing",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E24_gongbing",
         "tag": "Enemies_BP_Enemy_E24_gongbing_default_0_2",
         "position": [
           0,
@@ -897,7 +897,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E31_huiqishi",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E31_huiqishi",
         "tag": "Enemies_BP_Enemy_E31_huiqishi_default_2_0",
         "position": [
           2,
@@ -905,7 +905,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E27_kulouxiaoduizhang",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E27_kulouxiaoduizhang",
         "tag": "Enemies_BP_Enemy_E27_kulouxiaoduizhang_default_1_8",
         "position": [
           1,
@@ -913,7 +913,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E25_moyushilaimu",
+        "bp": "Data.Blueprints.Enemies.MainPart.BP_Enemy_E25_moyushilaimu",
         "tag": "Enemies_BP_Enemy_E25_moyushilaimu_default_5_8",
         "position": [
           5,
@@ -921,7 +921,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E33_shilaimu",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E33_shilaimu",
         "tag": "Enemies_BP_Enemy_E33_shilaimu_default_7_1",
         "position": [
           7,
@@ -929,7 +929,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E34_dashilaimu",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E34_dashilaimu",
         "tag": "Enemies_BP_Enemy_E34_dashilaimu_default_8_5",
         "position": [
           8,
@@ -937,7 +937,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E34_dashilaimu",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E34_dashilaimu",
         "tag": "Enemies_BP_Enemy_E34_dashilaimu_default_9_1",
         "position": [
           9,
@@ -945,7 +945,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E35_bianfu",
         "tag": "Enemies_BP_Enemy_E35_bianfu_default_9_3",
         "position": [
           9,
@@ -953,7 +953,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E35_bianfu",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E35_bianfu",
         "tag": "Enemies_BP_Enemy_E35_bianfu_default_6_4",
         "position": [
           6,
@@ -961,7 +961,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E36_fashi",
         "tag": "Enemies_BP_Enemy_E36_fashi_default_8_7",
         "position": [
           8,
@@ -969,7 +969,7 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BP_Enemy_E36_fashi",
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E36_fashi",
         "tag": "Enemies_BP_Enemy_E36_fashi_default_10_7",
         "position": [
           10,
