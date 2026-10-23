@@ -2197,22 +2197,6 @@ local _METADATA = {
             Pure = true,
         },
     },
-    ServerAccountListResult = {
-        bases = { { "GlobalCore", "ServerResult" } },
-        attrs = { "accounts" },
-        accounts = {
-            type = {
-                list = "string",
-            },
-        },
-    },
-    ServerAccountResult = {
-        bases = { { "GlobalCore", "ServerResult" } },
-        attrs = { "exists" },
-        exists = {
-            type = "bool",
-        },
-    },
     ServerConnectionResult = {
         bases = { { "GlobalCore", "ServerResult" } },
         attrs = { "state", "roundTripMs" },
@@ -2225,39 +2209,8 @@ local _METADATA = {
             type = "float",
         },
     },
-    ServerFieldEntry = {
-        attrs = { "key", "value" },
-        key = {
-            type = "string",
-        },
-        value = {
-            type = "any",
-        },
-    },
-    ServerFieldListResult = {
-        bases = { { "GlobalCore", "ServerResult" } },
-        attrs = { "entries", "nextCursor" },
-        entries = {
-            type = {
-                list = { "GlobalCore", "ServerFieldEntry" },
-            },
-        },
-        nextCursor = {
-            type = "string",
-        },
-    },
-    ServerReadResult = {
-        bases = { { "GlobalCore", "ServerResult" } },
-        attrs = { "found", "value" },
-        found = {
-            type = "bool",
-        },
-        value = {
-            type = "any",
-        },
-    },
     ServerResult = {
-        attrs = { "ok", "code", "message", "retryAfterSeconds" },
+        attrs = { "ok", "code", "message" },
         ok = {
             type = "bool",
         },
@@ -2269,67 +2222,9 @@ local _METADATA = {
         message = {
             type = "string",
         },
-        retryAfterSeconds = {
-            type = "int",
-        },
-    },
-    ServerTokenResult = {
-        bases = { { "GlobalCore", "ServerResult" } },
-        attrs = { "token" },
-        token = {
-            type = { "GlobalCore", "ServerWriteToken" },
-        },
     },
     Server = {
         attrs = {},
-        ListAccountsAsync = {
-            type = "function",
-            parameters = { "sampleCount", "categoryFilter", "onCompleted", sampleCount = "int", categoryFilter = "string", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
-        },
-        ListFieldsAsync = {
-            type = "function",
-            parameters = { "accountId", "category", "beforeKey", "limit", "onCompleted", accountId = "string", category = "string", beforeKey = "string", limit = "int", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
-        },
-        CheckAccountExistsAsync = {
-            type = "function",
-            parameters = { "accountId", "onCompleted", accountId = "string", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
-        },
-        ReadFieldAsync = {
-            type = "function",
-            parameters = { "accountId", "category", "field", "onCompleted", accountId = "string", category = "string", field = "string", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
-        },
-        AcquireWriteTokenAsync = {
-            type = "function",
-            parameters = { "accountId", "onCompleted", accountId = "string", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
-        },
-        WriteFieldAsync = {
-            type = "function",
-            parameters = { "token", "category", "field", "value", "onCompleted", token = { "GlobalCore", "ServerWriteToken" }, category = "string", field = "string", value = "any", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
-        },
         CheckConnectionAsync = {
             type = "function",
             parameters = { "onCompleted", onCompleted = "function" },

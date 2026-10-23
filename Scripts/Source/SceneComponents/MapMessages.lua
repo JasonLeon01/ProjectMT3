@@ -5,10 +5,12 @@ local Config = require("Source.Configs.Messages")
 local Data = require("Global.Data")
 local Locale = require("Source.Locale.Core")
 local MapPath = require("Global.Utils.MapPath")
+local Net = require("Global.Net")
+local MessagePublisher = require("Source.Net.MessagePublisher")
+require("Global.Net.Storage")
 
 local Server = GlobalCore.Server
 local NetworkState = GlobalCore.ServerNetworkState
-local ErrorCode = GlobalCore.ServerErrorCode
 local MAX_CONNECTION_ROUND_TRIP_MS = 500
 local CONNECTION_RETRY_DELAYS = { 1.0, 3.0 }
 ---@type fun(value: string): string
@@ -27,6 +29,7 @@ function MapMessages:init(scene)
     self._map = nil
     self._mapFile = ""
     self._category = ""
+    self._publisherToken = nil
     self.networkReady = false
     self.checking = false
     self.submitting = false
@@ -34,6 +37,10 @@ end
 
 function MapMessages:cancel()
     self._generation = self._generation + 1
+    if self._publisherToken ~= nil then
+        MessagePublisher.Detach(self._publisherToken)
+        self._publisherToken = nil
+    end
     self._loadStarted = false
     for _, operation in ipairs(self._operations) do
         operation:cancel()
@@ -84,6 +91,7 @@ function MapMessages:checkConnection(onCompleted, notify)
                 tostring(self.networkReady), tostring(result.roundTripMs), tostring(result.code)
             )
             if self.networkReady then
+                MessagePublisher.Reconcile()
                 assert(self._map):prependBillboardLayer(Config.LAYER)
                 self:loadMessages()
             elseif notify then
@@ -115,6 +123,18 @@ function MapMessages:beginMap(gameMap, mapFile)
     self._map = gameMap
     self._mapFile = MapPath.Normalise(mapFile)
     self._category = "messages:" .. self._mapFile
+    local generation = self._generation
+    self._publisherToken = MessagePublisher.Attach(function (submitting)
+        if self:isCurrent(generation) then
+            self.submitting = submitting
+        end
+    end,
+        function (account, result)
+            if self:isCurrent(generation) then
+                self:finishSubmit(account, result)
+            end
+        end)
+    self.submitting = MessagePublisher.IsPending()
     if #self._category > 64 then return end
     self:checkBackgroundConnection(1)
 end
@@ -144,25 +164,42 @@ function MapMessages:loadMessages()
     if self._loadStarted then return end
     self._loadStarted = true
     local generation = self._generation
-    self:track(Server.ListAccountsAsync(5, self._category, function (result)
-            assert(result)
-            if not self:isCurrent(generation) or not self.networkReady then return end
-            if not result.ok then
-                self._loadStarted = false
-                Logging.warning("Failed to list map messages for %s: %s", self._mapFile, result.message)
-                return
+    self:track(Net.GetProxy(
+            "Storage",
+            { query = "accounts", sampleCount = 5, categoryFilter = self._category },
+            function (result)
+                if not self:isCurrent(generation) or not self.networkReady then return end
+                if not result.ok then
+                    self._loadStarted = false
+                    Logging.warning("Failed to list map messages for %s: %s", self._mapFile, result.message)
+                    return
+                end
+                local proxy = assert(result.proxy)
+                ---@cast proxy Global.Net.StorageProxy
+                local accounts = assert(proxy:GetAccounts())
+                Logging.info("Received %d map message accounts for %s", #accounts, self._mapFile)
+                for index, account in ipairs(accounts) do
+                    if index > 5 then break end
+                    self:track(Net.GetProxy(
+                            "Storage",
+                            {
+                                query = "field",
+                                account = account,
+                                category = self._category,
+                                field = "message"
+                            },
+                            function (read)
+                                if not self:isCurrent(generation) or not self.networkReady or not read.ok then return end
+                                local fieldProxy = assert(read.proxy)
+                                ---@cast fieldProxy Global.Net.StorageProxy
+                                if not fieldProxy:IsFound() then return end
+                                local record = self:validate(fieldProxy:GetFieldValue())
+                                if record ~= nil then self:spawn(account, record) end
+                            end
+                        ))
+                end
             end
-            Logging.info("Received %d map message accounts for %s", #result.accounts, self._mapFile)
-            for index, account in ipairs(result.accounts) do
-                if index > 5 then break end
-                self:track(Server.ReadFieldAsync(account, self._category, "message", function (read)
-                        assert(read)
-                        if not self:isCurrent(generation) or not self.networkReady or not read.ok or not read.found then return end
-                        local record = self:validate(read.value)
-                        if record ~= nil then self:spawn(account, record) end
-                    end))
-            end
-        end))
+        ))
 end
 
 function MapMessages:spawn(account, record)
@@ -195,6 +232,12 @@ end
 
 function MapMessages:submit(templateKey, wordKey, onAccepted)
     if self.submitting or self._map == nil or not Config.IsAllowed(templateKey, wordKey) then return end
+    if MessagePublisher.IsPending() then
+        self.submitting = true
+        self:tip("MESSAGES_SENDING")
+        onAccepted()
+        return
+    end
     if #self._category > 64 then
         self:tip("MESSAGES_FAILED")
         onAccepted()
@@ -212,7 +255,7 @@ function MapMessages:submit(templateKey, wordKey, onAccepted)
     }
     self:checkConnection(function (ready)
         if not ready then
-            self.submitting = false
+            self.submitting = MessagePublisher.IsPending()
             onAccepted()
             return
         end
@@ -221,26 +264,22 @@ function MapMessages:submit(templateKey, wordKey, onAccepted)
             account = account .. string.format("%04x", math.random(0, 65535))
         end
         self:spawn(account, record)
-        onAccepted()
-        self:track(Server.AcquireWriteTokenAsync(account, function (result)
-                assert(result)
-                if not self:isCurrent(generation) then return end
-                if not result.ok then
-                    self:finishSubmit(account, result)
-                    return
+        if not MessagePublisher.Publish(assert(self._publisherToken), account, self._category, record) then
+            if self:isCurrent(generation) then
+                local entry = self._entries[account]
+                if entry ~= nil then
+                    entry.actor:destroy()
+                    self._entries[account] = nil
                 end
-                self:track(
-                    Server.WriteFieldAsync(assert(result.token), self._category, "message", record, function (written)
-                        assert(written)
-                        if self:isCurrent(generation) then self:finishSubmit(account, written) end
-                    end)
-                )
-            end))
+                self.submitting = MessagePublisher.IsPending()
+                self:tip("MESSAGES_SENDING")
+            end
+        end
+        onAccepted()
     end, true)
 end
 
 function MapMessages:finishSubmit(account, result)
-    self.submitting = false
     if result.ok then
         self:tip("MESSAGES_SENT")
         return
@@ -250,7 +289,7 @@ function MapMessages:finishSubmit(account, result)
         entry.actor:destroy()
         self._entries[account] = nil
     end
-    if result.code == ErrorCode.RateLimited then
+    if result.code == "RateLimited" then
         self:tip("MESSAGES_RATE_LIMITED", { seconds = assert(result.retryAfterSeconds) })
     else
         self:tip("MESSAGES_FAILED")

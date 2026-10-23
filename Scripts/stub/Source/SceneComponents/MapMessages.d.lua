@@ -8,19 +8,20 @@
 ---@field y           integer
 
 ---@class Source.SceneComponents.MapMessages
----@field new            fun(scene: Source.Scenes.SceneMap.SceneMap): Source.SceneComponents.MapMessages
----@field _scene         Source.Scenes.SceneMap.SceneMap
----@field _generation    integer
----@field _checkRevision integer
----@field _loadStarted   boolean
----@field _operations    Engine.AsyncOperation[]
----@field _entries       table<string, { actor: Engine.Actor, record: Source.SceneComponents.MessageRecord }>
----@field _map           GameMap | nil
----@field _mapFile       string
----@field _category      string
----@field networkReady   boolean
----@field checking       boolean
----@field submitting     boolean
+---@field new             fun(scene: Source.Scenes.SceneMap.SceneMap): Source.SceneComponents.MapMessages
+---@field _scene          Source.Scenes.SceneMap.SceneMap
+---@field _generation     integer
+---@field _checkRevision  integer
+---@field _loadStarted    boolean
+---@field _operations     Engine.AsyncOperation[]
+---@field _entries        table<string, { actor: Engine.Actor, record: Source.SceneComponents.MessageRecord }>
+---@field _map            GameMap | nil
+---@field _mapFile        string
+---@field _category       string
+---@field _publisherToken integer | nil
+---@field networkReady    boolean
+---@field checking        boolean
+---@field submitting      boolean
 local MapMessages = {}
 
 ---@param scene Source.Scenes.SceneMap.SceneMap
@@ -55,6 +56,6 @@ function MapMessages:refreshLocale() end
 ---@param onAccepted  fun()
 function MapMessages:submit(templateKey, wordKey, onAccepted) end
 ---@param account string
----@param result  GlobalCore.ServerResult
+---@param result  Source.Net.MessagePublisher.Result
 function MapMessages:finishSubmit(account, result) end
 return MapMessages
