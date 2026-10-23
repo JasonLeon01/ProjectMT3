@@ -261,6 +261,7 @@ function Controller:handleCancel()
 end
 
 function Controller:onMenuExit()
+    AudioManager.playSound(GameSystem.GetCancelSE())
     self:close(self._onExit)
 end
 

@@ -414,6 +414,9 @@ end
 ---@return boolean
 function Scene.ShowMessages(self)
     if self._mapMessages.submitting then
+        if not self._mapMessages.checking then
+            self._mapMessages:checkConnection(nil, false)
+        end
         self._mapMessages:tip("MESSAGES_SENDING")
         return true
     end

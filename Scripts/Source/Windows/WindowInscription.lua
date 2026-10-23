@@ -1,5 +1,7 @@
 local Engine = require("Engine")
+local GlobalCore = require("GlobalCore")
 local Config = require("Source.Configs.Messages")
+local GameSystem = require("Source.System")
 local Locale = require("Source.Locale.Core")
 local Ui = require("Internal.UIBase.Ui")
 local WindowSelectable = require("Internal.UIBase.WindowSelectable")
@@ -94,12 +96,14 @@ function Controller:dismiss()
 end
 
 function Controller:onReturn()
+    if self._busy or not self.host:getVisible() then return end
+    GlobalCore.AudioManager.playSound(GameSystem.GetCancelSE())
     self:close()
 end
 
 function Controller:onKeyDown(kwargs)
     if Input.isActionTriggered(Input.getCancelKeys(), true) then
-        self:close()
+        self:onReturn()
         return
     end
     if self._busy then return end

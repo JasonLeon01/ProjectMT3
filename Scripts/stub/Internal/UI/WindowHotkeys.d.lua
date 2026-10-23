@@ -10,6 +10,8 @@
 ---@field WindowFrame        Engine.Window
 
 ---@class Internal.UIBase.GeneratedAssets.WindowHotkeys
+---@field WindowChrome    Internal.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Internal.UI.Parts.Shared.WindowPauseMark
 
 ---@class Internal.UI.WindowHotkeys: Internal.UIBase.UiView
 ---@field root     Engine.Canvas

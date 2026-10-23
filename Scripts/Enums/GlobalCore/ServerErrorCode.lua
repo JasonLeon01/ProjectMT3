@@ -2,16 +2,15 @@
 ---@class Enums.GlobalCore.ServerErrorCode
 local enum = {
     AuthenticationFailed = (3 --[[@as GlobalCore.ServerErrorCode]]),
-    ConnectionFailed = (6 --[[@as GlobalCore.ServerErrorCode]]),
+    ConnectionFailed = (5 --[[@as GlobalCore.ServerErrorCode]]),
     Disabled = (1 --[[@as GlobalCore.ServerErrorCode]]),
     InvalidArgument = (2 --[[@as GlobalCore.ServerErrorCode]]),
-    InvalidResponse = (7 --[[@as GlobalCore.ServerErrorCode]]),
-    InvalidWriteToken = (4 --[[@as GlobalCore.ServerErrorCode]]),
+    InvalidResponse = (6 --[[@as GlobalCore.ServerErrorCode]]),
     None = (0 --[[@as GlobalCore.ServerErrorCode]]),
-    RateLimited = (10 --[[@as GlobalCore.ServerErrorCode]]),
-    ServerFailure = (9 --[[@as GlobalCore.ServerErrorCode]]),
-    StorageFailure = (8 --[[@as GlobalCore.ServerErrorCode]]),
-    Timeout = (5 --[[@as GlobalCore.ServerErrorCode]]),
+    RateLimited = (9 --[[@as GlobalCore.ServerErrorCode]]),
+    ServerFailure = (8 --[[@as GlobalCore.ServerErrorCode]]),
+    StorageFailure = (7 --[[@as GlobalCore.ServerErrorCode]]),
+    Timeout = (4 --[[@as GlobalCore.ServerErrorCode]]),
 }
 
 return enum
