@@ -5,6 +5,7 @@ local InputPresentation = require("Source.Utils.InputPresentation")
 local GameSystem = require("Source.System")
 local Ui = require("Internal.UIBase.Ui")
 local View = require("Internal.UI.WindowHotkeys")
+local WindowBase = require("Internal.UIBase.WindowBase")
 
 local Input = Engine.Input
 local LOC = Locale.ApplyStringLocaleFormat
@@ -12,7 +13,7 @@ local LOC = Locale.ApplyStringLocaleFormat
 ---@class Source.Windows.WindowHotkeys.Controller
 local Controller = {}
 
-Controller.windowOptions = { hidden = true, focusable = true }
+Controller.windowOptions = { hidden = true, focusable = true, returnButton = true, content = "Root" }
 Controller.ENTRIES = {
     {
         "HOTKEY_CONTROLS",
@@ -86,7 +87,8 @@ function Controller:refreshLocale()
     self.view:reflow()
 end
 
-function Controller:onTick(_deltaTime)
+function Controller:onTick(deltaTime)
+    WindowBase.onTick(self.host, deltaTime)
     if self.host:getVisible() and self._inputDevice ~= InputPresentation.GetDevice() then
         self:refreshLocale()
         self.ui.controls.Scroll:setScrollOffset(sf.Vector2f.new(0, 0))
@@ -137,4 +139,4 @@ function Controller:onReturn()
     self:close()
 end
 
-return Ui.DefineWindow(View, Controller)
+return Ui.DefineWindow(View, Controller, WindowBase)

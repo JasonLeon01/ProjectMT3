@@ -2033,4 +2033,19 @@ GlobalCore.WorldStreamingState = WorldStreamingState
 local WorldStreamingStats = {}
 GlobalCore.WorldStreamingStats = WorldStreamingStats
 
+
+---@return GlobalCore.PathResult
+function GlobalCore.PathResult:copy() end
+---@return GlobalCore.PathResult
+function GlobalCore.PathResult:deepcopy() end
+
+---@return GlobalCore.MapPanoramaSettings
+function GlobalCore.MapPanoramaSettings:copy() end
+---@return GlobalCore.MapPanoramaSettings
+function GlobalCore.MapPanoramaSettings:deepcopy() end
+
+---@return GlobalCore.WorldStreamingStats
+function GlobalCore.WorldStreamingStats:copy() end
+---@return GlobalCore.WorldStreamingStats
+function GlobalCore.WorldStreamingStats:deepcopy() end
 return GlobalCore

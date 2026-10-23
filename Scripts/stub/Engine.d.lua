@@ -5311,4 +5311,124 @@ function Engine.Input.registerActionMapping(object, actionName, actionKeys, call
 ---@return nil
 function Engine.Input.unregisterActionMapping(object, actionName) end
 
+
+---@return Engine.CurveData
+function Engine.CurveData:copy() end
+---@return Engine.CurveData
+function Engine.CurveData:deepcopy() end
+
+---@return Engine.CurveKey
+function Engine.CurveKey:copy() end
+---@return Engine.CurveKey
+function Engine.CurveKey:deepcopy() end
+
+---@return Engine.AutoSoundParams
+function Engine.AutoSoundParams:copy() end
+---@return Engine.AutoSoundParams
+function Engine.AutoSoundParams:deepcopy() end
+
+---@return Engine.AnimationSoundEntry
+function Engine.AnimationSoundEntry:copy() end
+---@return Engine.AnimationSoundEntry
+function Engine.AnimationSoundEntry:deepcopy() end
+
+---@return Engine.AnimationKeyFrame
+function Engine.AnimationKeyFrame:copy() end
+---@return Engine.AnimationKeyFrame
+function Engine.AnimationKeyFrame:deepcopy() end
+
+---@return Engine.AnimationTimeTag
+function Engine.AnimationTimeTag:copy() end
+---@return Engine.AnimationTimeTag
+function Engine.AnimationTimeTag:deepcopy() end
+
+---@return Engine.MapFogSettings
+function Engine.MapFogSettings:copy() end
+---@return Engine.MapFogSettings
+function Engine.MapFogSettings:deepcopy() end
+
+---@return Engine.InjectedInputEvent
+function Engine.InjectedInputEvent:copy() end
+---@return Engine.InjectedInputEvent
+function Engine.InjectedInputEvent:deepcopy() end
+
+---@return Engine.InputNamedValue
+function Engine.InputNamedValue:copy() end
+---@return Engine.InputNamedValue
+function Engine.InputNamedValue:deepcopy() end
+
+---@return Engine.JoystickAxisEvent
+function Engine.JoystickAxisEvent:copy() end
+---@return Engine.JoystickAxisEvent
+function Engine.JoystickAxisEvent:deepcopy() end
+
+---@return Engine.GamepadHint
+function Engine.GamepadHint:copy() end
+---@return Engine.GamepadHint
+function Engine.GamepadHint:deepcopy() end
+
+---@return Engine.KeyHint
+function Engine.KeyHint:copy() end
+---@return Engine.KeyHint
+function Engine.KeyHint:deepcopy() end
+
+---@return Engine.TextGlowConfig
+function Engine.TextGlowConfig:copy() end
+---@return Engine.TextGlowConfig
+function Engine.TextGlowConfig:deepcopy() end
+
+---@return Engine.TextOutlineConfig
+function Engine.TextOutlineConfig:copy() end
+---@return Engine.TextOutlineConfig
+function Engine.TextOutlineConfig:deepcopy() end
+
+---@return Engine.UiInputEventArguments
+function Engine.UiInputEventArguments:copy() end
+---@return Engine.UiInputEventArguments
+function Engine.UiInputEventArguments:deepcopy() end
+
+---@return Engine.Vector2CurveData
+function Engine.Vector2CurveData:copy() end
+---@return Engine.Vector2CurveData
+function Engine.Vector2CurveData:deepcopy() end
+
+---@return Engine.Vector2CurveKey
+function Engine.Vector2CurveKey:copy() end
+---@return Engine.Vector2CurveKey
+function Engine.Vector2CurveKey:deepcopy() end
+
+---@return Engine.Vector3CurveData
+function Engine.Vector3CurveData:copy() end
+---@return Engine.Vector3CurveData
+function Engine.Vector3CurveData:deepcopy() end
+
+---@return Engine.Vector3CurveKey
+function Engine.Vector3CurveKey:copy() end
+---@return Engine.Vector3CurveKey
+function Engine.Vector3CurveKey:deepcopy() end
+
+---@return Engine.Vector4CurveData
+function Engine.Vector4CurveData:copy() end
+---@return Engine.Vector4CurveData
+function Engine.Vector4CurveData:deepcopy() end
+
+---@return Engine.Vector4CurveKey
+function Engine.Vector4CurveKey:copy() end
+---@return Engine.Vector4CurveKey
+function Engine.Vector4CurveKey:deepcopy() end
+
+---@return Engine.EmitterBurst
+function Engine.EmitterBurst:copy() end
+---@return Engine.EmitterBurst
+function Engine.EmitterBurst:deepcopy() end
+
+---@return Engine.EmitterStatistics
+function Engine.EmitterStatistics:copy() end
+---@return Engine.EmitterStatistics
+function Engine.EmitterStatistics:deepcopy() end
+
+---@return Engine.EmitterTrackParameters
+function Engine.EmitterTrackParameters:copy() end
+---@return Engine.EmitterTrackParameters
+function Engine.EmitterTrackParameters:deepcopy() end
 return Engine
