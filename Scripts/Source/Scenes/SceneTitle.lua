@@ -119,11 +119,12 @@ function Scene:_onSaveLoadLoaded(inst)
 end
 
 function Scene:toggleConfig()
-    AudioManager.playSound(SourceSystem.GetDecisionSE())
     local window = self._configWindow:peek()
     if window ~= nil and window:isOpen() then
+        AudioManager.playSound(SourceSystem.GetCancelSE())
         window:close()
     else
+        AudioManager.playSound(SourceSystem.GetDecisionSE())
         self._configWindow:get():open()
         self._windowCommand:setActive(false)
     end

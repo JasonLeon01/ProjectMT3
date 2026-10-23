@@ -3,6 +3,7 @@ local GlobalCore = require("GlobalCore")
 local Render = require("Global.Utils.Render")
 local GlobalData = require("Global.Data")
 local Data = require("Source.Data")
+local GameSystem = require("Source.System")
 local Battle = require("Source.Configs.Battle")
 local Locale = require("Source.Locale.Core")
 local InputPresentation = require("Source.Utils.InputPresentation")
@@ -819,6 +820,9 @@ function Controller:finish(result)
     local callback = self._onFinished
     local player = assert(self._player)
     local hp, breath, addedStates = player.HP, player.breath, player.addedStates
+    if result == "retreat" then
+        GlobalCore.AudioManager.playSound(GameSystem.GetCancelSE())
+    end
     self:cancel()
     if callback ~= nil then callback(result, hp, breath, addedStates) end
 end
