@@ -23,6 +23,7 @@ local MapMessages = require("Source.SceneComponents.MapMessages")
 local MapMessageGesture = require("Source.SceneComponents.MapMessageGesture")
 
 local Input = Engine.Input
+local AudioManager = GlobalCore.AudioManager
 local Display = GlobalCore.Display
 local Graphics = GlobalCore.Graphics
 local PanoramaController = GlobalCore.PanoramaController
@@ -47,8 +48,21 @@ end
 ---@class (partial) Source.Scenes.SceneMap.SceneMap: Source.Gameplay.GameplayScene
 local Scene = {}
 
----@diagnostic disable-next-line: unused
 function Scene:onEnter()
+    if self._needsEnvironmentRestore then
+        AudioManager.stopMusic("BGM")
+        AudioManager.stopMusic("BGS")
+        WeatherController.clearWeather()
+        local panorama = GlobalCore.MapPanoramaSettings.new({ panorama = self._mapPanorama })
+        if self:getGameMap():isWorldMap() then
+            PanoramaController.applyWorldFromMapData(panorama)
+            self:_updateWorldEnvironment(0, true)
+        else
+            PanoramaController.applyFromMapData(panorama)
+            self._mapAudio:playMapAudio(assert(self._mapAudioData))
+        end
+        self._needsEnvironmentRestore = false
+    end
     Transition.setTransition()
 end
 
@@ -105,6 +119,9 @@ function Scene:onCreate()
 
     self._gameMap = nil
     self._cachedMapFile = nil
+    self._mapAudioData = nil
+    self._mapPanorama = nil
+    self._needsEnvironmentRestore = false
     self._currentRegion = nil
     self._mapClickMoveBlockedUntilLateTick = false
     self._mapInputBlockFrames = 0
@@ -135,6 +152,7 @@ function Scene:onQuit()
     self._mapAudio:stopMapAudio()
     WeatherController.clearWeather()
     PanoramaController.clear()
+    self._needsEnvironmentRestore = true
 end
 
 function Scene:onDestroy()
@@ -339,6 +357,8 @@ function Scene:loadMap(mapPath, initialPosition)
     self._gameOverRequest = nil
     self._gameMap = gameMap
     self._cachedMapFile = mapFile
+    self._mapAudioData = nil
+    self._mapPanorama = mapData.panorama
     gameMap:setScene(self)
     self.inst:applyMapInfo(mapFile, initialPosition)
     if not gameMap:isWorldMap() then
@@ -355,16 +375,16 @@ function Scene:loadMap(mapPath, initialPosition)
     self._worldAmbientTransitionElapsed = 0
     if not gameMap:isWorldMap() then
         ---@cast mapData Global.GameMap.MapData
-        local audioMapData = {
+        self._mapAudioData = deepcopy({
             bgm = mapData.bgm,
-            bgmFilter = mapData.bgmFilter,
             bgs = mapData.bgs,
+            bgmFilter = mapData.bgmFilter,
             bgsFilter = mapData.bgsFilter
-        }
+        })
         if MapPath.BasenameWithoutExtension(mapFile) == "MT3_025" and self.inst:getVariable("floor25Phase") >= 2 then
-            audioMapData.bgm = "/Game/Assets/Musics/sound-3.mp3"
+            self._mapAudioData.bgm = "/Game/Assets/Musics/sound-3.mp3"
         end
-        self._mapAudio:playMapAudio(audioMapData)
+        self._mapAudio:playMapAudio(self._mapAudioData)
         gameMap:setFogSettings(mapData.fog)
         PanoramaController.clear()
         PanoramaController.applyFromMapData(GlobalCore.MapPanoramaSettings.new({
@@ -408,7 +428,7 @@ function Scene:_updateWorldEnvironment(deltaTime, force)
         if self._worldAmbientTargetColour == nil then
             self._worldAmbientTargetColour = targetColour:copy()
             worldMap:setAmbientLight(self._worldAmbientTargetColour)
-        elseif self._worldAmbientTargetColour ~= targetColour then
+        elseif self._worldAmbientTargetColour:toInteger() ~= targetColour:toInteger() then
             self._worldAmbientStartColour = worldMap:getAmbientLight():copy()
             self._worldAmbientTargetColour = targetColour:copy()
             self._worldAmbientTransitionElapsed = 0
@@ -729,7 +749,7 @@ function Scene:_startTeleporterTransfer(
         ---@cast sourceTelepoint sf.Vector2u
         self.inst:recordTelepoint(assert(self._cachedMapFile), sourceTelepoint, teleporter:getMapTag())
     end
-    GlobalCore.AudioManager.playSound(teleporter.stairSE)
+    AudioManager.playSound(teleporter.stairSE)
     return true
 end
 
