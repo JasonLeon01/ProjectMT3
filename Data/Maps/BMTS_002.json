@@ -37,7 +37,7 @@
   "layers": {
     "floor": {
       "layerName": "floor",
-      "layerTileset": "Mota",
+      "layerTileset": "magictower",
       "tiles": [
         [
           11,
@@ -50,7 +50,7 @@
           11,
           11,
           11,
-          11
+          340
         ],
         [
           11,
@@ -339,36 +339,10 @@
           null,
           5,
           null,
-          5,
-          null,
-          5,
-          null,
-          null,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          5,
-          null,
           null,
           null,
           null,
           5,
-          5,
-          null,
-          5,
-          null
-        ],
-        [
-          null,
-          5,
-          5,
-          5,
-          5,
-          null,
-          null,
           null,
           null,
           5,
@@ -378,11 +352,37 @@
           null,
           5,
           null,
+          5,
+          5,
+          null,
+          5,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          5,
+          5,
+          null,
           null,
           null,
           null,
           5,
+          null,
           5,
+          null
+        ],
+        [
+          null,
+          5,
+          null,
+          null,
+          5,
+          null,
+          5,
+          null,
           null,
           null,
           5
@@ -390,59 +390,7 @@
         [
           null,
           5,
-          null,
           5,
-          5,
-          null,
-          null,
-          null,
-          5,
-          null,
-          null
-        ],
-        [
-          null,
-          5,
-          null,
-          null,
-          null,
-          5,
-          null,
-          5,
-          null,
-          null,
-          null
-        ],
-        [
-          null,
-          5,
-          null,
-          5,
-          null,
-          null,
-          5,
-          null,
-          null,
-          5,
-          null
-        ],
-        [
-          null,
-          5,
-          5,
-          null,
-          5,
-          null,
-          null,
-          5,
-          5,
-          null,
-          5
-        ],
-        [
-          null,
-          5,
-          null,
           null,
           null,
           null,
@@ -455,14 +403,14 @@
         [
           null,
           5,
-          5,
           null,
           5,
-          null,
+          5,
           null,
           null,
           5,
-          null,
+          5,
+          5,
           5
         ],
         [
@@ -472,6 +420,58 @@
           null,
           null,
           5,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          5,
+          5,
+          null,
+          5,
+          null,
+          null,
+          5,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          null,
+          5,
+          5,
+          5,
+          5
+        ],
+        [
+          null,
+          5,
+          5,
+          null,
+          5,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        [
+          null,
+          5,
+          null,
+          null,
+          5,
+          null,
           null,
           5,
           null,
@@ -665,18 +665,10 @@
       },
       {
         "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren_archer",
-        "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_7_4",
-        "position": [
-          7,
-          4
-        ]
-      },
-      {
-        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren_archer",
         "tag": "Enemies_BP_Enemy_E42_shouren_archer_default_2_3",
         "position": [
           2,
-          3
+          8
         ]
       },
       {
@@ -701,6 +693,14 @@
         "position": [
           1,
           7
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Teleportations.BP_Downstair_Drop",
+        "tag": "Teleportations_BP_Downstair_Drop_default_10_4",
+        "position": [
+          10,
+          4
         ]
       }
     ]
