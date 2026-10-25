@@ -1,20 +1,23 @@
 {
   "engine": {
-    "upstreamSha": "1f95bd43aa4c8df8835e00680ad7776ccdc0b1ff"
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
+  },
+  "application": {
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "global": {
-    "upstreamSha": "1f95bd43aa4c8df8835e00680ad7776ccdc0b1ff"
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "internal": {
-    "upstreamSha": "1f95bd43aa4c8df8835e00680ad7776ccdc0b1ff"
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "enums": {
-    "upstreamSha": "1f95bd43aa4c8df8835e00680ad7776ccdc0b1ff"
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "globalStub": {
-    "upstreamSha": "1f95bd43aa4c8df8835e00680ad7776ccdc0b1ff"
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "internalStub": {
-    "upstreamSha": "1f95bd43aa4c8df8835e00680ad7776ccdc0b1ff"
+    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   }
 }

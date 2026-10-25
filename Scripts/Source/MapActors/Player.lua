@@ -9,6 +9,8 @@ local GeneralDataGraphAbility = require("Source.Gameplay.GeneralDataGraphAbility
 local LocaleCore = require("Source.Locale.Core")
 local EventKey = require("Enums.EventKey")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
+local GeneralDataKey = require("Enums.GeneralDataKey")
+local PlayerNameValidationError = require("Enums.PlayerNameValidationError")
 
 local GameplayEffectSpec = GlobalCore.GameplayEffectSpec
 local GameplayEventData = GlobalCore.GameplayEventData
@@ -42,7 +44,7 @@ local function onHPChange(_old, _new, change, player)
     if player == nil then
         return
     end
-    if change.source ~= "Base" then
+    if change.source ~= GlobalCore.GameplayAttributeChangeSource.BASE then
         return
     end
     local base = player:getAttr("HP", true)
@@ -61,7 +63,7 @@ local function onMAXHPChange(_old, _new, change, player)
     if player == nil then
         return
     end
-    if change.source ~= "Base" then
+    if change.source ~= GlobalCore.GameplayAttributeChangeSource.BASE then
         return
     end
     if player:getAttr("HP", true) > player.attributes.MAXHP then
@@ -95,6 +97,8 @@ local getHeldKeyboardMoveOffset
 ---@class Source.MapActors.Player.Player
 local Player = {}
 
+Player.MAX_NAME_GRAPHEMES = 32
+
 Player.ID = "FILL_IT_BY_YOURSELF"
 Player.tickable = true
 Player.collisionEnabled = true
@@ -104,7 +108,7 @@ Player.speed = 96.0
 function Player:init(texture, tag)
     Character.init(self, texture, tag or "")
     self._loading = true
-    local attributes = Data.CreateGeneralAttributeSet("Player", self.ID)
+    local attributes = Data.CreateGeneralAttributeSet(GeneralDataKey.Player, self.ID)
     Battler.init(self, attributes)
     local abilitySystem = self:getAbilitySystemComponent()
     local listenerParams = setmetatable({ self }, { __mode = "v" })
@@ -112,7 +116,7 @@ function Player:init(texture, tag)
     abilitySystem:addAttributeChangeListener("HP", onHPChange, listenerParams)
     abilitySystem:addAttributeChangeListener("MAXHP", onMAXHPChange, listenerParams)
     abilitySystem:addAttributeChangeListener("LEVEL", function (_old, _new, change)
-        if self._loading or change.source ~= "Base" then
+        if self._loading or change.source ~= GlobalCore.GameplayAttributeChangeSource.BASE then
             return
         end
         local oldBase = change.oldBase == Class.MISSING and 0 or change.oldBase
@@ -186,10 +190,10 @@ end
 function Player.ValidateName(name)
     local trimmedName = string.stripUnicode(name)
     if trimmedName == "" then
-        return trimmedName, "empty"
+        return trimmedName, PlayerNameValidationError.EMPTY
     end
-    if string.graphemeLength(trimmedName) > 32 then
-        return trimmedName, "tooLong"
+    if string.graphemeLength(trimmedName) > Player.MAX_NAME_GRAPHEMES then
+        return trimmedName, PlayerNameValidationError.TOO_LONG
     end
     return trimmedName, nil
 end
@@ -294,8 +298,11 @@ function Player:restoreFromData(data)
     assert(Class.isInstance(data.customName, "string"), "Saved player customName must be a string")
     assert(
         data.customName == ""
-            or (string.stripUnicode(data.customName) == data.customName and string.graphemeLength(data.customName) <= 32),
-        "Saved player customName must be trimmed and contain at most 32 graphemes"
+            or (string.stripUnicode(data.customName) == data.customName
+                and string.graphemeLength(data.customName) <= Player.MAX_NAME_GRAPHEMES),
+        string.format(
+            "Saved player customName must be trimmed and contain at most %d graphemes", Player.MAX_NAME_GRAPHEMES
+        )
     )
     self._customName = data.customName
     self.tag = data.tag
@@ -328,7 +335,7 @@ function Player:restoreFromData(data)
     end
     for _, stateID in ipairs(table.orderedStringKeys(data.states)) do
         local stacks = data.states[stateID]
-        Effects.ApplyState(self, stateID, stacks, createPlayerEvent(self, "Event.State.Restore"))
+        Effects.ApplyState(self, stateID, stacks, createPlayerEvent(self, GameplayConstants.STATE_RESTORE_EVENT))
     end
     self._loading = false
 end
@@ -357,7 +364,7 @@ function Player:_syncItemAbility(itemID)
     local sourceKey = "Item." .. itemID
     abilitySystem:removeAbilitiesBySource(sourceKey)
     if self:getItemCount(itemID) > 0 then
-        abilitySystem:giveAbility(GeneralDataGraphAbility.new("Item", itemID, "onUse"), sourceKey)
+        abilitySystem:giveAbility(GeneralDataGraphAbility.new(GeneralDataKey.Item, itemID, "onUse"), sourceKey)
     end
 end
 
@@ -388,7 +395,7 @@ function Player:activateItem(itemID)
     return self
         :getAbilitySystemComponent()
         :tryActivateAbility("GeneralData.Item." .. itemID .. ".onUse", createPlayerEvent(
-            self, "Event.Item.Use", { itemID = itemID }
+            self, GameplayConstants.ITEM_USE_EVENT, { itemID = itemID }
         ))
 end
 
@@ -420,8 +427,9 @@ function Player:removeEquip(equipID, count)
 end
 
 function Player:_executeEquipGraph(equipID, graphEvent)
-    local ability = GeneralDataGraphAbility.new("Equip", equipID, graphEvent)
-    local eventTag = graphEvent == "onEquip" and GameplayConstants.EQUIPMENT_EQUIP_EVENT or "Event.Equipment.Unequip"
+    local ability = GeneralDataGraphAbility.new(GeneralDataKey.Equip, equipID, graphEvent)
+    local eventTag = graphEvent == "onEquip" and GameplayConstants.EQUIPMENT_EQUIP_EVENT
+        or GameplayConstants.EQUIPMENT_UNEQUIP_EVENT
     return ability:activate(self:getAbilitySystemComponent(), createPlayerEvent(self, eventTag, { equipID = equipID }))
 end
 

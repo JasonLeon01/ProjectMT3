@@ -12,6 +12,7 @@ const projectEnums = {
 
 const targets = [
   { stateKey: 'engine', sourceRoot: 'Game/Engine', targetRoot: 'Engine', excludedDirectories: ['ThirdParty'] },
+  { stateKey: 'application', sourceRoot: 'Game/Application', targetRoot: 'Application' },
   { stateKey: 'global', sourceRoot: 'Game/Scripts/Global', targetRoot: 'Scripts/Global' },
   { stateKey: 'internal', sourceRoot: 'Game/Scripts/Internal', targetRoot: 'Scripts/Internal' },
   // Enums may not exist yet in the merged baseline or the project's HEAD.
@@ -57,7 +58,7 @@ async function run({ core, context }) {
   });
   core.setOutput('reconcile_pr', String(result.reconcilePr));
   core.setOutput('upstream_sha', result.upstreamSha);
-  core.summary.addHeading('Ludork Engine, Global, Internal and Enums sync (including Lua stubs)');
+  core.summary.addHeading('Ludork Engine, Application, Global, Internal and Enums sync (including Lua stubs)');
   for (const target of result.results) {
     core.setOutput(`${target.stateKey}_baseline_sha`, target.baseline);
     core.summary.addHeading(target.targetRoot, 3).addTable([
@@ -68,7 +69,7 @@ async function run({ core, context }) {
       ['Decision', target.reason],
     ]);
   }
-  if (!result.reconcilePr) core.summary.addRaw('No effective Engine, Global, Internal, Enums or configured Lua stub commits in the last four hours.');
+  if (!result.reconcilePr) core.summary.addRaw('No effective Engine, Application, Global, Internal, Enums or configured Lua stub commits in the last four hours.');
   await core.summary.write();
 }
 

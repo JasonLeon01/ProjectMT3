@@ -1,6 +1,7 @@
 local GlobalCore = require("GlobalCore")
 local Special = require("Enums.GeneralData.Special")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
+local CombatResolutionCode = require("Enums.CombatResolutionCode")
 
 local GameplayAbility = GlobalCore.GameplayAbility
 local GameplayAbilityResult = GlobalCore.GameplayAbilityResult
@@ -25,7 +26,7 @@ end
 
 function VampireAbility:activate(_abilitySystem, eventData)
     eventData.payload.vampireHealing = VampireAbility.CalculateHealing(eventData.payload.counterDamage, self._magnitude)
-    return assert(GameplayAbilityResult.Success("BattleRulesResolved", eventData.payload))
+    return assert(GameplayAbilityResult.Success(CombatResolutionCode.BATTLE_RULES, eventData.payload))
 end
 
 return class(VampireAbility, GameplayAbility)

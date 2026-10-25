@@ -170,7 +170,8 @@ function Controller:refreshAvatars()
             avatar:setTexture(texture, true)
             avatar:setTextureRect(
                 sf.IntRect.new(
-                    0, 0, math.max(1, math.floor(textureSize.x / 4)), math.max(1, math.floor(textureSize.y / 4))
+                    0, 0, math.max(1, math.floor(textureSize.x / Engine.Character.SPRITE_FRAME_COLUMNS)),
+                    math.max(1, math.floor(textureSize.y / Engine.Character.SPRITE_DIRECTION_ROWS))
                 )
             )
         end

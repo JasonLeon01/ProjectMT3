@@ -59,10 +59,9 @@ local function requireArray(value, path)
         assert(value[index] ~= nil, path .. " must be an array")
     end
     for key in pairs(value) do
-        assert(
-            key == "n" or (Class.isInstance(key, "number") and math.type(key) == "integer" and key >= 1
-                    and key <= length), path .. " must be an array"
-        )
+        assert(key == "n"
+                or (Class.isInstance(key, "number") and math.type(key) == "integer"
+                    and key >= 1 and key <= length), path .. " must be an array")
     end
 end
 
@@ -138,12 +137,12 @@ function MapDataParser.GetPathCandidates(mapPath, currentMap)
 end
 
 function MapDataParser.NormaliseWorld(data, manifestPath)
-    assert(data.type == "worldMap", "World manifest type must be 'worldMap': " .. manifestPath)
+    assert(data.type == MapConstants.WORLD_MAP_TYPE, "World manifest type must be 'worldMap': " .. manifestPath)
     assert(data.bgm == nil and data.bgs == nil
             and data.bgmFilter == nil and data.bgsFilter == nil
             and data.ambientLight == nil,
         "World manifest must not define BGM, BGS, audio filters, or ambientLight: " .. manifestPath)
-    rejectUnknownFields(data, WORLD_MANIFEST_FIELDS, "worldMap")
+    rejectUnknownFields(data, WORLD_MANIFEST_FIELDS, MapConstants.WORLD_MAP_TYPE)
     assert(
         Class.isInstance(data.worldName, "string") and bool(data.worldName),
         "worldMap.worldName must be a non-empty string"
@@ -229,7 +228,9 @@ function MapDataParser.NormaliseWorld(data, manifestPath)
     data.regions = regions
 end
 
-function MapDataParser.NormaliseMap(data, buildAmbientLight)
+function MapDataParser.ValidateMapData(data)
+    assert(Class.isInstance(data.layerOrder, "table"), "Map layerOrder must be an array")
+    assert(Class.isInstance(data.layers, "table"), "Map layers must be an object")
     local seenLayers = {}
     for _, layerName in ipairs(data.layerOrder) do
         assert(data.layers[layerName] ~= nil, "Map layerOrder references a missing layer: " .. layerName)
@@ -242,6 +243,19 @@ function MapDataParser.NormaliseMap(data, buildAmbientLight)
     for layerName in pairs(data.actors or {}) do
         assert(seenLayers[layerName], "Map actor group is missing from layerOrder: " .. layerName)
     end
+end
+
+function MapDataParser.NormaliseActorData(actorData)
+    local position = actorData.position or { 0, 0 }
+    local x = position[1] or 0
+    local y = position[2] or 0
+    local actorPosition = sf.Vector2u.new(x, y)
+    ---@cast actorPosition sf.Vector2u
+    return { bp = actorData.bp, tag = actorData.tag, position = actorPosition }
+end
+
+function MapDataParser.NormaliseMap(data, buildAmbientLight)
+    MapDataParser.ValidateMapData(data)
     local serializedActors = data.actors or {}
     ---@type table<string, Global.Data.ActorData[]>
     local actors = {}
@@ -249,10 +263,7 @@ function MapDataParser.NormaliseMap(data, buildAmbientLight)
         local normalisedActorDatas = {}
         actors[layerName] = normalisedActorDatas
         for index, actorData in ipairs(actorDatas) do
-            local position = actorData.position or { 0, 0 }
-            local x = position[1] or 0
-            local y = position[2] or 0
-            normalisedActorDatas[index] = { bp = actorData.bp, tag = actorData.tag, position = sf.Vector2u.new(x, y) }
+            normalisedActorDatas[index] = MapDataParser.NormaliseActorData(actorData)
         end
     end
     ---@type Global.GameMap.MapData

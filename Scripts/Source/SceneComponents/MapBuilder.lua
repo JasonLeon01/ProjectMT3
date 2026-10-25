@@ -26,7 +26,10 @@ local TextureManager = GlobalCore.TextureManager
 local DAMAGE_TEXT_CONFIG = "Global/DamageText"
 local DAMAGE_TEXT_SPEED_CURVE = "Global/DamageTextSpeed"
 ---@class (partial) Source.SceneComponents.SceneMapBuilder
-local SceneMapBuilder = {}
+local SceneMapBuilder = {
+    _TELEPOINT_MARKER_FILL_COLOUR = sf.Color.new(0, 255, 0, 64),
+    _TELEPOINT_MARKER_OUTLINE_THICKNESS = 2.0
+}
 
 ---@param data integer[] | nil
 ---@return sf.Color
@@ -98,12 +101,15 @@ function SceneMapBuilder:loadMapData(mapPath, currentMap)
     local data = Engine.loadData(SceneMapBuilder.GetMapDataPath(resolvedPath))
     ---@cast data table
     if isWorldManifest then
-        assert(data.type == "worldMap", "_world.json must declare type as worldMap: " .. resolvedPath)
+        assert(data.type == MapConstants.WORLD_MAP_TYPE, "_world.json must declare type as worldMap: " .. resolvedPath)
         MapDataParser.NormaliseWorld(data, resolvedPath)
         ---@cast data Global.WorldGameMap.WorldMapData
         return resolvedPath, data
     end
-    assert(data.type ~= "worldMap", "worldMap data must use the fixed _world.json filename: " .. resolvedPath)
+    assert(
+        data.type ~= MapConstants.WORLD_MAP_TYPE,
+        "worldMap data must use the fixed _world.json filename: " .. resolvedPath
+    )
     ---@cast data Global.GameMap.SerializedMapData
     return resolvedPath, MapDataParser.NormaliseMap(data, SceneMapBuilder.BuildAmbientLight)
 end
@@ -331,6 +337,13 @@ function SceneMapBuilder:applyAddedActors(gameMap, addedActors, emitCreateEvents
     end
 end
 
+function SceneMapBuilder:applyPersistentState(gameMap, inst, mapFile)
+    gameMap:applyTerrainDestructions(inst:getTerrainDestructions(mapFile))
+    self:applyAddedActors(gameMap, inst:getAddedActors(mapFile), false)
+    gameMap:applyActorPositions(inst:getActorPositions(mapFile))
+    gameMap:removeActorsByTags(inst:getDestroyedActors(mapFile))
+end
+
 function SceneMapBuilder:buildFloorMapPreview(
     inst, currentMap, mapKey, telepoint, previewSize, previewScale, showTelepointMarker, activeMap
 )
@@ -345,7 +358,8 @@ function SceneMapBuilder:buildFloorMapPreview(
     if self._floorMapPreviews[mapPath] == nil then
         local resolvedPath, mapData = self:loadMapData(mapPath, currentMap)
         mapPath = resolvedPath
-        if mapData.type == "worldMap" then
+        if mapData.type == MapConstants.WORLD_MAP_TYPE then
+            ---@cast mapData Global.WorldGameMap.WorldMapData
             self._floorMapPreviews[mapPath] = {
                 mapData = mapData,
                 regions = {},
@@ -417,8 +431,9 @@ function SceneMapBuilder:buildFloorMapPreview(
     target:setView(sf.View.new(centre, viewSize))
     local states = Engine.CanvasRenderStates()
     local preview = self._floorMapPreviews[mapPath]
-    if preview.mapData.type == "worldMap" then
+    if preview.mapData.type == MapConstants.WORLD_MAP_TYPE then
         ---@cast preview Source.SceneComponents.WorldFloorMapPreview
+        ---@cast preview.mapData Global.WorldGameMap.WorldMapData
         local visibleLeft = math.floor((centre.x - halfView.x) / Engine.GetCellSize())
         local visibleTop = math.floor((centre.y - halfView.y) / Engine.GetCellSize())
         local visibleRight = math.ceil((centre.x + halfView.x) / Engine.GetCellSize())
@@ -439,7 +454,8 @@ function SceneMapBuilder:buildFloorMapPreview(
                 if preview.regions[region.path] == nil then
                     local _, regionData = self:loadMapData(region.path, mapPath)
                     assert(
-                        regionData.type ~= "worldMap", "World preview child cannot be a world manifest: " .. region.path
+                        regionData.type ~= MapConstants.WORLD_MAP_TYPE,
+                        "World preview child cannot be a world manifest: " .. region.path
                     )
                     ---@cast regionData Global.GameMap.MapData
                     local persistedActors = {}
@@ -510,9 +526,9 @@ function SceneMapBuilder:buildFloorMapPreview(
     if showTelepointMarker then
         local marker = sf.RectangleShape.new(sf.Vector2f.new(Engine.GetCellSize(), Engine.GetCellSize()))
         marker:setPosition(sf.Vector2f.new(telepoint.x * Engine.GetCellSize(), telepoint.y * Engine.GetCellSize()))
-        marker:setFillColor(sf.Color.new(0, 255, 0, 64))
-        marker:setOutlineColor(sf.Color.new(0, 255, 0, 255))
-        marker:setOutlineThickness(2.0)
+        marker:setFillColor(SceneMapBuilder._TELEPOINT_MARKER_FILL_COLOUR)
+        marker:setOutlineColor(sf.Color.Green)
+        marker:setOutlineThickness(SceneMapBuilder._TELEPOINT_MARKER_OUTLINE_THICKNESS)
         target:draw(marker, states)
     end
     target:display()
@@ -575,14 +591,6 @@ end
 ---@async
 function SceneMapBuilder:createWorldTerrainOverrides(data, terrainDestructions, yieldStep)
     return MapBuilderWorldTiles.CreateWorldTerrainOverrides(self, data, terrainDestructions, yieldStep)
-end
-
-function SceneMapBuilder:normaliseActorData(actorData)
-    return MapBuilderWorldTiles.NormaliseActorData(self, actorData)
-end
-
-function SceneMapBuilder:validateIncrementalMapData(data)
-    return MapBuilderWorldTiles.ValidateIncrementalMapData(self, data)
 end
 
 function SceneMapBuilder:writeWorldLayerDataChunk(layerState, chunk)

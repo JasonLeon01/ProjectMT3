@@ -18,7 +18,7 @@ local Window = {}
 --- - @param onLoaded Callback invoked with the loaded GameInstance after a successful load.
 ---@param loadOnly      boolean | nil
 ---@param getSaveSource function | nil
----@param onClose       function | nil
+---@param onClose       fun(reason: Enums.SaveLoadCloseReason) | nil
 ---@param onLoaded      function | nil
 ---@return Source.Windows.WindowSaveLoad
 function Window.new(loadOnly, getSaveSource, onClose, onLoaded) end
@@ -31,7 +31,7 @@ function Window.new(loadOnly, getSaveSource, onClose, onLoaded) end
 --- - @param onLoaded Callback invoked with the loaded GameInstance after a successful load.
 ---@param loadOnly      boolean | nil
 ---@param getSaveSource function | nil
----@param onClose       function | nil
+---@param onClose       fun(reason: Enums.SaveLoadCloseReason) | nil
 ---@param onLoaded      function | nil
 ---@param ui            Internal.UI.WindowSaveLoad
 ---@return Source.Windows.WindowSaveLoad
@@ -96,7 +96,7 @@ function Window:onTabSelected(index) end
 --- Defaults to Load. Pass `"save"` to open the Save tab when tabs are present.
 --- Selects the latest existing save before showing the window, or the first slot when none exists.
 ---@param transitionProfile Enums.WindowTransitionProfile | nil
----@param initialMode       "load" | "save" | nil
+---@param initialMode       Enums.SaveLoadMode | nil
 ---@param dockPosition      sf.Vector2f | nil
 function Window:open(transitionProfile, initialMode, dockPosition) end
 
