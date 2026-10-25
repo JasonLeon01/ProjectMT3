@@ -70,6 +70,7 @@
 ---@field GameplayAbility GlobalCore.GameplayAbility
 ---@field GameplayAbilityResult GlobalCore.GameplayAbilityResult
 ---@field GameplayAbilitySpec GlobalCore.GameplayAbilitySpec
+---@field GameplayAttributeChangeSource GlobalCore.GameplayAttributeChangeSource
 ---@field GameplayEffect GlobalCore.GameplayEffect
 ---@field GameplayEffectSpec GlobalCore.GameplayEffectSpec
 ---@field GameplayEventData GlobalCore.GameplayEventData
@@ -1170,6 +1171,16 @@ GlobalCore.GameplayAbility = GameplayAbility
 ---@field code string|integer
 ---@field data any
 local GameplayAbilityResult = {}
+---@type string
+GameplayAbilityResult.CODE_SUCCESS = nil
+---@type string
+GameplayAbilityResult.CODE_ABILITY_NOT_FOUND = nil
+---@type string
+GameplayAbilityResult.CODE_ABILITY_NOT_ACTIVATED = nil
+---@type string
+GameplayAbilityResult.CODE_MISSING_REQUIRED_TAG = nil
+---@type string
+GameplayAbilityResult.CODE_BLOCKED_BY_TAG = nil
 ---@param succeeded boolean
 ---@param resultCode? string|integer|nil
 ---@param resultData? any
@@ -1207,6 +1218,16 @@ function GameplayAbilitySpec.new(gameplayAbility, source, order) end
 function GameplayAbilitySpec.init(self, gameplayAbility, source, order) end
 GlobalCore.GameplayAbilitySpec = GameplayAbilitySpec
 
+---@class GlobalCore.GameplayAttributeChangeSource
+local GameplayAttributeChangeSource = {}
+---@type string
+GameplayAttributeChangeSource.BASE = nil
+---@type string
+GameplayAttributeChangeSource.EFFECT = nil
+---@type string
+GameplayAttributeChangeSource.CONSTRAINT = nil
+GlobalCore.GameplayAttributeChangeSource = GameplayAttributeChangeSource
+
 ---@class GlobalCore.GameplayEffect : Engine.RuntimeObject
 ---@field id string
 ---@field durationPolicy string
@@ -1216,6 +1237,14 @@ GlobalCore.GameplayAbilitySpec = GameplayAbilitySpec
 ---@field grantedAbilities GlobalCore.__ArrayElement_b9e12cceb467[]
 ---@field data any
 local GameplayEffect = {}
+---@type string
+GameplayEffect.DURATION_INSTANT = nil
+---@type string
+GameplayEffect.DURATION_INFINITE = nil
+---@type string
+GameplayEffect.STACKING_NONE = nil
+---@type string
+GameplayEffect.STACKING_AGGREGATE = nil
 ---@param values table
 ---@return GlobalCore.GameplayEffect
 function GameplayEffect.new(values) end
@@ -1270,6 +1299,12 @@ GlobalCore.GameplayEventData = GameplayEventData
 ---@field magnitude integer|number|(fun(arg1: GlobalCore.GameplayEffectSpec|nil, arg2: integer): integer|number)|nil
 ---@field minimum integer|number|nil
 local GameplayModifier = {}
+---@type 'Add'
+GameplayModifier.OPERATION_ADD = nil
+---@type 'Multiply'
+GameplayModifier.OPERATION_MULTIPLY = nil
+---@type 'Override'
+GameplayModifier.OPERATION_OVERRIDE = nil
 ---@param values table
 ---@return GlobalCore.GameplayModifier
 function GameplayModifier.new(values) end
@@ -1411,10 +1446,12 @@ function AudioEffectControl:beginTail() end
 ---@return nil
 function AudioEffectControl:finishTail() end
 ---@param source sf.SoundSource
----@param name string
+---@param moduleName string
+---@param resolverName string
+---@param effectName string
 ---@param sampleRate integer
 ---@return nil
-function AudioEffectControl:attachLuaProcessor(source, name, sampleRate) end
+function AudioEffectControl:attachLuaProcessor(source, moduleName, resolverName, effectName, sampleRate) end
 GlobalCore.AudioEffectControl = AudioEffectControl
 
 ---@class GlobalCore.AudioManager
@@ -1525,7 +1562,7 @@ function AudioManager.setVoiceFilter(voice, filter) end
 ---@return nil
 function AudioManager.setMusicFilter(music, filter) end
 ---@param audioType string
----@param effect Source.Utils.AudioEffects.Attacher|nil
+---@param effect (fun(source : sf.SoundSource, control : GlobalCore.AudioEffectControl, sampleRate : integer))|nil
 ---@return nil
 function AudioManager.setEffect(audioType, effect) end
 ---@return integer
@@ -1632,12 +1669,17 @@ GlobalCore.TimerEntry = TimerEntry
 --- Native transport used by Global.Net. Callbacks run on the logic thread.
 ---@class GlobalCore.NetTransport
 local NetTransport = {}
+--- Log a diagnostic and return false when server integration is disabled.
+---@return boolean
+function NetTransport.CheckAvailable() end
+--- Return null without invoking callbacks when server integration is
+--- disabled.
 ---@param module string
 ---@param params any|nil
 ---@param transform fun(arg1: any): any
 ---@param onCompleted fun(arg1: any): nil
 ---@param after? Engine.AsyncOperation|nil
----@return Engine.AsyncOperation
+---@return Engine.AsyncOperation|nil
 function NetTransport.GetSnapshotAsync(module, params, transform, onCompleted, after) end
 ---@param module string
 ---@param name string
@@ -1843,8 +1885,10 @@ GlobalCore.ServerResult = ServerResult
 local Server = {}
 --- Probe the configured service. Normal is at most 300 ms, Weak at most
 --- 3000 ms, and Disconnected means no valid health response in that time.
+--- When disabled, log a diagnostic and return null without invoking the
+--- callback.
 ---@param onCompleted fun(arg1: GlobalCore.ServerConnectionResult|nil): nil
----@return Engine.AsyncOperation
+---@return Engine.AsyncOperation|nil
 function Server.CheckConnectionAsync(onCompleted) end
 GlobalCore.Server = Server
 

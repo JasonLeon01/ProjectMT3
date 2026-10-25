@@ -13,6 +13,12 @@
 ---@alias Engine.__ArrayElement_e59385bd2e6a sf.Texture|nil
 ---@alias Engine.__ArrayElement_bdf072f4f9bb string|sf.Image|nil
 
+---@class Engine.Direction
+---@field DOWN Engine.Direction
+---@field LEFT Engine.Direction
+---@field RIGHT Engine.Direction
+---@field UP Engine.Direction
+
 ---@class Engine.ActionKind
 ---@field KeyOrScan Engine.ActionKind
 ---@field Key Engine.ActionKind
@@ -31,12 +37,27 @@
 ---@field Image Engine.ImageDrawAs
 ---@field Tile Engine.ImageDrawAs
 
+---@class Engine.EmitterScaleMode
+---@field Hierarchy Engine.EmitterScaleMode
+---@field Local Engine.EmitterScaleMode
+---@field Shape Engine.EmitterScaleMode
+
+---@class Engine.EmitterShape
+---@field Point Engine.EmitterShape
+---@field Line Engine.EmitterShape
+---@field Rectangle Engine.EmitterShape
+---@field Disk Engine.EmitterShape
+---@field Ring Engine.EmitterShape
+
 ---@class EngineModule
 ---@field AnimSprite Engine.AnimSprite
 ---@field AnimationData Engine.AnimationData
 ---@field Curve Engine.Curve
 ---@field CurveData Engine.CurveData
+---@field CurveInfinityMode Engine.CurveInfinityMode
+---@field CurveInterpolation Engine.CurveInterpolation
 ---@field CurveKey Engine.CurveKey
+---@field DisplayScaleLimits Engine.DisplayScaleLimits
 ---@field Emitter Engine.Emitter
 ---@field EmitterConfiguration Engine.EmitterConfiguration
 ---@field EmitterCurves Engine.EmitterCurves
@@ -85,6 +106,7 @@
 ---@field ResourceFileConstants Engine.ResourceFileConstants
 ---@field RuntimeProviders Engine.RuntimeProviders
 ---@field SavePreviewReader Engine.SavePreviewReader
+---@field SavePreviewState Engine.SavePreviewState
 ---@field Button Engine.Button
 ---@field Canvas Engine.Canvas
 ---@field CharacterView Engine.CharacterView
@@ -150,9 +172,12 @@
 ---@field RuntimeIdentity Engine.RuntimeIdentity
 ---@field RuntimeObject Engine.RuntimeObject
 ---@field RuntimeValue Engine.RuntimeValue
+---@field Direction Engine.Direction
 ---@field ActionKind Engine.ActionKind
 ---@field InputHintDevice Engine.InputHintDevice
 ---@field ImageDrawAs Engine.ImageDrawAs
+---@field EmitterScaleMode Engine.EmitterScaleMode
+---@field EmitterShape Engine.EmitterShape
 ---@field getAnimationVisualDuration fun(animationData: Engine.AnimationSourceData): number
 ---@field ZeroVector2f sf.Vector2f
 ---@field ZeroVector2i sf.Vector2i
@@ -160,7 +185,6 @@
 ---@field ZeroVector3f sf.Vector3f
 ---@field ZeroVector3i sf.Vector3i
 ---@field ZeroVector3u sf.Vector3u
----@field Direction table<string, integer>
 ---@field GetCellSize fun(): integer
 ---@field GetGameSize fun(): sf.Vector2u
 ---@field GetScale fun(): number
@@ -255,9 +279,12 @@
 ---@type EngineModule
 Engine = {}
 
+Engine.Direction = {}
 Engine.ActionKind = {}
 Engine.InputHintDevice = {}
 Engine.ImageDrawAs = {}
+Engine.EmitterScaleMode = {}
+Engine.EmitterShape = {}
 
 Engine.TextConfig = {}
 Engine.TextLayout = {}
@@ -712,9 +739,6 @@ Engine.ZeroVector3i = nil
 ---@type sf.Vector3u
 Engine.ZeroVector3u = nil
 
----@type table<string, integer>
-Engine.Direction = nil
-
 ---@type table<string, Engine.InputNamedValue>
 Engine.InputType = nil
 
@@ -847,6 +871,24 @@ function CurveData.new(values) end
 function CurveData.init(self, values) end
 Engine.CurveData = CurveData
 
+---@class Engine.CurveInfinityMode
+local CurveInfinityMode = {}
+---@type string
+CurveInfinityMode.CONSTANT = nil
+---@type string
+CurveInfinityMode.LINEAR = nil
+Engine.CurveInfinityMode = CurveInfinityMode
+
+---@class Engine.CurveInterpolation
+local CurveInterpolation = {}
+---@type string
+CurveInterpolation.CONSTANT = nil
+---@type string
+CurveInterpolation.LINEAR = nil
+---@type string
+CurveInterpolation.CUBIC = nil
+Engine.CurveInterpolation = CurveInterpolation
+
 ---@class Engine.CurveKey
 ---@field time number
 ---@field value number
@@ -861,6 +903,14 @@ function CurveKey.new(values) end
 ---@param values table
 function CurveKey.init(self, values) end
 Engine.CurveKey = CurveKey
+
+---@class Engine.DisplayScaleLimits
+local DisplayScaleLimits = {}
+---@type number
+DisplayScaleLimits.MINIMUM_RENDER_SCALE = nil
+---@type number
+DisplayScaleLimits.MINIMUM_INVERTIBLE_SCALE = nil
+Engine.DisplayScaleLimits = DisplayScaleLimits
 
 ---@class Engine.Emitter : Engine.RuntimeObject
 local Emitter = {}
@@ -1398,6 +1448,10 @@ Engine.AutoSoundParams = AutoSoundParams
 ---@field directionFix boolean
 ---@field animateWithoutMoving boolean
 local Character = {}
+---@type integer
+Character.SPRITE_FRAME_COLUMNS = nil
+---@type integer
+Character.SPRITE_DIRECTION_ROWS = nil
 ---@param texture sf.Texture|nil
 ---@param tag? string
 ---@return Engine.Character
@@ -2047,6 +2101,42 @@ Engine.TileLayerGraphics = TileLayerGraphics
 ---@field preeditCaret integer
 ---@field composing boolean
 local InjectedInputEvent = {}
+---@type string
+InjectedInputEvent.KEY_PRESSED = nil
+---@type string
+InjectedInputEvent.KEY_RELEASED = nil
+---@type string
+InjectedInputEvent.MOUSE_MOVED = nil
+---@type string
+InjectedInputEvent.MOUSE_BUTTON_PRESSED = nil
+---@type string
+InjectedInputEvent.MOUSE_BUTTON_RELEASED = nil
+---@type string
+InjectedInputEvent.MOUSE_WHEEL_SCROLLED = nil
+---@type string
+InjectedInputEvent.MOUSE_ENTERED = nil
+---@type string
+InjectedInputEvent.MOUSE_LEFT = nil
+---@type string
+InjectedInputEvent.TEXT_ENTERED = nil
+---@type string
+InjectedInputEvent.TEXT_PREEDIT = nil
+---@type string
+InjectedInputEvent.TEXT_COMPOSITION = nil
+---@type string
+InjectedInputEvent.FOCUS_GAINED = nil
+---@type string
+InjectedInputEvent.FOCUS_LOST = nil
+---@type string
+InjectedInputEvent.BUTTON_LEFT = nil
+---@type string
+InjectedInputEvent.BUTTON_RIGHT = nil
+---@type string
+InjectedInputEvent.BUTTON_MIDDLE = nil
+---@type string
+InjectedInputEvent.BUTTON_EXTRA1 = nil
+---@type string
+InjectedInputEvent.BUTTON_EXTRA2 = nil
 ---@param values table
 ---@return Engine.InjectedInputEvent
 function InjectedInputEvent.new(values) end
@@ -2693,6 +2783,10 @@ Engine.TextParticle = TextParticle
 ---@class Engine.ResourceFileConstants
 local ResourceFileConstants = {}
 ---@type string
+ResourceFileConstants.LUA_SOURCE_EXTENSION = nil
+---@type string
+ResourceFileConstants.LUA_COMPILED_EXTENSION = nil
+---@type string
 ResourceFileConstants.DATA_EXTENSION = nil
 ---@type string
 ResourceFileConstants.ENCRYPTED_DATA_EXTENSION = nil
@@ -2763,6 +2857,20 @@ function SavePreviewReader:cancel() end
 ---@return nil
 function SavePreviewReader.invalidate(path) end
 Engine.SavePreviewReader = SavePreviewReader
+
+---@class Engine.SavePreviewState
+local SavePreviewState = {}
+---@type string
+SavePreviewState.IDLE = nil
+---@type string
+SavePreviewState.LOADING = nil
+---@type string
+SavePreviewState.EMPTY = nil
+---@type string
+SavePreviewState.READY = nil
+---@type string
+SavePreviewState.FAILED = nil
+Engine.SavePreviewState = SavePreviewState
 
 ---@class Engine.Button : Engine.Image, Engine.FunctionalBase
 local Button = {}
@@ -4194,6 +4302,10 @@ Engine.TextGlowConfig = TextGlowConfig
 ---@field direction string
 ---@field curve Engine.Vector4Curve|nil
 local TextGradientConfig = {}
+---@type string
+TextGradientConfig.HORIZONTAL = nil
+---@type string
+TextGradientConfig.VERTICAL = nil
 ---@param values table
 ---@return Engine.TextGradientConfig
 function TextGradientConfig.new(values) end
@@ -4615,6 +4727,12 @@ Engine.Vector4CurveKey = Vector4CurveKey
 
 ---@class Engine.AsyncOperation : Engine.RuntimeObject
 local AsyncOperation = {}
+---@type string
+AsyncOperation.PENDING = nil
+---@type string
+AsyncOperation.COMPLETED = nil
+---@type string
+AsyncOperation.CANCELLED = nil
 --- Create an operation; an optional poll runs once per logic frame until
 --- settlement.
 ---@param poll? fun(arg1: Engine.AsyncOperation): nil
@@ -4758,7 +4876,7 @@ Engine.EmitterStatistics = EmitterStatistics
 ---@field prewarm boolean
 ---@field world boolean
 ---@field additive boolean
----@field scaleMode integer
+---@field scaleMode Engine.EmitterScaleMode
 ---@field capacity integer
 ---@field count integer
 ---@field delay number
@@ -4766,7 +4884,7 @@ Engine.EmitterStatistics = EmitterStatistics
 ---@field rate number
 ---@field distanceRate number
 ---@field bursts Engine.EmitterBurst[]
----@field shape integer
+---@field shape Engine.EmitterShape
 ---@field extent sf.Vector2f
 ---@field radius number
 ---@field innerRadius number
@@ -4857,6 +4975,8 @@ Engine.DataNode = DataNode
 ---@field localGraph any
 ---@field startNodes table<string, integer>
 local Graph = {}
+---@type string
+Graph.NO_PARENT_CLASS = nil
 ---@param parentClassName string
 ---@param parentClass any|nil
 ---@param parent any|nil
@@ -5426,9 +5546,4 @@ function Engine.EmitterBurst:deepcopy() end
 function Engine.EmitterStatistics:copy() end
 ---@return Engine.EmitterStatistics
 function Engine.EmitterStatistics:deepcopy() end
-
----@return Engine.EmitterTrackParameters
-function Engine.EmitterTrackParameters:copy() end
----@return Engine.EmitterTrackParameters
-function Engine.EmitterTrackParameters:deepcopy() end
 return Engine

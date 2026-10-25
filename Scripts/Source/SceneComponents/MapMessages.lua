@@ -58,7 +58,7 @@ end
 
 function MapMessages:track(operation)
     for index = #self._operations, 1, -1 do
-        if self._operations[index]:getStatus() ~= "pending" then
+        if self._operations[index]:getStatus() ~= Engine.AsyncOperation.PENDING then
             table.remove(self._operations, index)
         end
     end
@@ -78,27 +78,39 @@ function MapMessages:checkConnection(onCompleted, notify)
     self.checking = true
     local generation = self._generation
     local revision = self._checkRevision
-    self:track(Server.CheckConnectionAsync(function (result)
-            assert(result)
-            ---@diagnostic disable-next-line: preferred-local-alias, reject results from superseded connection probes
-            if not self:isCurrent(generation) or self._checkRevision ~= revision then return end
-            -- The engine's Normal cutoff is 300 ms; messages allow up to 500 ms.
-            self.networkReady = result.ok and result.state ~= NetworkState.Disconnected
-                and result.roundTripMs ~= nil and result.roundTripMs <= MAX_CONNECTION_ROUND_TRIP_MS
-            self.checking = false
-            Logging.info(
-                "Map messages connection for %s: ready=%s, roundTripMs=%s, code=%s", self._mapFile,
-                tostring(self.networkReady), tostring(result.roundTripMs), tostring(result.code)
-            )
-            if self.networkReady then
-                MessagePublisher.Reconcile()
-                assert(self._map):prependBillboardLayer(Config.LAYER)
-                self:loadMessages()
-            elseif notify then
-                self:tip("MESSAGES_NETWORK_BAD")
-            end
-            if onCompleted ~= nil then onCompleted(self.networkReady) end
-        end))
+    local operation = Server.CheckConnectionAsync(function (result)
+        assert(result)
+        ---@diagnostic disable-next-line: preferred-local-alias, reject results from superseded connection probes
+        if not self:isCurrent(generation) or self._checkRevision ~= revision then return end
+        -- The engine's Normal cutoff is 300 ms; messages allow up to 500 ms.
+        self.networkReady = result.ok and result.state ~= NetworkState.Disconnected
+            and result.roundTripMs ~= nil and result.roundTripMs <= MAX_CONNECTION_ROUND_TRIP_MS
+        self.checking = false
+        Logging.info(
+            "Map messages connection for %s: ready=%s, roundTripMs=%s, code=%s", self._mapFile,
+            tostring(self.networkReady), tostring(result.roundTripMs), tostring(result.code)
+        )
+        if self.networkReady then
+            MessagePublisher.Reconcile()
+            assert(self._map):prependBillboardLayer(Config.LAYER)
+            self:loadMessages()
+        elseif notify then
+            self:tip("MESSAGES_NETWORK_BAD")
+        end
+        if onCompleted ~= nil then onCompleted(self.networkReady) end
+    end)
+    if operation == nil then
+        self.checking = false
+        self.networkReady = false
+        if notify then
+            self:tip("MESSAGES_NETWORK_BAD")
+        end
+        if onCompleted ~= nil then
+            onCompleted(false)
+        end
+        return
+    end
+    self:track(operation)
 end
 
 function MapMessages:checkBackgroundConnection(attempt)
@@ -164,42 +176,52 @@ function MapMessages:loadMessages()
     if self._loadStarted then return end
     self._loadStarted = true
     local generation = self._generation
-    self:track(Net.GetProxy(
-            "Storage",
-            { query = "accounts", sampleCount = 5, categoryFilter = self._category },
-            function (result)
-                if not self:isCurrent(generation) or not self.networkReady then return end
-                if not result.ok then
-                    self._loadStarted = false
-                    Logging.warning("Failed to list map messages for %s: %s", self._mapFile, result.message)
-                    return
+    local operation = Net.GetProxy("Storage", { query = "accounts", sampleCount = 5, categoryFilter = self._category }, function (
+        result
+    )
+        if not self:isCurrent(generation) or not self.networkReady then return end
+        if not result.ok then
+            self._loadStarted = false
+            Logging.warning("Failed to list map messages for %s: %s", self._mapFile, result.message)
+            return
+        end
+        local proxy = assert(result.proxy)
+        ---@cast proxy Global.Net.StorageProxy
+        local accounts = assert(proxy:GetAccounts())
+        Logging.info("Received %d map message accounts for %s", #accounts, self._mapFile)
+        for index, account in ipairs(accounts) do
+            if index > 5 then break end
+            local readOperation = Net.GetProxy(
+                "Storage",
+                {
+                    query = "field",
+                    account = account,
+                    category = self._category,
+                    field = "message"
+                },
+                function (read)
+                    if not self:isCurrent(generation) or not self.networkReady or not read.ok then return end
+                    local fieldProxy = assert(read.proxy)
+                    ---@cast fieldProxy Global.Net.StorageProxy
+                    if not fieldProxy:IsFound() then return end
+                    local record = self:validate(fieldProxy:GetFieldValue())
+                    if record ~= nil then self:spawn(account, record) end
                 end
-                local proxy = assert(result.proxy)
-                ---@cast proxy Global.Net.StorageProxy
-                local accounts = assert(proxy:GetAccounts())
-                Logging.info("Received %d map message accounts for %s", #accounts, self._mapFile)
-                for index, account in ipairs(accounts) do
-                    if index > 5 then break end
-                    self:track(Net.GetProxy(
-                            "Storage",
-                            {
-                                query = "field",
-                                account = account,
-                                category = self._category,
-                                field = "message"
-                            },
-                            function (read)
-                                if not self:isCurrent(generation) or not self.networkReady or not read.ok then return end
-                                local fieldProxy = assert(read.proxy)
-                                ---@cast fieldProxy Global.Net.StorageProxy
-                                if not fieldProxy:IsFound() then return end
-                                local record = self:validate(fieldProxy:GetFieldValue())
-                                if record ~= nil then self:spawn(account, record) end
-                            end
-                        ))
-                end
+            )
+            if readOperation ~= nil then
+                self:track(readOperation)
+            else
+                self._loadStarted = false
+                self.networkReady = false
             end
-        ))
+        end
+    end)
+    if operation == nil then
+        self._loadStarted = false
+        self.networkReady = false
+        return
+    end
+    self:track(operation)
 end
 
 function MapMessages:spawn(account, record)
@@ -245,7 +267,7 @@ function MapMessages:submit(templateKey, wordKey, onAccepted)
     end
     self.submitting = true
     local generation = self._generation
-    local position = self._scene.player:getMapPosition()
+    local position = self._scene:getPlayer():getMapPosition()
     local record = {
         templateKey = templateKey,
         wordKey = wordKey,

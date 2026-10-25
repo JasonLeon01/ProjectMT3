@@ -1,4 +1,4 @@
-name: Sync Ludork Engine, Global, Internal and Enums
+name: Sync Ludork Engine, Application, Global, Internal and Enums
 
 on:
   schedule:
@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   sync:
-    name: Sync Engine, Global, Internal and Enums and update PR
+    name: Sync Engine, Application, Global, Internal and Enums and update PR
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
@@ -37,7 +37,7 @@ jobs:
             https://github.com/JasonLeon01/Ludork.git "$upstream"
           echo "LUDORK_SYNC_REPOSITORY=$upstream" >> "$GITHUB_ENV"
 
-      - name: Check and apply changed Engine, Global, Internal, Enums and Lua stub files
+      - name: Check and apply changed Engine, Application, Global, Internal, Enums and Lua stub files
         id: sync
         uses: actions/github-script@v8
         with:
@@ -56,6 +56,7 @@ jobs:
             Engine/
             :(exclude)Engine/ThirdParty
             :(exclude)Engine/ThirdParty/**
+            Application/
             Scripts/Global/
             Scripts/Internal/
             Scripts/Enums/
@@ -68,14 +69,15 @@ jobs:
             Scripts/stub/Global/
             Scripts/stub/Internal/
             .github/ludork-sync.json
-          commit-message: 'chore: sync Ludork Engine, Global, Internal, Enums and Lua stubs from ${{ steps.sync.outputs.upstream_sha }}'
-          title: 'chore: sync Ludork Engine, Global, Internal, Enums and Lua stubs'
+          commit-message: 'chore: sync Ludork Engine, Application, Global, Internal, Enums and Lua stubs from ${{ steps.sync.outputs.upstream_sha }}'
+          title: 'chore: sync Ludork Engine, Application, Global, Internal, Enums and Lua stubs'
           body: |
-            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/`, `Game/Scripts/{Global,Internal,Enums}/` into the corresponding `Scripts/` directories, and `Game/Scripts/stub/{Global,Internal}/` into the corresponding `Scripts/stub/` directories.
+            Incrementally sync `JasonLeon01/Ludork` `Game/Engine/` into `Engine/`, `Game/Application/` into `Application/`, `Game/Scripts/{Global,Internal,Enums}/` into the corresponding `Scripts/` directories, and `Game/Scripts/stub/{Global,Internal}/` into the corresponding `Scripts/stub/` directories.
 
             - Preserve `Engine/ThirdParty/` and files unchanged upstream since the merged baseline.
             - Preserve the project's generated `Scripts/Enums/GeneralData/`, `Scripts/Enums/GeneralDataKey.lua`, `Scripts/Enums/Animation.lua` and `Scripts/Enums/Particle.lua`, and its custom `Scripts/Enums/EventKey.lua`. Enum annotations live in their source modules without mirrored stubs. Other shared and native enums continue to sync.
             - Engine merged baseline: `${{ steps.sync.outputs.engine_baseline_sha }}`
+            - Application merged baseline: `${{ steps.sync.outputs.application_baseline_sha }}`
             - Global merged baseline: `${{ steps.sync.outputs.global_baseline_sha }}`
             - Internal merged baseline: `${{ steps.sync.outputs.internal_baseline_sha }}`
             - Enums merged baseline: `${{ steps.sync.outputs.enums_baseline_sha }}`

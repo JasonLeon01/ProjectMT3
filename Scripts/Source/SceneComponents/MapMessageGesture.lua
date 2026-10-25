@@ -22,7 +22,7 @@ end
 
 function MapMessageGesture:update()
     if not LUDORK_MOBILE then return end
-    if self._scene:isInputBlocked() or self._scene:_isMapClickMoveBlocked() or self._scene._mapTransferInProgress
+    if self._scene:isInputBlocked() or self._scene:isMapClickMoveBlocked() or self._scene:isMapTransferInProgress()
         or Transition.isTransitionPending() or Transition.isInTransition() then
         self:cancel()
         return
@@ -32,14 +32,15 @@ function MapMessageGesture:update()
         self._map = nil
         self._position = nil
     elseif self._map ~= nil
-        and (self._map ~= gameMap or self._position ~= self._scene.player:getMapPosition() or Input.isTouchDragged()) then
+        and (self._map ~= gameMap or self._position ~= self._scene:getPlayer():getMapPosition()
+            or Input.isTouchDragged()) then
         self:cancel()
     end
     if Input.isTouchBegan(false) then
         local position = Input.getTouchBeganPosition()
         if position ~= nil then
             local mapPosition = MapInput.GetMapPosition(gameMap, position.x, position.y)
-            if mapPosition ~= nil and mapPosition == self._scene.player:getMapPosition() then
+            if mapPosition ~= nil and mapPosition == self._scene:getPlayer():getMapPosition() then
                 self._map = gameMap
                 self._position = mapPosition
             end

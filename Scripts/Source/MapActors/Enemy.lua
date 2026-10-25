@@ -13,6 +13,7 @@ local Player = require("Source.MapActors.Player")
 local MotaBattleAbility = require("Source.Gameplay.MotaBattleAbility")
 local SpecialAbilities = require("Source.Gameplay.SpecialAbilities")
 local GameplayConstants = require("Source.Configs.GameplayConstants")
+local GeneralDataKey = require("Enums.GeneralDataKey")
 
 local GameplayEffectSpec = GlobalCore.GameplayEffectSpec
 local GameplayEventData = GlobalCore.GameplayEventData
@@ -54,7 +55,7 @@ Enemy.afterBattleVarChanges = {}
 function Enemy:init(texture, rect, tag)
     Actor.init(self, texture, rect, tag)
     self:_normaliseChildActorComp()
-    local attributes = Data.CreateGeneralAttributeSet("Enemy", self.ID)
+    local attributes = Data.CreateGeneralAttributeSet(GeneralDataKey.Enemy, self.ID)
     Battler.init(self, attributes)
     self._defeatFinalising = false
     self._defeatFinalised = false
@@ -65,7 +66,7 @@ function Enemy:init(texture, rect, tag)
         local effect = SpecialAbilities.CreateEffect(specialID, self.attributes.special[specialID])
         abilitySystem:applyGameplayEffectSpec(
             GameplayEffectSpec.new(
-                effect, GameplayEventData.new(self, self, "Event.Special.Initialise"), 1,
+                effect, GameplayEventData.new(self, self, GameplayConstants.SPECIAL_INITIALISE_EVENT), 1,
                 GameplayConstants.SPECIAL_PREFIX .. specialID
             )
         )
@@ -107,10 +108,14 @@ end
 function Enemy:_preparePostBattle(player, scene)
     self:_evaluateAfterBattleVariableChanges(scene:getGameInstance())
     local spawnActors, droppedActors, spawnLayer = DefeatSpawns.Prepare(self, scene)
-    local eventData = GameplayEventData.new(self, player, "Event.Combat.Reward")
+    local eventData = GameplayEventData.new(self, player, GameplayConstants.COMBAT_REWARD_EVENT)
     local effectSpecs = {
-        Effects.CreateInstantModifierSpec("Combat.Reward.Gold", "GOLD", "Add", self.attributes.GOLD, eventData),
-        Effects.CreateInstantModifierSpec("Combat.Reward.Exp", "EXP", "Add", self.attributes.EXP, eventData)
+        Effects.CreateInstantModifierSpec(
+            "Combat.Reward.Gold", "GOLD", GlobalCore.GameplayModifier.OPERATION_ADD, self.attributes.GOLD, eventData
+        ),
+        Effects.CreateInstantModifierSpec(
+            "Combat.Reward.Exp", "EXP", GlobalCore.GameplayModifier.OPERATION_ADD, self.attributes.EXP, eventData
+        )
     }
     local playerAbilitySystem = player:getAbilitySystemComponent()
     for _, effectSpec in ipairs(effectSpecs) do
@@ -126,10 +131,10 @@ function Enemy:_preparePostBattle(player, scene)
 end
 
 function Enemy:_executeDropAbility(player, droppedActor)
-    local ability = GeneralDataGraphAbility.new("Item", droppedActor.ID, "onDrop")
+    local ability = GeneralDataGraphAbility.new(GeneralDataKey.Item, droppedActor.ID, "onDrop")
     ability:activate(
         player:getAbilitySystemComponent(),
-        GameplayEventData.new(self, droppedActor, "Event.Item.Drop", { itemID = droppedActor.ID })
+        GameplayEventData.new(self, droppedActor, GameplayConstants.ITEM_DROP_EVENT, { itemID = droppedActor.ID })
     )
 end
 
@@ -180,8 +185,12 @@ function Enemy:completeBattle(player, scene, hp, breath, addedStates)
     local abilitySystem = player:getAbilitySystemComponent()
     local eventData = GameplayEventData.new(self, player, "Event.Combat.Complete")
     local specs = {
-        Effects.CreateInstantModifierSpec("Combat.HP", "HP", "Override", hp, eventData),
-        Effects.CreateInstantModifierSpec("Combat.Breath", "breath", "Override", breath, eventData)
+        Effects.CreateInstantModifierSpec(
+            "Combat.HP", "HP", GlobalCore.GameplayModifier.OPERATION_OVERRIDE, hp, eventData
+        ),
+        Effects.CreateInstantModifierSpec(
+            "Combat.Breath", "breath", GlobalCore.GameplayModifier.OPERATION_OVERRIDE, breath, eventData
+        )
     }
     for _, stateID in ipairs({ "Poisoned", "Weak" }) do
         local stacks = addedStates[stateID]

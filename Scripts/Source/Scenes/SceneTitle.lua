@@ -4,6 +4,7 @@ local Logging = require("Global.Utils.Logging")
 local SourceSystem = require("Source.System")
 local SceneTitleController = require("Source.Scenes.SceneTitle.Controller")
 local LazyWindow = require("Internal.UIBase.LazyWindow")
+local SaveLoadCloseReason = require("Enums.SaveLoadCloseReason")
 
 local Display = GlobalCore.Display
 local SceneManager = GlobalCore.SceneManager
@@ -98,9 +99,9 @@ function Scene:openLoad()
     self._windowSaveLoad:get():open()
 end
 
----@param reason string
+---@param reason Enums.SaveLoadCloseReason
 function Scene:_onSaveLoadClose(reason)
-    if reason == "loaded" then
+    if reason == SaveLoadCloseReason.LOADED then
         return
     end
     self._windowCommand:setActive(true)

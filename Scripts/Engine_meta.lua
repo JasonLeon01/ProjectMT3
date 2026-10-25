@@ -7444,7 +7444,7 @@ local _METADATA = {
         },
     },
     Engine = {
-        attrs = { "ZeroVector2f", "ZeroVector2i", "ZeroVector2u", "ZeroVector3f", "ZeroVector3i", "ZeroVector3u", "Direction", "FocusDirection", "DefaultFontSize" },
+        attrs = { "ZeroVector2f", "ZeroVector2i", "ZeroVector2u", "ZeroVector3f", "ZeroVector3i", "ZeroVector3u", "FocusDirection", "DefaultFontSize" },
         ZeroVector2f = {
             type = "sf.Vector2f",
         },
@@ -7462,11 +7462,6 @@ local _METADATA = {
         },
         ZeroVector3u = {
             type = "sf.Vector3u",
-        },
-        Direction = {
-            type = {
-                dict = "int",
-            },
         },
         FocusDirection = {
             type = {

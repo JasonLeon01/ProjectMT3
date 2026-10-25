@@ -65,9 +65,11 @@
 
 ---@brief Build map runtime objects and floor-map previews for SceneMap.
 ---@class Source.SceneComponents.SceneMapBuilder
----@field _floorMapPreviews                 table<string, Source.SceneComponents.FloorMapPreviewCacheEntry>
----@field _floorMapPreviewConditions        table<string, Source.SceneComponents.FloorMapPreviewCondition>
----@field _floorMapPreviewConditionRevision integer
+---@field _floorMapPreviews                           table<string, Source.SceneComponents.FloorMapPreviewCacheEntry>
+---@field _floorMapPreviewConditions                  table<string, Source.SceneComponents.FloorMapPreviewCondition>
+---@field _floorMapPreviewConditionRevision           integer
+---@field private _TELEPOINT_MARKER_FILL_COLOUR       sf.Color
+---@field private _TELEPOINT_MARKER_OUTLINE_THICKNESS number
 local SceneMapBuilder = {}
 
 ---@return Source.SceneComponents.SceneMapBuilder
@@ -183,6 +185,12 @@ function SceneMapBuilder:generateWorldGameMap(worldPath, worldData, inst, initia
 ---@param emitCreateEvents boolean | nil
 function SceneMapBuilder:applyAddedActors(gameMap, addedActors, emitCreateEvents) end
 
+--- Restore terrain, added Actors, positions and destroyed Actors on an ordinary map without create events.
+---@param gameMap GameMap
+---@param inst    Source.GameInstance.GameInstance
+---@param mapFile string
+function SceneMapBuilder:applyPersistentState(gameMap, inst, mapFile) end
+
 ---@brief Build a floor teleporter preview texture.
 ---
 --- - @param inst Current game instance.
@@ -257,13 +265,6 @@ function SceneMapBuilder:createWorldTileGraphicsChunks(region, width, height, pr
 ---@return table<string, table<integer, table<integer, Source.SceneComponents.WorldTerrainOverride>>>
 ---@async
 function SceneMapBuilder:createWorldTerrainOverrides(data, terrainDestructions, yieldStep) end
-
----@param actorData Global.Data.SerializedActorData
----@return Global.Data.ActorData
-function SceneMapBuilder:normaliseActorData(actorData) end
-
----@param data Global.GameMap.SerializedMapData
-function SceneMapBuilder:validateIncrementalMapData(data) end
 
 ---@param layerState Source.SceneComponents.WorldLayerBuildState
 ---@param chunk      Global.WorldGeometry.CellRect
