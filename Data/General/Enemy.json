@@ -945,7 +945,7 @@
       "ATK": 55,
       "DEF": 105,
       "EXP": 0,
-      "GOLD": 11,
+      "GOLD": 18,
       "breathLimit": 39,
       "drops": {},
       "special": {
@@ -974,11 +974,11 @@
     "E57_zhuangjiakulou": {
       "name": "{E57_ZHUANGJIAKULOU}",
       "desc": "{E57_ZHUANGJIAKULOU_DESC}",
-      "MAXHP": 175,
+      "MAXHP": 150,
       "ATK": 200,
       "DEF": 110,
       "EXP": 0,
-      "GOLD": 18,
+      "GOLD": 22,
       "breathLimit": 36,
       "drops": {},
       "special": {
@@ -1003,19 +1003,18 @@
       "ANIMATION_KEY": "04_bianfu",
       "CritAnimationKey": "05_bianfu2"
     },
-    "E59_hanbingshilaimu": {
-      "name": "{E59_HANBINGSHILAIMU}",
-      "desc": "{E59_HANBINGSHILAIMU_DESC}",
-      "MAXHP": 1000,
-      "ATK": 800,
-      "DEF": 600,
-      "EXP": 50,
-      "GOLD": 100,
+    "E59_qishishilaimu": {
+      "name": "{E59_QISHISHILAIMU}",
+      "desc": "{E59_QISHISHILAIMU_DESC}",
+      "MAXHP": 160,
+      "ATK": 175,
+      "DEF": 128,
+      "EXP": 0,
+      "GOLD": 24,
       "breathLimit": 100,
       "drops": {},
       "special": {
-        "First": "",
-        "Frost": ""
+        "First": ""
       },
       "ANIMATION_KEY": "47_bingshilaimu",
       "CritAnimationKey": "48_bingshilaimu2"
@@ -1583,7 +1582,7 @@
       "ATK": 165,
       "DEF": 115,
       "EXP": 0,
-      "GOLD": 11,
+      "GOLD": 26,
       "breathLimit": 38,
       "drops": {},
       "special": {

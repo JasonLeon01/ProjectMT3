@@ -188,7 +188,7 @@ function MapSession:_canRequestTeleporterTransfer(teleporter)
     return self._gameMap:getPlayer() ~= nil and bool(self._mapFile)
 end
 
-function MapSession:requestFloorStep(teleporter, step)
+function MapSession:requestFloorStep(teleporter, step, sameCoordinate)
     assert(step == 1 or step == -1, "Floor transfer step must be 1 or -1")
     if not self:_canRequestTeleporterTransfer(teleporter) then
         return false
@@ -206,8 +206,11 @@ function MapSession:requestFloorStep(teleporter, step)
     end
     local targetMapKey = regionMaps[targetIndex]
     ---@cast targetMapKey string
-    local anchorPosition = teleporter:getTeleportPosition()
     local targetMap = self:resolveRegionMapPath(targetMapKey)
+    if sameCoordinate then
+        return self:_startTeleporterTransfer(teleporter, targetMap, teleporter:getMapPosition(), false, false)
+    end
+    local anchorPosition = teleporter:getTeleportPosition()
     local targetStairDirection = step == 1 and StairDirection.Down or StairDirection.Up
     return self:_startTeleporterTransfer(teleporter, targetMap, anchorPosition, true, true, targetStairDirection)
 end

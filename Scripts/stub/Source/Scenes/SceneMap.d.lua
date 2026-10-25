@@ -86,8 +86,9 @@ function Scene:refreshLocale() end
 
 ---@param teleporter Source.MapActors.Teleporter.Teleporter
 ---@param step       integer
+---@param sameCoordinate? boolean
 ---@return boolean
-function Scene:requestFloorStep(teleporter, step) end
+function Scene:requestFloorStep(teleporter, step, sameCoordinate) end
 
 ---@param player Source.MapActors.Player.Player
 ---@param delay  number

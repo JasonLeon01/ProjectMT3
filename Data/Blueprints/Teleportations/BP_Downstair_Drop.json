@@ -1,0 +1,64 @@
+{
+  "parent": "Source.MapActors.Teleporter.Teleporter",
+  "attrs": {
+    "scriptMixin": true,
+    "scriptPath": "Teleportations/DownstairSamePos.lua",
+    "stairDirection": "Down",
+    "material": "Data/Materials/Global/Standard.json",
+    "materialParameters": {},
+    "texturePath": "/Game/Assets/Characters/blocks/Other401.png",
+    "tag": "",
+    "transitionName": "",
+    "stairSE": "/Game/Assets/Sounds/mting-82.wav",
+    "defaultRect": [
+      [
+        32,
+        0,
+        32,
+        32
+      ]
+    ]
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [],
+        "links": []
+      },
+      "onCreate": {
+        "nodes": [],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onLateTick": {
+        "nodes": [],
+        "links": []
+      },
+      "onOverlap": {
+        "nodes": [],
+        "links": []
+      },
+      "onTick": {
+        "nodes": [],
+        "links": []
+      }
+    },
+    "startNodes": {
+      "onCollision": null,
+      "onCreate": null,
+      "onDestroy": null,
+      "onFixedTick": null,
+      "onLateTick": null,
+      "onOverlap": null,
+      "onTick": null
+    }
+  },
+  "type": "blueprint"
+}

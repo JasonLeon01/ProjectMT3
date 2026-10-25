@@ -192,7 +192,7 @@ return {
     ["E56_BUWENDINGJIXIE"] = "Unstable Machine",
     ["E57_ZHUANGJIAKULOU"] = "Armoured Skeleton",
     ["E58_ZHONGXINGBIANFU"] = "Medium Bat",
-    ["E59_HANBINGSHILAIMU"] = "Slime Cryo",
+    ["E59_QISHISHILAIMU"] = "Slime Knight",
     ["E60_DUZHANGYU"] = "Octopus Toxicon",
     ["E61_LIEYANSANGSHI"] = "Zombie Pyro",
     ["E62_DONGSIGU"] = "Bones Cryo",

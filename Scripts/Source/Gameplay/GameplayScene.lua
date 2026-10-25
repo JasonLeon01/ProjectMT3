@@ -30,7 +30,7 @@ function GameplayScene:recordActorPosition(actor, position)
 end
 
 ---@diagnostic disable-next-line: unused
-function GameplayScene:requestFloorStep(teleporter, step)
+function GameplayScene:requestFloorStep(teleporter, step, sameCoordinate)
     error("GameplayScene.requestFloorStep must be implemented")
 end
 

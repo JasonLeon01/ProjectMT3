@@ -680,14 +680,6 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E50_xunjiequan",
-        "tag": "Enemies_BPart_BP_Enemy_E50_xunjiequan_default_1_5",
-        "position": [
-          2,
-          3
-        ]
-      },
-      {
         "bp": "Data.Blueprints.Consumables.BP_Bottle_400",
         "tag": "Consumables_BP_Bottle_400_default_0_3",
         "position": [
@@ -739,7 +731,7 @@
         "bp": "Data.Blueprints.Actors.BP_Fire_Left",
         "tag": "Actors_BP_Fire_Left_default_7_5",
         "position": [
-          7,
+          8,
           5
         ]
       },
@@ -1024,14 +1016,6 @@
         ]
       },
       {
-        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E42_shouren",
-        "tag": "Enemies_BPart_BP_Enemy_E42_shouren_default_4_7",
-        "position": [
-          7,
-          7
-        ]
-      },
-      {
         "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E50_xunjiequan",
         "tag": "Enemies_BPart_BP_Enemy_E50_xunjiequan_default_6_9",
         "position": [
@@ -1069,6 +1053,22 @@
         "position": [
           5,
           9
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E55_zhongjiefashi",
+        "tag": "Enemies_BPart_BP_Enemy_E55_zhongjiefashi_default_2_3",
+        "position": [
+          2,
+          3
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Enemies.BPart.BP_Enemy_E59_qishishilaimu",
+        "tag": "Enemies_BPart_BP_Enemy_E59_qishishilaimu_default_7_7",
+        "position": [
+          7,
+          7
         ]
       }
     ]

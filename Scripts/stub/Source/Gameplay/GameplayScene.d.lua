@@ -23,8 +23,9 @@ function GameplayScene:recordActorPosition(actor, position) end
 --- A rejected request leaves the player's movement state unchanged.
 ---@param teleporter Source.MapActors.Teleporter.Teleporter
 ---@param step       integer
+---@param sameCoordinate? boolean
 ---@return boolean
-function GameplayScene:requestFloorStep(teleporter, step) end
+function GameplayScene:requestFloorStep(teleporter, step, sameCoordinate) end
 
 --- Synchronously accept one transfer to a chosen map position without finding a stair.
 --- A rejected request leaves movement and telepoint records unchanged.
