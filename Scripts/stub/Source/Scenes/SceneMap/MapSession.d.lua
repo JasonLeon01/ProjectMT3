@@ -108,8 +108,9 @@ function MapSession:_canRequestTeleporterTransfer(teleporter) end
 
 ---@param teleporter Source.MapActors.Teleporter.Teleporter
 ---@param step       integer
+---@param sameCoordinate? boolean
 ---@return boolean
-function MapSession:requestFloorStep(teleporter, step) end
+function MapSession:requestFloorStep(teleporter, step, sameCoordinate) end
 
 ---@param teleporter Source.MapActors.Teleporter.Teleporter
 ---@param mapPath    string

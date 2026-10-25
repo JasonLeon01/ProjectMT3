@@ -394,8 +394,8 @@ function Scene:getGameMap()
     return self._maps:getGameMap()
 end
 
-function Scene:requestFloorStep(teleporter, step)
-    return self._maps:requestFloorStep(teleporter, step)
+function Scene:requestFloorStep(teleporter, step, sameCoordinate)
+    return self._maps:requestFloorStep(teleporter, step, sameCoordinate)
 end
 
 function Scene:requestMapTransfer(teleporter, mapPath, position, record)
