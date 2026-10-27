@@ -3,22 +3,75 @@
 require 'json'
 require 'spaceship'
 require 'timeout'
+require 'socket'
+require 'openssl'
+
+class AppleProcessingDeadlineExceeded < StandardError; end
+
+def processing_time_left(deadline)
+  remaining = deadline - Process.clock_gettime(Process::CLOCK_MONOTONIC)
+  raise AppleProcessingDeadlineExceeded, 'Apple processing/group assignment exceeded 45 minutes' if remaining <= 0
+  remaining
+end
+
+def apple_retry_reason(error)
+  errors = []
+  pending = [error]
+  until pending.empty?
+    current = pending.pop
+    next if current.nil? || errors.include?(current)
+    errors << current
+    pending << current.cause
+    pending << current.wrapped_exception if current.respond_to?(:wrapped_exception)
+  end
+  # Never turn a business rejection, authentication or TLS failure into a retry.
+  return if errors.any? do |item|
+    [AppleProcessingDeadlineExceeded, Spaceship::UnexpectedResponse,
+     Spaceship::UnauthorizedAccessError, Spaceship::AccessForbiddenError,
+     Spaceship::InvalidUserCredentialsError, Spaceship::ProgramLicenseAgreementUpdated,
+     Faraday::SSLError, OpenSSL::SSL::SSLError].any? { |type| item.is_a?(type) }
+  end
+  statuses = errors.filter_map do |item|
+    status = item.response_status if item.respond_to?(:response_status)
+    if status.nil? && item.is_a?(Spaceship::InternalServerError)
+      status = item.message[/\bServer error got (\d{3})\b/i, 1]
+    end
+    status.to_i if status
+  end
+  return if statuses.any? { |status| !(200...400).cover?(status) && ![408, 429, 500, 502, 503, 504].include?(status) }
+  return 'timeout' if statuses.any? { |status| [408, 504].include?(status) } || errors.any? do |item|
+    [Timeout::Error, Faraday::TimeoutError, Errno::ETIMEDOUT,
+     Spaceship::GatewayTimeoutError].any? { |type| item.is_a?(type) }
+  end
+  return 'network interruption' if errors.any? do |item|
+    [Faraday::ConnectionFailed, SocketError, EOFError, Errno::ECONNRESET, Errno::ECONNREFUSED,
+     Errno::ECONNABORTED, Errno::EPIPE, Errno::EHOSTUNREACH, Errno::ENETUNREACH].any? { |type| item.is_a?(type) }
+  end
+  return 'temporary service failure' if statuses.any? { |status| [429, 500, 502, 503].include?(status) } || errors.any? do |item|
+    [Spaceship::AppleTimeoutError, Spaceship::BadGatewayError, Spaceship::InternalServerError,
+     Spaceship::TooManyRequestsError, Spaceship::ConnectAPI::APIClient::TooManyRequestsError].any? { |type| item.is_a?(type) }
+  end
+end
 
 # These are CI-level attempts after fastlane's own bounded request retries.
 def apple_request(label, deadline: nil)
   attempt = 0
   begin
-    raise 'Apple processing/group assignment exceeded 45 minutes' if deadline && Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
+    remaining = processing_time_left(deadline) if deadline
     attempt += 1
-    yield
+    puts "#{label}: attempt #{attempt}/3"
+    if deadline
+      Timeout.timeout(remaining, AppleProcessingDeadlineExceeded, 'Apple processing/group assignment exceeded 45 minutes') { yield }
+    else
+      yield
+    end
   rescue StandardError => error
-    timeout = error.is_a?(Timeout::Error) || error.is_a?(Faraday::TimeoutError) ||
-      error.is_a?(Spaceship::Client::AppleTimeoutError) || error.is_a?(Spaceship::Client::GatewayTimeoutError) ||
-      (error.is_a?(Spaceship::Client::InternalServerError) && error.message.match?(/\b504\b/))
-    raise unless timeout && attempt < 3
+    reason = apple_retry_reason(error)
+    warn "#{label}: #{reason || 'non-retryable failure'} (attempt #{attempt}/3): #{error.class}: #{error.message}"
+    raise unless reason && attempt < 3
     delay = 15 * attempt
-    raise if deadline && Process.clock_gettime(Process::CLOCK_MONOTONIC) + delay >= deadline
-    warn "#{label} timed out (attempt #{attempt}/3); retrying in #{delay}s"
+    raise if deadline && delay >= processing_time_left(deadline)
+    warn "#{label}: retrying in #{delay}s"
     sleep delay
     retry
   end
@@ -120,8 +173,7 @@ def wait_for_internal_testing(context, output)
         puts 'Waiting for the uploaded build to appear in App Store Connect'
       end
     end
-    raise 'Apple processing/group assignment exceeded 45 minutes' if Process.clock_gettime(Process::CLOCK_MONOTONIC) >= deadline
-    sleep 30
+    sleep [30, processing_time_left(deadline)].min
   end
 end
 
