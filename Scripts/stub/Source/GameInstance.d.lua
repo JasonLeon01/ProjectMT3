@@ -2,6 +2,9 @@
 
 ---@alias Source.GameInstance.RecordValue nil | boolean | number | string | lightuserdata | table
 
+--- A two-element array containing the normalised map path and raw map-placement tag.
+---@alias Source.GameInstance.ShopRecord [string, string]
+
 ---@class Source.GameInstance.AddedActorRecord
 ---@field bp              string
 ---@field layer           string
@@ -54,6 +57,7 @@
 ---@field destroyedActors    table<string, string[]>
 ---@field destroyedTerrain   table<string, table<string, Source.GameInstance.SavedTerrainChangeRecord[]>>
 ---@field telepoints         table<string, table<string, Source.GameInstance.SavedTelepointRecord[]>>
+---@field shops              table<string, Source.GameInstance.ShopRecord[]> | nil                        Ordered visited shops keyed by player key, missing in older v1 saves.
 ---@field triggeredTutorials string[] | nil                                                               Ordered tutorial keys, missing in older v1 saves.
 ---@field screenshot         integer[] | nil
 
@@ -63,10 +67,12 @@
 --- and destroyed actor tracking. Added, moved and destroyed Actor records use
 --- the stable map-placement tag returned by `actor:getMapTag()`, not `actor.tag`.
 ---@class Source.GameInstance.GameInstance
+---@field EnableShopRecord            boolean                                                                                                                                                                                                           Defaults to true. Disabling stops new records and the shop-list shortcut without clearing saved records.
 ---@field _playerKeys                 string[]
 ---@field _players                    table<string, Source.MapActors.Player.Player>
 ---@field _cachedMaps                 table<string, string>
 ---@field _cachedTelepoints           table<string, table<string, Source.GameInstance.TelepointRecord[]>>
+---@field _shops                      table<string, Source.GameInstance.ShopRecord[]>
 ---@field _cachedWorldMovedActors     table<string, Source.GameInstance.WorldMovedActorRecord[]>
 ---@field _triggeredTutorials         list<string>
 ---@field new                         fun(skipDefaultPlayer?: boolean): Source.GameInstance.GameInstance
@@ -237,6 +243,7 @@ function GameInstance:rotatePlayers(right) end
 function GameInstance:addPlayerByClass(playerClass, mapPath, position) end
 
 ---@brief Remove a player by class path.
+--- Removes that player's stored map, telepoints and visited shops when another party member remains.
 ---
 --- - @param playerClass The class path to remove.
 ---@param playerClass string
@@ -374,6 +381,23 @@ function GameInstance:recordTelepoint(mapPath, position, tag) end
 ---@param mapPath string
 ---@return Source.GameInstance.TelepointRecord[]
 function GameInstance:getTelepoints(mapPath) end
+
+---@brief Get an independent copy of the primary player's visited shops in first-visit order.
+---@return Source.GameInstance.ShopRecord[]
+function GameInstance:getShops() end
+
+---@brief Record a shop once for the primary player by normalised map path and stable map-placement tag.
+---@param mapPath string
+---@param mapTag  string Non-empty raw map-placement tag; it is not localised in saves.
+---@return boolean added False when recording is disabled or the pair already exists.
+function GameInstance:recordShop(mapPath, mapTag) end
+
+---@brief Remove the primary player's recorded shop by normalised map path and stable map-placement tag.
+--- Removal remains available while EnableShopRecord is false. A later visit can record the shop again.
+---@param mapPath string
+---@param mapTag  string
+---@return boolean removed False when the pair does not exist.
+function GameInstance:removeShop(mapPath, mapTag) end
 
 ---@brief Check whether an item or equip has been obtained before.
 ---

@@ -1,6 +1,7 @@
 local cjson = require("cjson")
 local Data = require("Global.Data")
 local Records = require("Source.Utils.GameInstance.Records")
+local Shops = require("Source.Utils.GameInstance.Shops")
 local MapPath = require("Global.Utils.MapPath")
 local MapConstants = require("Source.Configs.MapConstants")
 
@@ -225,6 +226,27 @@ local function serialiseTelepoints(telepoints)
     return result
 end
 
+local function normaliseShops(shops)
+    local result = {}
+    if shops == nil then
+        return result
+    end
+    assert(Class.isInstance(shops, "table"), "shops must be an object keyed by player key")
+    for playerKey, records in pairs(shops) do
+        assert(Class.isInstance(playerKey, "string") and bool(playerKey), "Shop player key must be a non-empty string")
+        result[playerKey] = Shops.Decode(records)
+    end
+    return result
+end
+
+local function serialiseShops(shops)
+    local result = {}
+    for playerKey, records in pairs(shops) do
+        result[playerKey] = list(deepcopy(records)):toTable()
+    end
+    return result
+end
+
 local function serialiseTerrainDestructions(terrainDestructions)
     local result = {}
     for mapPath, layerChanges in pairs(terrainDestructions) do
@@ -392,6 +414,7 @@ function SaveCodec.Encode(state)
         destroyedActors = deepcopy(state.destroyedActors),
         destroyedTerrain = serialiseTerrainDestructions(state.terrainDestructions),
         telepoints = serialiseTelepoints(state.telepoints),
+        shops = serialiseShops(state.shops),
         triggeredTutorials = state.triggeredTutorials:toTable(),
         screenshot = deepcopy(state.screenshot)
     }
@@ -437,6 +460,7 @@ function SaveCodec.Decode(data)
     state.terrainDestructions = normaliseTerrainDestructions(data.destroyedTerrain)
     state.obtainedItems = normaliseObtainedItems(data.obtainedItems)
     state.telepoints = normaliseTelepoints(data.telepoints)
+    state.shops = normaliseShops(data.shops)
     state.triggeredTutorials = normaliseTriggeredTutorials(data.triggeredTutorials)
     if data.screenshot ~= cjson.null then
         state.screenshot = data.screenshot

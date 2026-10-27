@@ -360,6 +360,7 @@ return {
     ["HOTKEY_QUICK_LOAD"] = "]：快速读档",
     ["HOTKEY_QUICK_SAVE"] = "[：快速存档",
     ["HOTKEY_SAVE"] = "S：存档",
+    ["HOTKEY_SHOP_RECORDS"] = "V：已访问商店",
     ["HOTKEY_SWITCH_PLAYER"] = "U：切换角色",
     ["HOTKEY_TELEPORT"] = "F：楼层传送",
     ["HP"] = "生命",

@@ -49,6 +49,12 @@ return {
         FunctionWhenPressed = nil,
         FunctionWhenReleased = SceneMap.showFloorTeleporter
     },
+    [sf.Keyboard.Key.V] = {
+        Scene = SceneMap,
+        Filter = { "casual" },
+        FunctionWhenPressed = nil,
+        FunctionWhenReleased = SceneMap.showShopRecords
+    },
     [sf.Keyboard.Key.S] = {
         Scene = SceneMap,
         Filter = { "casual" },

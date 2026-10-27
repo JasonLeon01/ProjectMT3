@@ -16,10 +16,10 @@
 ---@field WindowFrame   Engine.Window
 
 ---@class Internal.UIBase.GeneratedAssets.WindowMessage
----@field SelectionItem1  Internal.UI.Parts.WindowMessage.MessageOptionRow
----@field SelectionItem2  Internal.UI.Parts.WindowMessage.MessageOptionRow
----@field SelectionItem3  Internal.UI.Parts.WindowMessage.MessageOptionRow
----@field SelectionItem4  Internal.UI.Parts.WindowMessage.MessageOptionRow
+---@field SelectionItem1  Internal.UI.Parts.Shared.SelectableTextRow
+---@field SelectionItem2  Internal.UI.Parts.Shared.SelectableTextRow
+---@field SelectionItem3  Internal.UI.Parts.Shared.SelectableTextRow
+---@field SelectionItem4  Internal.UI.Parts.Shared.SelectableTextRow
 ---@field WindowChrome    Internal.UI.Parts.Shared.WindowChrome
 ---@field WindowPauseMark Internal.UI.Parts.Shared.WindowPauseMark
 

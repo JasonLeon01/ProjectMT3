@@ -260,6 +260,7 @@ return {
     ["HOTKEY_QUICK_LOAD"] = "]: Quick load",
     ["HOTKEY_QUICK_SAVE"] = "[: Quick save",
     ["HOTKEY_SAVE"] = "S: Save game",
+    ["HOTKEY_SHOP_RECORDS"] = "V: Visited shops",
     ["HOTKEY_SWITCH_PLAYER"] = "U: Switch party member",
     ["HOTKEY_TELEPORT"] = "F: Floor teleporter",
     ["HP"] = "HP",

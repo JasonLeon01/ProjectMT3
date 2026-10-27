@@ -27,6 +27,7 @@ Controller.ENTRIES = {
         "HOTKEY_QUICK_LOAD",
         "HOTKEY_ENEMY_BOOK",
         "HOTKEY_TELEPORT",
+        "HOTKEY_SHOP_RECORDS",
         "HOTKEY_BOTTLE",
         "HOTKEY_MAGIC_DOOR",
         "HOTKEY_SWITCH_PLAYER"

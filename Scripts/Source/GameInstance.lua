@@ -3,10 +3,13 @@ local EventKey = require("Enums.EventKey")
 local GameVariables = require("Source.Configs.GameVariables")
 local GameInstanceRecords = require("Source.Utils.GameInstance.Records")
 local GameInstanceSaveCodec = require("Source.Utils.GameInstance.SaveCodec")
+local GameInstanceShops = require("Source.Utils.GameInstance.Shops")
 local GameInstanceWorldPersistence = require("Source.Utils.GameInstance.WorldPersistence")
 local MapPath = require("Global.Utils.MapPath")
 ---@class (partial) Source.GameInstance.GameInstance
 local GameInstance = {}
+
+GameInstance.EnableShopRecord = true
 
 function GameInstance:init(skipDefaultPlayer)
     self._playerKeys = {}
@@ -22,6 +25,7 @@ function GameInstance:init(skipDefaultPlayer)
     self._cachedDestroyedActors = {}
     self._cachedTerrainDestructions = {}
     self._cachedTelepoints = {}
+    self._shops = {}
     self._triggeredTutorials = list()
     self._screenshot = nil
     if skipDefaultPlayer then
@@ -51,6 +55,7 @@ function GameInstance:asDict()
         terrainDestructions = self._cachedTerrainDestructions,
         obtainedItems = self._cachedNewItem,
         telepoints = self._cachedTelepoints,
+        shops = self._shops,
         triggeredTutorials = self._triggeredTutorials,
         screenshot = self._screenshot
     })
@@ -77,6 +82,7 @@ function GameInstance:restoreFromData(data)
     self._cachedTerrainDestructions = state.terrainDestructions
     self._cachedNewItem = state.obtainedItems
     self._cachedTelepoints = state.telepoints
+    self._shops = state.shops
     self._triggeredTutorials = state.triggeredTutorials
     self._screenshot = state.screenshot
 end
@@ -204,6 +210,7 @@ function GameInstance:removePlayerByClass(playerClass)
             self._players[playerKey] = nil
             self._cachedMaps[playerKey] = nil
             self._cachedTelepoints[playerKey] = nil
+            self._shops[playerKey] = nil
             Engine.publish(EventKey.PartyChanged, { instance = self })
             return
         end
@@ -262,6 +269,23 @@ end
 
 function GameInstance:getTelepoints(mapPath)
     return (self._cachedTelepoints[self._playerKeys[1]] or {})[MapPath.Normalise(mapPath)] or {}
+end
+
+function GameInstance:getShops()
+    return deepcopy(self._shops[self._playerKeys[1]] or {})
+end
+
+function GameInstance:recordShop(mapPath, mapTag)
+    if not GameInstance.EnableShopRecord then
+        return false
+    end
+    local playerKey = self._playerKeys[1]
+    self._shops[playerKey] = self._shops[playerKey] or {}
+    return GameInstanceShops.Append(self._shops[playerKey], mapPath, mapTag)
+end
+
+function GameInstance:removeShop(mapPath, mapTag)
+    return GameInstanceShops.Remove(self._shops[self._playerKeys[1]] or {}, mapPath, mapTag)
 end
 
 ---@param actor            Engine.Actor
