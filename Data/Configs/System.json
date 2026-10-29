@@ -1,7 +1,7 @@
 {
   "title": {
     "type": "string",
-    "value": "ProjectMT3"
+    "value": "魔塔·终章"
   },
   "gameSize": {
     "type": "int[2]",
@@ -41,7 +41,7 @@
     "type": "file",
     "base": "System",
     "ext": ".png",
-    "value": "/Game/Assets/System/mting-1270.png"
+    "value": "/Game/Assets/System/title-image.png"
   },
   "windowskinName": {
     "type": "file",

@@ -9,9 +9,9 @@ This notice covers the Game project and the unchanged runtime/assets in Ludork 1
 | Component | Version or revision | Purpose and distribution | Licence | Complete text | Official source |
 | --- | --- | --- | --- | --- | --- |
 | LuaSF | v3.1.0.7 | SFML bindings in the Game project and all project templates | MIT | `Licenses/LuaSF/LICENSE.txt` | [JasonLeon01/LuaSF-AutoGenerator](https://github.com/JasonLeon01/LuaSF-AutoGenerator) |
+| LuaGlue | 1.0.0 | Lua binding runtime shared by LuaSF and the game runtime | MIT | `Licenses/LuaGlue/LICENSE` | [JasonLeon01/LuaSF-AutoGenerator](https://github.com/JasonLeon01/LuaSF-AutoGenerator) |
 | Lua | 5.5.0 | Game scripting runtime and `luac` | MIT | `Licenses/Lua/LICENSE.txt` | [Lua.org](https://www.lua.org/) |
 | SFML | SFML-ME `310-ME-OH-GLESVER` tag | Graphics, windowing, audio, system, and network runtime | Zlib/libpng | `Licenses/SFML/LICENSE.txt` | [JasonLeon01/SFML-ME](https://github.com/JasonLeon01/SFML-ME/releases/tag/310-ME-OH-GLESVER) |
-| sol2 | 3.3.0 | C++/Lua binding headers used by LuaSF and the game runtime | MIT | `Licenses/sol2/LICENSE.txt` | [ThePhD/sol2](https://github.com/ThePhD/sol2) |
 | lua-cjson | Source release 2.1.0.19; the upstream runtime constant reports 2.1.0.11 | JSON module linked into the game runtime | MIT | `Licenses/lua-cjson/LICENSE.txt` | [openresty/lua-cjson](https://github.com/openresty/lua-cjson) |
 | zlib | 1.3.1 | Compression support in the game runtime | Zlib | `Licenses/zlib/LICENSE.txt` | [madler/zlib](https://github.com/madler/zlib) |
 | IXWebSocket | 12.1.0, commit `bf7ad53c02612643e1cf72e37c8749491798d33d` | Statically linked WebSocket transport for Ludork Server | BSD 3-Clause; incorporated MIT and Zlib code | `Licenses/IXWebSocket/LICENSE.txt`, `Licenses/IXWebSocket/THIRD-PARTY.txt` | [machinezone/IXWebSocket](https://github.com/machinezone/IXWebSocket/releases/tag/v12.1.0) |

@@ -12,6 +12,7 @@ function View:init(instance)
     UiView.init(self, instance)
     local controls = {
         Background = assert(self.instance:requireControl("Background")),
+        GameTitle = assert(self.instance:requireControl("GameTitle")),
         Root = assert(self.instance:requireControl("Root"))
     }
     ---@cast controls Internal.UIBase.GeneratedControls.Title

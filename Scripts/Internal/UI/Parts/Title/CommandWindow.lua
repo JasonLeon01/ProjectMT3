@@ -8,7 +8,7 @@ local ChildView3 = require("Internal.UI.Parts.Shared.WindowPauseMark")
 local View = {}
 
 View.assetKey = "Parts/Title/CommandWindow"
-View.designSize = sf.Vector2f.new(256, 160)
+View.designSize = sf.Vector2f.new(208, 176)
 
 function View:init(instance)
     UiView.init(self, instance)

@@ -1,8 +1,8 @@
 {
   "type": "uiAsset",
   "designSize": {
-    "width": 256,
-    "height": 160
+    "width": 208,
+    "height": 176
   },
   "palette": {
     "exposed": true,
@@ -63,8 +63,8 @@
     "controlId": "Engine.Canvas",
     "properties": {
       "size": [
-        256,
-        160
+        208,
+        176
       ]
     },
     "editor": {},
@@ -74,11 +74,17 @@
         "controlId": "Engine.Window",
         "properties": {
           "size": [
-            256,
-            160
+            208,
+            176
           ],
-          "windowSkin": "",
-          "repeated": true
+          "windowSkin": "/Game/Assets/System/WS-prefix100-original2.png",
+          "repeated": true,
+          "colour": [
+            255,
+            255,
+            255,
+            255
+          ]
         },
         "slot": {
           "anchors": {
@@ -112,8 +118,8 @@
         "controlId": "Engine.Canvas",
         "properties": {
           "size": [
-            224,
-            128
+            176,
+            144
           ]
         },
         "slot": {
@@ -147,8 +153,8 @@
             "controlId": "Engine.ScrollBox",
             "properties": {
               "size": [
-                224,
-                128
+                176,
+                144
               ],
               "windowSkin": ""
             },
@@ -183,10 +189,10 @@
                 "controlId": "Engine.ListView",
                 "properties": {
                   "size": [
-                    224,
-                    128
+                    176,
+                    144
                   ],
-                  "defaultItemHeight": 32,
+                  "defaultItemHeight": 36,
                   "fixItemHeight": true,
                   "columns": 1
                 },
