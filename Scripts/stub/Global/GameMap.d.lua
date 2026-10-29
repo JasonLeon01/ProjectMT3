@@ -63,8 +63,6 @@
 ---@field regionRects sf.IntRect[]
 
 ---@class (partial) GameMap: GlobalCore.GameMapBase
----@field _billboardOverlayLayers   table<string, boolean>
----@field _pendingProjectiles       table<Engine.Particle, boolean>
 ---@field DefaultCoverAlpha         integer
 ---@field HideDisconnectedRegions   boolean                                                                                                                                                         Hide tile-disconnected areas outside the player or preview observer region; defaults to false.
 ---@field MapViewRect               sf.IntRect                                                                                                                                                      Logical-screen rectangle occupied by the map canvas; defaults to `(192, 32, 416, 416)`.
@@ -95,15 +93,6 @@
 ---@field new                       fun(mapName: string, tilemap: Engine.Tilemap, camera?: GlobalCore.Camera, previewOnly?: boolean, sparseWorldConfig?: Global.GameMap.SparseWorldConfig): GameMap
 local GameMap = {}
 
---- Add an empty session billboard layer first, drawing its text above terrain.
----@param name string
-function GameMap:prependBillboardLayer(name) end
-
---- Spawn a session-only actor outside world-region persistence and streaming ownership.
----@param actor Engine.Actor
----@param layer string
-function GameMap:spawnTransientActor(actor, layer) end
-
 ---@brief Construct a game map.
 ---
 --- - @param mapName The name of the map.
@@ -130,20 +119,6 @@ function GameMap:_isBillboardActorVisible(actor, layerName) end
 function GameMap:updateAutoTileAnimation(deltaTime) end
 
 function GameMap:disposeStreaming() end
-
---- Return the runtime map's particle system; preview maps have no particle system.
----@return Engine.ParticleSystem
-function GameMap:getParticleSystem() end
-
---- Keep map shortcuts blocked until this projectile's hit or cancellation is settled.
----@param particle Engine.Particle
-function GameMap:trackProjectile(particle) end
-
----@param particle Engine.Particle
-function GameMap:untrackProjectile(particle) end
-
----@return boolean
-function GameMap:hasPendingProjectiles() end
 
 ---@param component ComponentBase
 function GameMap:addComponent(component) end
@@ -578,13 +553,13 @@ function GameMap:drawMapContent(target, states, applyPlayerCover) end
 ---@brief Render the full map including layers, actors, lights, and particles.
 function GameMap:show() end
 
----@brief Refresh material queries and invalidate passability data.
+---@brief Rebuild pending terrain passability data.
 function GameMap:refreshShader() end
 
----@brief Mark the passability cache as dirty for rebuild on next query.
+---@brief Mark terrain passability and region visibility dirty for the next terrain query.
 function GameMap:markPassabilityDirty() end
 
----@brief Refresh one actor's occupancy without rebuilding tile passability.
+---@brief Refresh an active actor's changed occupancy without rebuilding tile passability.
 ---
 --- - @param actor The actor whose cached occupancy should be refreshed.
 ---@param actor Engine.Actor
