@@ -1,12 +1,12 @@
 {
   "engine": {
-    "upstreamSha": "04c343896023ad7c9f972395b894f3e8ba92b0cf"
+    "upstreamSha": "e0c435d89011721c65e220ecd30880099ee711f6"
   },
   "application": {
     "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "global": {
-    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
+    "upstreamSha": "e0c435d89011721c65e220ecd30880099ee711f6"
   },
   "internal": {
     "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
@@ -15,7 +15,7 @@
     "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
   },
   "globalStub": {
-    "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"
+    "upstreamSha": "e0c435d89011721c65e220ecd30880099ee711f6"
   },
   "internalStub": {
     "upstreamSha": "48cec94a1d937b9b20b837c88d8dfdcc6d101c36"

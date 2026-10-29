@@ -1,8 +1,9 @@
 'use strict';
 
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
-const { execFileSync } = require('node:child_process');
+const { execFileSync, spawnSync } = require('node:child_process');
 
 const fourHours = 4 * 60 * 60;
 
@@ -42,6 +43,47 @@ function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirec
 
   function changedPaths(before, after) {
     return [...new Set([...before.keys(), ...after.keys()])].filter(name => !equal(before.get(name), after.get(name)));
+  }
+
+  function mergeEntry(project, upstream, name, base, local, remote) {
+    const read = (repository, entry) => ({
+      mode: entry.mode,
+      contents: git(repository, 'cat-file', 'blob', entry.sha),
+    });
+    const conflict = () => {
+      throw new Error(`Sync conflict: ${targetRoot}/${name}; preserve the project changes and resolve against the upstream baseline before retrying.`);
+    };
+    if (equal(local, remote)) return local ? read(project, local) : undefined;
+    if (equal(local, base)) return remote ? read(upstream, remote) : undefined;
+    // Different additions, modify/delete and delete/modify require a decision.
+    if (!base || !local || !remote) return conflict();
+    // Do not combine target edits with symlink/file type transitions.
+    if ([base, local, remote].some(entry => entry.mode === '120000')) return conflict();
+
+    const mode = local.mode === base.mode ? remote.mode
+      : remote.mode === base.mode || local.mode === remote.mode ? local.mode
+        : undefined;
+    if (!mode) return conflict();
+    if (local.sha === remote.sha) return { ...read(project, local), mode };
+    if (local.sha === base.sha) return { ...read(upstream, remote), mode };
+    if (remote.sha === base.sha) return { ...read(project, local), mode };
+    // Binary content cannot be line-merged safely.
+    const contents = [read(project, local).contents, read(upstream, base).contents, read(upstream, remote).contents];
+    if (contents.some(buffer => buffer.includes(0))) return conflict();
+    const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'ludork-sync-merge-'));
+    try {
+      const files = ['project', 'baseline', 'upstream'].map((label, index) => {
+        const filename = path.join(directory, label);
+        fs.writeFileSync(filename, contents[index]);
+        return filename;
+      });
+      const merged = spawnSync('git', ['merge-file', '-p', ...files], { maxBuffer: 128 * 1024 * 1024 });
+      if (merged.error) throw merged.error;
+      if (merged.status !== 0) return conflict();
+      return { mode, contents: merged.stdout };
+    } finally {
+      fs.rmSync(directory, { recursive: true, force: true });
+    }
   }
 
   function hasRecentChanges(upstream, sha, now) {
@@ -112,7 +154,30 @@ function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirec
     const before = tree(upstream, baseline, sourceRoot);
     const candidates = changedPaths(before, latest);
     // Work from the default branch on every run, never from the pending PR's state.
-    const changes = candidates.filter(name => !equal(local.get(name), latest.get(name)));
+    // Resolve every candidate before touching the checkout: a conflict must not
+    // leave this target partially synchronized or advance its baseline.
+    const merged = new Map(candidates.map(name => [name,
+      mergeEntry(project, upstream, name, before.get(name), local.get(name), latest.get(name)),
+    ]));
+    const changes = candidates.filter(name => {
+      const entry = merged.get(name);
+      const previous = local.get(name);
+      if (!entry || !previous) return Boolean(entry) !== Boolean(previous);
+      return entry.mode !== previous.mode || !entry.contents.equals(git(project, 'cat-file', 'blob', previous.sha));
+    });
+    const finalNames = new Set(local.keys());
+    for (const name of candidates) {
+      if (merged.get(name)) finalNames.add(name);
+      else finalNames.delete(name);
+    }
+    for (const name of finalNames) {
+      const parts = name.split('/');
+      for (let length = 1; length < parts.length; length++) {
+        if (finalNames.has(parts.slice(0, length).join('/'))) {
+          throw new Error(`Sync conflict: ${targetRoot}/${name} conflicts with an existing project file.`);
+        }
+      }
+    }
 
     // Remove only changed tracked files, before creating any replacements. This
     // also supports file/directory transitions without recursively deleting dirs.
@@ -123,18 +188,20 @@ function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirec
       pruneEmptyParents(project, filename);
     }
     for (const name of changes) {
-      const entry = latest.get(name);
+      const entry = merged.get(name);
       if (!entry) continue;
       const filename = checkedPath(project, name);
       fs.mkdirSync(path.dirname(filename), { recursive: true });
-      const contents = git(upstream, 'cat-file', 'blob', entry.sha);
+      const contents = entry.contents;
       if (entry.mode === '120000') fs.symlinkSync(contents.toString(), filename);
       else {
         fs.writeFileSync(filename, contents, { flag: 'wx', mode: entry.mode === '100755' ? 0o755 : 0o644 });
         fs.chmodSync(filename, entry.mode === '100755' ? 0o755 : 0o644);
       }
     }
-    const shouldUpdatePr = changes.length > 0;
+    // Even an already-applied change needs its baseline recorded, otherwise a
+    // later sync would merge it again against obsolete project history.
+    const shouldUpdatePr = candidates.length > 0;
     if (shouldUpdatePr) {
       fs.mkdirSync(path.dirname(stateFile), { recursive: true });
       state[stateKey] = { ...state[stateKey], upstreamSha: sha };

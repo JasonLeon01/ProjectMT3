@@ -75,8 +75,8 @@
 ---@field GameplayEffectSpec GlobalCore.GameplayEffectSpec
 ---@field GameplayEventData GlobalCore.GameplayEventData
 ---@field GameplayModifier GlobalCore.GameplayModifier
----@field ActorPixelShatterShader GlobalCore.ActorPixelShatterShader
 ---@field Graphics GlobalCore.Graphics
+---@field ActorPixelShatterShader GlobalCore.ActorPixelShatterShader
 ---@field Light GlobalCore.Light
 ---@field AudioEffectControl GlobalCore.AudioEffectControl
 ---@field AudioManager GlobalCore.AudioManager
@@ -93,9 +93,9 @@
 ---@field SceneBase GlobalCore.SceneBase
 ---@field SceneManager GlobalCore.SceneManager
 ---@field ScreenEffects GlobalCore.ScreenEffects
+---@field Server GlobalCore.Server
 ---@field ServerConnectionResult GlobalCore.ServerConnectionResult
 ---@field ServerResult GlobalCore.ServerResult
----@field Server GlobalCore.Server
 ---@field System GlobalCore.System
 ---@field Transition GlobalCore.Transition
 ---@field UIManager GlobalCore.UIManager
@@ -727,10 +727,12 @@ function GameMapBase:findPathExt(start, goal, size, movingActor, excludedAnchors
 function GameMapBase:rebuildPassabilityCache(size) end
 ---@return nil
 function GameMapBase:invalidatePassabilityCache() end
+---@return nil
+function GameMapBase:_invalidateActorOccupancyCache() end
 --- @brief Refresh one actor's occupancy without rebuilding tile passability
 ---
---- Removes the actor from all cached cells, then registers it at its
---- current occupied cells. Use this after an actor changes map position.
+--- Updates an active actor's cached cells only when its footprint changes.
+--- Use this after an actor changes map position or bounds.
 ---
 --- - @param actor Actor whose occupancy should be refreshed
 ---
@@ -1313,15 +1315,6 @@ function GameplayModifier.new(values) end
 function GameplayModifier.init(self, values) end
 GlobalCore.GameplayModifier = GameplayModifier
 
----@class GlobalCore.ActorPixelShatterShader
-local ActorPixelShatterShader = {}
----@return sf.Shader|nil
-function ActorPixelShatterShader.load() end
----@param shader sf.Shader|nil
----@return nil
-function ActorPixelShatterShader.bindLighting(shader) end
-GlobalCore.ActorPixelShatterShader = ActorPixelShatterShader
-
 ---@class GlobalCore.Graphics
 local Graphics = {}
 --- @brief Get the configured maximum render scale
@@ -1398,6 +1391,15 @@ function Graphics.removeAllGraphicsShaders() end
 ---@return nil
 function Graphics.removeGraphicsShaderAt(index) end
 GlobalCore.Graphics = Graphics
+
+---@class GlobalCore.ActorPixelShatterShader
+local ActorPixelShatterShader = {}
+---@return sf.Shader|nil
+function ActorPixelShatterShader.load() end
+---@param shader sf.Shader|nil
+---@return nil
+function ActorPixelShatterShader.bindLighting(shader) end
+GlobalCore.ActorPixelShatterShader = ActorPixelShatterShader
 
 --- @brief Light source with position, colour, radius, and intensity
 ---
@@ -1867,6 +1869,18 @@ function ScreenEffects.stopShake() end
 function ScreenEffects.isShaking() end
 GlobalCore.ScreenEffects = ScreenEffects
 
+--- Connection diagnostics for the server configured when packaging the project.
+---@class GlobalCore.Server
+local Server = {}
+--- Probe the configured service. Normal is at most 300 ms, Weak at most
+--- 3000 ms, and Disconnected means no valid health response in that time.
+--- When disabled, log a diagnostic and return null without invoking the
+--- callback.
+---@param onCompleted fun(arg1: GlobalCore.ServerConnectionResult|nil): nil
+---@return Engine.AsyncOperation|nil
+function Server.CheckConnectionAsync(onCompleted) end
+GlobalCore.Server = Server
+
 ---@class GlobalCore.ServerConnectionResult : GlobalCore.ServerResult
 ---@field state GlobalCore.ServerNetworkState
 ---@field roundTripMs number|nil
@@ -1879,18 +1893,6 @@ GlobalCore.ServerConnectionResult = ServerConnectionResult
 ---@field message string
 local ServerResult = {}
 GlobalCore.ServerResult = ServerResult
-
---- Connection diagnostics for the server configured when packaging the project.
----@class GlobalCore.Server
-local Server = {}
---- Probe the configured service. Normal is at most 300 ms, Weak at most
---- 3000 ms, and Disconnected means no valid health response in that time.
---- When disabled, log a diagnostic and return null without invoking the
---- callback.
----@param onCompleted fun(arg1: GlobalCore.ServerConnectionResult|nil): nil
----@return Engine.AsyncOperation|nil
-function Server.CheckConnectionAsync(onCompleted) end
-GlobalCore.Server = Server
 
 ---@class GlobalCore.System
 local System = {}

@@ -439,10 +439,6 @@ function GameMap:show()
     Graphics.setWindowDefaultView()
 end
 
-function GameMap:_syncActorsForMapCache()
-    return GameMapActors.SyncActorsForMapCache(self)
-end
-
 function GameMap:_syncActorsForPathfinding()
     return GameMapActors.SyncActorsForPathfinding(self)
 end
