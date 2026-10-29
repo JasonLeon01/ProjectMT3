@@ -82,6 +82,7 @@
 ---@field AudioManager GlobalCore.AudioManager
 ---@field FontManager GlobalCore.FontManager
 ---@field ShaderManager GlobalCore.ShaderManager
+---@field TextureLoadRequest GlobalCore.TextureLoadRequest
 ---@field TextureManager GlobalCore.TextureManager
 ---@field TimeManager GlobalCore.TimeManager
 ---@field TimerEntry GlobalCore.TimerEntry
@@ -1612,6 +1613,32 @@ function ShaderManager.loadFullShaderWithGeo(vertPath, geoPath, fragPath) end
 function ShaderManager.getMemory() end
 GlobalCore.ShaderManager = ShaderManager
 
+---@class GlobalCore.TextureLoadRequest
+local TextureLoadRequest = {}
+---@type 'pending'
+TextureLoadRequest.PENDING = nil
+---@type 'ready'
+TextureLoadRequest.READY = nil
+---@type 'failed'
+TextureLoadRequest.FAILED = nil
+---@type 'cancelled'
+TextureLoadRequest.CANCELLED = nil
+---@return string
+function TextureLoadRequest:getStatus() end
+--- Return the ready texture without waiting. Pending and cancelled requests
+--- raise an error; failed requests rethrow the loading error.
+---@return sf.Texture
+function TextureLoadRequest:getTexture() end
+--- Change the priority of this pending subscription. Larger values run
+--- first.
+---@param priority integer
+---@return nil
+function TextureLoadRequest:setPriority(priority) end
+--- Release this subscription without cancelling other users of the texture.
+---@return nil
+function TextureLoadRequest:cancel() end
+GlobalCore.TextureLoadRequest = TextureLoadRequest
+
 ---@class GlobalCore.TextureManager
 local TextureManager = {}
 ---@param filePath string
@@ -1620,6 +1647,14 @@ local TextureManager = {}
 ---@param smooth? boolean
 ---@return sf.Texture|nil
 function TextureManager.load(filePath, sRGB, area, smooth) end
+--- Request a texture without waiting for file reading, decoding or upload.
+---@param filePath string
+---@param sRGB? boolean
+---@param area? sf.IntRect|nil
+---@param smooth? boolean
+---@param priority? integer
+---@return GlobalCore.TextureLoadRequest
+function TextureManager.request(filePath, sRGB, area, smooth, priority) end
 ---@return integer
 function TextureManager.getMemory() end
 --- Return the resource path associated with a cached texture, or nil for

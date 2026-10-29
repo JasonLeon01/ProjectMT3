@@ -1,16 +1,33 @@
-# Licence Text Index
+# 许可证正文索引
 
-Ludork uses the distribution-root [Zlib License](../LICENSE.md); third-party components and assets keep their own terms. See [THIRD_PARTY_NOTICES.md](../THIRD_PARTY_NOTICES.md) for versions, sources, purposes and text paths.
+[English](README.md) | 简体中文
 
-This is the canonical `Licenses` tree. The editor package receives it in full; templates receive this index, the common runtime directories, and `FFmpeg` only when enabled.
+Ludork 使用 [Zlib 许可证](../LICENSE.md)；第三方组件和资产适用各自条款。[THIRD_PARTY_NOTICES_zh_CN.md](../THIRD_PARTY_NOTICES_zh_CN.md) 列出版本、来源、用途及许可证路径。
 
-- `DotNet`, `DotNetPackages`, `Avalonia`, and `EditorPackages`: editor and managed-runtime notices.
-- `ScriptTools`: CPython, Nuitka runtime, OpenSSL, and Pillow with its incorporated-component notices for the packaged build tool runtime directory.
-- `Lua`, `LuaSF`, `SFML`, `sol2`, `lua-cjson`, `zlib`, `IXWebSocket`, and `NativeDependencies`: common template runtime notices.
-- `FFmpeg`: optional video-runtime notices for FFmpeg templates.
-- `GNUMake` and `MicrosoftVisualCppRuntime`: editor/external redistribution terms, excluded from templates.
-- `HarmonyOSSans` and `SampleMusic`: canonical asset notices; template copies stay beside the assets.
+编辑器包完整携带本权威目录。独立分发的 Server 归档在 `LudorkServer/third-party/README.md` 中提供服务端的第三方声明。模板携带本索引、公共运行时声明，以及启用时的 `FFmpeg` 声明。
 
-The editor SVG dependencies use [Svg.Skia's MIT text](EditorPackages/Svg.Skia-LICENSE.txt) for `Svg.Controls.Avalonia`, `Svg.Model`, `Svg.SceneGraph`, and `ShimSkiaSharp`; [Svg.Custom's Microsoft Public License](EditorPackages/Svg.Custom-LICENSE.txt) for `Svg.Custom`; and [ExCSS's MIT text](EditorPackages/ExCSS-LICENSE.txt) for `ExCSS`. These texts are copied unchanged from the repository commits identified by the restored NuGet packages and linked in the notices table.
+| 目录 | 内容 |
+|---|---|
+| `DotNet`、`DotNetPackages`、`Avalonia`、`EditorPackages` | 编辑器和托管运行时声明 |
+| `ScriptTools` | 随附的 CPython、Nuitka runtime、OpenSSL、Pillow 及其所含组件声明 |
+| `Lua`、`LuaSF`、`SFML`、`LuaGlue`、`lua-cjson`、`zlib`、`IXWebSocket`、`NativeDependencies` | 模板公共运行时声明 |
+| `FFmpeg` | 可选视频运行时声明 |
+| `GNUMake`、`MicrosoftVisualCppRuntime` | 编辑器及外部再分发条款，不进入模板 |
+| `HarmonyOSSans`、`SampleMusic` | 资产声明；模板副本留在资产旁 |
 
-Legal texts are retained in their supplied language and are not translated or rewritten. Explanatory indexes do not replace those texts.
+C++ Source 模板在 `Engine/PlatformHosts/Android/gradle/wrapper` 下随 Android Gradle wrapper 保留完整许可证与中英文来源说明。
+
+MinGW 构建的 Windows 游戏保留 [NativeDependencies/MinGW-RUNTIME-NOTICE.md](NativeDependencies/MinGW-RUNTIME-NOTICE.md) 中列出的编译器运行库许可证及源码分发信息，以及 WebView2 SDK Loader 的许可证与第三方声明。
+
+编辑器依赖的许可证正文均从 NuGet 包标识的源码提交原样复制：
+
+| 依赖包 | 许可证正文 | 来源 |
+|---|---|---|
+| `Avalonia.Controls.WebView` 12.1.0 | [MIT](EditorPackages/Avalonia.Controls.WebView-LICENSE.txt) | [上游提交](https://github.com/AvaloniaUI/Avalonia.Controls.WebView/blob/b45e042d21d96371bb6d07822a55c85ee5f74d2f/LICENSE) |
+| `Avalonia.Labs.Notifications` 12.0.2 | [MIT](EditorPackages/Avalonia.Labs.Notifications-LICENSE.txt) | [上游提交](https://github.com/AvaloniaUI/Avalonia.Labs/blob/fe1fd16ba0f18540afcdc5007b57f4dbb8528712/LICENSE) |
+| `Svg.Controls.Avalonia`、`Svg.Model`、`Svg.SceneGraph`、`ShimSkiaSharp` | [Svg.Skia MIT](EditorPackages/Svg.Skia-LICENSE.txt) | 第三方声明 |
+| `Svg.Custom` | [Microsoft Public License](EditorPackages/Svg.Custom-LICENSE.txt) | 第三方声明 |
+| `ExCSS` | [MIT](EditorPackages/ExCSS-LICENSE.txt) | 第三方声明 |
+| `SharpCompress` 0.50.7 | [MIT](EditorPackages/SharpCompress-LICENSE.txt) | [上游提交](https://github.com/adamhathcock/sharpcompress/blob/b4af8afe6683d019d504954a3b4e4f18b06e2cd6/LICENSE.txt) |
+
+法律正文保留原始语言，不作改写。本索引不能替代正文。
