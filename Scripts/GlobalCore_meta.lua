@@ -1298,22 +1298,6 @@ local _METADATA = {
             },
         },
     },
-    ActorPixelShatterShader = {
-        attrs = {},
-        load = {
-            type = "function",
-            parameters = {},
-            ["return"] = {
-                "return",
-                ["return"] = "sf.Shader",
-            },
-        },
-        bindLighting = {
-            type = "function",
-            parameters = { "shader", shader = "sf.Shader" },
-            ["return"] = {},
-        },
-    },
     Graphics = {
         attrs = {},
         getMaximumRenderScale = {
@@ -1426,6 +1410,22 @@ local _METADATA = {
         removeGraphicsShaderAt = {
             type = "function",
             parameters = { "index", index = "int" },
+            ["return"] = {},
+        },
+    },
+    ActorPixelShatterShader = {
+        attrs = {},
+        load = {
+            type = "function",
+            parameters = {},
+            ["return"] = {
+                "return",
+                ["return"] = "sf.Shader",
+            },
+        },
+        bindLighting = {
+            type = "function",
+            parameters = { "shader", shader = "sf.Shader" },
             ["return"] = {},
         },
     },
@@ -2197,6 +2197,17 @@ local _METADATA = {
             Pure = true,
         },
     },
+    Server = {
+        attrs = {},
+        CheckConnectionAsync = {
+            type = "function",
+            parameters = { "onCompleted", onCompleted = "function" },
+            ["return"] = {
+                "return",
+                ["return"] = { "Engine", "AsyncOperation" },
+            },
+        },
+    },
     ServerConnectionResult = {
         bases = { { "GlobalCore", "ServerResult" } },
         attrs = { "state", "roundTripMs" },
@@ -2221,17 +2232,6 @@ local _METADATA = {
         },
         message = {
             type = "string",
-        },
-    },
-    Server = {
-        attrs = {},
-        CheckConnectionAsync = {
-            type = "function",
-            parameters = { "onCompleted", onCompleted = "function" },
-            ["return"] = {
-                "return",
-                ["return"] = { "Engine", "AsyncOperation" },
-            },
         },
     },
     System = {
