@@ -3,6 +3,7 @@
 
 ---@class Internal.UIBase.GeneratedControls.Title
 ---@field Background Engine.Image
+---@field GameTitle  Engine.PlainText
 ---@field Root       Engine.Canvas
 
 ---@class Internal.UIBase.GeneratedAssets.Title

@@ -1,4 +1,5 @@
 local Engine = require("Engine")
+local GlobalCore = require("GlobalCore")
 local SourceSystem = require("Source.System")
 local EventKey = require("Enums.EventKey")
 local WindowCommand = require("Source.Windows.WindowCommand")
@@ -43,7 +44,11 @@ function SceneTitleController:bind()
 end
 
 function SceneTitleController:refresh()
-    self:setProperty("Background", "texture", SourceSystem.GetTitleBackgroundFile())
+    local backgroundTexture = assert(
+        GlobalCore.TextureManager.load(SourceSystem.GetTitleBackgroundFile(), false, nil, true)
+    )
+    self.ui.controls.Background:setTexture(backgroundTexture, false)
+    self:setText("GameTitle", SourceSystem.GetTitle())
     self._windowCommand:refreshRows()
 end
 

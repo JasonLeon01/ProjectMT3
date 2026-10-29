@@ -24,7 +24,13 @@
         "name": "Background",
         "controlId": "Engine.Image",
         "properties": {
-          "texture": "/Game/Assets/System/GrassBackground.png"
+          "texture": "/Game/Assets/System/title-image.png",
+          "textureRect": [
+            0,
+            0,
+            1024,
+            768
+          ]
         },
         "slot": {
           "anchors": {
@@ -54,28 +60,79 @@
         "children": []
       },
       {
+        "name": "GameTitle",
+        "controlId": "Engine.PlainText",
+        "properties": {
+          "characterSize": 32,
+          "bold": true,
+          "letterSpacing": 1.15,
+          "fillColor": [
+            232,
+            224,
+            204,
+            255
+          ],
+          "outlineColor": [
+            0,
+            0,
+            0,
+            190
+          ],
+          "outlineThickness": 1.0,
+          "text": ""
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              0
+            ],
+            "max": [
+              0,
+              0
+            ]
+          },
+          "offsets": {
+            "left": 40,
+            "top": 36,
+            "right": 0,
+            "bottom": 0
+          },
+          "alignment": [
+            0,
+            0
+          ],
+          "autoSize": true,
+          "zOrder": 1
+        },
+        "editor": {
+          "previewText": "ProjectMT3"
+        },
+        "children": []
+      },
+      {
         "name": "CommandPanel",
         "controlId": "Project:Parts/Title/CommandWindow",
         "properties": {},
         "slot": {
           "anchors": {
             "min": [
-              0.5,
+              1,
               0.5
             ],
             "max": [
-              0.5,
+              1,
               0.5
             ]
           },
           "offsets": {
-            "left": 0,
-            "top": 0,
-            "right": 256,
-            "bottom": 160
+            "left": -40,
+            "top": -8,
+            "right": 208,
+            "bottom": 176
           },
           "alignment": [
-            0.5,
+            1,
             0
           ],
           "autoSize": false,
