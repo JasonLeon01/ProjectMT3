@@ -24,7 +24,7 @@
         "name": "Background",
         "controlId": "Engine.Image",
         "properties": {
-          "texture": "/Game/Assets/System/GrassBackground.png"
+          "texture": "/Game/Assets/System/title-image.png"
         },
         "slot": {
           "anchors": {
