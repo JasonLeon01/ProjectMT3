@@ -12,6 +12,7 @@ import stat
 import struct
 import subprocess
 import tempfile
+import xml.etree.ElementTree as ET
 import zipfile
 import zlib
 
@@ -246,6 +247,45 @@ def validate_standalone(project, output):
     print("Validated editable Standalone project and preserved project settings")
 
 
+def validate_windows_project(project):
+    config = json.loads((project / "Main.proj").read_text(encoding="utf-8-sig"))
+    require(isinstance(config, dict) and "compiler" not in config,
+            "Windows CI requires MSVC: omit Main.proj compiler; MinGW is not supported by these workflows")
+
+
+def windows_build_metadata(project):
+    build = project / "build"
+    cache = dict(re.findall(r"^([^/#\n][^:\n]*):[^=\n]+=(.*)$",
+                            (build / "CMakeCache.txt").read_text(encoding="utf-8"), re.MULTILINE))
+    require(cache.get("CMAKE_GENERATOR") == "Visual Studio 17 2022",
+            "Windows CI requires Ludork's Visual Studio 17 2022 generator")
+    require(cache.get("CMAKE_GENERATOR_PLATFORM") == "x64"
+            and cache.get("CMAKE_BUILD_TYPE") == "Release",
+            "Windows CI requires an x64 Release build")
+    cmake_version = ".".join(cache[f"CMAKE_CACHE_{part}_VERSION"] for part in ("MAJOR", "MINOR", "PATCH"))
+    compiler_file = build / "CMakeFiles" / cmake_version / "CMakeCXXCompiler.cmake"
+    compiler = {name: value.strip('"') for name, value in re.findall(
+        r'^set\((CMAKE_CXX_\w+) ([^\n]*)\)$', compiler_file.read_text(encoding="utf-8"), re.MULTILINE)}
+    require(compiler.get("CMAKE_CXX_COMPILER_ID") == "MSVC"
+            and compiler.get("CMAKE_CXX_COMPILER_ARCHITECTURE_ID") == "x64",
+            "Windows CI must produce native MSVC x64 binaries")
+    main_project = ET.parse(build / "Main.vcxproj").getroot()
+    sdk = main_project.findtext(".//{*}WindowsTargetPlatformVersion")
+    data = {
+        "generator": cache["CMAKE_GENERATOR"],
+        "architecture": compiler["CMAKE_CXX_COMPILER_ARCHITECTURE_ID"],
+        "compiler_id": compiler["CMAKE_CXX_COMPILER_ID"],
+        "compiler_version": compiler.get("CMAKE_CXX_COMPILER_VERSION"),
+        "compiler_path": compiler.get("CMAKE_CXX_COMPILER"),
+        "visual_studio_instance": cache.get("CMAKE_GENERATOR_INSTANCE"),
+        "windows_sdk": sdk,
+        "cmake_version": cmake_version,
+    }
+    require(all(data.values()), "Windows native toolchain metadata is incomplete")
+    print("Windows native toolchain: " + json.dumps(data))
+    return data
+
+
 def metadata(project, output, platform, artifact=None, signed=False, notarized=False, standalone=False):
     required = ("PROJECT_SHA", "LUDORK_SHA", "LUDORK_CHECKED_SHA", "LUDORK_RUN_ID", "LUDORK_ARTIFACT_ID")
     for name in required:
@@ -268,6 +308,8 @@ def metadata(project, output, platform, artifact=None, signed=False, notarized=F
     }
     if standalone:
         data.update(type="standalone", channel=None, encrypt_data=False, compile_lua=False, use_ldpak=False)
+    if platform == "windows-x64":
+        data["native_toolchain"] = windows_build_metadata(project)
     if artifact:
         with artifact.open("rb") as stream:
             data.update(artifact=artifact.name, artifact_sha256=hashlib.file_digest(stream, "sha256").hexdigest())
@@ -278,6 +320,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("server-url")
+    sub.add_parser("validate-windows-project").add_argument("project", type=Path)
     for command in ("clean", "metadata", "validate-standalone"):
         item = sub.add_parser(command)
         item.add_argument("project", type=Path)
@@ -296,6 +339,8 @@ def main():
     args = parser.parse_args()
     if args.command == "server-url":
         print(server_url())
+    elif args.command == "validate-windows-project":
+        validate_windows_project(args.project)
     elif args.command == "clean":
         clean(args.project, args.output)
     elif args.command == "validate-standalone":

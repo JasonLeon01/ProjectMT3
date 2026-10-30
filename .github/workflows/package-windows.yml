@@ -43,7 +43,6 @@ jobs:
     runs-on: windows-2022
     timeout-minutes: 180
     env:
-      CMAKE_GENERATOR: Ninja
       PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
       LUDORK_SHA: ${{ needs.check.outputs.windows_sha }}
       LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}

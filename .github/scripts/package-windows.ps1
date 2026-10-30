@@ -8,6 +8,10 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+$ci = Join-Path $ProjectDirectory '.github/scripts/package-ci.py'
+& python $ci validate-windows-project $ProjectDirectory
+if ($LASTEXITCODE -ne 0) { throw 'Windows CI requires the project MSVC compiler setting.' }
+
 foreach ($variable in @('LUDORK_SERVER_URL', 'LUDORK_SERVER_KEY')) {
     if (-not [Environment]::GetEnvironmentVariable($variable)) {
         throw "Missing required environment variable: $variable"
@@ -28,7 +32,7 @@ if ($archives.Count -gt 0) {
     }
 }
 
-foreach ($command in @('cmake', 'ninja', 'cl', 'python')) {
+foreach ($command in @('cmake', 'cl', 'python')) {
     Get-Command $command -ErrorAction Stop | Out-Null
 }
 foreach ($relativePath in @(
@@ -54,13 +58,14 @@ if ($Mode -eq 'standalone' -and -not (Test-Path -LiteralPath (Join-Path $LudorkD
 }
 
 $scriptTools = Join-Path $LudorkDirectory 'tools/ScriptTools/ScriptTools.exe'
-& $scriptTools server-config --help *> $null
-if ($LASTEXITCODE -ne 0) {
-    throw 'This Ludork artifact lacks server-config support. Publish a new Ludork tools artifact with server-config support.'
+foreach ($command in @('server-config', 'windows-native-build')) {
+    & $scriptTools $command --help *> $null
+    if ($LASTEXITCODE -ne 0) {
+        throw "This Ludork artifact lacks $command support. Publish a new Ludork tools artifact with $command support."
+    }
 }
 
 $packer = Join-Path $LudorkDirectory 'tools/pack_project.bat'
-$ci = Join-Path $ProjectDirectory '.github/scripts/package-ci.py'
 $env:LUDORK_SERVER_URL = & python $ci server-url
 if ($LASTEXITCODE -ne 0) { throw 'Server URL preparation failed.' }
 & python $ci clean $ProjectDirectory $OutputDirectory
