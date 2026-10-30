@@ -53,6 +53,7 @@ function View:init(instance)
         MapName = assert(self.instance:requireControl("MapName")),
         PlayerName = assert(self.instance:requireControl("PlayerName")),
         Root = assert(self.instance:requireControl("Root")),
+        Shortcuts = assert(self.instance:requireControl("Shortcuts")),
         StateHost = assert(self.instance:requireControl("StateHost"))
     }
     ---@cast controls Internal.UIBase.GeneratedControls.PlayerAttrHUD

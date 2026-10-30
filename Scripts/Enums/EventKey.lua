@@ -3,7 +3,8 @@ local EventKey = {
     LocaleChanged = "LocaleChanged",
     AbilitySystemChanged = "AbilitySystemChanged",
     PlayerChanged = "PlayerChanged",
-    PartyChanged = "PartyChanged"
+    PartyChanged = "PartyChanged",
+    ShopRecordsChanged = "ShopRecordsChanged"
 }
 
 return EventKey

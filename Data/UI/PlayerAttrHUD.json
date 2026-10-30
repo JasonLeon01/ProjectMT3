@@ -1650,6 +1650,70 @@
         "children": []
       },
       {
+        "name": "Shortcuts",
+        "controlId": "Engine.WrapBox",
+        "properties": {
+          "size": [
+            488,
+            32
+          ],
+          "count": 0,
+          "spacing": [
+            8,
+            8
+          ]
+        },
+        "slot": {
+          "anchors": {
+            "min": [
+              0,
+              1
+            ],
+            "max": [
+              1,
+              1
+            ]
+          },
+          "offsets": {
+            "left": 8,
+            "top": 0,
+            "right": 144,
+            "bottom": 32
+          },
+          "alignment": [
+            0,
+            1
+          ],
+          "autoSize": false,
+          "zOrder": 0
+        },
+        "editor": {},
+        "children": [
+          {
+            "name": "ShortcutButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "/Game/Assets/System/mting-495.png",
+              "hoverColour": [
+                238,
+                246,
+                255,
+                255
+              ],
+              "pressedColour": [
+                205,
+                220,
+                238,
+                255
+              ]
+            },
+            "slot": {},
+            "editor": {},
+            "children": []
+          }
+        ]
+      },
+      {
         "name": "ControlsButtonArea",
         "controlId": "Engine.Canvas",
         "properties": {},

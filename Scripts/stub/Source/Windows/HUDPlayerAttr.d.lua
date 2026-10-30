@@ -1,5 +1,12 @@
 ---@meta
 
+---@alias Source.Windows.PlayerAttrHUD.ShortcutKey "enemyBook" | "floorTeleporter" | "shopRecords" | "magicDoor" | "bottle"
+
+---@class Source.Windows.PlayerAttrHUD.ShortcutDefinition
+---@field action Source.Windows.PlayerAttrHUD.ShortcutKey
+---@field items  string[] | nil
+---@field icon   string | nil
+
 ---
 --- Shows the player's avatar, current map name, level, states, HP bar with value, stat values, and breath slots.
 ---@class Source.Windows.PlayerAttrHUD.Controller: Internal.UIBase.UiController
@@ -7,6 +14,8 @@
 ---@field _player                Source.MapActors.Player.Player
 ---@field _inputDevice           Engine.InputHintDevice | nil
 ---@field _openControlsCallback  fun() | nil
+---@field _shortcutCallbacks     table<Source.Windows.PlayerAttrHUD.ShortcutKey, fun(): boolean>
+---@field _shortcutSignature     string | nil
 ---@field _openMenuCallback      function | nil
 ---@field ui                     Internal.UI.PlayerAttrHUD
 ---@field refreshEvents          string[]
@@ -39,7 +48,8 @@ local Controller = {}
 ---@param openMenuCallback     function | nil
 ---@param switchPlayerCallback fun(right: boolean): boolean | nil
 ---@param openControlsCallback fun() | nil
-function Controller:init(inst, openMenuCallback, switchPlayerCallback, openControlsCallback) end
+---@param shortcutCallbacks    table<Source.Windows.PlayerAttrHUD.ShortcutKey, fun(): boolean> | nil
+function Controller:init(inst, openMenuCallback, switchPlayerCallback, openControlsCallback, shortcutCallbacks) end
 
 --- Rebind the party and its primary player, including after loading a save.
 ---@param inst Source.GameInstance.GameInstance
@@ -59,6 +69,9 @@ function Controller:_updateAvatarTouch() end
 ---@param payload Source.Configs.EventChangePayload | { language: string } | nil
 function Controller:refreshFromEvent(payload) end
 
+---@param payload Source.Configs.EventChangePayload | { language: string } | nil
+function Controller:onViewUpdate(payload) end
+
 --- Advance the breath-slot animation clock and replay the loop when it elapses.
 ---
 --- - @param deltaTime  Elapsed frame time in seconds
@@ -69,6 +82,15 @@ function Controller:onTick(deltaTime) end
 function Controller:getPlayer() end
 
 function Controller:openMenu() end
+
+---@param action Source.Windows.PlayerAttrHUD.ShortcutKey
+function Controller:openShortcut(action) end
+
+---@param payload Source.Configs.ShopRecordsChangePayload
+function Controller:_onShopRecordsChanged(payload) end
+
+--- Rebuild the native shortcut templates only when the available actions change.
+function Controller:refreshShortcuts() end
 function Controller:openControls() end
 function Controller:refreshInputHints() end
 

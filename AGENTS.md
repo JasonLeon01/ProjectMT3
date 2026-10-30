@@ -6,7 +6,7 @@ This project recreates the game in the sibling Mota directory using Ludork. Mota
 - Limit changes to the request and leave unrelated content untouched. Reuse existing logic where possible, and remove temporary test code when finished.
 - Do not reimplement native features in Lua. Before using or adding a standard math function, inspect the current engine API, stubs, and native implementation to confirm its parameters, return types, and boundary semantics, then reuse it directly.
 - Use existing window backgrounds and borders, declarative UI assets, and handwritten Controllers. Preserve the original dimensions and positions of icons and breath assets.
-- Follow the existing asset layout: animation images in `Assets/Animations`, UI icons in `Assets/Icons`, static system UI textures in `Assets/System`, and animation definitions in `Data/Animations`.
+- Follow the existing asset layout: animation images in `Assets/Animations`, item/equipment icons in `Assets/Icons`, static system UI images (including HUD utility icons) in `Assets/System`, and animation definitions in `Data/Animations`. Declarative assets and Controllers must share the same image path instead of duplicating a system UI image under `Assets/Icons`.
 - Keep battle logic in the window Controller and split it into actions. Handle keys in `onKeyDown`, advance timing with `Timer`, and react to state changes with `watch`.
 - Battles use temporary HP and breath values. Write them back on victory, discard them on retreat, and enter Game Over on death.
 - `crit` is the damage callback in Lua Config. General Data's `CritAnimationKey` selects the critical-hit animation. A successful critical hit adds 5 fatigue, taking effect on the next attack.

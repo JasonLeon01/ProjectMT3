@@ -12,17 +12,19 @@ local Window = {}
 ---@param openMenuCallback     function | nil
 ---@param switchPlayerCallback fun(right: boolean): boolean | nil
 ---@param openControlsCallback fun() | nil
+---@param shortcutCallbacks    table<Source.Windows.PlayerAttrHUD.ShortcutKey, fun(): boolean> | nil
 ---@return Source.Windows.PlayerAttrHUD
-function Window.new(inst, openMenuCallback, switchPlayerCallback, openControlsCallback) end
+function Window.new(inst, openMenuCallback, switchPlayerCallback, openControlsCallback, shortcutCallbacks) end
 
 --- Construct the party HUD with menu and player-switch callbacks.
 ---@param inst                 Source.GameInstance.GameInstance
 ---@param openMenuCallback     function | nil
 ---@param switchPlayerCallback fun(right: boolean): boolean | nil
 ---@param openControlsCallback fun() | nil
+---@param shortcutCallbacks    table<Source.Windows.PlayerAttrHUD.ShortcutKey, fun(): boolean> | nil
 ---@param ui                   Internal.UI.PlayerAttrHUD
 ---@return Source.Windows.PlayerAttrHUD
-function Window.FromView(ui, inst, openMenuCallback, switchPlayerCallback, openControlsCallback) end
+function Window.FromView(ui, inst, openMenuCallback, switchPlayerCallback, openControlsCallback, shortcutCallbacks) end
 
 function Window:bind() end
 
@@ -46,9 +48,15 @@ function Window:getPlayer() end
 ---@param deltaTime number
 function Window:onTick(deltaTime) end
 
+---@param payload Source.Configs.EventChangePayload | { language: string } | nil
+function Window:onViewUpdate(payload) end
+
 function Window:openControls() end
 
 function Window:openMenu() end
+
+---@param action Source.Windows.PlayerAttrHUD.ShortcutKey
+function Window:openShortcut(action) end
 
 function Window:playBreathAnimation() end
 
@@ -65,6 +73,9 @@ function Window:refreshBreath() end
 function Window:refreshFromEvent(payload) end
 
 function Window:refreshInputHints() end
+
+--- Rebuild the native shortcut templates only when the available actions change.
+function Window:refreshShortcuts() end
 
 ---@param language string | nil
 ---@return boolean

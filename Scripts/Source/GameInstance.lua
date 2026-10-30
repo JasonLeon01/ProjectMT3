@@ -281,11 +281,20 @@ function GameInstance:recordShop(mapPath, mapTag)
     end
     local playerKey = self._playerKeys[1]
     self._shops[playerKey] = self._shops[playerKey] or {}
-    return GameInstanceShops.Append(self._shops[playerKey], mapPath, mapTag)
+    local changed = GameInstanceShops.Append(self._shops[playerKey], mapPath, mapTag)
+    if changed then
+        Engine.publish(EventKey.ShopRecordsChanged, { instance = self, playerKey = playerKey })
+    end
+    return changed
 end
 
 function GameInstance:removeShop(mapPath, mapTag)
-    return GameInstanceShops.Remove(self._shops[self._playerKeys[1]] or {}, mapPath, mapTag)
+    local playerKey = self._playerKeys[1]
+    local changed = GameInstanceShops.Remove(self._shops[playerKey] or {}, mapPath, mapTag)
+    if changed then
+        Engine.publish(EventKey.ShopRecordsChanged, { instance = self, playerKey = playerKey })
+    end
+    return changed
 end
 
 ---@param actor            Engine.Actor

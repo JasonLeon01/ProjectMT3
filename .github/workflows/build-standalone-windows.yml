@@ -59,7 +59,7 @@ jobs:
           github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           path: ${{ runner.temp }}/ludork
           merge-multiple: true
-      - name: Set up MSVC x64
+      - name: Set up Windows SDK and MSVC x64 libraries
         uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: amd64
@@ -74,7 +74,8 @@ jobs:
             -ProjectDirectory $env:GITHUB_WORKSPACE `
             -LudorkDirectory (Join-Path $env:RUNNER_TEMP 'ludork') `
             -OutputDirectory (Join-Path $env:RUNNER_TEMP 'projectmt3-standalone') `
-            -Mode standalone
+            -Mode standalone `
+            -CompilerPath (Join-Path $env:ProgramFiles 'LLVM/bin/clang-cl.exe')
       - name: Upload standalone project
         uses: actions/upload-artifact@v7
         with:

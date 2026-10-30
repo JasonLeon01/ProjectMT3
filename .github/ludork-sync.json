@@ -1,6 +1,6 @@
 {
   "engine": {
-    "upstreamSha": "96bbb18249a6e8c6d5d4a3db058e20eeef981ec7"
+    "upstreamSha": "8fe2bd93318cef6a685555a55abc86d6d7b7b3f3"
   },
   "application": {
     "upstreamSha": "720bfa1914bc10bf18ccdc150878b77dcaad0cc5"
@@ -12,7 +12,7 @@
     "upstreamSha": "720bfa1914bc10bf18ccdc150878b77dcaad0cc5"
   },
   "enums": {
-    "upstreamSha": "720bfa1914bc10bf18ccdc150878b77dcaad0cc5"
+    "upstreamSha": "e38ca65e5c41a341c0057369c0554ddcf77c0032"
   },
   "globalStub": {
     "upstreamSha": "720bfa1914bc10bf18ccdc150878b77dcaad0cc5"

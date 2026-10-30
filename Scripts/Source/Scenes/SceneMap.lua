@@ -26,6 +26,19 @@ local Transition = GlobalCore.Transition
 local Input = Engine.Input
 local ManagerFunctions = GlobalFunctions.Manager
 
+---@param sceneRef Source.Scenes.SceneMap.SceneMap[]
+---@param action   fun(scene: Source.Scenes.SceneMap.SceneMap): boolean
+---@return fun(): boolean
+local function bindSceneShortcut(sceneRef, action)
+    return function ()
+        local scene = sceneRef[1]
+        if scene ~= nil then
+            return action(scene)
+        end
+        return false
+    end
+end
+
 ---@class Source.Scenes.SceneMap.SceneMap: Source.Gameplay.GameplayScene
 local Scene = {}
 
@@ -70,7 +83,14 @@ function Scene:onCreate()
         function ()
             local scene = sceneRef[1]
             if scene ~= nil then scene:showHotkeys() end
-        end
+        end,
+        {
+            enemyBook = bindSceneShortcut(sceneRef, Scene.showEnemyBook),
+            floorTeleporter = bindSceneShortcut(sceneRef, Scene.showFloorTeleporter),
+            shopRecords = bindSceneShortcut(sceneRef, Scene.showShopRecords),
+            magicDoor = bindSceneShortcut(sceneRef, Scene.showMagicDoor),
+            bottle = bindSceneShortcut(sceneRef, Scene.showBottle)
+        }
     )
     self._regionTitleUI = RegionTitleController.new(Display.getGameSize())
     self._regionTitleUI:prepare()

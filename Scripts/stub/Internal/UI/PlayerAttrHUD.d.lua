@@ -44,6 +44,7 @@
 ---@field MapName             Engine.PlainText
 ---@field PlayerName          Engine.PlainText
 ---@field Root                Engine.Canvas
+---@field Shortcuts           Engine.WrapBox
 ---@field StateHost           Engine.Canvas
 
 ---@class Internal.UIBase.GeneratedAssets.PlayerAttrHUD

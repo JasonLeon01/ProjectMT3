@@ -227,11 +227,12 @@ def validate_hap(hap, project):
 
 
 def validate_standalone(project, output):
-    config = json.loads((project / "Main.proj").read_text(encoding="utf-8"))
+    config = json.loads((project / "Main.proj").read_text(encoding="utf-8-sig"))
     config["Cpp"] = False
+    config.pop("compiler", None)
     config.setdefault("packaging", {})["dev"] = False
     actual = json.loads((output / "Main.proj").read_text(encoding="utf-8"))
-    require(actual == config, "Standalone Main.proj changed settings beyond Cpp and packaging.dev")
+    require(actual == config, "Standalone Main.proj changed settings beyond Cpp, compiler and packaging.dev")
     require((output / ".emmyrc.json").read_bytes() == (project / ".emmyrc.json").read_bytes(),
             "Standalone EmmyLua configuration does not match the source")
 
@@ -247,39 +248,74 @@ def validate_standalone(project, output):
     print("Validated editable Standalone project and preserved project settings")
 
 
-def validate_windows_project(project):
+def validate_windows_project(project, standalone=False, compiler_path=None):
     config = json.loads((project / "Main.proj").read_text(encoding="utf-8-sig"))
-    require(isinstance(config, dict) and "compiler" not in config,
-            "Windows CI requires MSVC: omit Main.proj compiler; MinGW is not supported by these workflows")
+    require(isinstance(config, dict), "Main.proj must contain an object")
+    if standalone:
+        require(compiler_path is not None and compiler_path.is_absolute()
+                and compiler_path.name.lower() == "clang-cl.exe" and compiler_path.is_file(),
+                "Windows Standalone CI requires an absolute clang-cl.exe path")
+        selected = config.get("compiler")
+        require(isinstance(selected, str) and Path(selected).is_absolute()
+                and Path(selected).resolve() == compiler_path.resolve(),
+                "Standalone Main.proj must select the requested clang-cl.exe")
+    else:
+        require(compiler_path is None and "compiler" not in config,
+                "Windows game packaging requires MSVC: omit Main.proj compiler")
 
 
-def windows_build_metadata(project):
+def windows_build_metadata(project, standalone=False):
     build = project / "build"
     cache = dict(re.findall(r"^([^/#\n][^:\n]*):[^=\n]+=(.*)$",
                             (build / "CMakeCache.txt").read_text(encoding="utf-8"), re.MULTILINE))
-    require(cache.get("CMAKE_GENERATOR") == "Visual Studio 17 2022",
-            "Windows CI requires Ludork's Visual Studio 17 2022 generator")
-    require(cache.get("CMAKE_GENERATOR_PLATFORM") == "x64"
-            and cache.get("CMAKE_BUILD_TYPE") == "Release",
-            "Windows CI requires an x64 Release build")
+    generator = "Ninja" if standalone else "Visual Studio 17 2022"
+    compiler_id = "Clang" if standalone else "MSVC"
+    require(cache.get("CMAKE_GENERATOR") == generator, f"Windows CI requires the {generator} generator")
+    require(cache.get("CMAKE_BUILD_TYPE") == "Release", "Windows CI requires a Release build")
+    if not standalone:
+        require(cache.get("CMAKE_GENERATOR_PLATFORM") == "x64", "Windows game packaging requires x64")
     cmake_version = ".".join(cache[f"CMAKE_CACHE_{part}_VERSION"] for part in ("MAJOR", "MINOR", "PATCH"))
     compiler_file = build / "CMakeFiles" / cmake_version / "CMakeCXXCompiler.cmake"
     compiler = {name: value.strip('"') for name, value in re.findall(
         r'^set\((CMAKE_CXX_\w+) ([^\n]*)\)$', compiler_file.read_text(encoding="utf-8"), re.MULTILINE)}
-    require(compiler.get("CMAKE_CXX_COMPILER_ID") == "MSVC"
+    require(compiler.get("CMAKE_CXX_COMPILER_ID") == compiler_id
             and compiler.get("CMAKE_CXX_COMPILER_ARCHITECTURE_ID") == "x64",
-            "Windows CI must produce native MSVC x64 binaries")
-    main_project = ET.parse(build / "Main.vcxproj").getroot()
-    sdk = main_project.findtext(".//{*}WindowsTargetPlatformVersion")
+            f"Windows CI must produce native {compiler_id} x64 binaries")
+    toolchain = {}
+    if standalone:
+        selected = Path(compiler.get("CMAKE_CXX_COMPILER", ""))
+        validate_windows_project(project, standalone=True, compiler_path=selected)
+        require(compiler.get("CMAKE_CXX_SIMULATE_ID") == "MSVC", "Standalone Clang must use the MSVC ABI")
+        state = json.loads((project / "EditorCache/WindowsNativeToolchain.json").read_text(encoding="utf-8"))
+        require(Path(state.get("compiler", "")).resolve() == selected.resolve(),
+                "Standalone compiler metadata differs from the native build")
+        for key, name in (("CMAKE_LINKER", "lld-link.exe"), ("CMAKE_AR", "llvm-lib.exe")):
+            require(Path(cache.get(key, "")).resolve() == selected.with_name(name).resolve(),
+                    f"Standalone Clang must use its matching {name}")
+        require(Path(cache.get("CMAKE_MAKE_PROGRAM", "")).resolve() == Path(state.get("ninja", "")).resolve(),
+                "Standalone Ninja metadata differs from the native build")
+        sdk = state.get("windowsSdkVersion", "").rstrip("\\/")
+        visual_studio = state.get("visualStudio")
+        toolchain = {
+            "ninja_path": state.get("ninja"),
+            "ninja_version": state.get("ninjaVersion"),
+            "linker_version": state.get("linkerVersion"),
+        }
+    else:
+        validate_windows_project(project)
+        main_project = ET.parse(build / "Main.vcxproj").getroot()
+        sdk = main_project.findtext(".//{*}WindowsTargetPlatformVersion")
+        visual_studio = cache.get("CMAKE_GENERATOR_INSTANCE")
     data = {
         "generator": cache["CMAKE_GENERATOR"],
         "architecture": compiler["CMAKE_CXX_COMPILER_ARCHITECTURE_ID"],
         "compiler_id": compiler["CMAKE_CXX_COMPILER_ID"],
         "compiler_version": compiler.get("CMAKE_CXX_COMPILER_VERSION"),
         "compiler_path": compiler.get("CMAKE_CXX_COMPILER"),
-        "visual_studio_instance": cache.get("CMAKE_GENERATOR_INSTANCE"),
+        "visual_studio_instance": visual_studio,
         "windows_sdk": sdk,
         "cmake_version": cmake_version,
+        **toolchain,
     }
     require(all(data.values()), "Windows native toolchain metadata is incomplete")
     print("Windows native toolchain: " + json.dumps(data))
@@ -309,7 +345,7 @@ def metadata(project, output, platform, artifact=None, signed=False, notarized=F
     if standalone:
         data.update(type="standalone", channel=None, encrypt_data=False, compile_lua=False, use_ldpak=False)
     if platform == "windows-x64":
-        data["native_toolchain"] = windows_build_metadata(project)
+        data["native_toolchain"] = windows_build_metadata(project, standalone=standalone)
     if artifact:
         with artifact.open("rb") as stream:
             data.update(artifact=artifact.name, artifact_sha256=hashlib.file_digest(stream, "sha256").hexdigest())
@@ -320,7 +356,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
     sub.add_parser("server-url")
-    sub.add_parser("validate-windows-project").add_argument("project", type=Path)
+    windows_parser = sub.add_parser("validate-windows-project")
+    windows_parser.add_argument("project", type=Path)
+    windows_parser.add_argument("--standalone", action="store_true")
+    windows_parser.add_argument("--compiler-path", type=Path)
     for command in ("clean", "metadata", "validate-standalone"):
         item = sub.add_parser(command)
         item.add_argument("project", type=Path)
@@ -340,7 +379,7 @@ def main():
     if args.command == "server-url":
         print(server_url())
     elif args.command == "validate-windows-project":
-        validate_windows_project(args.project)
+        validate_windows_project(args.project, args.standalone, args.compiler_path)
     elif args.command == "clean":
         clean(args.project, args.output)
     elif args.command == "validate-standalone":
