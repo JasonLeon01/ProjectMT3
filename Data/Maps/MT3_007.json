@@ -661,7 +661,7 @@
         ]
       },
       {
-        "tag": "MT3_007.BP_EXPShop_MT3_default_8_5",
+        "tag": "{EXP_SHOP_NAME}",
         "bp": "Data.Blueprints.NPCs.BP_EXPShop_MT3",
         "position": [
           8,

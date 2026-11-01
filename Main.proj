@@ -7,7 +7,6 @@
     "version": "1.0.0"
   },
   "IndividualWindow": true,
-  "lastOpenedMapKey": "MT3_000",
   "editor": {
     "mapViewport": {
       "lit": true,
@@ -29,5 +28,6 @@
       ],
       "activeTabNumber": 1
     }
-  }
+  },
+  "lastOpenedMapKey": "MT3_000"
 }

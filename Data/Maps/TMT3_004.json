@@ -777,7 +777,7 @@
       },
       {
         "bp": "Data.Blueprints.NPCs.BP_GoldShop_MT3_2",
-        "tag": "Actors_BP_GoldShop_MT3_2_default_6_3",
+        "tag": "{SHOP_NAME}",
         "position": [
           6,
           3
