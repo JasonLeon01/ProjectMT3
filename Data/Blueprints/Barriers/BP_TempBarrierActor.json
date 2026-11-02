@@ -1,0 +1,245 @@
+{
+  "parent": "Source.MapActors.ConditionalActor",
+  "attrs": {
+    "scriptMixin": false,
+    "scriptPath": "",
+    "tag": "",
+    "switchInterval": 0.2,
+    "animatable": false,
+    "visible": true,
+    "material": "Data/Materials/Global/Standard.json",
+    "materialParameters": {
+      "lightBlock": 0.5
+    },
+    "collisionEnabled": true,
+    "tickable": false,
+    "speed": 64,
+    "autoSound": "",
+    "autoSoundInterval": 0,
+    "autoSoundParams": {
+      "volume": 100,
+      "minDistance": 64,
+      "attenuation": 1,
+      "loop": false,
+      "maxDistance": 0
+    },
+    "texturePath": "/Game/Assets/Characters/blocks/classic-doors-002-single.png",
+    "defaultRect": [
+      [
+        0,
+        0,
+        32,
+        32
+      ]
+    ],
+    "defaultTranslation": [
+      0,
+      0
+    ],
+    "defaultRotation": 0,
+    "defaultScale": [
+      1,
+      1
+    ],
+    "defaultOrigin": [
+      0,
+      0
+    ],
+    "conditionVariable": "",
+    "conditionOperator": "==",
+    "conditionValue": 0
+  },
+  "graph": {
+    "nodeGraph": {
+      "onCollision": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onCollision",
+            "params": [
+              []
+            ],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          }
+        ]
+      },
+      "onCreate": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onCreate",
+            "params": [],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": []
+      },
+      "onDestroy": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onDestroy",
+            "params": [],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": []
+      },
+      "onFixedTick": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onFixedTick",
+            "params": [
+              0
+            ],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          }
+        ]
+      },
+      "onLateTick": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onLateTick",
+            "params": [
+              0
+            ],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          }
+        ]
+      },
+      "onOverlap": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onOverlap",
+            "params": [
+              []
+            ],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          }
+        ]
+      },
+      "onTick": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onTick",
+            "params": [
+              0
+            ],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          }
+        ]
+      },
+      "onWorldSleep": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onWorldSleep",
+            "params": [],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": []
+      },
+      "onWorldWake": {
+        "nodes": [
+          {
+            "nodeFunction": "super.onWorldWake",
+            "params": [
+              0
+            ],
+            "pos": [
+              320,
+              0
+            ]
+          }
+        ],
+        "links": [
+          {
+            "left": "default_0",
+            "right": 0,
+            "leftOutPin": 0,
+            "rightInPin": 0,
+            "linkType": "Params"
+          }
+        ]
+      }
+    },
+    "startNodes": {
+      "onCollision": 0,
+      "onCreate": 0,
+      "onDestroy": 0,
+      "onFixedTick": 0,
+      "onLateTick": 0,
+      "onOverlap": 0,
+      "onTick": 0,
+      "onWorldSleep": 0,
+      "onWorldWake": 0
+    }
+  },
+  "type": "blueprint"
+}
