@@ -77,7 +77,10 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
 }
 
 async function selectPackageInputs(github, context, platform = 'all', frozen = '') {
-  if (context.ref !== 'refs/heads/main') throw new Error('Run this workflow on main.');
+  const versionTag = /^refs\/tags\/v?\d+\.\d+\.\d+$/.test(context.ref);
+  if (context.ref !== 'refs/heads/main' && !versionTag) {
+    throw new Error('Run this workflow on main or on a version tag (e.g. v1.2.3).');
+  }
   const platforms = {
     all: [['windows', 'windows-x64'], ['macos', 'macos-arm64']],
     'windows-x64': [['windows', 'windows-x64']],
