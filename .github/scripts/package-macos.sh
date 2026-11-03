@@ -11,7 +11,7 @@ decode_secret APP_STORE_CONNECT_PRIVATE_KEY "$work/notary.p8"
 # Explicit Developer ID identity prevents an iOS distribution p12 or ad-hoc fallback.
 identity=$(python3 "$project/.github/scripts/package-apple.py" identity "$work/signing.p12" macos)
 printf '%s\n' "$MACOS_SIGNING_CERTIFICATE_PASSWORD" | \
-    sh "$work/tools/pack_project.sh" --dev --encrypt-data --compile-lua --use-ldpak \
+    sh "$work/BuildTools/pack_project.sh" --dev --encrypt-data --compile-lua --use-ldpak \
         --ignore-environment --certificate "$work/signing.p12" --signing-identity "$identity" "$project" "$work/dist"
 
 apps=("$work/dist"/*.app)

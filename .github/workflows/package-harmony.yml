@@ -90,11 +90,12 @@ jobs:
             HOS_SIGNING_KEY HOS_SIGNING_CERTIFICATE HOS_PROVISIONING_PROFILE \
             HOS_DEVECO_PACKAGE HOS_DEVECO_SHA256
 
-      - name: Download Ludork macOS DMG
+      - name: Download Ludork BuildTools
         uses: actions/download-artifact@v8
         with:
           repository: JasonLeon01/Ludork
           run-id: ${{ needs.check.outputs.macos_run_id }}
+          skip-decompress: true
           artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
           github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           path: ${{ runner.temp }}/ludork-harmony-artifact

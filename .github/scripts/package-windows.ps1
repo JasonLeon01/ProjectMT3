@@ -39,27 +39,28 @@ if ($env:LUDORK_SERVER_ENABLED -ne '1') {
     throw 'CI packaging requires LUDORK_SERVER_ENABLED=1.'
 }
 
-$archives = @(Get-ChildItem -LiteralPath $LudorkDirectory -Filter 'Ludork-editor-*-windows-x64.7z' -File)
-if ($archives.Count -gt 0) {
-    if ($archives.Count -ne 1) {
-        throw 'Expected exactly one Ludork Windows editor archive.'
-    }
-    & "$env:ProgramFiles\7-Zip\7z.exe" x $archives[0].FullName "-o$LudorkDirectory" -y
-    if ($LASTEXITCODE -ne 0) {
-        throw "Ludork editor extraction failed with exit code $LASTEXITCODE"
-    }
+if ($env:LUDORK_SHA -cnotmatch '^[0-9a-f]{40}$') {
+    throw 'BuildTools extraction requires a valid LUDORK_SHA.'
+}
+$archive = Join-Path $LudorkDirectory "Ludork-BuildTools-windows-x64-$env:LUDORK_SHA.tar.gz"
+if (-not (Test-Path -LiteralPath $archive -PathType Leaf)) {
+    throw "Ludork BuildTools archive was not found: $archive"
+}
+& tar.exe -xzf $archive -C $LudorkDirectory
+if ($LASTEXITCODE -ne 0) {
+    throw "Ludork BuildTools extraction failed with exit code $LASTEXITCODE"
 }
 
 foreach ($command in @('cmake', 'cl', 'python')) {
     Get-Command $command -ErrorAction Stop | Out-Null
 }
 foreach ($relativePath in @(
-    'tools/pack_project.bat',
-    'tools/build_cpp.bat',
-    'tools/build_standalone.bat',
-    'tools/ScriptTools/ScriptTools.exe',
-    'tools/luac.exe',
-    'tools/gnu-make/gnumake.exe'
+    'BuildTools/pack_project.bat',
+    'BuildTools/build_cpp.bat',
+    'BuildTools/build_standalone.bat',
+    'BuildTools/ScriptTools/ScriptTools.exe',
+    'BuildTools/luac.exe',
+    'BuildTools/gnu-make/gnumake.exe'
 )) {
     if (-not (Test-Path -LiteralPath (Join-Path $LudorkDirectory $relativePath) -PathType Leaf)) {
         throw "Ludork artifact is missing $relativePath"
@@ -71,19 +72,19 @@ foreach ($variable in @('PROJECT_SHA', 'LUDORK_SHA', 'LUDORK_CHECKED_SHA', 'LUDO
     }
 }
 
-if ($Mode -eq 'standalone' -and -not (Test-Path -LiteralPath (Join-Path $LudorkDirectory 'tools/pack_standalone.bat') -PathType Leaf)) {
-    throw 'This Ludork artifact lacks tools/pack_standalone.bat. Publish a new Ludork tools artifact with Standalone project packaging support.'
+if ($Mode -eq 'standalone' -and -not (Test-Path -LiteralPath (Join-Path $LudorkDirectory 'BuildTools/pack_standalone.bat') -PathType Leaf)) {
+    throw 'This Ludork artifact lacks BuildTools/pack_standalone.bat. Publish a new Ludork BuildTools artifact with Standalone project packaging support.'
 }
 
-$scriptTools = Join-Path $LudorkDirectory 'tools/ScriptTools/ScriptTools.exe'
+$scriptTools = Join-Path $LudorkDirectory 'BuildTools/ScriptTools/ScriptTools.exe'
 foreach ($command in @('server-config', 'windows-native-build')) {
     & $scriptTools $command --help *> $null
     if ($LASTEXITCODE -ne 0) {
-        throw "This Ludork artifact lacks $command support. Publish a new Ludork tools artifact with $command support."
+        throw "This Ludork artifact lacks $command support. Publish a new Ludork BuildTools artifact with $command support."
     }
 }
 
-$packer = Join-Path $LudorkDirectory 'tools/pack_project.bat'
+$packer = Join-Path $LudorkDirectory 'BuildTools/pack_project.bat'
 $env:LUDORK_SERVER_URL = & python $ci server-url
 if ($LASTEXITCODE -ne 0) { throw 'Server URL preparation failed.' }
 & python $ci clean $ProjectDirectory $OutputDirectory
@@ -97,7 +98,7 @@ try {
         [IO.File]::WriteAllText($projectFile, ($projectConfig | ConvertTo-Json -Depth 100) + "`n", [Text.UTF8Encoding]::new($false))
         & python $ci validate-windows-project $ProjectDirectory --standalone --compiler-path $CompilerPath
         if ($LASTEXITCODE -ne 0) { throw 'Standalone compiler configuration validation failed.' }
-        $standalonePacker = Join-Path $LudorkDirectory 'tools/pack_standalone.bat'
+        $standalonePacker = Join-Path $LudorkDirectory 'BuildTools/pack_standalone.bat'
         $standaloneDirectory = Join-Path $OutputDirectory 'ProjectMT3'
         & $standalonePacker $ProjectDirectory $standaloneDirectory
         if ($LASTEXITCODE -ne 0) {

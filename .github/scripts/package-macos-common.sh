@@ -13,17 +13,12 @@ require_environment() {
 }
 
 cleanup_package_work() {
-    local platform=$1 work mountpoint keychain status=0 file marker
+    local platform=$1 work keychain status=0 file marker
     [[ "${GITHUB_ACTIONS:-}" == true && -n "${RUNNER_TEMP:-}" ]]
     case "$platform" in android|harmony|macos|ios) ;; *) return 1 ;; esac
     work="$RUNNER_TEMP/projectmt3-$platform-work"
     [[ ! -L "$work" ]]
-    mountpoint="$work/mount"
     # Also called by the workflow's always() step after shell interruption.
-    if [[ -f "$work/mounted" ]]; then
-        hdiutil detach "$mountpoint" || hdiutil detach -force "$mountpoint" || return 1
-        rm -f -- "$work/mounted"
-    fi
     if [[ -f "$work/keychain-search-list.json" ]]; then
         python3 "$GITHUB_WORKSPACE/.github/scripts/package-apple.py" restore-keychains "$work" || return 1
     fi
@@ -72,24 +67,23 @@ init_package() {
     python3 "$ci" clean "$project" "$output"
     cleanup_package_work "$package_platform"
     work="$RUNNER_TEMP/projectmt3-$package_platform-work"
-    mkdir -p "$work/mount" "$work/tmp"
+    mkdir -p "$work/tmp"
     export TMPDIR="$work/tmp/"
     umask 077
     trap package_exit EXIT
     trap 'exit 130' INT
     trap 'exit 143' TERM
-    shopt -s nullglob
-    local images=("$artifact"/Ludork-*-macos-arm64.dmg)
-    [[ ${#images[@]} == 1 && -s "${images[0]}" ]]
-    hdiutil attach -readonly -nobrowse -mountpoint "$work/mount" "${images[0]}"
-    touch "$work/mounted"
-    ditto "$work/mount/Ludork.app/Contents/Resources/tools" "$work/tools"
-    hdiutil detach "$work/mount"
-    rm "$work/mounted"
-    test -x "$work/tools/ScriptTools/ScriptTools"
-    test -x "$work/tools/luac"
-    if ! "$work/tools/ScriptTools/ScriptTools" server-config --help >/dev/null 2>&1; then
-        echo 'This Ludork artifact lacks server-config support. Publish a new Ludork tools artifact with server-config support.' >&2
+    [[ "$LUDORK_SHA" =~ ^[0-9a-f]{40}$ ]]
+    local archive="$artifact/Ludork-BuildTools-macos-arm64-$LUDORK_SHA.tar.gz"
+    if [[ ! -s "$archive" ]]; then
+        echo "Ludork BuildTools archive was not found: $archive" >&2
+        return 1
+    fi
+    tar -xzf "$archive" -C "$work"
+    test -x "$work/BuildTools/ScriptTools/ScriptTools"
+    test -x "$work/BuildTools/luac"
+    if ! "$work/BuildTools/ScriptTools/ScriptTools" server-config --help >/dev/null 2>&1; then
+        echo 'This Ludork artifact lacks server-config support. Publish a new Ludork BuildTools artifact with server-config support.' >&2
         return 1
     fi
 }

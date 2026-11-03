@@ -20,7 +20,7 @@ identity=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["iden
 
 # Also checks the packer's derived Bundle ID against the supplied profile.
 printf '%s\n' "$IOS_SIGNING_CERTIFICATE_PASSWORD" | \
-    sh "$work/tools/pack_ios.sh" --check --dev --encrypt-data --compile-lua --use-ldpak \
+    sh "$work/BuildTools/pack_ios.sh" --check --dev --encrypt-data --compile-lua --use-ldpak \
         --ignore-environment --team-id "$APPLE_TEAM_ID" --certificate "$work/signing.p12" \
         --provisioning-profile "$work/profile.mobileprovision" --signing-identity "$identity" "$project" "$work/packed"
 ruby "$testflight" prepare "$context" "$output"
@@ -37,7 +37,7 @@ ios_exit() {
 trap ios_exit EXIT
 
 printf '%s\n' "$IOS_SIGNING_CERTIFICATE_PASSWORD" | \
-    sh "$work/tools/pack_ios.sh" --dev --encrypt-data --compile-lua --use-ldpak \
+    sh "$work/BuildTools/pack_ios.sh" --dev --encrypt-data --compile-lua --use-ldpak \
         --ignore-environment --team-id "$APPLE_TEAM_ID" --certificate "$work/signing.p12" \
         --provisioning-profile "$work/profile.mobileprovision" --signing-identity "$identity" "$project" "$work/packed"
 ipas=("$work/packed"/*.ipa)

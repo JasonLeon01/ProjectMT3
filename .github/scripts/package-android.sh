@@ -11,7 +11,7 @@ printf 'org.gradle.caching=false\norg.gradle.configuration-cache=false\n' > "$GR
 keystore="$work/signing.jks"
 decode_secret AOS_SIGNING_KEY "$keystore"
 printf '%s\n%s\n' "$AOS_KEY_STORE_PASSWORD" "$AOS_KEY_PASSWORD" | \
-    sh "$work/tools/pack_android.sh" --dev --encrypt-data --compile-lua --use-ldpak \
+    sh "$work/BuildTools/pack_android.sh" --dev --encrypt-data --compile-lua --use-ldpak \
         --sign --keystore "$keystore" --key-alias "$AOS_ALIAS" "$project" "$output"
 
 apks=("$output"/*.apk)

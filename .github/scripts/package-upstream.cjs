@@ -3,7 +3,6 @@
 const upstream = { owner: 'JasonLeon01', repo: 'Ludork' };
 const allowedEvents = new Set(['push', 'schedule', 'workflow_dispatch']);
 const shaPattern = /^[0-9a-f]{40}$/;
-const windowsArchivePattern = /^Ludork-editor-\d+\.\d+\.\d+(?:\.\d{10})?-windows-x64\.7z$/;
 
 function requireSha(value) {
   if (!shaPattern.test(value ?? '')) throw new Error(`Invalid commit/tree SHA: ${value}`);
@@ -24,14 +23,17 @@ function pageItems(data, key) {
 
 async function selectArtifact(github, head, platform = 'windows-x64') {
   const target = {
-    'windows-x64': { job: 'Windows x64', workflow: 'export-editor-windows.yml' },
-    'macos-arm64': { job: 'macOS ARM64', workflow: 'export-editor-macos.yml' },
+    'windows-x64': { job: 'Windows x64', os: 'windows' },
+    'macos-arm64': { job: 'macOS ARM64', os: 'macos' },
   }[platform];
   if (!target) throw new Error(`Unsupported Ludork artifact platform: ${platform}`);
-  const workflows = new Set(['export-editor.yml', target.workflow].map(file => `.github/workflows/${file}`));
+  const workflows = new Set(['editor', 'package'].flatMap(kind => [
+    `.github/workflows/export-${kind}.yml`,
+    `.github/workflows/export-${kind}-${target.os}.yml`,
+  ]));
   const checkedRuns = new Set();
-  const isPlatformArtifact = (artifact, sha) => artifact.name === `Ludork-editor-${platform}-${sha}`
-    || (platform === 'windows-x64' && windowsArchivePattern.test(artifact.name));
+  const artifactName = sha => `Ludork-BuildTools-${platform}-${sha}.tar.gz`;
+  const isPlatformArtifact = (artifact, sha) => artifact.name === artifactName(sha);
   const isUnexpired = artifact => !artifact.expired && Date.parse(artifact.expires_at) > Date.now();
   // Search existing packages newest first, across all pages. Scheduled runs that
   // skip packaging have no artifacts and must not hide an earlier usable build.
@@ -65,7 +67,7 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
       // upload-artifact with archive: false uses the filename and ignores name.
       const matches = artifacts.filter(artifact => isPlatformArtifact(artifact, sha));
       if (matches.length !== 1 || !isUnexpired(matches[0])) {
-        skip(`expected one unexpired editor artifact; matches=${JSON.stringify(matches.map(({ id, name, expired, expires_at }) => ({ id, name, expired, expires_at })))}`);
+        skip(`expected one unexpired BuildTools artifact; matches=${JSON.stringify(matches.map(({ id, name, expired, expires_at }) => ({ id, name, expired, expires_at })))}`);
         continue;
       }
       return {
@@ -73,7 +75,7 @@ async function selectArtifact(github, head, platform = 'windows-x64') {
       };
     }
   }
-  throw new Error(`No Ludork Export Editor ${platform} run on main has a successful platform job and a unique, unexpired editor artifact (checked main ${head}).`);
+  throw new Error(`No successful Ludork ${platform} job on main has a unique, unexpired BuildTools archive (expected ${artifactName('<sha>')}, checked main ${head}).`);
 }
 
 async function selectPackageInputs(github, context, platform = 'all', frozen = '') {

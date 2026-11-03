@@ -56,11 +56,12 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - name: Download Ludork Windows tools
+      - name: Download Ludork BuildTools
         uses: actions/download-artifact@v8
         with:
           repository: JasonLeon01/Ludork
           run-id: ${{ needs.check.outputs.windows_run_id }}
+          skip-decompress: true
           artifact-ids: ${{ needs.check.outputs.windows_artifact_id }}
           github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
           path: ${{ runner.temp }}/ludork
