@@ -80,9 +80,9 @@ init_package() {
         return 1
     fi
     tar -xzf "$archive" -C "$work"
-    test -x "$work/BuildTools/ScriptTools/ScriptTools"
+    test -x "$work/BuildTools/Toolchain/ludork-pack"
     test -x "$work/BuildTools/luac"
-    if ! "$work/BuildTools/ScriptTools/ScriptTools" server-config --help >/dev/null 2>&1; then
+    if ! "$work/BuildTools/Toolchain/ludork-pack" server-config --help >/dev/null 2>&1; then
         echo 'This Ludork artifact lacks server-config support. Publish a new Ludork BuildTools artifact with server-config support.' >&2
         return 1
     fi

@@ -1,1 +1,0 @@
-{"generator":"Ludork Material Export","material":"Data/Materials/WaterWind.json","parameters":[{"default":1,"displayName":"strength","group":"Animation","id":"strength","max":1,"min":0,"type":"float"}],"rendering":{"maxVertexOffset":[3.2000000476837158,0]},"signature":"a84c6b3c85358642","type":"materialResource","version":1}

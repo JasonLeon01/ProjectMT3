@@ -35,7 +35,7 @@ local Input = Engine.Input
 ---@type Source.Windows.PlayerAttrHUD.ShortcutDefinition[]
 local SHORTCUTS = {
     { action = "enemyBook", items = { Item.EnemyBook } }, { action = "floorTeleporter", items = { Item.Teleport } },
-    { action = "shopRecords", icon = "/Game/Assets/System/mting-495.png" },
+    { action = "shopRecords", icon = "/Game/Assets/System/shop.png" },
     { action = "magicDoor", items = { Item.SDoor } },
     { action = "bottle", items = { Item.Bottle150, Item.Bottle400 }, icon = "/Game/Assets/Icons/mting-1265.png" }
 }

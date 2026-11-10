@@ -11,7 +11,7 @@ local Display = GlobalCore.Display
 local SceneManager = GlobalCore.SceneManager
 local SceneBase = GlobalCore.SceneBase
 
-local ANIMATION_PROGRESS_WEIGHT = 0.5
+local PHASE_PROGRESS_WEIGHT = 1.0 / 3.0
 
 ---@class Source.Scenes.SceneInit.SceneInit
 local Scene = {
@@ -28,25 +28,24 @@ function Scene:onCreate()
     self.progressTotal = 0
     self.processedCount = 0
     self.progressDone = false
-    self.hasSwitched = false
     self._loadCancelled = false
     self._loadStage = Data.BeginInitialLoad()
     self._activeBatch = nil
+    self._materialRequest = nil
     self._animationSourceKeys = {}
-    self._loadTask = asyncio.create_task(function ()
+    self._loadTask = asyncio.create_required_task(function ()
         self:prepareAssets()
+        while not self._loadCancelled do
+            if self.progressDone and self._displayProgress >= Scene._DISPLAY_PROGRESS_COMPLETE_THRESHOLD then
+                local SceneTitle = require("Source.Scenes.SceneTitle")
+
+                SceneManager.setScene(SceneTitle.new())
+                break
+            end
+            asyncio.sleep(0.0)
+        end
         self._loadTask = nil
     end)
-end
-
-function Scene:onTick(_)
-    if self.progressDone and not self.hasSwitched
-        and self._displayProgress >= Scene._DISPLAY_PROGRESS_COMPLETE_THRESHOLD then
-        local SceneTitle = require("Source.Scenes.SceneTitle")
-
-        self.hasSwitched = true
-        SceneManager.setScene(SceneTitle.new())
-    end
 end
 
 function Scene:onLateTick(_)
@@ -61,6 +60,10 @@ end
 
 function Scene:onQuit()
     self._loadCancelled = true
+    if self._materialRequest ~= nil then
+        self._materialRequest:cancel()
+        self._materialRequest = nil
+    end
     if self._activeBatch ~= nil then
         asyncio.cancel_file_batch(self._activeBatch)
         self._activeBatch = nil
@@ -135,6 +138,13 @@ end
 function Scene:prepareAssets()
     local startTime = perfCounter()
     Logging.info("Preparing initial assets")
+    Logging.info("Preparing material cache")
+    local materialStartTime = perfCounter()
+    self:prepareMaterials()
+    if self:_isLoadCancelled() then
+        return
+    end
+    Logging.info("Prepared material cache in %.3fs", perfCounter() - materialStartTime)
     Logging.info("Preparing animation cache")
     local animationStartTime = perfCounter()
     self:compressAnimations()
@@ -223,6 +233,21 @@ function Scene:_processAnimationSource(item, sourceRoot, cacheRoot)
     end
 end
 
+function Scene:prepareMaterials()
+    local request = Engine.prepareMaterialCache()
+    self._materialRequest = request
+    while not self._loadCancelled do
+        self.progressValue = math.max(self.progressValue, request:getProgress() * PHASE_PROGRESS_WEIGHT)
+        if request:getStatus() ~= "pending" then
+            request:getResult()
+            self._materialRequest = nil
+            self.progressValue = PHASE_PROGRESS_WEIGHT
+            return
+        end
+        asyncio.sleep(0.0)
+    end
+end
+
 function Scene:compressAnimations()
     local sourceRoot = Engine.getAnimationSourceRoot()
     local cacheRoot = Engine.getAnimationCacheRoot()
@@ -251,11 +276,11 @@ function Scene:compressAnimations()
         if item ~= nil then
             self:_processAnimationSource(item, sourceRoot, cacheRoot)
             self.processedCount = self.processedCount + 1
-            self:_setPhaseProgress(0.0, ANIMATION_PROGRESS_WEIGHT)
+            self:_setPhaseProgress(PHASE_PROGRESS_WEIGHT, PHASE_PROGRESS_WEIGHT)
         end
         if snapshot.state == asyncio.FILE_BATCH_COMPLETED and snapshot.drained and self.processedCount == snapshot.total then
             self._activeBatch = nil
-            self.progressValue = math.max(self.progressValue, ANIMATION_PROGRESS_WEIGHT)
+            self.progressValue = math.max(self.progressValue, 2.0 * PHASE_PROGRESS_WEIGHT)
             return
         end
         asyncio.sleep(0.0)
@@ -300,7 +325,7 @@ function Scene:_pumpInitialLoad()
                 Data.ApplyInitialLoadItem(self._loadStage, item)
             end
             self.processedCount = self.processedCount + 1
-            self:_setPhaseProgress(ANIMATION_PROGRESS_WEIGHT, 1.0 - ANIMATION_PROGRESS_WEIGHT)
+            self:_setPhaseProgress(2.0 * PHASE_PROGRESS_WEIGHT, PHASE_PROGRESS_WEIGHT)
         end
         if snapshot.state == asyncio.FILE_BATCH_COMPLETED and snapshot.drained and self.processedCount == snapshot.total then
             Data.CommitInitialLoad(self._loadStage)
