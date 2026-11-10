@@ -21,32 +21,49 @@ ludork_generate_lua_bindings(
     INCLUDE_DIRECTORIES "${LUDORK_RUNTIME_SOURCE_DIR}/include")
 
 add_library(Engine ${LUDORK_RUNTIME_LIBRARY_TYPE}
-    ${LUDORK_ENGINE_SOURCES}
-    ${LUDORK_ENGINE_BINDINGS})
+    ${LUDORK_ENGINE_SOURCES})
+file(GLOB_RECURSE LUDORK_MATERIAL_CACHE_INPUTS CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/Materials/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/Graphics/Materials/*.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/Graphics/Materials/*.hpp")
+list(SORT LUDORK_MATERIAL_CACHE_INPUTS)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
+    ${LUDORK_MATERIAL_CACHE_INPUTS})
+set(LUDORK_MATERIAL_CACHE_IDENTITY "")
+foreach(input IN LISTS LUDORK_MATERIAL_CACHE_INPUTS)
+    file(SHA256 "${input}" input_hash)
+    string(APPEND LUDORK_MATERIAL_CACHE_IDENTITY "${input_hash}\n")
+endforeach()
+string(SHA256 LUDORK_MATERIAL_CACHE_FINGERPRINT "${LUDORK_MATERIAL_CACHE_IDENTITY}")
+file(GENERATE
+    OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/MaterialCacheCompilerFingerprint.hpp"
+    CONTENT "#pragma once\nnamespace ludork::engine::materials { inline constexpr char MaterialCacheCompilerFingerprint[] = \"${LUDORK_MATERIAL_CACHE_FINGERPRINT}\"; }\n")
+target_include_directories(Engine PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+add_library(EngineBindings OBJECT ${LUDORK_ENGINE_BINDINGS})
 add_library(Ludork::Engine ALIAS Engine)
-target_link_libraries(Engine PRIVATE Ludork::RuntimeConstants)
-
-target_compile_definitions(Engine PRIVATE
-    LUDORK_ENGINE_EXPORTS=1
-    LUDORK_PLATFORM="${LUDORK_PLATFORM}")
-target_include_directories(Engine
-    PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+foreach(target IN ITEMS Engine EngineBindings)
+    target_link_libraries(${target} PRIVATE Ludork::RuntimeConstants)
+    target_compile_definitions(${target} PRIVATE
+        LUDORK_ENGINE_EXPORTS=1
+        LUDORK_PLATFORM="${LUDORK_PLATFORM}")
+    target_include_directories(${target}
+        PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    target_link_libraries(${target}
+        PUBLIC
+            Ludork::Runtime
+            SFML::Graphics
+            SFML::Audio
+            SFML::Network
+        PRIVATE
+            Ludork::Standard)
+endforeach()
 ludork_add_core_shared(Engine)
-target_link_libraries(Engine
-    PUBLIC
-        Ludork::Runtime
-        SFML::Graphics
-        SFML::Audio
-        SFML::Network
-    PRIVATE
-        Ludork::Standard)
 ludork_link_engine_platform(Engine)
 if(WIN32)
     target_link_libraries(Engine PRIVATE shell32 ole32)
 endif()
 ludork_configure_core_library(
     Engine
-    "${LUDORK_ENGINE_BINDINGS}"
     "${LUDORK_ENGINE_BINDINGS_TRAITS}")
 endif()
 

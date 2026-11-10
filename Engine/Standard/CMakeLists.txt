@@ -17,6 +17,7 @@ else()
         src/Core/EncryptedPayload.cpp
         src/Core/Math.cpp
         src/Core/ReadOnlyFileProvider.cpp
+        src/Core/Sha256.cpp
         src/Core/UnicodeText.cpp
         src/Core/Utf8Path.cpp)
 endif()
@@ -70,6 +71,7 @@ if(MINGW)
 endif()
 ludork_enable_release_dead_strip(LudorkStandard)
 ludork_set_runtime_output(LudorkStandard)
+ludork_target_precompile_headers(LudorkStandard)
 
 if(LUDORK_WITH_LUA)
     add_subdirectory(src/Runtime/ClassRuntime)
