@@ -130,7 +130,7 @@ try {
     if ($Mode -eq 'standalone') {
         & python $ci validate-standalone $ProjectDirectory $gameDirectory
         if ($LASTEXITCODE -ne 0) { throw 'Standalone project validation failed.' }
-        & $scriptTools preview validate $gameDirectory
+        & (Join-Path $toolchain 'ludork-build.exe') preview validate $gameDirectory
         if ($LASTEXITCODE -ne 0) { throw 'Standalone preview validation failed.' }
         $metadataOptions = @('--standalone')
     } else {
