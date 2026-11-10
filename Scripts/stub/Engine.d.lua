@@ -85,6 +85,7 @@
 ---@field AnimationKeyFrame Engine.AnimationKeyFrame
 ---@field AnimationTimeTag Engine.AnimationTimeTag
 ---@field MapFogSettings Engine.MapFogSettings
+---@field MaterialCacheRequest Engine.MaterialCacheRequest
 ---@field RectBase Engine.RectBase
 ---@field TileLayerGraphics Engine.TileLayerGraphics
 ---@field InjectedInputEvent Engine.InjectedInputEvent
@@ -224,6 +225,7 @@
 ---@field getAppName fun(): string
 ---@field warnOnce fun(key: string, message: string): nil
 ---@field getUserDataPath fun(appNameOverride?: string|nil): string
+---@field prepareMaterialCache fun(): Engine.MaterialCacheRequest
 ---@field getSavePath fun(appNameOverride?: string|nil): string
 ---@field getMainConfigPath fun(appNameOverride?: string|nil): string
 ---@field getAnimationSourceRoot fun(): string
@@ -458,6 +460,10 @@ function Engine.warnOnce(key, message) end
 ---@param appNameOverride? string|nil
 ---@return string
 function Engine.getUserDataPath(appNameOverride) end
+
+--- Prepare generated material programs in the current application's user data.
+---@return Engine.MaterialCacheRequest
+function Engine.prepareMaterialCache() end
 
 ---@param appNameOverride? string|nil
 ---@return string
@@ -1907,6 +1913,22 @@ function MapFogSettings.new(values) end
 ---@param values table
 function MapFogSettings.init(self, values) end
 Engine.MapFogSettings = MapFogSettings
+
+---@class Engine.MaterialCacheRequest
+local MaterialCacheRequest = {}
+--- Return pending, ready, failed or cancelled without blocking.
+---@return string
+function MaterialCacheRequest:getStatus() end
+--- Return preparation progress between zero and one.
+---@return number
+function MaterialCacheRequest:getProgress() end
+--- Confirm successful preparation; failed requests rethrow their error.
+---@return nil
+function MaterialCacheRequest:getResult() end
+--- Cancel preparation and wait for its worker to finish.
+---@return nil
+function MaterialCacheRequest:cancel() end
+Engine.MaterialCacheRequest = MaterialCacheRequest
 
 --- @brief Utility for rendering nine-patch style rectangles
 ---

@@ -58,7 +58,9 @@ foreach ($relativePath in @(
     'BuildTools/pack_project.bat',
     'BuildTools/build_cpp.bat',
     'BuildTools/build_standalone.bat',
-    'BuildTools/ScriptTools/ScriptTools.exe',
+    'BuildTools/Toolchain/ludork-build.exe',
+    'BuildTools/Toolchain/ludork-pack.exe',
+    'BuildTools/Toolchain/ludork-assets.exe',
     'BuildTools/luac.exe',
     'BuildTools/gnu-make/gnumake.exe'
 )) {
@@ -76,12 +78,14 @@ if ($Mode -eq 'standalone' -and -not (Test-Path -LiteralPath (Join-Path $LudorkD
     throw 'This Ludork artifact lacks BuildTools/pack_standalone.bat. Publish a new Ludork BuildTools artifact with Standalone project packaging support.'
 }
 
-$scriptTools = Join-Path $LudorkDirectory 'BuildTools/ScriptTools/ScriptTools.exe'
-foreach ($command in @('server-config', 'windows-native-build')) {
-    & $scriptTools $command --help *> $null
-    if ($LASTEXITCODE -ne 0) {
-        throw "This Ludork artifact lacks $command support. Publish a new Ludork BuildTools artifact with $command support."
-    }
+$toolchain = Join-Path $LudorkDirectory 'BuildTools/Toolchain'
+& (Join-Path $toolchain 'ludork-pack.exe') server-config --help *> $null
+if ($LASTEXITCODE -ne 0) {
+    throw 'This Ludork artifact lacks server-config support. Publish a new Ludork BuildTools artifact with server-config support.'
+}
+& (Join-Path $toolchain 'ludork-build.exe') native-build --help *> $null
+if ($LASTEXITCODE -ne 0) {
+    throw 'This Ludork artifact lacks native-build support. Publish a new Ludork BuildTools artifact with native-build support.'
 }
 
 $packer = Join-Path $LudorkDirectory 'BuildTools/pack_project.bat'

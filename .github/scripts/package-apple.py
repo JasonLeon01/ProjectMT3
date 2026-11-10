@@ -78,7 +78,7 @@ def ios_context(project, work):
     code = os.environ.get("IOS_ENCRYPTION_EXPORT_COMPLIANCE_CODE", "").strip()
     require(non_exempt == "false" or bool(code), "Non-exempt encryption requires Apple's approved export compliance code for unattended distribution")
     metadata = work / "package-metadata.json"
-    run([str(work / "tools/ScriptTools/ScriptTools"), "packaging-constants", "resolve-metadata", str(project), str(metadata), "--dev"])
+    run([str(work / "BuildTools/Toolchain/ludork-pack"), "metadata", "resolve", str(project), str(metadata), "--dev"])
     version = json.loads(metadata.read_text())["version"]
     context = {"bundle_id": identifier[len(team) + 1:], "version": version,
                "identity": identity, "uses_non_exempt_encryption": non_exempt == "true"}

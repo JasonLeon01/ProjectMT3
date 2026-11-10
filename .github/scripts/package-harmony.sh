@@ -6,7 +6,7 @@ require_environment HOS_ALIAS HOS_KEY_PASSWORD HOS_KEY_STORE_PASSWORD HOS_SIGNIN
 init_package harmony "$@"
 
 if [[ ! -f "$work/BuildTools/pack_harmony.sh" ]] || \
-    ! harmony_help=$("$work/BuildTools/ScriptTools/ScriptTools" harmony-pack --help) || \
+    ! harmony_help=$("$work/BuildTools/Toolchain/ludork-pack" harmony-pack --help) || \
     ! grep -q -- '--certificate' <<< "$harmony_help" || \
     ! grep -q -- '--profile' <<< "$harmony_help"; then
     echo 'This Ludork artifact lacks non-interactive HOS signing. Publish a new Ludork BuildTools artifact with harmony-pack --certificate and --profile support.' >&2
