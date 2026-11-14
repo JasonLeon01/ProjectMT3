@@ -7,26 +7,23 @@ local ChildView2 = require("Internal.UI.Parts.Shared.WindowPauseMark")
 local View = {}
 
 View.assetKey = "WindowInscription"
-View.designSize = sf.Vector2f.new(440, 268)
+View.designSize = sf.Vector2f.new(440, 240)
 
 function View:init(instance)
     UiView.init(self, instance)
     local controls = {
-        ConfirmRow = assert(self.instance:requireControl("ConfirmRow")),
+        ConfirmButton = assert(self.instance:requireControl("ConfirmButton")),
         Content = assert(self.instance:requireControl("Content")),
         MessageList = assert(self.instance:requireControl("MessageList")),
-        Preview = assert(self.instance:requireControl("Preview")),
         PublishLabel = assert(self.instance:requireControl("PublishLabel")),
         Root = assert(self.instance:requireControl("Root")),
         Status = assert(self.instance:requireControl("Status")),
         Template = assert(self.instance:requireControl("Template")),
-        TemplateLabel = assert(self.instance:requireControl("TemplateLabel")),
         TemplateNextLabel = assert(self.instance:requireControl("TemplateNextLabel")),
         TemplatePreviousLabel = assert(self.instance:requireControl("TemplatePreviousLabel")),
         TemplateRow = assert(self.instance:requireControl("TemplateRow")),
         WindowFrame = assert(self.instance:requireControl("WindowFrame")),
         Word = assert(self.instance:requireControl("Word")),
-        WordLabel = assert(self.instance:requireControl("WordLabel")),
         WordNextLabel = assert(self.instance:requireControl("WordNextLabel")),
         WordPreviousLabel = assert(self.instance:requireControl("WordPreviousLabel")),
         WordRow = assert(self.instance:requireControl("WordRow"))

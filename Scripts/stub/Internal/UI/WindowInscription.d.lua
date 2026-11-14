@@ -2,21 +2,18 @@
 ---@meta Internal.UI.WindowInscription
 
 ---@class Internal.UIBase.GeneratedControls.WindowInscription
----@field ConfirmRow            Engine.Canvas
+---@field ConfirmButton         Engine.Button
 ---@field Content               Engine.Canvas
 ---@field MessageList           Engine.ListView
----@field Preview               Engine.PlainText
 ---@field PublishLabel          Engine.PlainText
 ---@field Root                  Engine.Canvas
 ---@field Status                Engine.PlainText
 ---@field Template              Engine.PlainText
----@field TemplateLabel         Engine.PlainText
 ---@field TemplateNextLabel     Engine.PlainText
 ---@field TemplatePreviousLabel Engine.PlainText
 ---@field TemplateRow           Engine.Canvas
 ---@field WindowFrame           Engine.Window
 ---@field Word                  Engine.PlainText
----@field WordLabel             Engine.PlainText
 ---@field WordNextLabel         Engine.PlainText
 ---@field WordPreviousLabel     Engine.PlainText
 ---@field WordRow               Engine.Canvas

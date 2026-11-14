@@ -2,7 +2,7 @@
   "type": "uiAsset",
   "designSize": {
     "width": 440,
-    "height": 268
+    "height": 240
   },
   "palette": {
     "exposed": true,
@@ -95,7 +95,7 @@
     "properties": {
       "size": [
         440,
-        268
+        240
       ]
     },
     "editor": {},
@@ -106,7 +106,7 @@
         "properties": {
           "size": [
             440,
-            268
+            240
           ],
           "windowSkin": "",
           "repeated": true
@@ -144,7 +144,7 @@
         "properties": {
           "size": [
             408,
-            236
+            208
           ]
         },
         "slot": {
@@ -174,52 +174,16 @@
         "editor": {},
         "children": [
           {
-            "name": "Preview",
-            "controlId": "Engine.PlainText",
-            "properties": {
-              "text": "",
-              "characterSize": 20
-            },
-            "slot": {
-              "anchors": {
-                "min": [
-                  0,
-                  0
-                ],
-                "max": [
-                  0,
-                  0
-                ]
-              },
-              "offsets": {
-                "left": 204,
-                "top": 24,
-                "right": 0,
-                "bottom": 0
-              },
-              "alignment": [
-                0.5,
-                0.5
-              ],
-              "autoSize": true,
-              "zOrder": 0
-            },
-            "editor": {
-              "previewText": "前方有强敌"
-            },
-            "children": []
-          },
-          {
             "name": "MessageList",
             "controlId": "Engine.ListView",
             "properties": {
               "size": [
                 408,
-                144
+                112
               ],
-              "defaultItemHeight": 48,
+              "defaultItemHeight": 112,
               "fixItemHeight": true,
-              "columns": 1
+              "columns": 2
             },
             "slot": {
               "anchors": {
@@ -234,9 +198,9 @@
               },
               "offsets": {
                 "left": 0,
-                "top": 64,
+                "top": 8,
                 "right": 408,
-                "bottom": 144
+                "bottom": 112
               },
               "alignment": [
                 0,
@@ -252,55 +216,25 @@
                 "controlId": "Engine.Canvas",
                 "properties": {
                   "size": [
-                    408,
-                    48
+                    204,
+                    112
                   ]
                 },
                 "slot": {},
                 "editor": {},
                 "children": [
                   {
-                    "name": "TemplateLabel",
-                    "controlId": "Engine.PlainText",
-                    "properties": {
-                      "text": "",
-                      "characterSize": 18
-                    },
-                    "slot": {
-                      "anchors": {
-                        "min": [
-                          0,
-                          0
-                        ],
-                        "max": [
-                          0,
-                          0
-                        ]
-                      },
-                      "offsets": {
-                        "left": 16,
-                        "top": 12,
-                        "right": 92,
-                        "bottom": 26
-                      },
-                      "alignment": [
-                        0,
-                        0
-                      ],
-                      "autoSize": false,
-                      "zOrder": 0
-                    },
-                    "editor": {
-                      "previewText": "句式"
-                    },
-                    "children": []
-                  },
-                  {
                     "name": "TemplatePreviousLabel",
                     "controlId": "Engine.PlainText",
                     "properties": {
-                      "text": "‹",
-                      "characterSize": 18
+                      "text": "",
+                      "characterSize": 18,
+                      "colour": [
+                        255,
+                        255,
+                        255,
+                        128
+                      ]
                     },
                     "slot": {
                       "anchors": {
@@ -314,7 +248,7 @@
                         ]
                       },
                       "offsets": {
-                        "left": 126,
+                        "left": 102,
                         "top": 24,
                         "right": 0,
                         "bottom": 0
@@ -326,7 +260,9 @@
                       "autoSize": true,
                       "zOrder": 0
                     },
-                    "editor": {},
+                    "editor": {
+                      "previewText": "需要"
+                    },
                     "children": []
                   },
                   {
@@ -348,8 +284,8 @@
                         ]
                       },
                       "offsets": {
-                        "left": 257,
-                        "top": 24,
+                        "left": 102,
+                        "top": 56,
                         "right": 0,
                         "bottom": 0
                       },
@@ -361,7 +297,7 @@
                       "zOrder": 0
                     },
                     "editor": {
-                      "previewText": "前方有…"
+                      "previewText": "前方有"
                     },
                     "children": []
                   },
@@ -369,8 +305,14 @@
                     "name": "TemplateNextLabel",
                     "controlId": "Engine.PlainText",
                     "properties": {
-                      "text": "›",
-                      "characterSize": 18
+                      "text": "",
+                      "characterSize": 18,
+                      "colour": [
+                        255,
+                        255,
+                        255,
+                        128
+                      ]
                     },
                     "slot": {
                       "anchors": {
@@ -384,8 +326,8 @@
                         ]
                       },
                       "offsets": {
-                        "left": 388,
-                        "top": 24,
+                        "left": 102,
+                        "top": 88,
                         "right": 0,
                         "bottom": 0
                       },
@@ -396,7 +338,9 @@
                       "autoSize": true,
                       "zOrder": 0
                     },
-                    "editor": {},
+                    "editor": {
+                      "previewText": "小心"
+                    },
                     "children": []
                   }
                 ]
@@ -406,55 +350,25 @@
                 "controlId": "Engine.Canvas",
                 "properties": {
                   "size": [
-                    408,
-                    48
+                    204,
+                    112
                   ]
                 },
                 "slot": {},
                 "editor": {},
                 "children": [
                   {
-                    "name": "WordLabel",
-                    "controlId": "Engine.PlainText",
-                    "properties": {
-                      "text": "",
-                      "characterSize": 18
-                    },
-                    "slot": {
-                      "anchors": {
-                        "min": [
-                          0,
-                          0
-                        ],
-                        "max": [
-                          0,
-                          0
-                        ]
-                      },
-                      "offsets": {
-                        "left": 16,
-                        "top": 12,
-                        "right": 92,
-                        "bottom": 26
-                      },
-                      "alignment": [
-                        0,
-                        0
-                      ],
-                      "autoSize": false,
-                      "zOrder": 0
-                    },
-                    "editor": {
-                      "previewText": "词语"
-                    },
-                    "children": []
-                  },
-                  {
                     "name": "WordPreviousLabel",
                     "controlId": "Engine.PlainText",
                     "properties": {
-                      "text": "‹",
-                      "characterSize": 18
+                      "text": "",
+                      "characterSize": 18,
+                      "colour": [
+                        255,
+                        255,
+                        255,
+                        128
+                      ]
                     },
                     "slot": {
                       "anchors": {
@@ -468,7 +382,7 @@
                         ]
                       },
                       "offsets": {
-                        "left": 126,
+                        "left": 102,
                         "top": 24,
                         "right": 0,
                         "bottom": 0
@@ -480,7 +394,9 @@
                       "autoSize": true,
                       "zOrder": 0
                     },
-                    "editor": {},
+                    "editor": {
+                      "previewText": "传送点"
+                    },
                     "children": []
                   },
                   {
@@ -502,8 +418,8 @@
                         ]
                       },
                       "offsets": {
-                        "left": 257,
-                        "top": 24,
+                        "left": 102,
+                        "top": 56,
                         "right": 0,
                         "bottom": 0
                       },
@@ -523,56 +439,14 @@
                     "name": "WordNextLabel",
                     "controlId": "Engine.PlainText",
                     "properties": {
-                      "text": "›",
-                      "characterSize": 18
-                    },
-                    "slot": {
-                      "anchors": {
-                        "min": [
-                          0,
-                          0
-                        ],
-                        "max": [
-                          0,
-                          0
-                        ]
-                      },
-                      "offsets": {
-                        "left": 388,
-                        "top": 24,
-                        "right": 0,
-                        "bottom": 0
-                      },
-                      "alignment": [
-                        0.5,
-                        0.5
-                      ],
-                      "autoSize": true,
-                      "zOrder": 0
-                    },
-                    "editor": {},
-                    "children": []
-                  }
-                ]
-              },
-              {
-                "name": "ConfirmRow",
-                "controlId": "Engine.Canvas",
-                "properties": {
-                  "size": [
-                    408,
-                    48
-                  ]
-                },
-                "slot": {},
-                "editor": {},
-                "children": [
-                  {
-                    "name": "PublishLabel",
-                    "controlId": "Engine.PlainText",
-                    "properties": {
                       "text": "",
-                      "characterSize": 18
+                      "characterSize": 18,
+                      "colour": [
+                        255,
+                        255,
+                        255,
+                        128
+                      ]
                     },
                     "slot": {
                       "anchors": {
@@ -586,8 +460,8 @@
                         ]
                       },
                       "offsets": {
-                        "left": 204,
-                        "top": 24,
+                        "left": 102,
+                        "top": 88,
                         "right": 0,
                         "bottom": 0
                       },
@@ -599,13 +473,95 @@
                       "zOrder": 0
                     },
                     "editor": {
-                      "previewText": "确认"
+                      "previewText": "伏击"
                     },
                     "children": []
                   }
                 ]
               }
             ]
+          },
+          {
+            "name": "ConfirmButton",
+            "controlId": "Engine.Button",
+            "properties": {
+              "texture": "",
+              "gamepadButton": "A",
+              "hoverColour": [
+                220,
+                235,
+                255,
+                255
+              ],
+              "pressedColour": [
+                160,
+                190,
+                230,
+                255
+              ]
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 120,
+                "top": 128,
+                "right": 168,
+                "bottom": 40
+              },
+              "alignment": [
+                0,
+                0
+              ],
+              "autoSize": false,
+              "zOrder": 2
+            },
+            "editor": {},
+            "children": []
+          },
+          {
+            "name": "PublishLabel",
+            "controlId": "Engine.PlainText",
+            "properties": {
+              "text": "",
+              "characterSize": 18
+            },
+            "slot": {
+              "anchors": {
+                "min": [
+                  0,
+                  0
+                ],
+                "max": [
+                  0,
+                  0
+                ]
+              },
+              "offsets": {
+                "left": 204,
+                "top": 148,
+                "right": 0,
+                "bottom": 0
+              },
+              "alignment": [
+                0.5,
+                0.5
+              ],
+              "autoSize": true,
+              "zOrder": 3
+            },
+            "editor": {
+              "previewText": "确认"
+            },
+            "children": []
           },
           {
             "name": "Status",
@@ -627,7 +583,7 @@
               },
               "offsets": {
                 "left": 16,
-                "top": 216,
+                "top": 180,
                 "right": 376,
                 "bottom": 20
               },

@@ -14,9 +14,7 @@
 ---@field _touchOrigin    sf.Vector2f | nil
 ---@field _touchRow       integer | nil
 ---@field _touchConsumed  boolean
----@field _leftKeys       Engine.InputActionKey[]
----@field _rightKeys      Engine.InputActionKey[]
----@field _shiftKeys      Engine.InputActionKey[]
+---@field _confirmKeys    Engine.InputActionKey[]
 local Controller = {}
 
 ---@param direction string
@@ -25,16 +23,28 @@ function Controller:onDirectionalKey(direction) end
 ---@param index integer
 ---@param step  integer
 function Controller:adjustRow(index, step) end
+---@param index integer
+---@return sf.FloatRect
+function Controller:getSelectionLayoutRect(index) end
+---@param index integer
+---@return sf.FloatRect
+function Controller:_getItemHitAbsoluteBounds(index) end
 ---@param position sf.Vector2f
 ---@return integer | nil
 function Controller:getChoiceRowAt(position) end
 ---@param kwargs Engine.UiInputEventArguments
 function Controller:onMouseWheelScrolled(kwargs) end
 ---@param position sf.Vector2f
+---@return boolean
+function Controller:_shouldCaptureTouch(position) end
+---@param position sf.Vector2f
 function Controller:_onCapturedTouchBegan(position) end
 ---@param position sf.Vector2f
 ---@return boolean
 function Controller:_handleCapturedTouchDrag(position) end
+---@param position sf.Vector2f
+---@return boolean
+function Controller:_handleCapturedTouchTap(position) end
 function Controller:_onCapturedTouchReset() end
 
 ---@param messages Source.SceneComponents.MapMessages
