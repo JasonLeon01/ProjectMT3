@@ -40,6 +40,10 @@ function Window:dispose() end
 ---@return integer | nil
 function Window:getChoiceRowAt(position) end
 
+---@param index integer
+---@return sf.FloatRect
+function Window:getSelectionLayoutRect(index) end
+
 ---@param direction string
 ---@return boolean
 function Window:onDirectionalKey(direction) end

@@ -12,6 +12,10 @@ local Direction = Engine.FocusDirection
 ---@type fun(value: string): string
 local LOC = Locale.ApplyStringLocaleFormat
 
+local function formatTemplate(key)
+    return string.strip(string.pformat(LOC(key), { word = "" }))
+end
+
 ---@class Source.Windows.WindowInscription.Controller
 local Controller = {}
 Controller.windowOptions = {
@@ -34,31 +38,25 @@ function Controller:init(messages, onClose)
     self._touchOrigin = nil
     self._touchRow = nil
     self._touchConsumed = false
-    self._leftKeys = Input.getLeftKeys()
-    self._rightKeys = Input.getRightKeys()
-    self._leftKeys[#self._leftKeys + 1] = Engine.InputActionKey.new({
-        kind = Engine.ActionKind.JoystickAxis,
-        code = sf.Joystick.Axis.U,
-        threshold = -10,
-        comparison = Engine.AxisComparison.Less
-    })
-    self._rightKeys[#self._rightKeys + 1] = Engine.InputActionKey.new({
-        kind = Engine.ActionKind.JoystickAxis,
-        code = sf.Joystick.Axis.U,
-        threshold = 10,
-        comparison = Engine.AxisComparison.Greater
-    })
-    self._shiftKeys = {
-        Engine.InputActionKey.new({ kind = Engine.ActionKind.Key, code = sf.Keyboard.Key.LShift }),
-        Engine.InputActionKey.new({ kind = Engine.ActionKind.Key, code = sf.Keyboard.Key.RShift })
-    }
+    self._confirmKeys = {}
+    for _, key in ipairs(Input.getConfirmKeys()) do
+        if key.kind ~= Engine.ActionKind.MouseButton and key.kind ~= Engine.ActionKind.TouchTap then
+            self._confirmKeys[#self._confirmKeys + 1] = key
+        end
+    end
     self:watch(messages, "networkReady", Controller.refreshStatus)
     self:watch(messages, "checking", Controller.refreshStatus)
     self:watch(messages, "submitting", Controller.refreshStatus)
 end
 
 function Controller:bind()
-    self.ui.controls.ConfirmRow:addConfirmCallback(self:bindCallback(Controller.confirm))
+    self.ui.controls.ConfirmButton:setCanReceiveFocus(false)
+    self.ui.controls.ConfirmButton:addConfirmCallback(self:bindCallback(Controller.confirm))
+    self.ui.controls.ConfirmButton:addClickCallback(function (_button, kwargs)
+        if kwargs.button == nil or kwargs.button == sf.Mouse.Button.Left then
+            self:confirm()
+        end
+    end)
     for _, row in ipairs(self.ui.controls.MessageList:getChildren()) do
         assert(Class.isInstance(row, Engine.Canvas))
         ---@cast row Engine.Canvas
@@ -73,6 +71,7 @@ function Controller:open(_mapRect)
     self._busy = false
     self._wheelRow = nil
     self._wheelAmount = 0
+    self:_onCapturedTouchReset()
     self:refreshLocale()
     self.host:resetSelection()
     self.host:showWithAnimation("FadeIn", function ()
@@ -101,34 +100,35 @@ function Controller:onReturn()
     self:close()
 end
 
-function Controller:onKeyDown(kwargs)
+function Controller:onKeyDown(_kwargs)
     if Input.isActionTriggered(Input.getCancelKeys(), true) then
         self:onReturn()
         return
     end
     if self._busy then return end
-    if self.host.index == 0 or self.host.index == 1 then
-        if Input.isActionTriggered(self._leftKeys, true, 0.4, 0.1) then
-            self:adjustRow(self.host.index, -1)
-            return
-        end
-        if Input.isActionTriggered(self._rightKeys, true, 0.4, 0.1) then
-            self:adjustRow(self.host.index, 1)
-            return
-        end
+    if Input.isActionTriggered(self._confirmKeys, true) then
+        self:confirm()
+        return
     end
-    WindowSelectable.onKeyDown(self.host, kwargs)
+    if self.host:_handleDirectionalAction(Direction.UP, Input.getUpKeys()) then return end
+    if self.host:_handleDirectionalAction(Direction.DOWN, Input.getDownKeys()) then return end
+    if self.host:_handleDirectionalAction(Direction.LEFT, Input.getLeftKeys()) then return end
+    self.host:_handleDirectionalAction(Direction.RIGHT, Input.getRightKeys())
 end
 
 function Controller:onDirectionalKey(direction)
     if self._busy then return true end
     if self.host.index == 0 or self.host.index == 1 then
+        if direction == Direction.UP or direction == Direction.DOWN then
+            self:adjustRow(self.host.index, direction == Direction.UP and -1 or 1)
+            return true
+        end
         if direction == Direction.LEFT or direction == Direction.RIGHT then
-            self:adjustRow(self.host.index, direction == Direction.LEFT and -1 or 1)
+            self.host:changeSelection(direction == Direction.LEFT and 0 or 1)
             return true
         end
     end
-    return WindowSelectable.onDirectionalKey(self.host, direction)
+    return false
 end
 
 function Controller:adjustRow(index, step)
@@ -137,6 +137,21 @@ function Controller:adjustRow(index, step)
     elseif index == 1 then
         self:changeWord(step)
     end
+end
+
+function Controller:getSelectionLayoutRect(index)
+    self.ui.controls.MessageList:applyPositions()
+    local text = index == 0 and self.ui.controls.Template or self.ui.controls.Word
+    local row = index == 0 and self.ui.controls.TemplateRow or self.ui.controls.WordRow
+    local bounds = text:getTransform():transformRect(text:getLocalBounds())
+    bounds.position = bounds.position - sf.Vector2f.new(8, 4)
+    bounds.size = bounds.size + sf.Vector2f.new(16, 8)
+    return row:getTransform():transformRect(bounds)
+end
+
+function Controller:_getItemHitAbsoluteBounds(index)
+    local row = index == 0 and self.ui.controls.TemplateRow or self.ui.controls.WordRow
+    return row:getAbsoluteBounds()
 end
 
 function Controller:getChoiceRowAt(position)
@@ -149,10 +164,8 @@ function Controller:onMouseWheelScrolled(kwargs)
     if self._busy or not self.host:canReceiveFocus() or kwargs.position == nil then return end
     local row = self:getChoiceRowAt(kwargs.position)
     if row == nil then return end
-    local horizontal = Input.getMouseScrolledWheel() == sf.Mouse.Wheel.Horizontal
-    if not horizontal and not Input.isActionHeld(self._shiftKeys) then return end
-    local delta = kwargs.delta or 0
-    if not horizontal then delta = -delta end
+    if Input.getMouseScrolledWheel() ~= sf.Mouse.Wheel.Vertical then return end
+    local delta = -(kwargs.delta or 0)
     if self._wheelRow ~= row then
         self._wheelRow = row
         self._wheelAmount = 0
@@ -168,7 +181,12 @@ function Controller:onMouseWheelScrolled(kwargs)
     end
 end
 
+function Controller:_shouldCaptureTouch(position)
+    return self:getChoiceRowAt(position) ~= nil
+end
+
 function Controller:_onCapturedTouchBegan(position)
+    if self._busy then return end
     self._touchOrigin = position:copy()
     self._touchRow = self:getChoiceRowAt(position)
     self._touchConsumed = false
@@ -178,12 +196,16 @@ end
 function Controller:_handleCapturedTouchDrag(position)
     if self._busy or self._touchOrigin == nil or self._touchRow == nil or self._touchConsumed then return true end
     local delta = (position - self._touchOrigin) / Engine.GetScale()
-    if math.abs(delta.x) >= 32 and math.abs(delta.x) > math.abs(delta.y) then
+    if math.abs(delta.y) >= 32 and math.abs(delta.y) > math.abs(delta.x) then
         self._touchConsumed = true
-        self:adjustRow(self._touchRow, delta.x < 0 and 1 or -1)
-    elseif math.abs(delta.y) >= 32 then
+        self:adjustRow(self._touchRow, delta.y < 0 and 1 or -1)
+    elseif math.abs(delta.x) >= 32 then
         self._touchConsumed = true
     end
+    return true
+end
+
+function Controller:_handleCapturedTouchTap(_position)
     return true
 end
 
@@ -208,19 +230,22 @@ end
 function Controller:refreshLocale()
     local templateKey = assert(Config.TEMPLATES[self._template])
     local wordKey = assert(Config.WORDS[self._word])
-    self:setText("TemplateLabel", LOC("MESSAGES_TEMPLATE_LABEL"))
-    self:setText("WordLabel", LOC("MESSAGES_WORD_LABEL"))
-    self:setText("Template", string.pformat(LOC(templateKey), { word = "…" }))
+    self:setText("Template", formatTemplate(templateKey))
     self:setText("Word", LOC(wordKey))
-    self:setText("Preview", Config.Format(templateKey, wordKey))
+    self:setText("TemplatePreviousLabel", formatTemplate(Config.TEMPLATES[(self._template - 2) % #Config.TEMPLATES + 1]))
+    self:setText("TemplateNextLabel", formatTemplate(Config.TEMPLATES[self._template % #Config.TEMPLATES + 1]))
+    self:setText("WordPreviousLabel", LOC(Config.WORDS[(self._word - 2) % #Config.WORDS + 1]))
+    self:setText("WordNextLabel", LOC(Config.WORDS[self._word % #Config.WORDS + 1]))
     self:setText("PublishLabel", LOC("MESSAGES_PUBLISH"))
     self.view:reflow()
     self:refreshStatus()
 end
 
 function Controller:refreshStatus()
-    local enabled = self._messages.networkReady and not self._messages.checking and not self._messages.submitting
-    self.ui.controls.ConfirmRow:setActive(enabled)
+    local enabled = self._messages.networkReady and not self._messages.checking
+        and not self._messages.submitting and not self._busy
+    self.ui.controls.ConfirmButton:setActive(enabled)
+    self.ui.controls.ConfirmButton:setColour(enabled and sf.Color.new(255, 255, 255) or sf.Color.new(140, 140, 140))
     self.ui.controls.PublishLabel:setColour(enabled and sf.Color.new(255, 255, 255) or sf.Color.new(140, 140, 140))
     self:setText(
         "Status",
@@ -237,6 +262,7 @@ function Controller:confirm()
         return
     end
     self._busy = true
+    self:refreshStatus()
     local generation = self._openGeneration
     self._messages:submit(assert(Config.TEMPLATES[self._template]), assert(Config.WORDS[self._word]), function ()
         ---@diagnostic disable-next-line: preferred-local-alias, compare the current generation with the callback snapshot
