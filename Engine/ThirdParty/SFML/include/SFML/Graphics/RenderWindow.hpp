@@ -178,6 +178,11 @@ public:
     ////////////////////////////////////////////////////////////
     [[nodiscard]] bool setActive(bool active = true) override;
 
+    using Window::create;
+    void create(VideoMode mode, const String& title, std::uint32_t style, State state, const ContextSettings& settings) override;
+    void create(WindowHandle handle, const ContextSettings& settings) override;
+    void close() override;
+
 protected:
     ////////////////////////////////////////////////////////////
     /// \brief Function called after the window has been created
@@ -199,10 +204,9 @@ protected:
     void onResize() override;
 
 private:
-    ////////////////////////////////////////////////////////////
-    // Member data
-    ////////////////////////////////////////////////////////////
-    unsigned int m_defaultFrameBuffer{}; //!< Framebuffer to bind when targeting this window
+    [[nodiscard]] std::unique_ptr<priv::WindowSurface> createSurface(const ContextSettings&  settings,
+                                                                     const priv::WindowImpl& owner,
+                                                                     unsigned int            bitsPerPixel) override;
 };
 
 } // namespace sf
@@ -272,11 +276,8 @@ private:
 /// sf::Text text(font);
 /// ...
 ///
-/// // Compile and bind an OpenGL shader program, then configure
-/// // its uniforms and generic vertex attributes
-/// const GLuint program = ...;
-/// glUseProgram(program);
-/// glEnableVertexAttribArray(0);
+/// // Perform OpenGL initializations
+/// glMatrixMode(GL_PROJECTION);
 /// ...
 ///
 /// // Start the rendering loop
@@ -291,9 +292,10 @@ private:
 ///     window.popGLStates();
 ///
 ///     // Draw a 3D object using OpenGL
-///     glUseProgram(program);
-///     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, stride, vertices);
-///     glDrawArrays(GL_TRIANGLES, 0, vertexCount);
+///     glBegin(GL_TRIANGLES);
+///         glVertex3f(...);
+///         ...
+///     glEnd();
 ///
 ///     // Draw text on top of the 3D object
 ///     window.pushGLStates();

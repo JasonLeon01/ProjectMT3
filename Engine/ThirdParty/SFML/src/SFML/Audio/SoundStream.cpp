@@ -273,20 +273,18 @@ void SoundStream::initialize(unsigned int channelCount, unsigned int sampleRate,
 ////////////////////////////////////////////////////////////
 void SoundStream::play()
 {
-    ma_node_set_state(&m_impl->effectNode, ma_node_state_stopped);
-    priv::AudioDevice::waitForReadingComplete();
-
-    if (m_impl->status == Status::Playing)
+    const auto previousStatus = m_impl->status.exchange(Status::Playing);
+    if (previousStatus == Status::Playing)
         setPlayingOffset(Time::Zero);
 
     if (const ma_result result = ma_sound_start(&m_impl->sound); result != MA_SUCCESS)
     {
+        m_impl->status = previousStatus;
         err() << "Failed to start playing sound: " << ma_result_description(result) << std::endl;
     }
     else
     {
         ma_node_set_state(&m_impl->effectNode, ma_node_state_started);
-        m_impl->status = Status::Playing;
     }
 }
 
@@ -294,18 +292,18 @@ void SoundStream::play()
 ////////////////////////////////////////////////////////////
 void SoundStream::pause()
 {
+    const auto previousEffectState = ma_node_get_state(&m_impl->effectNode);
     ma_node_set_state(&m_impl->effectNode, ma_node_state_stopped);
 
     if (const ma_result result = ma_sound_stop(&m_impl->sound); result != MA_SUCCESS)
     {
-        ma_node_set_state(&m_impl->effectNode, ma_node_state_started);
+        ma_node_set_state(&m_impl->effectNode, previousEffectState);
         err() << "Failed to stop playing sound: " << ma_result_description(result) << std::endl;
     }
     else
     {
-        priv::AudioDevice::waitForReadingComplete();
-        if (m_impl->status == Status::Playing)
-            m_impl->status = Status::Paused;
+        auto previousStatus = Status::Playing;
+        m_impl->status.compare_exchange_strong(previousStatus, Status::Paused);
     }
 }
 
@@ -313,11 +311,12 @@ void SoundStream::pause()
 ////////////////////////////////////////////////////////////
 void SoundStream::stop()
 {
+    const auto previousEffectState = ma_node_get_state(&m_impl->effectNode);
     ma_node_set_state(&m_impl->effectNode, ma_node_state_stopped);
 
     if (const ma_result result = ma_sound_stop(&m_impl->sound); result != MA_SUCCESS)
     {
-        ma_node_set_state(&m_impl->effectNode, ma_node_state_started);
+        ma_node_set_state(&m_impl->effectNode, previousEffectState);
         err() << "Failed to stop playing sound: " << ma_result_description(result) << std::endl;
     }
     else
@@ -366,7 +365,7 @@ void SoundStream::setPlayingOffset(Time timeOffset)
     if (m_impl->sound.pDataSource == nullptr || m_impl->sound.engineNode.pEngine == nullptr)
         return;
 
-    static_cast<void>(priv::MiniaudioUtils::getFrameIndex(m_impl->sound, timeOffset));
+    priv::MiniaudioUtils::seekToTime(m_impl->sound, timeOffset);
 }
 
 
@@ -397,15 +396,7 @@ bool SoundStream::isLooping() const
 ////////////////////////////////////////////////////////////
 void SoundStream::setEffectProcessor(EffectProcessor effectProcessor)
 {
-    const bool effectWasStarted = ma_node_get_state(&m_impl->effectNode) == ma_node_state_started;
-    ma_node_set_state(&m_impl->effectNode, ma_node_state_stopped);
-    priv::AudioDevice::waitForReadingComplete();
-
-    m_impl->effectProcessor = std::move(effectProcessor);
-    m_impl->connectEffect(bool{m_impl->effectProcessor});
-
-    if (effectWasStarted)
-        ma_node_set_state(&m_impl->effectNode, ma_node_state_started);
+    m_impl->setEffectProcessor(std::move(effectProcessor));
 }
 
 

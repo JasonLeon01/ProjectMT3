@@ -285,16 +285,7 @@
 
     // This won't produce a move event, which is perfect if the cursor was grabbed
     // as we move it manually based on delta values of the cursor.
-    CGDisplayMoveCursorToPoint([self displayId], NSPointToCGPoint(screenLocation));
-}
-
-
-////////////////////////////////////////////////////////
-- (CGDirectDisplayID)displayId
-{
-    NSScreen* screen    = [[self window] screen];
-    NSNumber* displayId = [[screen deviceDescription] objectForKey:@"NSScreenNumber"];
-    return static_cast<unsigned int>([displayId intValue]);
+    CGWarpMouseCursorPosition(NSPointToCGPoint(screenLocation));
 }
 
 

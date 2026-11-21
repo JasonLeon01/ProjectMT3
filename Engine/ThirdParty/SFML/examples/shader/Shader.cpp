@@ -5,10 +5,12 @@
 #include <SFML/Graphics.hpp>
 
 #include <array>
+#include <filesystem>
 #include <iostream>
 #include <optional>
 #include <random>
 #include <string>
+#include <string_view>
 
 #include <cmath>
 #include <cstdint>
@@ -18,6 +20,34 @@ namespace
 {
 std::random_device rd;
 std::mt19937       rng(rd());
+
+// The other backends use translations of the GLSL resources: MSL (.metal), DXBC (.cso) or HLSL (.hlsl), and
+// SPIR-V compiled from resources/vulkan with glslang -V --target-env vulkan1.0
+sf::GraphicsBackend backend = sf::GraphicsBackend::OpenGL;
+
+std::string shaderFile(const std::string& name)
+{
+    switch (backend)
+    {
+        case sf::GraphicsBackend::Metal:
+            return "resources/" + name + ".metal";
+        case sf::GraphicsBackend::DirectX:
+            if (auto bytecode = "resources/" + name + ".cso"; std::filesystem::is_regular_file(bytecode))
+                return bytecode;
+            return "resources/" + name + ".hlsl";
+        case sf::GraphicsBackend::Vulkan:
+            return "resources/vulkan/" + name + ".spv";
+        default:
+            return "resources/" + name;
+    }
+}
+
+// HLSL and GLSL 4.50 reserve the name texture, so those translations sample sf_Texture, the current texture
+void useCurrentTexture(sf::Shader& shader)
+{
+    if (backend == sf::GraphicsBackend::OpenGL || backend == sf::GraphicsBackend::Metal)
+        shader.setUniform("texture", sf::Shader::CurrentTexture);
+}
 
 
 ////////////////////////////////////////////////////////////
@@ -39,7 +69,7 @@ public:
         m_texture(std::move(texture)),
         m_shader(std::move(shader))
     {
-        m_shader.setUniform("texture", sf::Shader::CurrentTexture);
+        useCurrentTexture(m_shader);
     }
 
     void update(float /* time */, float x, float y) override
@@ -283,7 +313,7 @@ std::optional<Pixelate> tryLoadPixelate()
         return std::nullopt;
 
     sf::Shader shader;
-    if (!shader.loadFromFile("resources/pixelate.frag", sf::Shader::Type::Fragment))
+    if (!shader.loadFromFile(shaderFile("pixelate.frag"), sf::Shader::Type::Fragment))
         return std::nullopt;
 
     return std::make_optional<Pixelate>(std::move(texture), std::move(shader));
@@ -292,7 +322,7 @@ std::optional<Pixelate> tryLoadPixelate()
 std::optional<WaveBlur> tryLoadWaveBlur(const sf::Font& font)
 {
     sf::Shader shader;
-    if (!shader.loadFromFile("resources/wave.vert", "resources/blur.frag"))
+    if (!shader.loadFromFile(shaderFile("wave.vert"), shaderFile("blur.frag")))
         return std::nullopt;
 
     return std::make_optional<WaveBlur>(font, std::move(shader));
@@ -301,7 +331,7 @@ std::optional<WaveBlur> tryLoadWaveBlur(const sf::Font& font)
 std::optional<StormBlink> tryLoadStormBlink()
 {
     sf::Shader shader;
-    if (!shader.loadFromFile("resources/storm.vert", "resources/blink.frag"))
+    if (!shader.loadFromFile(shaderFile("storm.vert"), shaderFile("blink.frag")))
         return std::nullopt;
 
     return std::make_optional<StormBlink>(std::move(shader));
@@ -332,18 +362,19 @@ std::optional<Edge> tryLoadEdge()
 
     // Load the shader
     sf::Shader shader;
-    if (!shader.loadFromFile("resources/edge.frag", sf::Shader::Type::Fragment))
+    if (!shader.loadFromFile(shaderFile("edge.frag"), sf::Shader::Type::Fragment))
         return std::nullopt;
 
-    shader.setUniform("texture", sf::Shader::CurrentTexture);
+    useCurrentTexture(shader);
 
     return std::make_optional<Edge>(std::move(surface), std::move(backgroundTexture), std::move(entityTexture), std::move(shader));
 }
 
 std::optional<Geometry> tryLoadGeometry()
 {
-    // Check if geometry shaders are supported
-    if (!sf::Shader::isGeometryAvailable())
+    // Check if geometry shaders are supported; Metal draws the billboards as point sprites instead
+    const bool pointSprites = backend == sf::GraphicsBackend::Metal;
+    if (!pointSprites && !sf::Shader::isGeometryAvailable())
         return std::nullopt;
 
     // Load the logo texture
@@ -355,13 +386,16 @@ std::optional<Geometry> tryLoadGeometry()
 
     // Load the shader
     sf::Shader shader;
-    if (!shader.loadFromFile("resources/billboard.vert", "resources/billboard.geom", "resources/billboard.frag"))
+    if (pointSprites
+            ? !shader.loadFromFile(shaderFile("billboard.vert"), shaderFile("billboard.frag"))
+            : !shader.loadFromFile(shaderFile("billboard.vert"), shaderFile("billboard.geom"), shaderFile("billboard.frag")))
         return std::nullopt;
 
-    shader.setUniform("texture", sf::Shader::CurrentTexture);
+    useCurrentTexture(shader);
 
-    // Set the render resolution (used for proper scaling)
-    shader.setUniform("resolution", sf::Vector2f(800, 600));
+    // Set the render resolution (used for proper scaling); point sprites are sized in pixels
+    if (!pointSprites)
+        shader.setUniform("resolution", sf::Vector2f(800, 600));
 
     return std::make_optional<Geometry>(std::move(logoTexture), std::move(shader));
 }
@@ -375,8 +409,41 @@ std::optional<Geometry> tryLoadGeometry()
 /// \return Application exit code
 ///
 ////////////////////////////////////////////////////////////
-int main()
+int main(int argc, char* argv[])
 {
+    // Without an option, Metal is preferred when it is built and OpenGL is used otherwise
+    const std::string_view backendName = (argc == 3 && std::string_view{argv[1]} == "--backend") ? argv[2] : "";
+    if (backendName == "metal")
+        backend = sf::GraphicsBackend::Metal;
+    else if (backendName == "directx")
+        backend = sf::GraphicsBackend::DirectX;
+    else if (backendName == "vulkan")
+        backend = sf::GraphicsBackend::Vulkan;
+    else if (backendName == "opengl")
+        backend = sf::GraphicsBackend::OpenGL;
+    else if (argc != 1)
+    {
+        std::cerr << "Usage: shader [--backend opengl|metal|directx|vulkan]" << std::endl;
+        return EXIT_FAILURE;
+    }
+#ifdef SFML_RENDER_METAL
+    if (argc == 1)
+        backend = sf::GraphicsBackend::Metal;
+#endif
+    const std::string backendTitle = backend == sf::GraphicsBackend::Metal     ? "Metal"
+                                     : backend == sf::GraphicsBackend::DirectX ? "DirectX"
+                                     : backend == sf::GraphicsBackend::Vulkan  ? "Vulkan"
+                                                                               : "OpenGL";
+
+    // The GLSL resources use desktop compatibility OpenGL
+    if (backend == sf::GraphicsBackend::OpenGL
+            ? !sf::setGraphicsBackend(backend, sf::OpenGLSettings{2, 0, sf::OpenGLProfile::Compatibility})
+            : !sf::setGraphicsBackend(backend))
+    {
+        std::cerr << "The " << backendTitle << " backend is not available" << std::endl;
+        return EXIT_FAILURE;
+    }
+
     // Exit early if shaders are not available
     if (!sf::Shader::isAvailable())
     {
@@ -385,7 +452,9 @@ int main()
     }
 
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML Shader", sf::Style::Titlebar | sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode({800, 600}),
+                            "SFML Shader (" + backendTitle + ")",
+                            sf::Style::Titlebar | sf::Style::Close);
     window.setVerticalSyncEnabled(true);
 
     // Open the application font
@@ -407,7 +476,11 @@ int main()
                                          optionalToPtr(geometryEffect)};
 
     const std::array<std::string, 5>
-        effectNames{"Pixelate", "Wave + Blur", "Storm + Blink", "Edge Post-effect", "Geometry Shader Billboards"};
+        effectNames{"Pixelate",
+                    "Wave + Blur",
+                    "Storm + Blink",
+                    "Edge Post-effect",
+                    backend == sf::GraphicsBackend::Metal ? "Point Sprite Billboards" : "Geometry Shader Billboards"};
 
     // Index of currently selected effect
     std::size_t current = 0;

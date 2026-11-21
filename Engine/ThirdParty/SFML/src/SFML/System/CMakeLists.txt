@@ -42,7 +42,9 @@ set(SRC
 source_group("" FILES ${SRC})
 
 # add platform specific sources
-if(SFML_OS_WINDOWS)
+if(SFML_OS_EMSCRIPTEN)
+    set(PLATFORM_SRC ${SRCROOT}/Emscripten/SleepImpl.cpp ${SRCROOT}/Emscripten/Browser.hpp)
+elseif(SFML_OS_WINDOWS)
     set(PLATFORM_SRC
         ${SRCROOT}/Win32/SleepImpl.cpp
         ${SRCROOT}/Win32/SleepImpl.hpp
@@ -76,19 +78,14 @@ else()
     source_group("unix" FILES ${PLATFORM_SRC})
 endif()
 
-find_package(Threads REQUIRED)
+if(NOT SFML_OS_EMSCRIPTEN)
+    find_package(Threads REQUIRED)
+endif()
 
 # define the sfml-system target
 sfml_add_library(System
                  SOURCES ${SRC} ${PLATFORM_SRC}
                  DEPENDENCIES "Dependencies.cmake.in")
-
-# Config.hpp uses these mutually exclusive macros to expose the selected
-# Harmony device form. PUBLIC keeps installed targets and their consumers on
-# the same ABI/backend contract as the SFML libraries they link against.
-if(SFML_OS_HARMONY)
-    target_compile_definitions(sfml-system PUBLIC "SFML_HARMONY_${SFML_HARMONY_DEVICE_FORM}")
-endif()
 
 # cpp-unicodelib sources
 target_include_directories(sfml-system SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/cpp-unicodelib")
@@ -104,7 +101,13 @@ if(SFML_OS_ANDROID)
     target_include_directories(sfml-system SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/glad/include")
 endif()
 
-target_link_libraries(sfml-system PRIVATE Threads::Threads)
+# Web requirements must also reach applications linking an installed static SFML.
+if(SFML_OS_EMSCRIPTEN)
+    target_compile_options(sfml-system PUBLIC -fexceptions)
+    target_link_options(sfml-system PUBLIC -sASYNCIFY -sASYNCIFY_STACK_SIZE=65536 -sALLOW_MEMORY_GROWTH=1 -sDISABLE_EXCEPTION_CATCHING=0)
+else()
+    target_link_libraries(sfml-system PRIVATE Threads::Threads)
+endif()
 
 if(SFML_OS_LINUX)
     target_link_libraries(sfml-system PRIVATE rt)

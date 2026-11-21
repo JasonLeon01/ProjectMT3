@@ -25,9 +25,7 @@
 #include <SFML/Window/Harmony/NativeAppImpl.hpp>
 #include <SFML/Window/VideoModeImpl.hpp>
 
-#ifdef SFML_HARMONY_2IN1
 #include <window_manager/oh_display_manager.h>
-#endif
 
 
 namespace sf::priv
@@ -42,19 +40,20 @@ std::vector<VideoMode> VideoModeImpl::getFullscreenModes()
 
 VideoMode VideoModeImpl::getDesktopMode()
 {
-#ifdef SFML_HARMONY_2IN1
-    NativeDisplayManager_DisplayInfo* display{};
-    const auto                        result = OH_NativeDisplayManager_CreatePrimaryDisplay(&display);
-    if (display)
+    if (sf::priv::Harmony::usesDesktopWindow())
     {
-        const Vector2u
-            size{result == DISPLAY_MANAGER_OK && display->width > 0 ? static_cast<unsigned int>(display->width) : 0u,
-                 result == DISPLAY_MANAGER_OK && display->height > 0 ? static_cast<unsigned int>(display->height) : 0u};
-        OH_NativeDisplayManager_DestroyDisplay(display);
-        if (size.x && size.y)
-            return VideoMode(size, 32);
+        NativeDisplayManager_DisplayInfo* display{};
+        const auto                        result = OH_NativeDisplayManager_CreatePrimaryDisplay(&display);
+        if (display)
+        {
+            const Vector2u
+                size{result == DISPLAY_MANAGER_OK && display->width > 0 ? static_cast<unsigned int>(display->width) : 0u,
+                     result == DISPLAY_MANAGER_OK && display->height > 0 ? static_cast<unsigned int>(display->height) : 0u};
+            OH_NativeDisplayManager_DestroyDisplay(display);
+            if (size.x && size.y)
+                return VideoMode(size, 32);
+        }
     }
-#endif
 
     const auto size = Harmony::getSurfaceSnapshot().size;
     return VideoMode(size.x && size.y ? size : Vector2u(1, 1), 32);

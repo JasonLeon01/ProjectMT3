@@ -81,6 +81,7 @@ CheckOptions:
   - { key: readability-identifier-naming.PrivateMemberCase,   value: camelBack }
   - { key: readability-identifier-naming.ProtectedMemberPrefix, value: m_ }
   - { key: readability-identifier-naming.PrivateMemberPrefix,   value: m_ }
-HeaderFilterRegex: '((.*/(src|include)/SFML/.*)|(.*/(test|examples)/.*))'
+# Clang can mix separators in Windows header paths (for example src\SFML/Graphics).
+HeaderFilterRegex: '((.*[/\\](src|include)[/\\]SFML[/\\].*)|(.*[/\\](test|examples)[/\\].*))'
 WarningsAsErrors: '*'
 UseColor: true

@@ -89,7 +89,7 @@ Context& Context::operator=(Context&& context) noexcept
 ////////////////////////////////////////////////////////////
 bool Context::setActive(bool active)
 {
-    if (!m_context->setActive(active))
+    if (!m_context || !m_context->setActive(active))
         return false;
 
     if (active)
@@ -103,7 +103,8 @@ bool Context::setActive(bool active)
 ////////////////////////////////////////////////////////////
 const ContextSettings& Context::getSettings() const
 {
-    return m_context->getSettings();
+    static const ContextSettings empty;
+    return m_context ? m_context->getSettings() : empty;
 }
 
 

@@ -3,7 +3,11 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics.hpp>
 
+#include <SFML/System/Err.hpp>
+
 #include <SFML/Main.hpp>
+#include <ostream>
+#include <string_view>
 
 #include <cstdlib>
 
@@ -14,14 +18,47 @@
 /// \return Application exit code
 ///
 ////////////////////////////////////////////////////////////
-int main()
+int main(int argc, char** argv)
 {
+    // Select a backend before creating any GPU resources. With no arguments, SFML uses its default priority.
+    if (argc > 1)
+    {
+        const std::string_view backendName = (argc == 3 && std::string_view{argv[1]} == "--backend") ? argv[2] : "";
+        if (backendName != "opengl" && backendName != "vulkan" && backendName != "directx" && backendName != "metal")
+        {
+            sf::err() << "Usage: stencil [--backend opengl|vulkan|directx|metal]\n";
+            return EXIT_FAILURE;
+        }
+
+        const auto backend = backendName == "opengl"    ? sf::GraphicsBackend::OpenGL
+                             : backendName == "directx" ? sf::GraphicsBackend::DirectX
+                             : backendName == "metal"   ? sf::GraphicsBackend::Metal
+                                                        : sf::GraphicsBackend::Vulkan;
+        if (!sf::setGraphicsBackend(backend))
+            return EXIT_FAILURE;
+    }
+
     // Create the window of the application with a stencil buffer
     sf::RenderWindow window(sf::VideoMode({600, 600}),
                             "SFML Stencil",
                             sf::Style::Titlebar | sf::Style::Close,
                             sf::State::Windowed,
                             sf::ContextSettings{0 /* depthBits */, 8 /* stencilBits */});
+    if (!window.isOpen())
+        return EXIT_FAILURE;
+
+    const auto backend = sf::getGraphicsBackend();
+    if (backend == sf::GraphicsBackend::DirectX)
+        window.setTitle("SFML Stencil (DirectX)");
+    else if (backend == sf::GraphicsBackend::OpenGL)
+        window.setTitle("SFML Stencil (OpenGL)");
+    else if (backend == sf::GraphicsBackend::OpenGLES)
+        window.setTitle("SFML Stencil (OpenGL ES)");
+    else if (backend == sf::GraphicsBackend::Vulkan)
+        window.setTitle("SFML Stencil (Vulkan)");
+    else if (backend == sf::GraphicsBackend::Metal)
+        window.setTitle("SFML Stencil (Metal)");
+
     window.setVerticalSyncEnabled(true);
 
     sf::RectangleShape red({500, 50});

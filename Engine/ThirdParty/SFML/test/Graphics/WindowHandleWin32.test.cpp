@@ -122,6 +122,7 @@ TEST_CASE("[Window] sf::WindowHandle (Win32)")
         CHECK(windowBase->getSize() == size); // Validate that the `getSize` also returns the _actual_ client size
     }
 
+#if defined(SFML_RENDER_OPENGL) || defined(SFML_RENDER_OPENGLES)
     SECTION("sf::Window")
     {
         std::optional<sf::Window> window;
@@ -139,7 +140,7 @@ TEST_CASE("[Window] sf::WindowHandle (Win32)")
             }
 
             INFO("ExStyle: " << std::hex << exStyle << ", withMenu: " << withMenu);
-            CHECK(window->getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window->getSettings().backend));
         }
 
         SECTION("Custom context settings")
@@ -177,6 +178,8 @@ TEST_CASE("[Window] sf::WindowHandle (Win32)")
         CHECK(window->getSize() == size); // Validate that the `getSize` also returns the _actual_ client size
     }
 
+#endif
+
     SECTION("sf::RenderWindow")
     {
         std::optional<sf::RenderWindow> renderWindow;
@@ -194,7 +197,7 @@ TEST_CASE("[Window] sf::WindowHandle (Win32)")
             }
 
             INFO("ExStyle: " << std::hex << exStyle << ", withMenu: " << withMenu);
-            CHECK(renderWindow->getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(renderWindow->getSettings().backend));
         }
 
         SECTION("Custom context settings")
@@ -214,7 +217,11 @@ TEST_CASE("[Window] sf::WindowHandle (Win32)")
             INFO("ExStyle: " << std::hex << exStyle << ", withMenu: " << withMenu);
             CHECK(renderWindow->getSettings().depthBits >= 1);
             CHECK(renderWindow->getSettings().stencilBits >= 1);
-            CHECK(renderWindow->getSettings().antiAliasingLevel >= 1);
+            if (std::holds_alternative<sf::VulkanSettings>(renderWindow->getSettings().backend) ||
+                std::holds_alternative<sf::DirectXSettings>(renderWindow->getSettings().backend))
+                CHECK(renderWindow->getSettings().antiAliasingLevel == 0);
+            else
+                CHECK(renderWindow->getSettings().antiAliasingLevel >= 1);
         }
 
         INFO("ExStyle: " << std::hex << exStyle << ", withMenu: " << withMenu);

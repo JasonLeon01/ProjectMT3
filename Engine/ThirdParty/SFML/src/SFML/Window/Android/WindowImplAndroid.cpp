@@ -30,6 +30,7 @@
 #include <SFML/Window/Android/WindowImplAndroid.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/WindowEnums.hpp>
+#include <SFML/Window/WindowSurface.hpp>
 
 #include <SFML/System/Err.hpp>
 
@@ -76,13 +77,22 @@ WindowImplAndroid::WindowImplAndroid(VideoMode mode,
         states.forwardEvent               = forwardEvent;
 
         // Register process event callback
-        states.processEvent = processEvent;
-        states.initialized  = true;
+        states.processEvent   = processEvent;
+        states.initialized    = true;
+        states.windowAttached = true;
     }
 
     // Wait for window to be created
-    while (states.window == nullptr)
+    for (;;)
     {
+        {
+            const std::lock_guard lock(states.mutex);
+            if (states.window)
+            {
+                m_size = Vector2u(Vector2i(ANativeWindow_getWidth(states.window), ANativeWindow_getHeight(states.window)));
+                break;
+            }
+        }
         ALooper_pollOnce(0, nullptr, nullptr, nullptr);
     }
 }
@@ -91,7 +101,14 @@ WindowImplAndroid::WindowImplAndroid(VideoMode mode,
 ////////////////////////////////////////////////////////////
 WindowImplAndroid::~WindowImplAndroid()
 {
-    WindowImplAndroid::singleInstance = nullptr;
+    auto&                 states = getActivity();
+    const std::lock_guard lock(states.mutex);
+    if (singleInstance == this)
+    {
+        singleInstance        = nullptr;
+        states.windowAttached = false;
+        states.updated        = true;
+    }
 }
 
 
@@ -115,15 +132,11 @@ void WindowImplAndroid::processEvents()
     ActivityStates&       states = getActivity();
     const std::lock_guard lock(states.mutex);
 
-    if (m_windowBeingCreated)
+    if (m_windowBeingCreated || m_windowBeingDestroyed)
     {
-        states.context->createSurface(states.window);
-        m_windowBeingCreated = false;
-    }
-
-    if (m_windowBeingDestroyed)
-    {
-        states.context->destroySurface();
+        if (states.surface)
+            states.surface->setNativeWindow(states.window);
+        m_windowBeingCreated   = false;
         m_windowBeingDestroyed = false;
     }
 
@@ -149,6 +162,7 @@ void WindowImplAndroid::setPosition(Vector2i /* position */)
 ////////////////////////////////////////////////////////////
 Vector2u WindowImplAndroid::getSize() const
 {
+    const std::lock_guard lock(getActivity().mutex);
     return m_size;
 }
 
@@ -245,10 +259,18 @@ void WindowImplAndroid::forwardEvent(const Event& event)
 
         if (event.is<Event::FocusGained>())
         {
-            WindowImplAndroid::singleInstance->m_size = Vector2u(
-                Vector2i(ANativeWindow_getWidth(states.window), ANativeWindow_getHeight(states.window)));
-            WindowImplAndroid::singleInstance->m_windowBeingCreated = true;
-            WindowImplAndroid::singleInstance->m_hasFocus           = true;
+            if (states.window)
+            {
+                const auto size = Vector2u(
+                    Vector2i(ANativeWindow_getWidth(states.window), ANativeWindow_getHeight(states.window)));
+                if (size != singleInstance->m_size)
+                {
+                    singleInstance->m_size = size;
+                    singleInstance->pushEvent(Event::Resized{size});
+                }
+                singleInstance->m_windowBeingCreated = true;
+            }
+            singleInstance->m_hasFocus = true;
         }
         else if (event.is<Event::FocusLost>())
         {
@@ -256,7 +278,10 @@ void WindowImplAndroid::forwardEvent(const Event& event)
             WindowImplAndroid::singleInstance->m_hasFocus             = false;
         }
 
-        WindowImplAndroid::singleInstance->pushEvent(event);
+        if (const auto* resized = event.getIf<Event::Resized>())
+            singleInstance->m_size = resized->size;
+
+        singleInstance->pushEvent(event);
     }
 }
 

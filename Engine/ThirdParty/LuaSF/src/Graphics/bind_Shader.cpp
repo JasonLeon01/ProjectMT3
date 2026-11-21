@@ -14,38 +14,38 @@
 namespace { constexpr std::array<std::string_view, 43> docs = {
     "\\brief Shader class (vertex, geometry and fragment)",
     "\\brief Default constructor\n\nThis constructor creates an empty shader.\n\nBinding an empty shader has the same effect as not\nbinding any shader.",
-    "\\brief Construct from a shader file\n\nThis constructor loads a single vertex or fragment shader and\ncompletes it with SFML's matching baseline stage. A geometry\nshader must be loaded with both a vertex and fragment shader.\nThe source must be a text file containing a valid\nshader in GLSL language. GLSL is a C-like language\ndedicated to OpenGL shaders; you'll probably need to\nread a good documentation for it before writing your\nown shaders.\n\n\\param filename Path of the vertex, geometry or fragment shader file to load\n\\param type     Type of shader (vertex, geometry or fragment)\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
-    "\\brief Construct from vertex and fragment shader files\n\nThis constructor loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe sources must be text files containing valid shaders\nin GLSL language. GLSL is a C-like language dedicated to\nOpenGL shaders; you'll probably need to read a good documentation\nfor it before writing your own shaders.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
-    "\\brief Construct from vertex, geometry and fragment shader files\n\nThis constructor loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe sources must be text files containing valid shaders\nin GLSL language. GLSL is a C-like language dedicated to\nOpenGL shaders; you'll probably need to read a good documentation\nfor it before writing your own shaders.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param geometryShaderFilename Path of the geometry shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
-    "\\brief Construct from a shader stream\n\nThis constructor loads a single vertex or fragment shader and\ncompletes it with SFML's matching baseline stage. A geometry\nshader must be loaded with both a vertex and fragment shader.\nThe source code must be a valid shader in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for it\nbefore writing your own shaders.\n\n\\param stream Source stream to read from\n\\param type   Type of shader (vertex, geometry or fragment)\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
-    "\\brief Construct from vertex and fragment shader streams\n\nThis constructor loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe source codes must be valid shaders in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for\nit before writing your own shaders.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
-    "\\brief Construct from vertex, geometry and fragment shader streams\n\nThis constructor loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe source codes must be valid shaders in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for\nit before writing your own shaders.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param geometryShaderStream Source stream to read the geometry shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
-    "\\brief Load the vertex, geometry or fragment shader from a file\n\nThis function loads a single vertex or fragment shader and\ncompletes it with SFML's matching baseline stage. A geometry\nshader must be loaded with both a vertex and fragment shader.\nThe source must be a text file containing a valid\nshader in GLSL language. GLSL is a C-like language\ndedicated to OpenGL shaders; you'll probably need to\nread a good documentation for it before writing your\nown shaders.\n\n\\param filename Path of the vertex, geometry or fragment shader file to load\n\\param type     Type of shader (vertex, geometry or fragment)\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromMemory`, `loadFromStream`",
-    "\\brief Load both the vertex and fragment shaders from files\n\nThis function loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe sources must be text files containing valid shaders\nin GLSL language. GLSL is a C-like language dedicated to\nOpenGL shaders; you'll probably need to read a good documentation\nfor it before writing your own shaders.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromMemory`, `loadFromStream`",
-    "\\brief Load the vertex, geometry and fragment shaders from files\n\nThis function loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe sources must be text files containing valid shaders\nin GLSL language. GLSL is a C-like language dedicated to\nOpenGL shaders; you'll probably need to read a good documentation\nfor it before writing your own shaders.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param geometryShaderFilename Path of the geometry shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromMemory`, `loadFromStream`",
-    "\\brief Load the vertex, geometry or fragment shader from a source code in memory\n\nThis function loads a single vertex or fragment shader and\ncompletes it with SFML's matching baseline stage. A geometry\nshader must be loaded with both a vertex and fragment shader.\nThe source code must be a valid shader in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for\nit before writing your own shaders.\n\n\\param shader String containing the source code of the shader\n\\param type   Type of shader (vertex, geometry or fragment)\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromStream`",
-    "\\brief Load both the vertex and fragment shaders from source codes in memory\n\nThis function loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe sources must be valid shaders in GLSL language. GLSL is\na C-like language dedicated to OpenGL shaders; you'll\nprobably need to read a good documentation for it before\nwriting your own shaders.\n\n\\param vertexShader   String containing the source code of the vertex shader\n\\param fragmentShader String containing the source code of the fragment shader\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromStream`",
-    "\\brief Load the vertex, geometry and fragment shaders from source codes in memory\n\nThis function loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe sources must be valid shaders in GLSL language. GLSL is\na C-like language dedicated to OpenGL shaders; you'll\nprobably need to read a good documentation for it before\nwriting your own shaders.\n\n\\param vertexShader   String containing the source code of the vertex shader\n\\param geometryShader String containing the source code of the geometry shader\n\\param fragmentShader String containing the source code of the fragment shader\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromStream`",
-    "\\brief Load the vertex, geometry or fragment shader from a custom stream\n\nThis function loads a single vertex or fragment shader and\ncompletes it with SFML's matching baseline stage. A geometry\nshader must be loaded with both a vertex and fragment shader.\nThe source code must be a valid shader in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for it\nbefore writing your own shaders.\n\n\\param stream Source stream to read from\n\\param type   Type of shader (vertex, geometry or fragment)\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromMemory`",
-    "\\brief Load both the vertex and fragment shaders from custom streams\n\nThis function loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe source codes must be valid shaders in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for\nit before writing your own shaders.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromMemory`",
-    "\\brief Load the vertex, geometry and fragment shaders from custom streams\n\nThis function loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nThe source codes must be valid shaders in GLSL language.\nGLSL is a C-like language dedicated to OpenGL shaders;\nyou'll probably need to read a good documentation for\nit before writing your own shaders.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param geometryShaderStream Source stream to read the geometry shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromMemory`",
-    "\\brief Specify value for \\p float uniform\n\n\\param name Name of the uniform variable in GLSL\n\\param x    Value of the float scalar",
-    "\\brief Specify value for \\p vec2 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the vec2 vector",
-    "\\brief Specify value for \\p vec3 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the vec3 vector",
-    "\\brief Specify value for \\p vec4 uniform\n\nThis overload can also be called with `sf::Color` objects\nthat are converted to `sf::Glsl::Vec4`.\n\nIt is important to note that the components of the color are\nnormalized before being passed to the shader. Therefore,\nthey are converted from range [0 .. 255] to range [0 .. 1].\nFor example, a `sf::Color(255, 127, 0, 255)` will be transformed\nto a `vec4(1.0, 0.5, 0.0, 1.0)` in the shader.\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the vec4 vector",
-    "\\brief Specify value for \\p int uniform\n\n\\param name Name of the uniform variable in GLSL\n\\param x    Value of the int scalar",
-    "\\brief Specify value for \\p ivec2 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the ivec2 vector",
-    "\\brief Specify value for \\p ivec3 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the ivec3 vector",
-    "\\brief Specify value for \\p ivec4 uniform\n\nThis overload can also be called with `sf::Color` objects\nthat are converted to `sf::Glsl::Ivec4`.\n\nIf color conversions are used, the ivec4 uniform in GLSL\nwill hold the same values as the original `sf::Color`\ninstance. For example, `sf::Color(255, 127, 0, 255)` is\nmapped to `ivec4(255, 127, 0, 255)`.\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the ivec4 vector",
-    "\\brief Specify value for \\p bool uniform\n\n\\param name Name of the uniform variable in GLSL\n\\param x    Value of the bool scalar",
-    "\\brief Specify value for \\p bvec2 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the bvec2 vector",
-    "\\brief Specify value for \\p bvec3 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the bvec3 vector",
-    "\\brief Specify value for \\p bvec4 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param vector Value of the bvec4 vector",
-    "\\brief Specify value for \\p mat3 matrix\n\n\\param name   Name of the uniform variable in GLSL\n\\param matrix Value of the mat3 matrix",
-    "\\brief Specify value for \\p mat4 matrix\n\n\\param name   Name of the uniform variable in GLSL\n\\param matrix Value of the mat4 matrix",
+    "\\brief Construct from a shader file\n\nThis constructor loads a single shader, vertex, geometry or\nfragment, identified by the second argument.\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param filename Path of the vertex, geometry or fragment shader file to load\n\\param type     Type of shader (vertex, geometry or fragment)\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
+    "\\brief Construct from vertex and fragment shader files\n\nThis constructor loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
+    "\\brief Construct from vertex, geometry and fragment shader files\n\nThis constructor loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param geometryShaderFilename Path of the geometry shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
+    "\\brief Construct from a shader stream\n\nThis constructor loads a single shader, vertex, geometry\nor fragment, identified by the second argument.\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param stream Source stream to read from\n\\param type   Type of shader (vertex, geometry or fragment)\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
+    "\\brief Construct from vertex and fragment shader streams\n\nThis constructor loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
+    "\\brief Construct from vertex, geometry and fragment shader streams\n\nThis constructor loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param geometryShaderStream Source stream to read the geometry shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\throws sf::Exception if loading was unsuccessful\n\n\\see `loadFromFile`, `loadFromMemory`, `loadFromStream`",
+    "\\brief Load the vertex, geometry or fragment shader from a file\n\nThis function loads a single shader, vertex, geometry or\nfragment, identified by the second argument.\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param filename Path of the vertex, geometry or fragment shader file to load\n\\param type     Type of shader (vertex, geometry or fragment)\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromMemory`, `loadFromStream`",
+    "\\brief Load both the vertex and fragment shaders from files\n\nThis function loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromMemory`, `loadFromStream`",
+    "\\brief Load the vertex, geometry and fragment shaders from files\n\nThis function loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderFilename   Path of the vertex shader file to load\n\\param geometryShaderFilename Path of the geometry shader file to load\n\\param fragmentShaderFilename Path of the fragment shader file to load\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromMemory`, `loadFromStream`",
+    "\\brief Load the vertex, geometry or fragment shader from source or bytecode in memory\n\nThis function loads a single shader, vertex, geometry\nor fragment, identified by the second argument.\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param shader String view containing the source or bytecode of the shader\n\\param type   Type of shader (vertex, geometry or fragment)\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromStream`",
+    "\\brief Load both the vertex and fragment shaders from sources or bytecode in memory\n\nThis function loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShader   String view containing the source or bytecode of the vertex shader\n\\param fragmentShader String view containing the source or bytecode of the fragment shader\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromStream`",
+    "\\brief Load the vertex, geometry and fragment shaders from sources or bytecode in memory\n\nThis function loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShader   String view containing the source or bytecode of the vertex shader\n\\param geometryShader String view containing the source or bytecode of the geometry shader\n\\param fragmentShader String view containing the source or bytecode of the fragment shader\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromStream`",
+    "\\brief Load the vertex, geometry or fragment shader from a custom stream\n\nThis function loads a single shader, vertex, geometry\nor fragment, identified by the second argument.\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param stream Source stream to read from\n\\param type   Type of shader (vertex, geometry or fragment)\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromMemory`",
+    "\\brief Load both the vertex and fragment shaders from custom streams\n\nThis function loads both the vertex and the fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromMemory`",
+    "\\brief Load the vertex, geometry and fragment shaders from custom streams\n\nThis function loads the vertex, geometry and fragment\nshaders. If one of them fails to load, the shader is left\nempty (the valid shader is unloaded).\nAccepted formats depend on the selected graphics backend;\nsee the class documentation for source and binary requirements.\n\n\\param vertexShaderStream   Source stream to read the vertex shader from\n\\param geometryShaderStream Source stream to read the geometry shader from\n\\param fragmentShaderStream Source stream to read the fragment shader from\n\n\\return `true` if loading succeeded, `false` if it failed\n\n\\see `loadFromFile`, `loadFromMemory`",
+    "\\brief Specify value for \\p float uniform\n\n\\param name Name of the uniform variable in GLSL\n\\param value    Value of the float scalar",
+    "\\brief Specify value for \\p vec2 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the vec2 vector",
+    "\\brief Specify value for \\p vec3 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the vec3 vector",
+    "\\brief Specify value for \\p vec4 uniform\n\nThis overload can also be called with `sf::Color` objects\nthat are converted to `sf::Glsl::Vec4`.\n\nIt is important to note that the components of the color are\nnormalized before being passed to the shader. Therefore,\nthey are converted from range [0 .. 255] to range [0 .. 1].\nFor example, a `sf::Color(255, 127, 0, 255)` will be transformed\nto a `vec4(1.0, 0.5, 0.0, 1.0)` in the shader.\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the vec4 vector",
+    "\\brief Specify value for \\p int uniform\n\n\\param name Name of the uniform variable in GLSL\n\\param value    Value of the int scalar",
+    "\\brief Specify value for \\p ivec2 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the ivec2 vector",
+    "\\brief Specify value for \\p ivec3 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the ivec3 vector",
+    "\\brief Specify value for \\p ivec4 uniform\n\nThis overload can also be called with `sf::Color` objects\nthat are converted to `sf::Glsl::Ivec4`.\n\nIf color conversions are used, the ivec4 uniform in GLSL\nwill hold the same values as the original `sf::Color`\ninstance. For example, `sf::Color(255, 127, 0, 255)` is\nmapped to `ivec4(255, 127, 0, 255)`.\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the ivec4 vector",
+    "\\brief Specify value for \\p bool uniform\n\n\\param name Name of the uniform variable in GLSL\n\\param value    Value of the bool scalar",
+    "\\brief Specify value for \\p bvec2 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the bvec2 vector",
+    "\\brief Specify value for \\p bvec3 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the bvec3 vector",
+    "\\brief Specify value for \\p bvec4 uniform\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the bvec4 vector",
+    "\\brief Specify value for \\p mat3 matrix\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the mat3 matrix",
+    "\\brief Specify value for \\p mat4 matrix\n\n\\param name   Name of the uniform variable in GLSL\n\\param value Value of the mat4 matrix",
     "\\brief Specify a texture as \\p sampler2D uniform\n\n\\a name is the name of the variable to change in the shader.\nThe corresponding parameter in the shader must be a 2D texture\n(\\p sampler2D GLSL type).\n\nExample:\n\\code\nuniform sampler2D the_texture; // this is the variable in the shader\n\\endcode\n\\code\nsf::Texture texture;\n...\nshader.setUniform(\"the_texture\", texture);\n\\endcode\nIt is important to note that `texture` must remain alive as long\nas the shader uses it, no copy is made internally.\n\nTo use the texture of the object being drawn, which cannot be\nknown in advance, you can pass the special value\n`sf::Shader::CurrentTexture`:\n\\code\nshader.setUniform(\"the_texture\", sf::Shader::CurrentTexture).\n\\endcode\n\n\\param name    Name of the texture in the shader\n\\param texture Texture to assign",
     "\\brief Specify current texture as \\p sampler2D uniform\n\nThis overload maps a shader texture variable to the\ntexture of the object being drawn, which cannot be\nknown in advance. The second argument must be\n`sf::Shader::CurrentTexture`.\nThe corresponding parameter in the shader must be a 2D texture\n(\\p sampler2D GLSL type).\n\nExample:\n\\code\nuniform sampler2D current; // this is the variable in the shader\n\\endcode\n\\code\nshader.setUniform(\"current\", sf::Shader::CurrentTexture);\n\\endcode\n\n\\param name Name of the texture in the shader",
-    "\\brief Get the underlying OpenGL handle of the shader.\n\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return OpenGL handle of the shader or 0 if not yet loaded",
+    "\\brief Get the underlying OpenGL handle of the shader.\n\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return OpenGL handle of the shader or 0 if not yet loaded\nReturns zero when the resource belongs to a non-OpenGL backend.",
     "\\brief Bind a shader for rendering\n\nThis function is not part of the graphics API, it mustn't be\nused when drawing SFML entities. It must be used only if you\nmix `sf::Shader` with OpenGL code.\n\n\\code\nsf::Shader s1, s2;\n...\nsf::Shader::bind(&s1);\n// draw OpenGL stuff that use s1...\nsf::Shader::bind(&s2);\n// draw OpenGL stuff that use s2...\nsf::Shader::bind(nullptr);\n// draw OpenGL stuff that use no shader...\n\\endcode\n\n\\param shader Shader to bind, can be null to use no shader",
     "\\brief Tell whether or not the system supports shaders\n\nThis function should always be called before using\nthe shader features. If it returns `false`, then\nany attempt to use `sf::Shader` will fail.\n\n\\return `true` if shaders are supported, `false` otherwise",
     "\\brief Tell whether or not the system supports geometry shaders\n\nThis function should always be called before using\nthe geometry shader features. If it returns `false`, then\nany attempt to use `sf::Shader` geometry shader features will fail.\n\nThis function can only return `true` if isAvailable() would also\nreturn `true`, since shaders in general have to be supported in\norder for geometry shaders to be supported as well.\n\nNote: The first call to this function, whether by your\ncode or SFML will result in a context switch.\n\n\\return `true` if geometry shaders are supported, `false` otherwise",
@@ -59,6 +59,8 @@ namespace { constexpr std::array<std::string_view, 43> docs = {
 
 void bind_Shader(lua_glue::StateView lua) {
     lua_glue::Table sf = lua_sf::sf_table(lua);
+    // Skipped namespace rhi by generator policy.
+    // Skipped namespace priv by generator policy.
     auto type_sf__Shader = lua_glue::BindClass<sf::Shader>(sf, "Shader");
     lua_glue::Table table_sf__Shader = sf["Shader"].get<lua_glue::Table>();
     lua_sf::mark_shared_usertype<sf::Shader>(lua);
@@ -181,103 +183,103 @@ void bind_Shader(lua_glue::StateView lua) {
         docs[15]
     );
     LUASF_STUB_DOC(docs[17]);
-    LUASF_STUB_FUNCTION("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, x: number)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector2f)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector3f)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector4f)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, x: integer)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector2i)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector3i)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector4i)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, x: boolean)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector2b)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector3b)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, vector: sf.Vector4b)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, matrix: sf.Mat3)");
-    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, matrix: sf.Mat4)");
+    LUASF_STUB_FUNCTION("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: number)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector2f)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector3f)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector4f)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: integer)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector2i)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector3i)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector4i)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: boolean)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector2b)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector3b)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Vector4b)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Mat3)");
+    LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, value: sf.Mat4)");
     LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, texture: sf.Texture)");
     LUASF_STUB_OVERLOAD("sf.Shader", "setUniform", "fun(self: sf.Shader, name: string, arg1: sf.Shader.CurrentTextureType)");
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, float x) {
-            self.setUniform(name, x);
+        [](sf::Shader& self, std::string name, float value) {
+            self.setUniform(name, value);
         },
         docs[17]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, sf::Glsl::Vec2 vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, sf::Glsl::Vec2 value) {
+            self.setUniform(name, value);
         },
         docs[18]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Vec3& vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Vec3& value) {
+            self.setUniform(name, value);
         },
         docs[19]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Vec4& vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Vec4& value) {
+            self.setUniform(name, value);
         },
         docs[20]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, lua_sf::LuaIntegral<int> x) {
-            self.setUniform(name, x.value());
+        [](sf::Shader& self, std::string name, lua_sf::LuaIntegral<int> value) {
+            self.setUniform(name, value.value());
         },
         docs[21]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, sf::Glsl::Ivec2 vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, sf::Glsl::Ivec2 value) {
+            self.setUniform(name, value);
         },
         docs[22]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Ivec3& vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Ivec3& value) {
+            self.setUniform(name, value);
         },
         docs[23]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Ivec4& vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Ivec4& value) {
+            self.setUniform(name, value);
         },
         docs[24]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, bool x) {
-            self.setUniform(name, x);
+        [](sf::Shader& self, std::string name, bool value) {
+            self.setUniform(name, value);
         },
         docs[25]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, sf::Glsl::Bvec2 vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, sf::Glsl::Bvec2 value) {
+            self.setUniform(name, value);
         },
         docs[26]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Bvec3& vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Bvec3& value) {
+            self.setUniform(name, value);
         },
         docs[27]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Bvec4& vector) {
-            self.setUniform(name, vector);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Bvec4& value) {
+            self.setUniform(name, value);
         },
         docs[28]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Mat3& matrix) {
-            self.setUniform(name, matrix);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Mat3& value) {
+            self.setUniform(name, value);
         },
         docs[29]
     );
     lua_glue::BindCallable(type_sf__Shader, "setUniform",
-        [](sf::Shader& self, std::string name, const sf::Glsl::Mat4& matrix) {
-            self.setUniform(name, matrix);
+        [](sf::Shader& self, std::string name, const sf::Glsl::Mat4& value) {
+            self.setUniform(name, value);
         },
         docs[30]
     );

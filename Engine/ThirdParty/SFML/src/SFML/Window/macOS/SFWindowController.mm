@@ -172,14 +172,16 @@
 ////////////////////////////////////////////////////////
 - (void)setupFullscreenViewWithMode:(const sf::VideoMode&)mode
 {
-    // Create a screen-sized window on the main display
-    const sf::VideoMode desktop    = sf::VideoMode::getDesktopMode();
-    NSRect              windowRect = NSMakeRect(0, 0, desktop.size.x, desktop.size.y);
-    m_window                       = [[SFWindow alloc]
+    // Fullscreen video modes are enumerated on CGMainDisplayID, the first AppKit screen.
+    NSScreen* const screen     = [[NSScreen screens] firstObject];
+    const NSSize    desktop    = [screen frame].size;
+    const NSRect    windowRect = NSMakeRect(0, 0, desktop.width, desktop.height);
+    m_window                   = [[SFWindow alloc]
         initWithContentRect:windowRect
                   styleMask:NSBorderlessWindowMask
                     backing:NSBackingStoreBuffered
-                      defer:NO];
+                      defer:NO
+                     screen:screen];
 
     if (m_window == nil)
     {
@@ -213,11 +215,12 @@
     }
 
     // Create our OpenGL view size and the view
-    CGFloat width   = std::min(mode.size.x, desktop.size.x);
-    CGFloat height  = std::min(mode.size.y, desktop.size.y);
-    CGFloat x       = (desktop.size.x - width) / 2.0;
-    CGFloat y       = (desktop.size.y - height) / 2.0;
-    NSRect  oglRect = NSMakeRect(x, y, width, height);
+    const CGFloat scale   = [screen backingScaleFactor];
+    CGFloat       width   = std::min(mode.size.x / scale, desktop.width);
+    CGFloat       height  = std::min(mode.size.y / scale, desktop.height);
+    CGFloat       x       = (desktop.width - width) / 2.0;
+    CGFloat       y       = (desktop.height - height) / 2.0;
+    NSRect        oglRect = NSMakeRect(x, y, width, height);
 
     m_oglView = [[SFOpenGLView alloc] initWithFrame:oglRect fullscreen:YES highDpi:m_highDpi];
 
@@ -240,7 +243,9 @@
     // We know that sf::State is not Fullscreen
 
     // Create our window size.
-    NSRect rect = NSMakeRect(0, 0, mode.size.x, mode.size.y);
+    NSScreen* const screen = [NSScreen mainScreen];
+    const CGFloat   scale  = [screen backingScaleFactor];
+    const NSRect    rect   = NSMakeRect(0, 0, mode.size.x / scale, mode.size.y / scale);
 
     // Convert the SFML window style to Cocoa window style.
     unsigned int nsStyle = NSBorderlessWindowMask;
@@ -256,7 +261,8 @@
         initWithContentRect:rect
                   styleMask:nsStyle
                     backing:NSBackingStoreBuffered
-                      defer:NO]; // Don't defer it!
+                      defer:NO
+                     screen:screen]; // Don't defer it!
     /*
      "YES" produces some "invalid drawable".
      See http://www.cocoabuilder.com/archive/cocoa/152482-nsviews-and-nsopenglcontext-invalid-drawable-error.html
@@ -338,6 +344,13 @@
 - (sf::WindowHandle)getNativeHandle
 {
     return m_window;
+}
+
+
+////////////////////////////////////////////////////////
+- (void*)metalLayer
+{
+    return [m_oglView metalLayer];
 }
 
 
@@ -432,13 +445,10 @@
     {
         // Special case when fullscreen: only resize the opengl view
         // and make sure the requested size is not bigger than the window.
-        const sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
-
-        size.x = std::min(size.x, desktop.size.x);
-        size.y = std::min(size.y, desktop.size.y);
-
-        const auto origin  = sf::Vector2<CGFloat>(desktop.size - size) / CGFloat{2};
-        NSRect     oglRect = NSMakeRect(origin.x, origin.y, size.x, size.y);
+        const NSSize  desktop = [[m_window contentView] bounds].size;
+        const CGFloat width   = std::min<CGFloat>(size.x, desktop.width);
+        const CGFloat height  = std::min<CGFloat>(size.y, desktop.height);
+        NSRect        oglRect = NSMakeRect((desktop.width - width) / 2, (desktop.height - height) / 2, width, height);
 
         [m_oglView setFrame:oglRect];
         [m_oglView setNeedsDisplay:YES];
@@ -462,7 +472,7 @@
             size.y = static_cast<unsigned int>(maxVisibleHeight);
 
         if (m_requester != nil)
-            m_requester->windowResized({size.x, size.y - static_cast<unsigned int>([self titlebarHeight])});
+            m_requester->windowResized(size.x, size.y - static_cast<unsigned int>([self titlebarHeight]));
 
         NSRect frame = NSMakeRect([m_window frame].origin.x, [m_window frame].origin.y, size.x, size.y);
 

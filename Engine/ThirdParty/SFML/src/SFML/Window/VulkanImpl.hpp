@@ -82,9 +82,9 @@ namespace sf::priv::VulkanImpl
 /// \return `true` if surface creation was successful, `false` otherwise
 ///
 ////////////////////////////////////////////////////////////
-[[nodiscard]] bool createVulkanSurface(const VkInstance&            instance,
-                                       WindowHandle                 windowHandle,
-                                       VkSurfaceKHR&                surface,
-                                       const VkAllocationCallbacks* allocator);
+[[nodiscard]] SFML_WINDOW_API bool createVulkanSurface(const VkInstance&            instance,
+                                                       WindowHandle                 windowHandle,
+                                                       VkSurfaceKHR&                surface,
+                                                       const VkAllocationCallbacks* allocator);
 
 } // namespace sf::priv::VulkanImpl

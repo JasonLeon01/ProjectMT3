@@ -90,7 +90,7 @@ public:
     /// \param size new width and height
     ///
     ////////////////////////////////////////////////////////////
-    void windowResized(Vector2u size);
+    void windowResized(double width, double height);
 
     ////////////////////////////////////////////////////////////
     /// \brief Window Lost Focus Event - called by the cocoa window object
@@ -219,6 +219,9 @@ public:
 
     ////////////////////////////////////////////////////////////
     [[nodiscard]] WindowHandle getNativeHandle() const override;
+
+    ////////////////////////////////////////////////////////////
+    [[nodiscard]] void* getMetalLayer() const override;
 
     ////////////////////////////////////////////////////////////
     [[nodiscard]] Vector2i getPosition() const override;

@@ -11,7 +11,7 @@
 #include <utility>
 #include <vector>
 
-namespace { constexpr std::array<std::string_view, 65> docs = {
+namespace { constexpr std::array<std::string_view, 68> docs = {
     "\\brief Window that can serve as a target for 2D drawing",
     "\\brief Default constructor\n\nThis constructor doesn't actually create the window,\nuse the other constructors or call `create()` to do so.",
     "\\brief Construct a new window\n\nThis constructor creates the window with the size and pixel\ndepth defined in `mode`. An optional style can be passed to\ncustomize the look and behavior of the window (borders,\ntitle bar, resizable, closable, ...).\n\nThe last parameter is an optional structure specifying\nadvanced OpenGL context settings such as anti-aliasing,\ndepth-buffer bits, etc. You shouldn't care about these\nparameters for a regular usage of the graphics module.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param style    %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state    %Window state\n\\param settings Additional settings for the underlying OpenGL context",
@@ -41,6 +41,8 @@ namespace { constexpr std::array<std::string_view, 65> docs = {
     "\\brief Request the current window to be made the active\nforeground window\n\nAt any given time, only one window may have the input focus\nto receive input events such as keystrokes or mouse events.\nIf a window requests focus, it only hints to the operating\nsystem, that it would like to be focused. The operating system\nis free to deny the request.\nThis is not to be confused with `setActive()`.\n\n\\see `hasFocus`",
     "\\brief Check whether the window has the input focus\n\nAt any given time, only one window may have the input focus\nto receive input events such as keystrokes or most mouse\nevents.\n\n\\return `true` if window has focus, `false` otherwise\n\\see `requestFocus`",
     "\\brief Get the OS-specific handle of the window\n\nThe type of the returned handle is `sf::WindowHandle`,\nwhich is a type alias to the handle type defined by the OS.\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return System handle of the window",
+    "\\brief Function called after the window has been created\n\nThis function is called so that derived classes can\nperform their own specific initialization as soon as\nthe window is created.",
+    "\\brief Function called after the window has been resized\n\nThis function is called so that derived classes can\nperform custom actions when the size of the window changes.",
     "\\brief Create (or recreate) the window\n\nIf the window was already created, it closes it first.\nIf `state` is `State::Fullscreen`, then `mode` must be\na valid video mode.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param style    %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state    %Window state",
     "\\brief Create (or recreate) the window\n\nIf the window was already created, it closes it first.\nIf `state` is `State::Fullscreen`, then `mode` must be\na valid video mode.\n\nThe last parameter is a structure specifying advanced OpenGL\ncontext settings such as anti-aliasing, depth-buffer bits, etc.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param style    %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state    %Window state\n\\param settings Additional settings for the underlying OpenGL context",
     "\\brief Create (or recreate) the window\n\nIf the window was already created, it closes it first.\nIf `state` is `State::Fullscreen`, then `mode` must be\na valid video mode.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param state    %Window state",
@@ -71,12 +73,13 @@ namespace { constexpr std::array<std::string_view, 65> docs = {
     "\\brief Return the size of the rendering region of the target\n\n\\return Size in pixels",
     "\\brief Tell if the render target will use sRGB encoding when drawing on it\n\n\\return `true` if the render target use sRGB encoding, `false` otherwise",
     "\\brief Activate or deactivate the render target for rendering\n\nThis function makes the render target's context current for\nfuture OpenGL rendering operations (so you shouldn't care\nabout it if you're not doing direct OpenGL stuff).\nA render target's context is active only on the current thread,\nif you want to make it active on another thread you have\nto deactivate it on the previous thread first if it was active.\nOnly one context can be current in a thread, so if you\nwant to draw OpenGL geometry to another render target\ndon't forget to activate it again. Activating a render\ntarget will automatically deactivate the previously active\ncontext (if any).\n\n\\param active `true` to activate, `false` to deactivate\n\n\\return `true` if operation was successful, `false` otherwise",
-    "\\brief Save the OpenGL render states modified by SFML\n\nThis function can be used when you mix SFML drawing\nand direct OpenGL rendering. Combined with popGLStates,\nit ensures that:\n\\li SFML's internal states are not messed up by your OpenGL code\n\\li your OpenGL states are not modified by a call to a SFML function\n\nMore specifically, it must be used around code that\ncalls `draw` functions. Example:\n\\code\n// OpenGL code here...\nwindow.pushGLStates();\nwindow.draw(...);\nwindow.draw(...);\nwindow.popGLStates();\n// OpenGL code here...\n\\endcode\n\nNote that this function is quite expensive: it saves the\nprogram, textures, vertex attributes and the other OpenGL\nstates that SFML drawing can modify. State outside this set\nis deliberately not covered.\nIt is provided for convenience, but the best results will\nbe achieved if you handle OpenGL states yourself (because\nyou know which states have really changed, and need to be\nsaved and restored). Take a look at the resetGLStates\nfunction if you do so.\n\n\\see `popGLStates`",
-    "\\brief Restore the previously saved OpenGL render states\n\nSee the description of `pushGLStates` to get a detailed\ndescription of these functions.\n\n\\see `pushGLStates`",
-    "\\brief Reset the internal OpenGL states so that the target is ready for drawing\n\nThis function can be used when you mix SFML drawing\nand direct OpenGL rendering, if you choose not to use\n`pushGLStates`/`popGLStates`. It makes sure that all OpenGL\nstates needed by SFML are set, so that subsequent `draw()`\ncalls will work as expected.\n\nExample:\n\\code\n// OpenGL code here...\nwindow.resetGLStates();\nwindow.draw(...);\nwindow.draw(...);\n// OpenGL code here...\n\\endcode",
+    "\\brief Save the current OpenGL render states and matrices\n\nThis function can be used when you mix SFML drawing\nand direct OpenGL rendering. Combined with popGLStates,\nit ensures that:\n\\li SFML's internal states are not messed up by your OpenGL code\n\\li your OpenGL states are not modified by a call to a SFML function\n\nMore specifically, it must be used around code that\ncalls `draw` functions. Example:\n\\code\n// OpenGL code here...\nwindow.pushGLStates();\nwindow.draw(...);\nwindow.draw(...);\nwindow.popGLStates();\n// OpenGL code here...\n\\endcode\n\nNote that this function is quite expensive: it saves all the\npossible OpenGL states and matrices, even the ones you\ndon't care about. Therefore it should be used wisely.\nIt is provided for convenience, but the best results will\nbe achieved if you handle OpenGL states yourself (because\nyou know which states have really changed, and need to be\nsaved and restored). Take a look at the resetGLStates\nfunction if you do so.\n\n\\see `popGLStates`",
+    "\\brief Restore the previously saved OpenGL render states and matrices\n\nSee the description of `pushGLStates` to get a detailed\ndescription of these functions.\n\n\\see `pushGLStates`",
+    "\\brief Reset the internal OpenGL states so that the target is ready for drawing\n\nThis function can be used when you mix SFML drawing\nand direct OpenGL rendering, if you choose not to use\n`pushGLStates`/`popGLStates`. It makes sure that all OpenGL\nstates needed by SFML are set, so that subsequent `draw()`\ncalls will work as expected.\n\nExample:\n\\code\n// OpenGL code here...\nglPushAttrib(...);\nwindow.resetGLStates();\nwindow.draw(...);\nwindow.draw(...);\nglPopAttrib(...);\n// OpenGL code here...\n\\endcode",
     "\\brief Get the size of the rendering region of the window\n\nThe size doesn't include the titlebar and borders\nof the window.\n\n\\return Size in pixels",
     "\\brief Change the window's icon\n\nThe OS default icon is used by default.\n\n\\param icon Image to use as the icon. The image is copied,\nso you need not keep the source alive after\ncalling this function.",
     "\\brief Tell if the window will use sRGB encoding when drawing on it\n\nYou can request sRGB encoding for a window by having the sRgbCapable flag set in the `ContextSettings`\n\n\\return `true` if the window use sRGB encoding, `false` otherwise",
+    "",
 }; }
 
 void bind_RenderWindow(lua_glue::StateView lua) {
@@ -142,7 +145,7 @@ void bind_RenderWindow(lua_glue::StateView lua) {
         },
         docs[1]
     );
-    LUASF_STUB_DOC(docs[30]);
+    LUASF_STUB_DOC(docs[5]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style: integer, state: sf.State, settings: sf.ContextSettings)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style?: integer, state?: sf.State)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings)");
@@ -151,9 +154,9 @@ void bind_RenderWindow(lua_glue::StateView lua) {
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "create", "fun(self: sf.RenderWindow, handle: sf.WindowHandle)");
     lua_glue::BindCallable(type_sf__RenderWindow, "create",
         [](sf::RenderWindow& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state, const sf::ContextSettings& settings) {
-            static_cast<sf::Window&>(self).create(mode, lua_sf::to_sf_string(title), style.value(), state, settings);
+            self.create(mode, lua_sf::to_sf_string(title), style.value(), state, settings);
         },
-        docs[30]
+        docs[67]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "create",
         [](sf::RenderWindow& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state) {
@@ -173,7 +176,7 @@ void bind_RenderWindow(lua_glue::StateView lua) {
         [](sf::RenderWindow& self, sf::VideoMode mode, std::string title, sf::State state, const sf::ContextSettings& settings) {
             static_cast<sf::Window&>(self).create(mode, lua_sf::to_sf_string(title), state, settings);
         },
-        docs[32]
+        docs[34]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "create",
         [](sf::RenderWindow& self, sf::VideoMode mode, std::string title, sf::State state) {
@@ -183,9 +186,9 @@ void bind_RenderWindow(lua_glue::StateView lua) {
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "create",
         [](sf::RenderWindow& self, const lua_sf::WindowHandle& handle, const sf::ContextSettings& settings) {
-            static_cast<sf::Window&>(self).create(handle.getHandle(), settings);
+            self.create(handle.getHandle(), settings);
         },
-        docs[34]
+        docs[67]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "create",
         [](sf::RenderWindow& self, const lua_sf::WindowHandle& handle) {
@@ -193,13 +196,12 @@ void bind_RenderWindow(lua_glue::StateView lua) {
         },
         docs[7]
     );
-    LUASF_STUB_DOC(docs[8]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "close", "fun(self: sf.RenderWindow)");
     lua_glue::BindCallable(type_sf__RenderWindow, "close",
         [](sf::RenderWindow& self) {
-            static_cast<sf::WindowBase&>(self).close();
+            self.close();
         },
-        docs[8]
+        docs[67]
     );
     LUASF_STUB_DOC(docs[9]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "isOpen", "fun(self: sf.RenderWindow): boolean");
@@ -245,13 +247,13 @@ void bind_RenderWindow(lua_glue::StateView lua) {
         },
         docs[13]
     );
-    LUASF_STUB_DOC(docs[62]);
+    LUASF_STUB_DOC(docs[64]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "getSize", "fun(self: sf.RenderWindow): sf.Vector2u");
     lua_glue::BindCallable(type_sf__RenderWindow, "getSize",
         [](const sf::RenderWindow& self) -> sf::Vector2u {
             return self.getSize();
         },
-        docs[62]
+        docs[64]
     );
     LUASF_STUB_DOC(docs[15]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "setSize", "fun(self: sf.RenderWindow, size: sf.Vector2u)");
@@ -287,14 +289,14 @@ void bind_RenderWindow(lua_glue::StateView lua) {
         },
         docs[18]
     );
-    LUASF_STUB_DOC(docs[63]);
+    LUASF_STUB_DOC(docs[65]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "setIcon", "fun(self: sf.RenderWindow, icon: sf.Image)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "setIcon", "fun(self: sf.RenderWindow, size: sf.Vector2u, pixels: any)");
     lua_glue::BindCallable(type_sf__RenderWindow, "setIcon",
         [](sf::RenderWindow& self, const sf::Image& icon) {
             self.setIcon(icon);
         },
-        docs[63]
+        docs[65]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "setIcon",
         [](sf::RenderWindow& self, sf::Vector2u size, lua_glue::Object pixels) {
@@ -375,32 +377,48 @@ void bind_RenderWindow(lua_glue::StateView lua) {
         },
         docs[28]
     );
-    LUASF_STUB_DOC(docs[35]);
+    LUASF_STUB_DOC(docs[29]);
+    LUASF_STUB_FUNCTION("sf.RenderWindow", "onCreate", "fun(self: sf.RenderWindow)");
+    lua_glue::BindCallable(type_sf__RenderWindow, "onCreate",
+        [](sf::RenderWindow& self) {
+            static_cast<sf::WindowBase&>(self).onCreate();
+        },
+        docs[29]
+    );
+    LUASF_STUB_DOC(docs[30]);
+    LUASF_STUB_FUNCTION("sf.RenderWindow", "onResize", "fun(self: sf.RenderWindow)");
+    lua_glue::BindCallable(type_sf__RenderWindow, "onResize",
+        [](sf::RenderWindow& self) {
+            static_cast<sf::WindowBase&>(self).onResize();
+        },
+        docs[30]
+    );
+    LUASF_STUB_DOC(docs[37]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "getSettings", "fun(self: sf.RenderWindow): sf.ContextSettings");
     lua_glue::BindCallable(type_sf__RenderWindow, "getSettings",
         [](const sf::RenderWindow& self) {
             return std::cref(static_cast<const sf::Window&>(self).getSettings());
         },
-        docs[35],
+        docs[37],
         lua_glue::ReturnPolicy::ReferenceInternal
     );
-    LUASF_STUB_DOC(docs[36]);
+    LUASF_STUB_DOC(docs[38]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "setVerticalSyncEnabled", "fun(self: sf.RenderWindow, enabled: boolean)");
     lua_glue::BindCallable(type_sf__RenderWindow, "setVerticalSyncEnabled",
         [](sf::RenderWindow& self, bool enabled) {
             static_cast<sf::Window&>(self).setVerticalSyncEnabled(enabled);
         },
-        docs[36]
+        docs[38]
     );
-    LUASF_STUB_DOC(docs[37]);
+    LUASF_STUB_DOC(docs[39]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "setFramerateLimit", "fun(self: sf.RenderWindow, limit: integer)");
     lua_glue::BindCallable(type_sf__RenderWindow, "setFramerateLimit",
         [](sf::RenderWindow& self, lua_sf::LuaIntegral<unsigned int> limit) {
             static_cast<sf::Window&>(self).setFramerateLimit(limit.value());
         },
-        docs[37]
+        docs[39]
     );
-    LUASF_STUB_DOC(docs[38]);
+    LUASF_STUB_DOC(docs[40]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "setActive", "fun(self: sf.RenderWindow, active?: boolean): boolean");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "setActive", "fun(self: sf.RenderWindow, active?: boolean): boolean");
     lua_glue::BindCallable(type_sf__RenderWindow, "setActive",
@@ -411,7 +429,7 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<bool>(true);
         }}},
-        docs[38]
+        docs[40]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "setActive",
         [](sf::RenderWindow& self, bool active) -> bool {
@@ -421,24 +439,24 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<bool>(true);
         }}},
-        docs[38]
+        docs[40]
     );
-    LUASF_STUB_DOC(docs[39]);
+    LUASF_STUB_DOC(docs[41]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "display", "fun(self: sf.RenderWindow)");
     lua_glue::BindCallable(type_sf__RenderWindow, "display",
         [](sf::RenderWindow& self) {
             static_cast<sf::Window&>(self).display();
         },
-        docs[39]
+        docs[41]
     );
-    LUASF_STUB_DOC(docs[42]);
+    LUASF_STUB_DOC(docs[44]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "clear", "fun(self: sf.RenderWindow, color: sf.Color, stencilValue: sf.StencilValue)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "clear", "fun(self: sf.RenderWindow, color?: sf.Color)");
     lua_glue::BindCallable(type_sf__RenderWindow, "clear",
         [](sf::RenderWindow& self, sf::Color color, sf::StencilValue stencilValue) {
             static_cast<sf::RenderTarget&>(self).clear(color, stencilValue);
         },
-        docs[42]
+        docs[44]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "clear",
         [](sf::RenderWindow& self, sf::Color color) {
@@ -448,89 +466,89 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<sf::Color>(sf::Color::Black);
         }}},
-        docs[40]
+        docs[42]
     );
-    LUASF_STUB_DOC(docs[41]);
+    LUASF_STUB_DOC(docs[43]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "clearStencil", "fun(self: sf.RenderWindow, stencilValue: sf.StencilValue)");
     lua_glue::BindCallable(type_sf__RenderWindow, "clearStencil",
         [](sf::RenderWindow& self, sf::StencilValue stencilValue) {
             static_cast<sf::RenderTarget&>(self).clearStencil(stencilValue);
         },
-        docs[41]
+        docs[43]
     );
-    LUASF_STUB_DOC(docs[43]);
+    LUASF_STUB_DOC(docs[45]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "setView", "fun(self: sf.RenderWindow, view: sf.View)");
     lua_glue::BindCallable(type_sf__RenderWindow, "setView",
         [](sf::RenderWindow& self, const sf::View& view) {
             static_cast<sf::RenderTarget&>(self).setView(view);
         },
-        docs[43]
+        docs[45]
     );
-    LUASF_STUB_DOC(docs[44]);
+    LUASF_STUB_DOC(docs[46]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "getView", "fun(self: sf.RenderWindow): sf.View");
     lua_glue::BindCallable(type_sf__RenderWindow, "getView",
         [](const sf::RenderWindow& self) {
             return std::cref(static_cast<const sf::RenderTarget&>(self).getView());
         },
-        docs[44],
+        docs[46],
         lua_glue::ReturnPolicy::ReferenceInternal
     );
-    LUASF_STUB_DOC(docs[45]);
+    LUASF_STUB_DOC(docs[47]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "getDefaultView", "fun(self: sf.RenderWindow): sf.View");
     lua_glue::BindCallable(type_sf__RenderWindow, "getDefaultView",
         [](const sf::RenderWindow& self) {
             return std::cref(static_cast<const sf::RenderTarget&>(self).getDefaultView());
         },
-        docs[45],
+        docs[47],
         lua_glue::ReturnPolicy::ReferenceInternal
     );
-    LUASF_STUB_DOC(docs[46]);
+    LUASF_STUB_DOC(docs[48]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "getViewport", "fun(self: sf.RenderWindow, view: sf.View): sf.IntRect");
     lua_glue::BindCallable(type_sf__RenderWindow, "getViewport",
         [](const sf::RenderWindow& self, const sf::View& view) -> sf::IntRect {
             return static_cast<const sf::RenderTarget&>(self).getViewport(view);
         },
-        docs[46]
+        docs[48]
     );
-    LUASF_STUB_DOC(docs[47]);
+    LUASF_STUB_DOC(docs[49]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "getScissor", "fun(self: sf.RenderWindow, view: sf.View): sf.IntRect");
     lua_glue::BindCallable(type_sf__RenderWindow, "getScissor",
         [](const sf::RenderWindow& self, const sf::View& view) -> sf::IntRect {
             return static_cast<const sf::RenderTarget&>(self).getScissor(view);
         },
-        docs[47]
+        docs[49]
     );
-    LUASF_STUB_DOC(docs[49]);
+    LUASF_STUB_DOC(docs[51]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "mapPixelToCoords", "fun(self: sf.RenderWindow, point: sf.Vector2i, view: sf.View): sf.Vector2f");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "mapPixelToCoords", "fun(self: sf.RenderWindow, point: sf.Vector2i): sf.Vector2f");
     lua_glue::BindCallable(type_sf__RenderWindow, "mapPixelToCoords",
         [](const sf::RenderWindow& self, sf::Vector2i point, const sf::View& view) -> sf::Vector2f {
             return static_cast<const sf::RenderTarget&>(self).mapPixelToCoords(point, view);
         },
-        docs[49]
+        docs[51]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "mapPixelToCoords",
         [](const sf::RenderWindow& self, sf::Vector2i point) -> sf::Vector2f {
             return static_cast<const sf::RenderTarget&>(self).mapPixelToCoords(point);
         },
-        docs[48]
+        docs[50]
     );
-    LUASF_STUB_DOC(docs[51]);
+    LUASF_STUB_DOC(docs[53]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "mapCoordsToPixel", "fun(self: sf.RenderWindow, point: sf.Vector2f, view: sf.View): sf.Vector2i");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "mapCoordsToPixel", "fun(self: sf.RenderWindow, point: sf.Vector2f): sf.Vector2i");
     lua_glue::BindCallable(type_sf__RenderWindow, "mapCoordsToPixel",
         [](const sf::RenderWindow& self, sf::Vector2f point, const sf::View& view) -> sf::Vector2i {
             return static_cast<const sf::RenderTarget&>(self).mapCoordsToPixel(point, view);
         },
-        docs[51]
+        docs[53]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "mapCoordsToPixel",
         [](const sf::RenderWindow& self, sf::Vector2f point) -> sf::Vector2i {
             return static_cast<const sf::RenderTarget&>(self).mapCoordsToPixel(point);
         },
-        docs[50]
+        docs[52]
     );
-    LUASF_STUB_DOC(docs[55]);
+    LUASF_STUB_DOC(docs[57]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "draw", "fun(self: sf.RenderWindow, vertexBuffer: sf.VertexBuffer, firstVertex: integer, vertexCount: integer, states?: sf.RenderStates)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "draw", "fun(self: sf.RenderWindow, drawable: sf.Drawable, states?: sf.RenderStates)");
     LUASF_STUB_OVERLOAD("sf.RenderWindow", "draw", "fun(self: sf.RenderWindow, vertexBuffer: sf.VertexBuffer, states?: sf.RenderStates)");
@@ -543,7 +561,7 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<sf::RenderStates>(sf::RenderStates::Default);
         }}},
-        docs[55]
+        docs[57]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "draw",
         [](sf::RenderWindow& self, const sf::Drawable& drawable, const sf::RenderStates& states) {
@@ -553,7 +571,7 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<sf::RenderStates>(sf::RenderStates::Default);
         }}},
-        docs[52]
+        docs[54]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "draw",
         [](sf::RenderWindow& self, const sf::VertexBuffer& vertexBuffer, const sf::RenderStates& states) {
@@ -563,7 +581,7 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<sf::RenderStates>(sf::RenderStates::Default);
         }}},
-        docs[54]
+        docs[56]
     );
     lua_glue::BindCallable(type_sf__RenderWindow, "draw",
         [](sf::RenderWindow& self, lua_glue::Object vertices, sf::PrimitiveType type, const sf::RenderStates& states) {
@@ -574,39 +592,38 @@ void bind_RenderWindow(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<sf::RenderStates>(sf::RenderStates::Default);
         }}},
-        docs[53]
+        docs[55]
     );
-    LUASF_STUB_DOC(docs[64]);
+    LUASF_STUB_DOC(docs[66]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "isSrgb", "fun(self: sf.RenderWindow): boolean");
     lua_glue::BindCallable(type_sf__RenderWindow, "isSrgb",
         [](const sf::RenderWindow& self) -> bool {
             return self.isSrgb();
         },
-        docs[64]
+        docs[66]
     );
-    LUASF_STUB_DOC(docs[59]);
+    LUASF_STUB_DOC(docs[61]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "pushGLStates", "fun(self: sf.RenderWindow)");
     lua_glue::BindCallable(type_sf__RenderWindow, "pushGLStates",
         [](sf::RenderWindow& self) {
             static_cast<sf::RenderTarget&>(self).pushGLStates();
         },
-        docs[59]
+        docs[61]
     );
-    LUASF_STUB_DOC(docs[60]);
+    LUASF_STUB_DOC(docs[62]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "popGLStates", "fun(self: sf.RenderWindow)");
     lua_glue::BindCallable(type_sf__RenderWindow, "popGLStates",
         [](sf::RenderWindow& self) {
             static_cast<sf::RenderTarget&>(self).popGLStates();
         },
-        docs[60]
+        docs[62]
     );
-    LUASF_STUB_DOC(docs[61]);
+    LUASF_STUB_DOC(docs[63]);
     LUASF_STUB_FUNCTION("sf.RenderWindow", "resetGLStates", "fun(self: sf.RenderWindow)");
     lua_glue::BindCallable(type_sf__RenderWindow, "resetGLStates",
         [](sf::RenderWindow& self) {
             static_cast<sf::RenderTarget&>(self).resetGLStates();
         },
-        docs[61]
+        docs[63]
     );
-    // Skipped sf::RenderWindow::createVulkanSurface(const VkInstance &, VkSurfaceKHR &, const VkAllocationCallbacks *): unsupported parameter type const VkInstance&.
 }

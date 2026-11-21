@@ -35,14 +35,13 @@
 
 #include <OpenGLES/EAGL.h>
 #include <OpenGLES/EAGLDrawable.h>
-#include <OpenGLES/ES2/gl.h>
-#include <OpenGLES/ES2/glext.h>
+#include <OpenGLES/ES3/gl.h>
 #include <QuartzCore/CAEAGLLayer.h>
 #include <array>
 #include <dlfcn.h>
 #include <ostream>
 
-#include <cstring>
+#include <cstdint>
 
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -53,7 +52,7 @@ namespace sf::priv
 ////////////////////////////////////////////////////////////
 EaglContext::EaglContext(EaglContext* shared) : m_context(nil)
 {
-    const EAGLRenderingAPI api = shared ? [shared->m_context API] : kEAGLRenderingAPIOpenGLES2;
+    const EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES3;
     if (shared)
         m_context = [[EAGLContext alloc] initWithAPI:api sharegroup:[shared->m_context sharegroup]];
     else
@@ -74,25 +73,14 @@ EaglContext::EaglContext(EaglContext* shared, const ContextSettings& settings, c
 ////////////////////////////////////////////////////////////
 EaglContext::EaglContext(EaglContext* shared, const ContextSettings& settings, Vector2u /* size */) : m_context(nil)
 {
-    EAGLRenderingAPI api = shared ? [shared->m_context API]
-                                  : (settings.majorVersion >= 3 ? kEAGLRenderingAPIOpenGLES3 : kEAGLRenderingAPIOpenGLES2);
+    const EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES3;
 
     if (shared)
         m_context = [[EAGLContext alloc] initWithAPI:api sharegroup:[shared->m_context sharegroup]];
     else
         m_context = [[EAGLContext alloc] initWithAPI:api];
 
-    if (!m_context && !shared && (api == kEAGLRenderingAPIOpenGLES3))
-    {
-        err() << "Warning: Failed to create an OpenGL ES 3 context; falling back to OpenGL ES 2.0" << std::endl;
-        api       = kEAGLRenderingAPIOpenGLES2;
-        m_context = [[EAGLContext alloc] initWithAPI:api];
-    }
-
-    m_settings                   = settings;
-    m_settings.majorVersion      = api == kEAGLRenderingAPIOpenGLES3 ? 3 : 2;
-    m_settings.minorVersion      = 0;
-    m_settings.attributeFlags    = ContextSettings::Default;
+    m_settings                   = GlSettings(settings);
     m_settings.antiAliasingLevel = 0;
     m_settings.sRgbCapable       = false;
 }
@@ -142,7 +130,7 @@ GlFunctionPointer EaglContext::getFunction(const char* name)
     }
 
     if (module)
-        return reinterpret_cast<GlFunctionPointer>(reinterpret_cast<uintptr_t>(dlsym(module, name)));
+        return reinterpret_cast<GlFunctionPointer>(reinterpret_cast<std::uintptr_t>(dlsym(module, name)));
 
     return nullptr;
 }
@@ -174,23 +162,11 @@ void EaglContext::recreateRenderBuffers(SFView* glView)
     // Create a depth buffer if requested
     if (m_settings.depthBits > 0)
     {
-        // Find the best internal format
-        const bool  isGles3    = [m_context API] == kEAGLRenderingAPIOpenGLES3;
-        const char* extensions = isGles3 ? nullptr : reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));
-        const bool  hasDepth24 = isGles3 || (extensions && std::strstr(extensions, "GL_OES_depth24"));
-        const bool  hasPackedDepthStencil = isGles3 ||
-                                           (extensions && std::strstr(extensions, "GL_OES_packed_depth_stencil"));
-
-        if ((m_settings.stencilBits > 0) && !hasPackedDepthStencil)
-            m_settings.stencilBits = 0;
-
         GLenum format = GL_DEPTH_COMPONENT16;
         if (m_settings.stencilBits > 0)
-            format = GL_DEPTH24_STENCIL8_OES;
-        else if ((m_settings.depthBits > 16) && hasDepth24)
-            format = GL_DEPTH_COMPONENT24_OES;
-        else
-            m_settings.depthBits = 16;
+            format = GL_DEPTH24_STENCIL8;
+        else if (m_settings.depthBits > 16)
+            format = GL_DEPTH_COMPONENT24;
 
         // Get the size of the color-buffer (which fits the current size of the GL view)
         GLint width  = 0;
@@ -221,7 +197,7 @@ void EaglContext::recreateRenderBuffers(SFView* glView)
 bool EaglContext::makeCurrent(bool current)
 {
     if (current)
-        return [EAGLContext setCurrentContext:m_context];
+        return m_context && [EAGLContext setCurrentContext:m_context];
 
     return [EAGLContext setCurrentContext:nil];
 }
@@ -259,7 +235,7 @@ void EaglContext::createContext(EaglContext*           shared,
                                 const ContextSettings& settings)
 {
     // Save the settings
-    m_settings = settings;
+    m_settings = GlSettings(settings);
 
     // Adjust the depth buffer format to those available
     if (m_settings.depthBits > 16)
@@ -268,8 +244,7 @@ void EaglContext::createContext(EaglContext*           shared,
         m_settings.depthBits = 16;
 
     // Create the context, matching the process-wide share group API when present
-    EAGLRenderingAPI api = shared ? [shared->m_context API]
-                                  : (settings.majorVersion >= 3 ? kEAGLRenderingAPIOpenGLES3 : kEAGLRenderingAPIOpenGLES2);
+    const EAGLRenderingAPI api = kEAGLRenderingAPIOpenGLES3;
 
     if (shared)
     {
@@ -282,16 +257,6 @@ void EaglContext::createContext(EaglContext*           shared,
         m_context = [[EAGLContext alloc] initWithAPI:api];
     }
 
-    if (!m_context && !shared && (api == kEAGLRenderingAPIOpenGLES3))
-    {
-        err() << "Warning: Failed to create an OpenGL ES 3 context; falling back to OpenGL ES 2.0" << std::endl;
-        api       = kEAGLRenderingAPIOpenGLES2;
-        m_context = [[EAGLContext alloc] initWithAPI:api];
-    }
-
-    m_settings.majorVersion      = api == kEAGLRenderingAPIOpenGLES3 ? 3 : 2;
-    m_settings.minorVersion      = 0;
-    m_settings.attributeFlags    = ContextSettings::Default;
     m_settings.antiAliasingLevel = 0;
     m_settings.sRgbCapable       = false;
 

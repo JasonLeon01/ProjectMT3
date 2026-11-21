@@ -5,6 +5,7 @@
 ---@field _windowCommand  Source.Windows.WindowCommand
 ---@field _windowSaveLoad Internal.UIBase.LazyWindow<Source.Windows.WindowSaveLoad>
 ---@field _configWindow   Internal.UIBase.LazyWindow<Source.Windows.ConfigWindow>
+---@field private _mapEntryTask AsyncioTask | nil
 local Scene = {}
 
 ---@brief Start with a blind transition effect.

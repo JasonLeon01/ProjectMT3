@@ -38,6 +38,7 @@
 #include <ostream>
 #include <poll.h>
 #include <unistd.h>
+#include <vector>
 #include <xf86drm.h>
 
 #include <cerrno>
@@ -528,22 +529,14 @@ DRMContext::DRMContext(DRMContext* shared)
     // Get the initialized EGL display
     m_display = getInitializedDisplay();
 
-    const ContextSettings settings = shared ? shared->m_settings : ContextSettings{};
-
     // Get the best EGL config matching the default video settings
-    m_config = getBestConfig(m_display, settings);
+    m_config = getBestConfig(m_display, ContextSettings{});
     if (!m_config)
-    {
-        if (shared)
-            err() << "Failed to find an EGL configuration matching the locked OpenGL ES share-group version" << std::endl;
-        else
-            err() << "Failed to find an EGL configuration supporting OpenGL ES 2" << std::endl;
         return;
-    }
     updateSettings();
 
     // Create EGL context
-    createContext(shared, settings);
+    createContext(shared);
 
     if (shared)
         createSurface({drmNode.mode->hdisplay, drmNode.mode->vdisplay}, false);
@@ -565,28 +558,14 @@ DRMContext::DRMContext(DRMContext* shared, const ContextSettings& settings, cons
     m_display = getInitializedDisplay();
 
     // Get the best EGL config matching the requested video settings
-    ContextSettings effectiveSettings = settings;
-    m_config                          = getBestConfig(m_display, effectiveSettings);
-    if (!m_config && !shared && (settings.majorVersion >= 3))
-    {
-        err() << "Warning: No EGL configuration supports requested OpenGL ES " << settings.majorVersion << "."
-              << settings.minorVersion << "; falling back to OpenGL ES 2.0" << std::endl;
-        effectiveSettings.majorVersion = 2;
-        effectiveSettings.minorVersion = 0;
-        m_config                       = getBestConfig(m_display, effectiveSettings);
-    }
+    m_settings = GlSettings(settings);
+    m_config   = getBestConfig(m_display, settings);
     if (!m_config)
-    {
-        if (shared)
-            err() << "Failed to find an EGL configuration matching the locked OpenGL ES share-group version" << std::endl;
-        else
-            err() << "Failed to find an EGL configuration supporting OpenGL ES 2" << std::endl;
         return;
-    }
     updateSettings();
 
     // Create EGL context
-    createContext(shared, effectiveSettings);
+    createContext(shared);
 
     createSurface({drmNode.mode->hdisplay, drmNode.mode->vdisplay}, true);
 }
@@ -605,25 +584,14 @@ DRMContext::DRMContext(DRMContext* shared, const ContextSettings& settings, Vect
     m_display = getInitializedDisplay();
 
     // Get the best EGL config matching the requested video settings
-    ContextSettings effectiveSettings = settings;
-    m_config                          = getBestConfig(m_display, effectiveSettings);
-    if (!m_config && !shared && (settings.majorVersion >= 3))
-    {
-        err() << "Warning: No EGL configuration supports requested OpenGL ES " << settings.majorVersion << "."
-              << settings.minorVersion << "; falling back to OpenGL ES 2.0" << std::endl;
-        effectiveSettings.majorVersion = 2;
-        effectiveSettings.minorVersion = 0;
-        m_config                       = getBestConfig(m_display, effectiveSettings);
-    }
+    m_settings = GlSettings(settings);
+    m_config   = getBestConfig(m_display, settings);
     if (!m_config)
-    {
-        err() << "Failed to find an EGL configuration supporting OpenGL ES 2" << std::endl;
         return;
-    }
     updateSettings();
 
     // Create EGL context
-    createContext(shared, effectiveSettings);
+    createContext(shared);
     createSurface({std::max(size.x, 1u), std::max(size.y, 1u)}, false);
 }
 
@@ -743,55 +711,43 @@ void DRMContext::setVerticalSyncEnabled(bool enabled)
 
 
 ////////////////////////////////////////////////////////////
-void DRMContext::createContext(DRMContext* shared, const ContextSettings& settings)
+void DRMContext::createContext(DRMContext* shared)
 {
     const EGLContext toShared = shared ? shared->m_context : EGL_NO_CONTEXT;
     if (toShared != EGL_NO_CONTEXT)
         eglCheck(eglMakeCurrent(m_display, EGL_NO_SURFACE, EGL_NO_SURFACE, EGL_NO_CONTEXT));
 
-    const auto create = [&]([[maybe_unused]] const ContextSettings& requested)
+    const auto major = static_cast<EGLint>(m_settings.majorVersion);
+    const auto minor = static_cast<EGLint>(m_settings.minorVersion);
+    if (SF_GLAD_EGL_VERSION_1_5 || SF_GLAD_EGL_KHR_create_context)
     {
-#if defined(SFML_OPENGL_ES)
-        if ((requested.majorVersion >= 3) && (SF_GLAD_EGL_VERSION_1_5 || SF_GLAD_EGL_KHR_create_context))
+        std::vector<EGLint> attributes{EGL_CONTEXT_MAJOR_VERSION, major, EGL_CONTEXT_MINOR_VERSION, minor};
+#ifndef SFML_OPENGL_ES
+        if (major > 3 || (major == 3 && minor >= 2))
         {
-            const std::array contextAttributes = {EGL_CONTEXT_MAJOR_VERSION,
-                                                  static_cast<EGLint>(requested.majorVersion),
-                                                  EGL_CONTEXT_MINOR_VERSION,
-                                                  static_cast<EGLint>(requested.minorVersion),
-                                                  EGL_NONE};
-            return eglCreateContext(m_display, m_config, toShared, contextAttributes.data());
+            attributes.push_back(EGL_CONTEXT_OPENGL_PROFILE_MASK);
+            attributes.push_back((m_settings.attributeFlags & GlSettings::Core)
+                                     ? EGL_CONTEXT_OPENGL_CORE_PROFILE_BIT
+                                     : EGL_CONTEXT_OPENGL_COMPATIBILITY_PROFILE_BIT);
         }
-
-        const std::array contextAttributes = {EGL_CONTEXT_CLIENT_VERSION,
-                                              static_cast<EGLint>(requested.majorVersion >= 3 ? 3 : 2),
-                                              EGL_NONE};
-        return eglCreateContext(m_display, m_config, toShared, contextAttributes.data());
-#else
-        static constexpr std::array contextAttributes = {EGL_NONE};
-        return eglCreateContext(m_display, m_config, toShared, contextAttributes.data());
+        if (m_settings.attributeFlags & GlSettings::Debug)
+        {
+            attributes.push_back(EGL_CONTEXT_FLAGS_KHR);
+            attributes.push_back(EGL_CONTEXT_OPENGL_DEBUG_BIT_KHR);
+        }
 #endif
-    };
-
-    m_context = create(settings);
-
-#if defined(SFML_OPENGL_ES)
-    if ((m_context == EGL_NO_CONTEXT) && (settings.majorVersion >= 3) && (toShared == EGL_NO_CONTEXT))
-    {
-        err() << "Warning: Failed to create requested OpenGL ES " << settings.majorVersion << "."
-              << settings.minorVersion << " context; falling back to OpenGL ES 2.0" << std::endl;
-
-        ContextSettings fallbackSettings = settings;
-        fallbackSettings.majorVersion    = 2;
-        fallbackSettings.minorVersion    = 0;
-        m_config                         = getBestConfig(m_display, fallbackSettings);
-        if (m_config)
-        {
-            updateSettings();
-            m_context = create(fallbackSettings);
-        }
+        attributes.push_back(EGL_NONE);
+        m_context = eglCheck(eglCreateContext(m_display, m_config, toShared, attributes.data()));
     }
+    else
+    {
+#ifdef SFML_OPENGL_ES
+        const std::array attributes{EGL_CONTEXT_CLIENT_VERSION, major, EGL_NONE};
+#else
+        const std::array attributes{EGL_NONE};
 #endif
-
+        m_context = eglCheck(eglCreateContext(m_display, m_config, toShared, attributes.data()));
+    }
     if (m_context == EGL_NO_CONTEXT)
         err() << "Failed to create EGL context" << std::endl;
 }
@@ -865,7 +821,7 @@ EGLConfig DRMContext::getBestConfig(EGLDisplay display, const ContextSettings& s
       EGL_WINDOW_BIT,
 #if defined(SFML_OPENGL_ES)
       EGL_RENDERABLE_TYPE,
-      settings.majorVersion >= 3 ? EGL_OPENGL_ES3_BIT_KHR : EGL_OPENGL_ES2_BIT,
+      EGL_OPENGL_ES3_BIT_KHR,
 #else
       EGL_RENDERABLE_TYPE,
       EGL_OPENGL_BIT,
@@ -878,7 +834,7 @@ EGLConfig DRMContext::getBestConfig(EGLDisplay display, const ContextSettings& s
     // Ask EGL for the best config matching our video settings
     eglCheck(eglChooseConfig(display, attributes.data(), configs.data(), configs.size(), &configCount));
 
-    return configCount > 0 ? configs[0] : EGLConfig{};
+    return configCount > 0 ? configs.front() : EGLConfig{};
 }
 
 
@@ -896,10 +852,6 @@ void DRMContext::updateSettings()
 
     eglCheck(eglGetConfigAttrib(m_display, m_config, EGL_SAMPLES, &tmp));
     m_settings.antiAliasingLevel = static_cast<unsigned int>(tmp);
-
-    m_settings.majorVersion   = 2;
-    m_settings.minorVersion   = 0;
-    m_settings.attributeFlags = ContextSettings::Default;
 }
 
 

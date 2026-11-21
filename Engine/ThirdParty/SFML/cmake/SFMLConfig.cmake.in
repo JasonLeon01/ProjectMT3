@@ -135,18 +135,12 @@ endif()
 # Set SFML_FOUND to ON by default, may be overwritten by one of the includes below
 set(SFML_FOUND ON)
 
-# Look for dependencies in "reverse order". Shared packages only install a
-# dependency file when a dependency is exposed through their link interface.
-# This is also required for static packages, where all private dependencies
-# become part of the final link.
-#
-# Resolving X11 can break our own find_package(Freetype CONFIG) because X11
-# attempts to find Freetype itself to resolve its Xft dependency.
+# Resolve the dependencies exported by the selected static or shared targets.
+# Look in reverse order because X11 may find Freetype before the Graphics package does.
 set(FIND_SFML_COMPONENTS_REVERSED ${FIND_SFML_COMPONENTS_SORTED})
 list(REVERSE FIND_SFML_COMPONENTS_REVERSED)
-
 foreach(component ${FIND_SFML_COMPONENTS_REVERSED})
-    set(dependencies_file "${CMAKE_CURRENT_LIST_DIR}/SFML${component}Dependencies.cmake")
+    set(dependencies_file "${CMAKE_CURRENT_LIST_DIR}/SFML${component}${config_name}Dependencies.cmake")
     if(EXISTS "${dependencies_file}")
         include("${dependencies_file}")
     endif()

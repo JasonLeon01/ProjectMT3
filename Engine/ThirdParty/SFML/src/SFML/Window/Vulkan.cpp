@@ -29,31 +29,8 @@
 
 #include <cassert>
 
-#if defined(SFML_SYSTEM_WINDOWS)
-
+#ifdef SFML_RENDER_VULKAN
 #include <SFML/Window/VulkanImpl.hpp>
-
-#elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD) || defined(SFML_SYSTEM_OPENBSD) || \
-    defined(SFML_SYSTEM_NETBSD)
-
-#if defined(SFML_USE_DRM)
-
-#define SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE
-
-#else
-
-#include <SFML/Window/VulkanImpl.hpp>
-
-#endif
-
-#elif defined(SFML_SYSTEM_HARMONY)
-
-#include <SFML/Window/VulkanImpl.hpp>
-
-#else
-
-#define SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE
-
 #endif
 
 
@@ -62,7 +39,7 @@ namespace sf::Vulkan
 ////////////////////////////////////////////////////////////
 bool isAvailable([[maybe_unused]] bool requireGraphics)
 {
-#if defined(SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE)
+#ifndef SFML_RENDER_VULKAN
 
     return false;
 
@@ -79,7 +56,7 @@ VulkanFunctionPointer getFunction([[maybe_unused]] const char* name)
 {
     assert(name && "Name cannot be a null pointer");
 
-#if defined(SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE)
+#ifndef SFML_RENDER_VULKAN
 
     return nullptr;
 
@@ -94,7 +71,7 @@ VulkanFunctionPointer getFunction([[maybe_unused]] const char* name)
 ////////////////////////////////////////////////////////////
 const std::vector<const char*>& getGraphicsRequiredInstanceExtensions()
 {
-#if defined(SFML_VULKAN_IMPLEMENTATION_NOT_AVAILABLE)
+#ifndef SFML_RENDER_VULKAN
 
     static const std::vector<const char*> empty;
 

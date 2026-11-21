@@ -41,14 +41,11 @@
 #include <system_error>
 #include <thread>
 #include <utility>
+#include <window_manager/oh_display_manager.h>
+#include <window_manager/oh_window.h>
 
 #include <cmath>
 #include <cstring>
-
-#ifdef SFML_HARMONY_2IN1
-#include <window_manager/oh_display_manager.h>
-#include <window_manager/oh_window.h>
-#endif
 
 
 namespace
@@ -56,23 +53,6 @@ namespace
 sf::Vector2i toPosition(float x, float y)
 {
     return {static_cast<int>(std::lround(x)), static_cast<int>(std::lround(y))};
-}
-
-
-bool isSupportedDevice()
-{
-    const char* deviceType = OH_GetDeviceType();
-    if (!deviceType)
-        return false;
-
-    const std::string_view type(deviceType);
-#ifdef SFML_HARMONY_2IN1
-    return type == "2in1";
-#else
-    // API 21 deviceinfo documents "default" as the phone value used by some
-    // products, in addition to the explicit "phone" spelling.
-    return type == "default" || type == "phone" || type == "tablet";
-#endif
 }
 
 
@@ -228,15 +208,17 @@ void applySurface(sf::priv::Harmony::HostState& state,
 
     if (!nativeWindow && hadSurface)
     {
-#ifdef SFML_HARMONY_MOBILE
-        state.focused             = false;
-        state.windowState.focused = false;
-#endif
+        if (!sf::priv::Harmony::usesDesktopWindow())
+        {
+            state.focused             = false;
+            state.windowState.focused = false;
+        }
         clearInputState(state, true);
-#ifdef SFML_HARMONY_MOBILE
-        if (wasFocused)
-            queueEvent(state, sf::Event::FocusLost{});
-#endif
+        if (!sf::priv::Harmony::usesDesktopWindow())
+        {
+            if (wasFocused)
+                queueEvent(state, sf::Event::FocusLost{});
+        }
     }
     else if (nativeWindow)
     {
@@ -244,26 +226,29 @@ void applySurface(sf::priv::Harmony::HostState& state,
         // restore even when the old destroy callback is delayed.
         if (surfaceChanged && hadSurface)
         {
-#ifdef SFML_HARMONY_MOBILE
-            state.focused             = false;
-            state.windowState.focused = false;
-#endif
+            if (!sf::priv::Harmony::usesDesktopWindow())
+            {
+                state.focused             = false;
+                state.windowState.focused = false;
+            }
             clearInputState(state, true);
-#ifdef SFML_HARMONY_MOBILE
-            if (wasFocused)
-                queueEvent(state, sf::Event::FocusLost{});
-#endif
+            if (!sf::priv::Harmony::usesDesktopWindow())
+            {
+                if (wasFocused)
+                    queueEvent(state, sf::Event::FocusLost{});
+            }
         }
 
-#ifdef SFML_HARMONY_MOBILE
-        if (!hadSurface || surfaceChanged)
+        if (!sf::priv::Harmony::usesDesktopWindow())
         {
-            state.focused             = state.foreground;
-            state.windowState.focused = state.focused;
-            if (state.focused)
-                queueEvent(state, sf::Event::FocusGained{});
+            if (!hadSurface || surfaceChanged)
+            {
+                state.focused             = state.foreground;
+                state.windowState.focused = state.focused;
+                if (state.focused)
+                    queueEvent(state, sf::Event::FocusGained{});
+            }
         }
-#endif
 
         if (!hadSurface || surfaceChanged || sizeChanged)
             queueEvent(state, sf::Event::Resized{size});
@@ -666,6 +651,16 @@ OH_NativeXComponent_MouseEvent_Callback mouseCallbacks{onMouse, onHover};
 
 namespace sf::priv::Harmony
 {
+bool usesDesktopWindow()
+{
+    static const bool desktop = []
+    {
+        const char* type = OH_GetDeviceType();
+        return type && std::string_view(type) == "2in1";
+    }();
+    return desktop;
+}
+
 HostState& getHostState()
 {
     static HostState state;
@@ -1209,16 +1204,6 @@ bool registerNativeXComponent(void* componentPointer)
         err() << "Cannot register a null Harmony Native XComponent" << std::endl;
         return false;
     }
-    if (!isSupportedDevice())
-    {
-#ifdef SFML_HARMONY_2IN1
-        err() << "SFML Harmony 2-in-1 requires device type 2in1 (device type: "
-#else
-        err() << "SFML Harmony mobile supports phone and tablet devices only (device type: "
-#endif
-              << (OH_GetDeviceType() ? OH_GetDeviceType() : "unknown") << ')' << std::endl;
-        return false;
-    }
 
     {
         const std::lock_guard lock(state.mutex);
@@ -1309,42 +1294,40 @@ void unregisterNativeXComponent(void* componentPointer)
 
 void notifyForeground()
 {
-    auto& state = getHostState();
-#ifdef SFML_HARMONY_MOBILE
+    auto&         state = getHostState();
     HostCallbacks callbacks;
     bool          replayWindowConfiguration = false;
     bool          fullscreen{};
     bool          keepScreenOn{};
-#endif
     {
         const std::lock_guard lock(state.mutex);
         if (state.destroyed)
             return;
         state.foreground = true;
-#ifdef SFML_HARMONY_MOBILE
-        if (state.window && !state.focused)
+        if (!sf::priv::Harmony::usesDesktopWindow())
         {
-            state.focused             = true;
-            state.windowState.focused = true;
-            queueEvent(state, Event::FocusGained{});
+            if (state.window && !state.focused)
+            {
+                state.focused             = true;
+                state.windowState.focused = true;
+                queueEvent(state, Event::FocusGained{});
+            }
         }
-#endif
 
-#ifdef SFML_HARMONY_MOBILE
         callbacks                 = state.callbacks;
         replayWindowConfiguration = state.windowConfigurationSet;
         fullscreen                = state.fullscreen;
         keepScreenOn              = state.keepScreenOn;
-#endif
     }
 
-#ifdef SFML_HARMONY_MOBILE
-    // The system may restore its bars and screen-on policy while another
-    // ability owns the foreground. Replay the mobile window policy whenever
-    // this Stage returns, without invoking ArkUI while holding HostState.
-    if (replayWindowConfiguration && callbacks.configureWindow)
-        callbacks.configureWindow(fullscreen, keepScreenOn, callbacks.userData);
-#endif
+    if (!sf::priv::Harmony::usesDesktopWindow())
+    {
+        // The system may restore its bars and screen-on policy while another
+        // ability owns the foreground. Replay the mobile window policy whenever
+        // this Stage returns, without invoking ArkUI while holding HostState.
+        if (replayWindowConfiguration && callbacks.configureWindow)
+            callbacks.configureWindow(fullscreen, keepScreenOn, callbacks.userData);
+    }
 }
 
 

@@ -2,6 +2,7 @@
 /.vs/
 /Main.sln
 /build/
+/build-web/
 /.idea/
 /cmake-build-ludork-debug/
 /CMakeUserPresets.json

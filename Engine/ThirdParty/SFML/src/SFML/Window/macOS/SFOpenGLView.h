@@ -37,6 +37,7 @@ class WindowImplCocoa;
 }
 
 @class SFSilentResponder;
+@class CAMetalLayer;
 
 ////////////////////////////////////////////////////////////
 /// \brief Specialized NSOpenGLView
@@ -82,6 +83,7 @@ class WindowImplCocoa;
     CGFloat                    m_deltaXBuffer;  ///< See note about cursor grabbing above
     CGFloat                    m_deltaYBuffer;  ///< See note about cursor grabbing above
     BOOL                       m_highDpi;       ///< Is high-DPI enabled?
+    CAMetalLayer*              m_metalLayer;    ///< Hosted Metal layer, nil unless Metal renders to the view
 
     // Hidden text view used to convert key event to actual chars.
     // We use a silent responder to prevent sound alerts.
@@ -139,6 +141,17 @@ class WindowImplCocoa;
 ///
 ////////////////////////////////////////////////////////////
 - (CGFloat)displayScaleFactor;
+
+////////////////////////////////////////////////////////////
+/// \brief Turn the view into a layer-hosting view for Metal
+///
+/// The CAMetalLayer is created on first use. No OpenGL
+/// context may be attached to the view afterwards.
+///
+/// \return The hosted CAMetalLayer
+///
+////////////////////////////////////////////////////////////
+- (CAMetalLayer*)metalLayer;
 
 @end
 

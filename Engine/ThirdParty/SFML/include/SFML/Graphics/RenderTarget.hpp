@@ -41,7 +41,6 @@
 
 #include <SFML/System/Vector2.hpp>
 
-#include <array>
 #include <memory>
 
 #include <cstddef>
@@ -56,6 +55,12 @@ class Texture;
 class Transform;
 class VertexBuffer;
 
+namespace priv
+{
+class RenderTargetBackend;
+class RhiAccess;
+} // namespace priv
+
 ////////////////////////////////////////////////////////////
 /// \brief Base class for all render targets (window, texture, ...)
 ///
@@ -67,7 +72,7 @@ public:
     /// \brief Destructor
     ///
     ////////////////////////////////////////////////////////////
-    virtual ~RenderTarget();
+    virtual ~RenderTarget() = default;
 
     ////////////////////////////////////////////////////////////
     /// \brief Deleted copy constructor
@@ -85,13 +90,13 @@ public:
     /// \brief Move constructor
     ///
     ////////////////////////////////////////////////////////////
-    RenderTarget(RenderTarget&&) noexcept;
+    RenderTarget(RenderTarget&&) noexcept = default;
 
     ////////////////////////////////////////////////////////////
     /// \brief Move assignment
     ///
     ////////////////////////////////////////////////////////////
-    RenderTarget& operator=(RenderTarget&&) noexcept;
+    RenderTarget& operator=(RenderTarget&&) noexcept = default;
 
     ////////////////////////////////////////////////////////////
     /// \brief Clear the entire target with a single color
@@ -384,7 +389,7 @@ public:
     [[nodiscard]] virtual bool setActive(bool active = true);
 
     ////////////////////////////////////////////////////////////
-    /// \brief Save the OpenGL render states modified by SFML
+    /// \brief Save the current OpenGL render states and matrices
     ///
     /// This function can be used when you mix SFML drawing
     /// and direct OpenGL rendering. Combined with popGLStates,
@@ -403,10 +408,9 @@ public:
     /// // OpenGL code here...
     /// \endcode
     ///
-    /// Note that this function is quite expensive: it saves the
-    /// program, textures, vertex attributes and the other OpenGL
-    /// states that SFML drawing can modify. State outside this set
-    /// is deliberately not covered.
+    /// Note that this function is quite expensive: it saves all the
+    /// possible OpenGL states and matrices, even the ones you
+    /// don't care about. Therefore it should be used wisely.
     /// It is provided for convenience, but the best results will
     /// be achieved if you handle OpenGL states yourself (because
     /// you know which states have really changed, and need to be
@@ -419,7 +423,7 @@ public:
     void pushGLStates();
 
     ////////////////////////////////////////////////////////////
-    /// \brief Restore the previously saved OpenGL render states
+    /// \brief Restore the previously saved OpenGL render states and matrices
     ///
     /// See the description of `pushGLStates` to get a detailed
     /// description of these functions.
@@ -441,9 +445,11 @@ public:
     /// Example:
     /// \code
     /// // OpenGL code here...
+    /// glPushAttrib(...);
     /// window.resetGLStates();
     /// window.draw(...);
     /// window.draw(...);
+    /// glPopAttrib(...);
     /// // OpenGL code here...
     /// \endcode
     ///
@@ -455,7 +461,7 @@ protected:
     /// \brief Default constructor
     ///
     ////////////////////////////////////////////////////////////
-    RenderTarget();
+    RenderTarget() = default;
 
     ////////////////////////////////////////////////////////////
     /// \brief Performs the common initialization step after creation
@@ -467,108 +473,13 @@ protected:
     void initialize();
 
 private:
-    ////////////////////////////////////////////////////////////
-    /// \brief Apply the current view
-    ///
-    ////////////////////////////////////////////////////////////
-    void applyCurrentView();
+    friend class RenderWindow;
+    friend class priv::RhiAccess;
+    friend class RenderTexture;
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Apply a new blending mode
-    ///
-    /// \param mode Blending mode to apply
-    ///
-    ////////////////////////////////////////////////////////////
-    void applyBlendMode(const BlendMode& mode);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Apply a new stencil mode
-    ///
-    /// \param mode Stencil mode to apply
-    ///
-    ////////////////////////////////////////////////////////////
-    void applyStencilMode(const StencilMode& mode);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Apply a new texture
-    ///
-    /// \param texture        Texture to apply
-    /// \param coordinateType The texture coordinate type to use
-    ///
-    ////////////////////////////////////////////////////////////
-    void applyTexture(const Texture* texture, CoordinateType coordinateType = CoordinateType::Pixels);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Apply a new shader
-    ///
-    /// \param shader Shader to apply
-    /// \param states Per-draw matrices and texture state
-    ///
-    ////////////////////////////////////////////////////////////
-    void applyShader(const Shader* shader, const RenderStates& states);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Setup environment for drawing
-    ///
-    /// \param states Render states to use for drawing
-    ///
-    ////////////////////////////////////////////////////////////
-    [[nodiscard]] bool setupDraw(const RenderStates& states);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Draw the primitives
-    ///
-    /// \param type        Type of primitives to draw
-    /// \param firstVertex Index of the first vertex to use when drawing
-    /// \param vertexCount Number of vertices to use when drawing
-    ///
-    ////////////////////////////////////////////////////////////
-    void drawPrimitives(PrimitiveType type, std::size_t firstVertex, std::size_t vertexCount);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Clean up environment after drawing
-    ///
-    /// \param states Render states used for drawing
-    ///
-    ////////////////////////////////////////////////////////////
-    void cleanupDraw(const RenderStates& states);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Render states cache
-    ///
-    ////////////////////////////////////////////////////////////
-    struct StatesCache
-    {
-        bool                  enable{};             //!< Is the cache enabled?
-        bool                  glStatesSet{};        //!< Are our internal GL states set yet?
-        bool                  viewChanged{};        //!< Has the current view changed since last draw?
-        bool                  scissorEnabled{};     //!< Is scissor testing enabled?
-        bool                  stencilEnabled{};     //!< Is stencil testing enabled?
-        BlendMode             lastBlendMode;        //!< Cached blending mode
-        StencilMode           lastStencilMode;      //!< Cached stencil
-        std::uint64_t         lastTextureId{};      //!< Cached texture
-        CoordinateType        lastCoordinateType{}; //!< Texture coordinate type
-        unsigned int          lastProgram{};        //!< Cached shader program
-        Transform             lastModelView;        //!< Cached model-view matrix
-        Transform             lastProjection;       //!< Cached projection matrix
-        std::array<float, 16> lastTextureMatrix{};  //!< Cached texture matrix
-    };
-
-    struct GLStatesStack;
-
-    ////////////////////////////////////////////////////////////
-    // Member data
-    ////////////////////////////////////////////////////////////
-    View                          m_defaultView;           //!< Default view
-    View                          m_view;                  //!< Current view
-    StatesCache                   m_cache{};               //!< Render states cache
-    std::uint64_t                 m_id{};                  //!< Unique number that identifies the RenderTarget
-    std::unique_ptr<Shader>       m_defaultShader;         //!< Per-target default programmable pipeline
-    std::unique_ptr<VertexBuffer> m_streamingVertexBuffer; //!< Modern path for transient CPU vertex data
-#ifdef SFML_SYSTEM_HARMONY
-    std::shared_ptr<void> m_harmonyVertexArrayLifetime; //!< Lifetime token for per-target Harmony VAOs
-#endif
-    std::unique_ptr<GLStatesStack> m_glStatesStack; //!< Nested interoperability state snapshots
+    View                                       m_defaultView;
+    View                                       m_view;
+    std::shared_ptr<priv::RenderTargetBackend> m_backend;
 };
 
 } // namespace sf

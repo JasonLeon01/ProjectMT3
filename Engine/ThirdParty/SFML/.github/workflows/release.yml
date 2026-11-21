@@ -136,7 +136,6 @@ jobs:
         rm -r './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/android'
         rm -r './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/projects'
         rm -r './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/include'
-        rm -r './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/vulkan/vulkan.h'
         rm -r './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/island/stb_perlin.h'
 
     - name: Packaging - Prepare Example Files for Windows
@@ -150,7 +149,6 @@ jobs:
         cp ./build/bin/island.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/island'
         cp ./build/bin/joystick.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/joystick'
         cp ./build/bin/keyboard.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/keyboard'
-        cp ./build/bin/opengl.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/opengl'
         cp ./build/bin/raw_input.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/raw_input'
         cp ./build/bin/sftp.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/sftp'
         cp ./build/bin/shader.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/shader'
@@ -163,7 +161,6 @@ jobs:
         cp ./build/bin/tennis.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/tennis'
         cp ./build/bin/text.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/text'
         cp ./build/bin/voip.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/voip'
-        cp ./build/bin/vulkan.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/vulkan'
         cp ./build/bin/win32.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/win32'
         cp ./build/bin/window.exe './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/window'
 
@@ -179,7 +176,6 @@ jobs:
         cp ./build/bin/island './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/island'
         cp ./build/bin/joystick './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/joystick'
         cp ./build/bin/keyboard './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/keyboard'
-        cp ./build/bin/opengl './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/opengl'
         cp ./build/bin/raw_input './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/raw_input'
         cp ./build/bin/sftp './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/sftp'
         cp ./build/bin/shader './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/shader'
@@ -192,7 +188,6 @@ jobs:
         cp ./build/bin/tennis './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/tennis'
         cp ./build/bin/text './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/text'
         cp ./build/bin/voip './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/voip'
-        cp ./build/bin/vulkan './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/vulkan'
         cp ./build/bin/window './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/window'
 
     - name: Packaging - Prepare Example Files for macOS
@@ -208,7 +203,6 @@ jobs:
         cp ./build/bin/island './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/island'
         cp ./build/bin/joystick './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/joystick'
         cp ./build/bin/keyboard './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/keyboard'
-        cp ./build/bin/opengl './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/opengl'
         cp ./build/bin/sftp './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/sftp'
         cp ./build/bin/shader './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/shader'
         cp ./build/bin/sockets './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/sockets'
@@ -220,7 +214,6 @@ jobs:
         cp ./build/bin/tennis './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/tennis'
         cp ./build/bin/text './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/text'
         cp ./build/bin/voip './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/voip'
-        cp ./build/bin/vulkan './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/vulkan'
         cp ./build/bin/window './SFML-${{ matrix.platform.name }}-${{ matrix.config.name }}-${{ matrix.type.name }}/examples/window'
 
     - name: Packaging - Create Archive

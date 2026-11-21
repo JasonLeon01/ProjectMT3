@@ -14,6 +14,33 @@ defaults:
     shell: bash
 
 jobs:
+  web-tidy:
+    name: Analyzing on Web
+    runs-on: ubuntu-24.04
+    steps:
+    - uses: actions/checkout@v6
+    - uses: lukka/get-cmake@latest
+    - name: Install Web analysis tools
+      run: |
+        sudo apt-get update
+        sudo apt-get install clang-tidy
+        python3 -m venv "$RUNNER_TEMP/web-analysis"
+        "$RUNNER_TEMP/web-analysis/bin/pip" install clang-tidy==21.1.6
+        echo "$RUNNER_TEMP/web-analysis/bin" >> "$GITHUB_PATH"
+        git clone --depth 1 https://github.com/emscripten-core/emsdk.git "$RUNNER_TEMP/emsdk"
+        "$RUNNER_TEMP/emsdk/emsdk" install 7.0.0
+        "$RUNNER_TEMP/emsdk/emsdk" activate 7.0.0
+    - name: Analyze Web sources
+      run: |
+        source "$RUNNER_TEMP/emsdk/emsdk_env.sh"
+        # Clang 21 is required for the SDK headers. Keep SFML's existing pragma-once,
+        # bitmask enums, out-of-line constants and preprocessor conventions, without
+        # changing the shared configuration or warnings-as-errors policy.
+        cmake --preset web -DCMAKE_UNITY_BUILD=ON \
+          -DCLANG_TIDY_EXECUTABLE="$RUNNER_TEMP/web-analysis/bin/clang-tidy" \
+          -DCLANG_TIDY_CHECKS="-portability-avoid-pragma-once,-cppcoreguidelines-use-enum-class,-bugprone-dynamic-static-initializers,-readability-use-concise-preprocessor-directives"
+        cmake --build build/web --target tidy
+
   tidy:
     name: Analyzing on ${{ matrix.platform.name }}
     runs-on: ${{ matrix.platform.os }}
@@ -22,16 +49,15 @@ jobs:
       fail-fast: false
       matrix:
         platform:
-        - { name: Windows,         os: windows-2025, flags: -GNinja }
+        # Match the VS 2022 standard library used by the Windows LLVM build.
+        - { name: Windows,         os: windows-2022, flags: -GNinja }
+        - { name: Windows DirectX, os: windows-2022, flags: -GNinja -DSFML_BUILD_OPENGL_BACKEND=OFF -DSFML_BUILD_VULKAN_BACKEND=OFF }
         - { name: Linux,           os: ubuntu-24.04 }
         - { name: Linux DRM,       os: ubuntu-24.04, flags: -DSFML_USE_DRM=ON }
         - { name: Linux OpenGL ES, os: ubuntu-24.04, flags: -DSFML_OPENGL_ES=ON }
-        - { name: macOS,           os: macos-14 }
-        - { name: iOS,             os: macos-14,     flags: -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64 }
+        - { name: macOS,           os: macos-15 }
+        - { name: iOS,             os: macos-15,     flags: -DCMAKE_SYSTEM_NAME=iOS -DCMAKE_OSX_ARCHITECTURES=arm64 }
         - { name: Android,         os: ubuntu-24.04, flags: -DCMAKE_ANDROID_ARCH_ABI=x86_64 -DCMAKE_SYSTEM_NAME=Android -DCMAKE_SYSTEM_VERSION=22 -DCMAKE_ANDROID_NDK=$ANDROID_NDK -DCMAKE_ANDROID_STL_TYPE=c++_shared }
-        - { name: OpenHarmony MOBILE arm64-v8a, os: ubuntu-24.04, form: MOBILE, opengl_es: 'ON', flags: -GNinja -DCMAKE_TOOLCHAIN_FILE=$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1 -DOHOS_ARCH=arm64-v8a -DOHOS_STL=c++_shared -DOHOS_COMPATIBLE_SDK_VERSION=22 -DBUILD_SHARED_LIBS=OFF -DSFML_BUILD_EXAMPLES=OFF -DSFML_HARMONY_DEVICE_FORM=MOBILE -DSFML_OPENGL_ES=ON -DSFML_USE_SYSTEM_DEPS=OFF }
-        - { name: OpenHarmony 2IN1 desktop GL arm64-v8a, os: ubuntu-24.04, form: 2IN1, opengl_es: 'OFF', flags: -GNinja -DCMAKE_TOOLCHAIN_FILE=$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1 -DOHOS_ARCH=arm64-v8a -DOHOS_STL=c++_shared -DOHOS_COMPATIBLE_SDK_VERSION=22 -DBUILD_SHARED_LIBS=OFF -DSFML_BUILD_EXAMPLES=OFF -DSFML_HARMONY_DEVICE_FORM=2IN1 -DSFML_OPENGL_ES=OFF -DSFML_USE_SYSTEM_DEPS=OFF }
-        - { name: OpenHarmony 2IN1 OpenGL ES arm64-v8a, os: ubuntu-24.04, form: 2IN1, opengl_es: 'ON', flags: -GNinja -DCMAKE_TOOLCHAIN_FILE=$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake -DCMAKE_CXX_FLAGS=-isystem$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1 -DOHOS_ARCH=arm64-v8a -DOHOS_STL=c++_shared -DOHOS_COMPATIBLE_SDK_VERSION=22 -DBUILD_SHARED_LIBS=OFF -DSFML_BUILD_EXAMPLES=OFF -DSFML_HARMONY_DEVICE_FORM=2IN1 -DSFML_OPENGL_ES=ON -DSFML_USE_SYSTEM_DEPS=OFF }
 
     steps:
     - name: Checkout Code
@@ -43,31 +69,13 @@ jobs:
         cmakeVersion: latest
         ninjaVersion: latest
 
-    - name: Setup OpenHarmony SDK
-      if: contains(matrix.platform.name, 'OpenHarmony')
-      id: ohos-sdk
-      uses: openharmony-rs/setup-ohos-sdk@eb82b94ef522b07269679195c2512f22e922ef3b # v1.0.0
-      with:
-        version: '6.1'
-        components: native
-        cache: true
-
-    - name: Validate OpenHarmony SDK
-      if: contains(matrix.platform.name, 'OpenHarmony')
-      run: |
-        test "${{ steps.ohos-sdk.outputs.api-version }}" -ge 22
-        test -f "$OHOS_SDK_NATIVE/build/cmake/ohos.toolchain.cmake"
-        test -x "$OHOS_SDK_NATIVE/llvm/bin/clang++"
-        test -f "$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1/optional"
-        echo "OpenHarmony SDK ${{ steps.ohos-sdk.outputs.sdk-version }} (API ${{ steps.ohos-sdk.outputs.api-version }})"
-
     - name: Install Windows Dependencies
       if: runner.os == 'Windows'
       run: |
         curl.exe -o run-clang-tidy https://raw.githubusercontent.com/llvm/llvm-project/llvmorg-15.0.7/clang-tools-extra/clang-tidy/tool/run-clang-tidy.py
 
     - name: Install Linux Dependencies
-      if: runner.os == 'Linux' && !contains(matrix.platform.name, 'OpenHarmony')
+      if: runner.os == 'Linux'
       run: |
         sudo apt-get update
         sudo apt-get install libharfbuzz-dev libfreetype-dev libxrandr-dev libxcursor-dev libxi-dev libudev-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libdrm-dev libgbm-dev libmbedtls-dev libssh2-1-dev
@@ -80,18 +88,7 @@ jobs:
         echo "$(brew --prefix llvm@18)/bin" >> $GITHUB_PATH
 
     - name: Configure
-      run: cmake --preset dev ${{ matrix.platform.name != 'Android' && !contains(matrix.platform.name, 'OpenHarmony') && '-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++' || ''}} -DCMAKE_UNITY_BUILD=ON -DSFML_RUN_IPV4_LINK_TESTS=ON -DSFML_RUN_IPV4_INTERNET_TESTS=ON -DSFML_RUN_IPV6_LINK_TESTS=ON -DSFML_NETWORK_TESTS_MAX_FDS=1028 ${{matrix.platform.flags}}
-
-    - name: Validate OpenHarmony Compilation Database
-      if: contains(matrix.platform.name, 'OpenHarmony')
-      run: |
-        grep -Fq -- "$OHOS_SDK_NATIVE/llvm/include/libcxx-ohos/include/c++/v1" build/compile_commands.json
-        grep -Fq -- '-DSFML_HARMONY_${{ matrix.platform.form }}' build/compile_commands.json
-        if [ "${{ matrix.platform.opengl_es }}" = "ON" ]; then
-          grep -Fq -- '-DSFML_OPENGL_ES' build/compile_commands.json
-        else
-          ! grep -Fq -- '-DSFML_OPENGL_ES' build/compile_commands.json
-        fi
+      run: cmake --preset dev ${{ matrix.platform.name != 'Android' && '-DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++' || ''}} -DCMAKE_UNITY_BUILD=ON -DSFML_RUN_IPV4_LINK_TESTS=ON -DSFML_RUN_IPV4_INTERNET_TESTS=ON -DSFML_RUN_IPV6_LINK_TESTS=ON -DSFML_NETWORK_TESTS_MAX_FDS=1028 ${{matrix.platform.flags}}
 
     - name: Analyze Code
       run: cmake --build build --target tidy

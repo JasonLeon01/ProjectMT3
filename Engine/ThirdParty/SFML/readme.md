@@ -25,6 +25,8 @@ Read the README for full instructions on how to use it.
 
 Follow the instructions of the [tutorials](https://www.sfml-dev.org/tutorials/), there is one for each platform/compiler that SFML supports.
 
+For single-window browser applications using Emscripten and WebGL 2, see the [Web build guide](doc/web.md).
+
 ## Learn
 
 There are several places to learn SFML:

@@ -29,6 +29,7 @@
 
 #include <SFML/System/Win32/WindowsHeader.hpp>
 
+#include <mutex>
 #include <string_view>
 
 #include <cstdint>
@@ -42,19 +43,13 @@ namespace
 {
 struct VulkanLibraryWrapper
 {
-    ~VulkanLibraryWrapper()
-    {
-        if (library)
-            FreeLibrary(library);
-    }
-
     // Try to load the library and all the required entry points
     bool loadLibrary()
     {
         if (library)
             return true;
 
-        library = LoadLibraryA("vulkan-1.dll");
+        library = LoadLibraryExW(L"vulkan-1.dll", nullptr, LOAD_LIBRARY_SEARCH_SYSTEM32);
 
         if (!library)
             return false;
@@ -107,53 +102,52 @@ namespace sf::priv
 ////////////////////////////////////////////////////////////
 bool VulkanImpl::isAvailable(bool requireGraphics)
 {
-    static bool checked           = false;
-    static bool computeAvailable  = false;
-    static bool graphicsAvailable = false;
+    static std::once_flag checked;
+    static bool           computeAvailable{};
+    static bool           graphicsAvailable{};
 
-    if (!checked)
-    {
-        checked = true;
+    std::call_once(checked,
+                   []
+                   {
+                       // Check if the library is available
+                       computeAvailable = wrapper.loadLibrary();
 
-        // Check if the library is available
-        computeAvailable = wrapper.loadLibrary();
+                       // To check for instance extensions we don't need to differentiate between graphics and compute
+                       graphicsAvailable = computeAvailable;
 
-        // To check for instance extensions we don't need to differentiate between graphics and compute
-        graphicsAvailable = computeAvailable;
+                       if (graphicsAvailable)
+                       {
+                           // Retrieve the available instance extensions
+                           std::vector<VkExtensionProperties> extensionProperties;
 
-        if (graphicsAvailable)
-        {
-            // Retrieve the available instance extensions
-            std::vector<VkExtensionProperties> extensionProperties;
+                           std::uint32_t extensionCount = 0;
 
-            std::uint32_t extensionCount = 0;
+                           wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 
-            wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+                           extensionProperties.resize(extensionCount);
 
-            extensionProperties.resize(extensionCount);
+                           wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionProperties.data());
 
-            wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionProperties.data());
+                           // Check if the necessary extensions are available
+                           bool hasVkKhrSurface         = false;
+                           bool hasVkKhrPlatformSurface = false;
 
-            // Check if the necessary extensions are available
-            bool hasVkKhrSurface         = false;
-            bool hasVkKhrPlatformSurface = false;
+                           for (const VkExtensionProperties& properties : extensionProperties)
+                           {
+                               if (std::string_view(properties.extensionName) == VK_KHR_SURFACE_EXTENSION_NAME)
+                               {
+                                   hasVkKhrSurface = true;
+                               }
+                               else if (std::string_view(properties.extensionName) == VK_KHR_WIN32_SURFACE_EXTENSION_NAME)
+                               {
+                                   hasVkKhrPlatformSurface = true;
+                               }
+                           }
 
-            for (const VkExtensionProperties& properties : extensionProperties)
-            {
-                if (std::string_view(properties.extensionName) == VK_KHR_SURFACE_EXTENSION_NAME)
-                {
-                    hasVkKhrSurface = true;
-                }
-                else if (std::string_view(properties.extensionName) == VK_KHR_WIN32_SURFACE_EXTENSION_NAME)
-                {
-                    hasVkKhrPlatformSurface = true;
-                }
-            }
-
-            if (!hasVkKhrSurface || !hasVkKhrPlatformSurface)
-                graphicsAvailable = false;
-        }
-    }
+                           if (!hasVkKhrSurface || !hasVkKhrPlatformSurface)
+                               graphicsAvailable = false;
+                       }
+                   });
 
     if (requireGraphics)
         return graphicsAvailable;
@@ -200,8 +194,8 @@ bool VulkanImpl::createVulkanSurface(const VkInstance&            instance,
 
     VkWin32SurfaceCreateInfoKHR surfaceCreateInfo = VkWin32SurfaceCreateInfoKHR();
     surfaceCreateInfo.sType                       = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-    surfaceCreateInfo.hinstance                   = GetModuleHandleA(nullptr);
-    surfaceCreateInfo.hwnd                        = windowHandle;
+    surfaceCreateInfo.hinstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtrW(windowHandle, GWLP_HINSTANCE));
+    surfaceCreateInfo.hwnd      = windowHandle;
 
     return vkCreateWin32SurfaceKHR(instance, &surfaceCreateInfo, allocator, &surface) == VK_SUCCESS;
 }

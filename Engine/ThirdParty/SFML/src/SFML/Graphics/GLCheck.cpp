@@ -51,7 +51,7 @@ bool checkError(std::string_view file, unsigned int line, std::string_view expre
                   << "\nError description:\n   No active OpenGL context on calling thread.\n"
                   << std::endl;
 
-#if defined(SFML_FATAL_OPENGL_ERRORS)
+#ifdef SFML_FATAL_OPENGL_ERRORS
         assert(false && "OpenGL error (fatal OpenGL errors enabled): No active OpenGL context on calling thread");
 #endif
 
@@ -65,7 +65,7 @@ bool checkError(std::string_view file, unsigned int line, std::string_view expre
                   << description << '\n'
                   << std::endl;
 
-#if defined(SFML_FATAL_OPENGL_ERRORS)
+#ifdef SFML_FATAL_OPENGL_ERRORS
         assert(false && "OpenGL error (fatal OpenGL errors enabled)");
 #endif
 

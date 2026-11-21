@@ -115,14 +115,9 @@ public:
     ////////////////////////////////////////////////////////////
     /// \brief Open the stream from a file path
     ///
-    /// On OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`
-    /// explicitly addresses the HAP rawfile directory. A relative path is
-    /// first opened from the application filesystem and then, if that fails,
-    /// from rawfile. `SFML::Main` initializes the native resource manager
-    /// before application code starts.
-    /// On Android, paths are first opened from the application filesystem.
-    /// Relative paths fall back to the packaged asset directory when no
-    /// filesystem file exists.
+    /// On Android and OpenHarmony, the filesystem is checked first. Relative paths fall
+    /// back to packaged assets if the file cannot be opened. On OpenHarmony,
+    /// `rawfile:/path` explicitly selects a packaged resource.
     ///
     /// \param filename Name of the file to open
     ///

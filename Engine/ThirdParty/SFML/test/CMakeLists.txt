@@ -1,5 +1,9 @@
 include(FetchContent)
 
+if(SFML_OS_IOS)
+    enable_language(OBJCXX)
+endif()
+
 set(CATCH_CONFIG_NO_EXPERIMENTAL_STATIC_ANALYSIS_SUPPORT ON CACHE BOOL "")
 FetchContent_Declare(Catch2
     GIT_REPOSITORY https://github.com/catchorg/Catch2.git
@@ -79,6 +83,11 @@ endif()
 sfml_set_option(SFML_RUN_IPV6_INTERNET_TESTS OFF BOOL "ON to run tests that require an IPv6 route to the internet to be available, OFF to ignore them")
 if(SFML_RUN_IPV6_INTERNET_TESTS)
     target_compile_definitions(sfml-test-main PRIVATE SFML_RUN_IPV6_INTERNET_TESTS)
+endif()
+
+if(SFML_OS_EMSCRIPTEN AND NOT SFML_BUILD_TEST_SUITE)
+    add_subdirectory(Network)
+    return()
 endif()
 
 add_subdirectory(Audio)

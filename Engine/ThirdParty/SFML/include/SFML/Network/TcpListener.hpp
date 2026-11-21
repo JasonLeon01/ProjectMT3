@@ -33,6 +33,8 @@
 #include <SFML/Network/Socket.hpp>
 
 
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
+
 namespace sf
 {
 class TcpSocket;
@@ -116,6 +118,8 @@ public:
 
 
 } // namespace sf
+
+#endif
 
 
 ////////////////////////////////////////////////////////////

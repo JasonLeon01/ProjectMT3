@@ -1,3 +1,4 @@
+#include <SFML/Graphics/GraphicsBackend.hpp>
 #include <SFML/Graphics/Texture.hpp>
 
 // Other 1st party headers
@@ -49,7 +50,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
             {
                 const sf::Texture texture(sf::Vector2u(100, 100));
                 CHECK(texture.getSize() == sf::Vector2u(100, 100));
-                CHECK(texture.getNativeHandle() != 0);
+                CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
             }
 
             SECTION("Too large")
@@ -66,7 +67,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
             CHECK(!texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
 
         SECTION("Memory")
@@ -77,7 +78,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
             CHECK(!texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
 
         SECTION("Stream")
@@ -88,7 +89,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
             CHECK(!texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
 
         SECTION("Image")
@@ -101,21 +102,21 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
                 {
                     const sf::Texture texture(image, false, {{0, 0}, {5, 10}});
                     CHECK(texture.getSize() == sf::Vector2u(5, 10));
-                    CHECK(texture.getNativeHandle() != 0);
+                    CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
                 }
 
                 SECTION("Truncated area (negative position)")
                 {
                     const sf::Texture texture(image, false, {{-5, -5}, {4, 8}});
                     CHECK(texture.getSize() == sf::Vector2u(4, 8));
-                    CHECK(texture.getNativeHandle() != 0);
+                    CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
                 }
 
                 SECTION("Truncated area (width/height too big)")
                 {
                     const sf::Texture texture(image, false, {{5, 5}, {12, 18}});
                     CHECK(texture.getSize() == sf::Vector2u(5, 10));
-                    CHECK(texture.getNativeHandle() != 0);
+                    CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
                 }
             }
         }
@@ -157,7 +158,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
             CHECK(!texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
 
         SECTION("Assignment")
@@ -169,7 +170,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
             CHECK(!texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
     }
 
@@ -188,7 +189,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
         {
             CHECK(texture.resize({100, 100}));
             CHECK(texture.getSize() == sf::Vector2u(100, 100));
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
 
         SECTION("Too large")
@@ -206,7 +207,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
         CHECK(!texture.isSmooth());
         CHECK(!texture.isSrgb());
         CHECK(!texture.isRepeated());
-        CHECK(texture.getNativeHandle() != 0);
+        CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
     }
 
     SECTION("loadFromMemory()")
@@ -218,7 +219,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
         CHECK(!texture.isSmooth());
         CHECK(!texture.isSrgb());
         CHECK(!texture.isRepeated());
-        CHECK(texture.getNativeHandle() != 0);
+        CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
     }
 
     SECTION("loadFromStream()")
@@ -231,7 +232,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
         CHECK(!texture.isSmooth());
         CHECK(!texture.isSrgb());
         CHECK(!texture.isRepeated());
-        CHECK(texture.getNativeHandle() != 0);
+        CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
     }
 
     SECTION("loadFromImage()")
@@ -268,7 +269,7 @@ TEST_CASE("[Graphics] sf::Texture", runDisplayTests())
                 CHECK(texture.getSize() == sf::Vector2u(5, 10));
             }
 
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
     }
 

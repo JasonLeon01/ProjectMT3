@@ -30,9 +30,17 @@
 #include <SFML/Window/WindowImpl.hpp>
 
 #include <SFML/System/Err.hpp>
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+#include <SFML/System/Emscripten/Browser.hpp>
+#endif
 #include <SFML/System/Sleep.hpp>
 
 #include <ostream>
+#include <utility>
+
+#ifdef SFML_SYSTEM_ANDROID
+#include <SFML/System/Android/Activity.hpp>
+#endif
 
 
 namespace sf
@@ -63,7 +71,10 @@ Window::Window(WindowHandle handle, const ContextSettings& settings)
 
 
 ////////////////////////////////////////////////////////////
-Window::~Window() = default;
+Window::~Window()
+{
+    Window::close();
+}
 
 
 ////////////////////////////////////////////////////////////
@@ -71,13 +82,24 @@ Window::Window(Window&&) noexcept = default;
 
 
 ////////////////////////////////////////////////////////////
-Window& Window::operator=(Window&&) noexcept = default;
+Window& Window::operator=(Window&& other) noexcept
+{
+    if (this == &other)
+        return *this;
+
+    close();
+    m_surface        = std::move(other.m_surface);
+    m_clock          = other.m_clock;
+    m_frameTimeLimit = other.m_frameTimeLimit;
+    WindowBase::operator=(std::move(other));
+    return *this;
+}
 
 
 ////////////////////////////////////////////////////////////
 void Window::create(VideoMode mode, const String& title, std::uint32_t style, State state)
 {
-    Window::create(mode, title, style, state, ContextSettings{});
+    create(mode, title, style, state, ContextSettings{});
 }
 
 
@@ -87,35 +109,43 @@ void Window::create(VideoMode mode, const String& title, std::uint32_t style, St
     // Ensure the open window is closed first
     close();
 
-    // Recreate the window implementation
-    m_impl = priv::WindowImpl::create(mode, title, style, state, settings);
+    ContextSettings       effective = settings;
+    std::shared_ptr<void> sharedContext;
+    if (priv::validGlSettings(settings))
+    {
+        sharedContext = priv::GlContext::prepareSharedContext(effective);
+        if (!sharedContext)
+            return;
+    }
 
-    // Recreate the context
-    m_context = priv::GlContext::create(settings, *m_impl, mode.bitsPerPixel);
-
-    // Perform common initializations
-    initialize();
+    m_impl = priv::WindowImpl::create(mode, title, style, state, effective);
+    if (m_impl)
+        m_surface = createSurface(effective, *m_impl, mode.bitsPerPixel);
+    if (m_surface)
+        initialize();
+    else
+        close();
 }
 
 
 ////////////////////////////////////////////////////////////
 void Window::create(VideoMode mode, const String& title, State state)
 {
-    Window::create(mode, title, sf::Style::Default, state, ContextSettings{});
+    create(mode, title, sf::Style::Default, state, ContextSettings{});
 }
 
 
 ////////////////////////////////////////////////////////////
 void Window::create(VideoMode mode, const String& title, State state, const ContextSettings& settings)
 {
-    Window::create(mode, title, sf::Style::Default, state, settings);
+    create(mode, title, sf::Style::Default, state, settings);
 }
 
 
 ////////////////////////////////////////////////////////////
 void Window::create(WindowHandle handle)
 {
-    Window::create(handle, ContextSettings{});
+    create(handle, ContextSettings{});
 }
 
 
@@ -125,22 +155,31 @@ void Window::create(WindowHandle handle, const ContextSettings& settings)
     // Ensure the open window is closed first
     close();
 
-    // Recreate the window implementation
     m_impl = priv::WindowImpl::create(handle);
-
-    // Recreate the context
-    m_context = priv::GlContext::create(settings, *m_impl, VideoMode::getDesktopMode().bitsPerPixel);
-
-    // Perform common initializations
-    initialize();
+    if (m_impl)
+        m_surface = createSurface(settings, *m_impl, VideoMode::getDesktopMode().bitsPerPixel);
+    if (m_surface)
+        initialize();
+    else
+        close();
 }
 
 
 ////////////////////////////////////////////////////////////
 void Window::close()
 {
-    // Delete the context
-    m_context.reset();
+#ifdef SFML_SYSTEM_ANDROID
+    if (m_surface)
+    {
+        auto&                 activity = priv::getActivity();
+        const std::lock_guard lock(activity.mutex);
+        if (activity.surface == m_surface.get())
+            activity.surface = nullptr;
+    }
+#endif
+
+    // Release the rendering surface before destroying the native window.
+    m_surface.reset();
 
     // Close the base window
     WindowBase::close();
@@ -152,7 +191,7 @@ const ContextSettings& Window::getSettings() const
 {
     static constexpr ContextSettings empty{/* depthBits */ 0, /* stencilBits */ 0, /* antiAliasingLevel */ 0};
 
-    return m_context ? m_context->getSettings() : empty;
+    return m_surface ? m_surface->getSettings() : empty;
 }
 
 
@@ -160,7 +199,7 @@ const ContextSettings& Window::getSettings() const
 void Window::setVerticalSyncEnabled(bool enabled)
 {
     if (setActive())
-        m_context->setVerticalSyncEnabled(enabled);
+        m_surface->setVerticalSyncEnabled(enabled);
 }
 
 
@@ -177,9 +216,9 @@ void Window::setFramerateLimit(unsigned int limit)
 ////////////////////////////////////////////////////////////
 bool Window::setActive(bool active) const
 {
-    if (m_context)
+    if (m_surface)
     {
-        if (m_context->setActive(active))
+        if (m_surface->setActive(active))
         {
             return true;
         }
@@ -197,7 +236,11 @@ void Window::display()
 {
     // Display the backbuffer on screen
     if (setActive())
-        m_context->display();
+        m_surface->display();
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+    else
+        priv::sleepImpl(Time::Zero);
+#endif
 
     // Limit the framerate if needed
     if (m_frameTimeLimit != Time::Zero)
@@ -209,8 +252,32 @@ void Window::display()
 
 
 ////////////////////////////////////////////////////////////
+std::unique_ptr<priv::WindowSurface> Window::createSurface(const ContextSettings&  settings,
+                                                           const priv::WindowImpl& owner,
+                                                           unsigned int            bitsPerPixel)
+{
+    return priv::GlContext::create(settings, owner, bitsPerPixel);
+}
+
+
+////////////////////////////////////////////////////////////
+priv::WindowSurface* Window::getSurface() const
+{
+    return m_surface.get();
+}
+
+
+////////////////////////////////////////////////////////////
 void Window::initialize()
 {
+#ifdef SFML_SYSTEM_ANDROID
+    {
+        auto&                 activity = priv::getActivity();
+        const std::lock_guard lock(activity.mutex);
+        activity.surface = m_surface.get();
+    }
+#endif
+
     // Setup default behaviors (to get a consistent behavior across different implementations)
     setVerticalSyncEnabled(false);
     setFramerateLimit(0);

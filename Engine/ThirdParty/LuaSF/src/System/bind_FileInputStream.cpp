@@ -19,7 +19,7 @@ namespace { constexpr std::array<std::string_view, 8> docs = {
     "\\brief Change the current reading position\n\n\\param position The position to seek to, from the beginning\n\n\\return The position actually sought to, or `std::nullopt` on error",
     "\\brief Get the current reading position in the stream\n\n\\return The current position, or `std::nullopt` on error.",
     "\\brief Return the size of the stream\n\n\\return The total number of bytes available in the stream, or `std::nullopt` on error",
-    "\\brief Open the stream from a file path\n\nOn OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`\nexplicitly addresses the HAP rawfile directory. A relative path is\nfirst opened from the application filesystem and then, if that fails,\nfrom rawfile. `SFML::Main` initializes the native resource manager\nbefore application code starts.\nOn Android, paths are first opened from the application filesystem.\nRelative paths fall back to the packaged asset directory when no\nfilesystem file exists.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error",
+    "\\brief Open the stream from a file path\n\nOn Android and OpenHarmony, the filesystem is checked first. Relative paths fall\nback to packaged assets if the file cannot be opened. On OpenHarmony,\n`rawfile:/path` explicitly selects a packaged resource.\n\n\\param filename Name of the file to open\n\n\\return `true` on success, `false` on error",
 }; }
 
 void bind_FileInputStream(lua_glue::StateView lua) {

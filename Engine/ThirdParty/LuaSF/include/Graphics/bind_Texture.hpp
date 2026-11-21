@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/CoordinateType.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/System/InputStream.hpp>

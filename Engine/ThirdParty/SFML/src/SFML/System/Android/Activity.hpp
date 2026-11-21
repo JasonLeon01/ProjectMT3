@@ -27,7 +27,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Window/EglContext.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/JoystickImpl.hpp>
 
@@ -57,6 +56,8 @@ private:
 
 namespace sf::priv
 {
+class WindowSurface;
+
 struct ActivityStates
 {
     ANativeActivity* activity{};
@@ -66,7 +67,8 @@ struct ActivityStates
     AInputQueue*    inputQueue{};
     AConfiguration* config{};
 
-    EglContext* context{};
+    WindowSurface* surface{};
+    bool           windowAttached{};
 
     std::vector<std::byte> savedState;
 

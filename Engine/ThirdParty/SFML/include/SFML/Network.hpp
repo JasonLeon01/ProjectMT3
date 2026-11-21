@@ -37,7 +37,9 @@
 #include <SFML/Network/Socket.hpp>
 #include <SFML/Network/SocketHandle.hpp>
 #include <SFML/Network/SocketSelector.hpp>
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
 #include <SFML/Network/TcpListener.hpp>
+#endif
 #include <SFML/Network/TcpSocket.hpp>
 #include <SFML/Network/UdpSocket.hpp>
 

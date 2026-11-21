@@ -41663,7 +41663,7 @@ static ma_result ma_device_uninit__webaudio(ma_device* pDevice)
         EM_ASM({
             var device = window.miniaudio.get_device_by_index($0);
 
-            if (device.streamNode !== undefined) {
+            if (device.streamNode) {
                 device.streamNode.disconnect();
                 device.streamNode = undefined;
             }
@@ -41680,6 +41680,16 @@ static ma_result ma_device_uninit__webaudio(ma_device* pDevice)
         EM_ASM({
             var device = window.miniaudio.get_device_by_index($0);
 
+            /* SFML: invalidate outstanding permission/resume callbacks and release capture. */
+            device.destroyed = true;
+            if (device.stopScheduledPlayback) {
+                device.stopScheduledPlayback();
+            }
+            if (device.captureStream) {
+                device.captureStream.getTracks().forEach((track) => track.stop());
+                device.captureStream = null;
+            }
+
             /* Make sure all nodes are disconnected and marked for collection. */
             if (device.scriptNode !== undefined) {
                 device.scriptNode.onaudioprocess = function(e) {};  /* We want to reset the callback to ensure it doesn't get called after AudioContext.close() has returned. Shouldn't happen since we're disconnecting, but just to be safe... */
@@ -41687,7 +41697,7 @@ static ma_result ma_device_uninit__webaudio(ma_device* pDevice)
                 device.scriptNode = undefined;
             }
 
-            if (device.streamNode !== undefined) {
+            if (device.streamNode) {
                 device.streamNode.disconnect();
                 device.streamNode = undefined;
             }
@@ -42155,33 +42165,69 @@ static ma_result ma_device_init__webaudio(ma_device* pDevice, const ma_device_co
             }
 
             device.webaudio = new (window.AudioContext || window.webkitAudioContext)(audioContextOptions);
-            device.webaudio.suspend();  /* The AudioContext must be created in a suspended state. */
+            /* SFML: a device can be destroyed before resume/suspend promises settle. */
+            device.setAudioState = function(started) {
+                var pending = started ? device.webaudio.resume() : device.webaudio.suspend();
+                pending.catch(function(error) {
+                    if (!device.destroyed) console.warn("SFML audio state change failed: " + error);
+                });
+            };
+            device.setAudioState(false);  /* The AudioContext must be created in a suspended state. */
             device.state = window.miniaudio.device_state.stopped;
 
             /*
             We need to create a ScriptProcessorNode. The channel situation is the same as the AudioWorklet path in that we
             need to specify an output and configure the channel count there.
             */
-            var channelCountIn  = 0;
-            var channelCountOut = channels;
-            if (deviceType != window.miniaudio.device_type.playback) {
-                channelCountIn  = channels;
+            var playbackOnly = deviceType == window.miniaudio.device_type.playback;
+            var channelCountIn = playbackOnly ? 0 : channels;
+            var nextPlaybackFrame = 0;
+            var scheduledSources;
+            if (playbackOnly) {
+                scheduledSources = new Set();
+                device.stopScheduledPlayback = function() {
+                    nextPlaybackFrame = 0;
+                    scheduledSources.forEach(function(source) {
+                        source.onended = null;
+                        source.stop();
+                        source.disconnect();
+                    });
+                    scheduledSources.clear();
+                };
             }
 
-            device.scriptNode = device.webaudio.createScriptProcessor(bufferSize, channelCountIn, channelCountOut);
+            device.scriptNode = device.webaudio.createScriptProcessor(bufferSize, channelCountIn, channels);
+
+            function getIntermediaryBuffer() {
+                if (!device.intermediaryBufferView || device.intermediaryBufferView.buffer !== HEAPF32.buffer) {
+                    device.intermediaryBufferView = new Float32Array(HEAPF32.buffer, pIntermediaryBuffer, bufferSize * channels);
+                }
+                return device.intermediaryBufferView;
+            }
 
             /* The node processing callback. */
             device.scriptNode.onaudioprocess = function(e) {
-                if (device.intermediaryBufferView == null || device.intermediaryBufferView.length == 0) {
-                    device.intermediaryBufferView = new Float32Array(HEAPF32.buffer, pIntermediaryBuffer, bufferSize * channels);
+                /* SFML: queued callbacks must not touch a stopped or destroyed device. */
+                if (device.destroyed || device.state !== window.miniaudio.device_state.started) return;
+
+                var context = device.webaudio;
+                var playbackFrame;
+                if (playbackOnly) {
+                    /* Keep the ScriptProcessor output silent. When callbacks are late, some
+                    browsers reuse its last output buffers. Schedule each new mix separately. */
+                    var targetFrame = Math.round(e.playbackTime * context.sampleRate);
+                    var currentFrame = Math.round(context.currentTime * context.sampleRate);
+                    var earliestFrame = currentFrame + 128; /* One Web Audio render quantum. */
+                    if (targetFrame < earliestFrame || nextPlaybackFrame > targetFrame + bufferSize / 2) return;
+                    playbackFrame = nextPlaybackFrame < earliestFrame ? targetFrame : nextPlaybackFrame;
                 }
 
                 /* Do the capture side first. */
                 if (deviceType == window.miniaudio.device_type.capture || deviceType == window.miniaudio.device_type.duplex) {
                     /* The data must be interleaved before being processed miniaudio. */
+                    var intermediaryBuffer = getIntermediaryBuffer();
                     for (var iChannel = 0; iChannel < channels; iChannel += 1) {
                         var inputBuffer = e.inputBuffer.getChannelData(iChannel);
-                        var intermediaryBuffer = device.intermediaryBufferView;
 
                         for (var iFrame = 0; iFrame < bufferSize; iFrame += 1) {
                             intermediaryBuffer[iFrame*channels + iChannel] = inputBuffer[iFrame];
@@ -42191,16 +42237,34 @@ static ma_result ma_device_init__webaudio(ma_device* pDevice, const ma_device_co
                     _ma_device_process_pcm_frames_capture__webaudio(pDevice, bufferSize, pIntermediaryBuffer);
                 }
 
-                if (deviceType == window.miniaudio.device_type.playback || deviceType == window.miniaudio.device_type.duplex) {
+                if (playbackOnly || deviceType == window.miniaudio.device_type.duplex) {
                     _ma_device_process_pcm_frames_playback__webaudio(pDevice, bufferSize, pIntermediaryBuffer);
+                    if (device.destroyed || device.state !== window.miniaudio.device_state.started) return;
 
-                    for (var iChannel = 0; iChannel < e.outputBuffer.numberOfChannels; ++iChannel) {
-                        var outputBuffer = e.outputBuffer.getChannelData(iChannel);
-                        var intermediaryBuffer = device.intermediaryBufferView;
+                    var mixBuffer = playbackOnly ? context.createBuffer(channels, bufferSize, context.sampleRate) : e.outputBuffer;
+                    var mixedPCM = getIntermediaryBuffer();
+                    for (var iChannel = 0; iChannel < mixBuffer.numberOfChannels; ++iChannel) {
+                        var outputBuffer = mixBuffer.getChannelData(iChannel);
 
                         for (var iFrame = 0; iFrame < bufferSize; iFrame += 1) {
-                            outputBuffer[iFrame] = intermediaryBuffer[iFrame*channels + iChannel];
+                            outputBuffer[iFrame] = mixedPCM[iFrame*channels + iChannel];
                         }
+                    }
+
+                    if (playbackOnly) {
+                        var playbackTime = playbackFrame / context.sampleRate;
+                        if (playbackTime <= context.currentTime) return;
+
+                        var source = context.createBufferSource();
+                        source.buffer = mixBuffer;
+                        source.connect(context.destination);
+                        source.onended = function() {
+                            scheduledSources.delete(source);
+                            source.disconnect();
+                        };
+                        source.start(playbackTime);
+                        scheduledSources.add(source);
+                        nextPlaybackFrame = playbackFrame + bufferSize;
                     }
                 } else {
                     /* It's a capture-only device. Make sure the output is silenced. */
@@ -42210,20 +42274,9 @@ static ma_result ma_device_init__webaudio(ma_device* pDevice, const ma_device_co
                 }
             };
 
-            /* Now we need to connect our node to the graph. */
-            if (deviceType == window.miniaudio.device_type.capture || deviceType == window.miniaudio.device_type.duplex) {
-                navigator.mediaDevices.getUserMedia({audio:true, video:false})
-                    .then(function(stream) {
-                        device.streamNode = device.webaudio.createMediaStreamSource(stream);
-                        device.streamNode.connect(device.scriptNode);
-                        device.scriptNode.connect(device.webaudio.destination);
-                    })
-                    .catch(function(error) {
-                        console.log("Failed to get user media: " + error);
-                    });
-            }
+            /* SFML: capture permission and connection are deferred to SoundRecorder::start(). */
 
-            if (deviceType == window.miniaudio.device_type.playback) {
+            if (playbackOnly) {
                 device.scriptNode.connect(device.webaudio.destination);
             }
 
@@ -42270,7 +42323,7 @@ static ma_result ma_device_start__webaudio(ma_device* pDevice)
 
     EM_ASM({
         var device = window.miniaudio.get_device_by_index($0);
-        device.webaudio.resume();
+        device.setAudioState(true);
         device.state = window.miniaudio.device_state.started;
     }, pDevice->webaudio.deviceIndex);
 
@@ -42281,19 +42334,22 @@ static ma_result ma_device_stop__webaudio(ma_device* pDevice)
 {
     MA_ASSERT(pDevice != NULL);
 
-    /*
-    From the WebAudio API documentation for AudioContext.suspend():
-
-        Suspends the progression of AudioContext's currentTime, allows any current context processing blocks that are already processed to be played to the
-        destination, and then allows the system to release its claim on audio hardware.
-
-    I read this to mean that "any current context processing blocks" are processed by suspend() - i.e. They they are drained. We therefore shouldn't need to
-    do any kind of explicit draining.
-    */
     EM_ASM({
         var device = window.miniaudio.get_device_by_index($0);
-        device.webaudio.suspend();
         device.state = window.miniaudio.device_state.stopped;
+        if (device.stopScheduledPlayback) {
+            device.stopScheduledPlayback();
+        }
+        /* SFML: release the microphone immediately when capture stops. */
+        if (device.captureStream) {
+            device.captureStream.getTracks().forEach((track) => track.stop());
+            device.captureStream = null;
+        }
+        if (device.streamNode) {
+            device.streamNode.disconnect();
+            device.streamNode = null;
+        }
+        device.setAudioState(false);
     }, pDevice->webaudio.deviceIndex);
 
     ma_device__on_notification_stopped(pDevice);
@@ -42411,7 +42467,7 @@ static ma_result ma_context_init__webaudio(ma_context* pContext, const ma_contex
                         device.state === miniaudio.device_state.started) {
 
                         device.webaudio.resume().then(() => {
-                            _ma_device__on_notification_unlocked(device.pDevice);
+                            if (!device.destroyed) _ma_device__on_notification_unlocked(device.pDevice);
                         },
                         (error) => {console.error("Failed to resume audiocontext", error);
                         });

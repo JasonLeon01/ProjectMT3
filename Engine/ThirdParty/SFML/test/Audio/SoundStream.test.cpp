@@ -3,10 +3,17 @@
 // Other 1st party headers
 #include <SFML/Audio/PlaybackDevice.hpp>
 
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Sleep.hpp>
+
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
 
 #include <AudioUtil.hpp>
 #include <SystemUtil.hpp>
+#include <algorithm>
+#include <array>
+#include <atomic>
 #include <type_traits>
 
 namespace
@@ -26,7 +33,93 @@ private:
     {
     }
 };
+
+class FiniteSoundStream : public sf::SoundStream
+{
+public:
+    using sf::SoundStream::initialize;
+    static constexpr unsigned int sampleCount = 17;
+
+    ~FiniteSoundStream() override
+    {
+        stop();
+    }
+
+    std::atomic<sf::Time> lastSeek{sf::Time::Zero};
+
+private:
+    [[nodiscard]] bool onGetData(Chunk& data) override
+    {
+        data = {m_samples.data(), m_samples.size()};
+        return false;
+    }
+
+    void onSeek(sf::Time offset) override
+    {
+        lastSeek = offset;
+    }
+
+    const std::array<std::int16_t, sampleCount> m_samples = []
+    {
+        std::array<std::int16_t, sampleCount> samples{};
+        samples.back() = 16'384;
+        return samples;
+    }();
+};
 } // namespace
+
+TEST_CASE("[Audio] sf::SoundStream queued seek and final audio block", runAudioDeviceTests())
+{
+    REQUIRE(sf::PlaybackDevice::setDeviceToNull());
+
+    const auto pitch = GENERATE(1.f, 0.5f);
+    CAPTURE(pitch);
+
+    std::atomic<unsigned int> inputFrames{};
+    std::atomic<bool>         heardLastSample{};
+    std::atomic<bool>         reachedEffectTail{};
+    FiniteSoundStream         stream;
+
+    const auto sampleRate = sf::PlaybackDevice::getDeviceSampleRate();
+    REQUIRE(sampleRate.has_value());
+    stream.initialize(1, *sampleRate, {sf::SoundChannel::Mono});
+    stream.setPitch(pitch);
+    stream.setSpatializationEnabled(false);
+
+    stream.setEffectProcessor(
+        [&](const float* input, unsigned int& count, float*, unsigned int& outputCount, unsigned int channels)
+        {
+            if (input)
+            {
+                inputFrames += count;
+                if (std::any_of(input, input + count * channels, [](float sample) { return sample > 0.01f; }))
+                    heardLastSample = true;
+            }
+            else if (inputFrames > 0)
+            {
+                reachedEffectTail = true;
+            }
+
+            outputCount = 0;
+        });
+
+    stream.setPlayingOffset(sf::milliseconds(500));
+    stream.setPlayingOffset(sf::seconds(1));
+    CHECK(stream.getPlayingOffset() == sf::seconds(1));
+    CHECK(stream.lastSeek.load() == sf::Time::Zero);
+    stream.play();
+
+    const sf::Clock clock;
+    while (!reachedEffectTail && clock.getElapsedTime() < sf::seconds(2))
+        sf::sleep(sf::milliseconds(1));
+    stream.stop();
+
+    CHECK(stream.lastSeek.load() == sf::seconds(1));
+    CHECK(heardLastSample.load());
+    CHECK(reachedEffectTail.load());
+    CHECK(inputFrames.load() >= static_cast<unsigned int>(static_cast<float>(FiniteSoundStream::sampleCount) / pitch));
+    CHECK(inputFrames.load() < 64);
+}
 
 TEST_CASE("[Audio] sf::SoundStream", runAudioDeviceTests())
 {

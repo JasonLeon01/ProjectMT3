@@ -118,6 +118,18 @@ WindowHandle WindowImplUIKit::getNativeHandle() const
 
 
 ////////////////////////////////////////////////////////////
+void* WindowImplUIKit::getMetalLayer() const
+{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wold-style-cast"
+
+    return (__bridge void*)[m_view metalLayer];
+
+#pragma GCC diagnostic pop
+}
+
+
+////////////////////////////////////////////////////////////
 Vector2i WindowImplUIKit::getPosition() const
 {
     const CGPoint origin = m_window.frame.origin;

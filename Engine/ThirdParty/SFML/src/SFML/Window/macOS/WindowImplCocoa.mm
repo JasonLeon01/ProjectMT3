@@ -221,10 +221,11 @@ void WindowImplCocoa::windowClosed()
 
 
 ////////////////////////////////////////////////////////////
-void WindowImplCocoa::windowResized(Vector2u size)
+void WindowImplCocoa::windowResized(double width, double height)
 {
+    Vector2<double> size(width, height);
     scaleOutXY(size, m_delegate);
-    pushEvent(Event::Resized{size});
+    pushEvent(Event::Resized{Vector2u(size)});
 }
 
 
@@ -344,6 +345,14 @@ WindowHandle WindowImplCocoa::getNativeHandle() const
 
 
 ////////////////////////////////////////////////////////////
+void* WindowImplCocoa::getMetalLayer() const
+{
+    const AutoreleasePool pool;
+    return [m_delegate metalLayer];
+}
+
+
+////////////////////////////////////////////////////////////
 Vector2i WindowImplCocoa::getPosition() const
 {
     const AutoreleasePool pool;
@@ -369,9 +378,9 @@ Vector2u WindowImplCocoa::getSize() const
 {
     const AutoreleasePool pool;
     const NSSize          size = [m_delegate size];
-    Vector2u              ret(static_cast<unsigned int>(size.width), static_cast<unsigned int>(size.height));
-    scaleOutXY(ret, m_delegate);
-    return ret;
+    Vector2<CGFloat>      backingSize(size.width, size.height);
+    scaleOutXY(backingSize, m_delegate);
+    return Vector2u(backingSize);
 }
 
 

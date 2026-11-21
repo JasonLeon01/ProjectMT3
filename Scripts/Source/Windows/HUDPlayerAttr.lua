@@ -129,7 +129,7 @@ function Controller:onTick(deltaTime)
         self:refreshInputHints()
     end
     self:_layoutAvatars()
-    if LUDORK_MOBILE then
+    if LUDORK_MOBILE or PLATFORM == "web" then
         self:_updateAvatarTouch()
     end
     self._breathAnimElapsed = self._breathAnimElapsed + deltaTime
@@ -202,7 +202,7 @@ function Controller:refreshShortcuts()
         end
         button:setTexture(IconTexture.Load(icon), true)
         button:setCanReceiveFocus(false)
-        if LUDORK_MOBILE then
+        if LUDORK_MOBILE or PLATFORM == "web" then
             -- Template reflow fits each source texture to the authored 32px cell.
             local touchScale = button:getLocalBounds().size / 32
             button:setTouchHitBounds(
@@ -266,7 +266,7 @@ function Controller:refreshAvatars()
             )
         end
         avatar:addClickCallback(self:bindCallback(Controller.openMenu))
-        if LUDORK_MOBILE then
+        if LUDORK_MOBILE or PLATFORM == "web" then
             -- The HUD owns the whole gesture, including taps, instead of each overlapping button.
             avatar:setTouchHitBounds(Engine.ToFloatRect(0, 0, 0, 0))
         end

@@ -29,18 +29,14 @@
 
 #include <SFML/System/String.hpp>
 
+#include <multimodalinput/oh_input_manager.h>
 #include <string>
+#include <window_manager/oh_display_manager.h>
+#include <window_manager/oh_window.h>
 
 #include <cmath>
 
-#ifdef SFML_HARMONY_2IN1
-#include <multimodalinput/oh_input_manager.h>
-#include <window_manager/oh_display_manager.h>
-#include <window_manager/oh_window.h>
-#endif
 
-
-#ifdef SFML_HARMONY_2IN1
 namespace
 {
 bool getClientOrigin(sf::Vector2i& origin)
@@ -69,7 +65,6 @@ bool getClientOrigin(sf::Vector2i& origin)
     return true;
 }
 } // namespace
-#endif
 
 
 namespace sf::priv::InputImpl
@@ -474,67 +469,67 @@ bool isMouseButtonPressed(Mouse::Button button)
 Vector2i getMousePosition()
 {
     auto& state = Harmony::getHostState();
-#ifdef SFML_HARMONY_2IN1
-    bool queryGlobalPointer{};
+    if (Harmony::usesDesktopWindow())
     {
-        const std::lock_guard lock(state.mutex);
-        queryGlobalPointer = state.pointerLocationAvailable.value_or(true);
-    }
-    if (queryGlobalPointer)
-    {
-        std::int32_t displayId{};
-        double       displayX{};
-        double       displayY{};
-        if (OH_Input_GetPointerLocation(&displayId, &displayX, &displayY) == INPUT_SUCCESS)
+        bool queryGlobalPointer{};
         {
-            std::int32_t originX{};
-            std::int32_t originY{};
-            if (displayId < 0 ||
-                OH_NativeDisplayManager_GetDisplayPosition(static_cast<std::uint64_t>(displayId), &originX, &originY) !=
-                    DISPLAY_MANAGER_OK)
+            const std::lock_guard lock(state.mutex);
+            queryGlobalPointer = state.pointerLocationAvailable.value_or(true);
+        }
+        if (queryGlobalPointer)
+        {
+            std::int32_t displayId{};
+            double       displayX{};
+            double       displayY{};
+            if (OH_Input_GetPointerLocation(&displayId, &displayX, &displayY) == INPUT_SUCCESS)
             {
-                originX = 0;
-                originY = 0;
+                std::int32_t originX{};
+                std::int32_t originY{};
+                if (displayId < 0 ||
+                    OH_NativeDisplayManager_GetDisplayPosition(static_cast<std::uint64_t>(displayId), &originX, &originY) !=
+                        DISPLAY_MANAGER_OK)
+                {
+                    originX = 0;
+                    originY = 0;
+                }
+                {
+                    const std::lock_guard lock(state.mutex);
+                    state.pointerLocationAvailable = true;
+                }
+                return {originX + static_cast<int>(std::lround(displayX)),
+                        originY + static_cast<int>(std::lround(displayY))};
             }
-            {
-                const std::lock_guard lock(state.mutex);
-                state.pointerLocationAvailable = true;
-            }
-            return {originX + static_cast<int>(std::lround(displayX)), originY + static_cast<int>(std::lround(displayY))};
+
+            const std::lock_guard lock(state.mutex);
+            state.pointerLocationAvailable = false;
         }
 
-        const std::lock_guard lock(state.mutex);
-        state.pointerLocationAvailable = false;
+        Vector2i local;
+        {
+            const std::lock_guard lock(state.mutex);
+            local = state.mousePosition;
+        }
+        Vector2i origin;
+        if (getClientOrigin(origin))
+            return origin + local;
+        return local;
     }
-
-    Vector2i local;
-    {
-        const std::lock_guard lock(state.mutex);
-        local = state.mousePosition;
-    }
-    Vector2i origin;
-    if (getClientOrigin(origin))
-        return origin + local;
-    return local;
-#else
     const std::lock_guard lock(state.mutex);
     return state.mousePosition;
-#endif
 }
 
 
 Vector2i getMousePosition(const WindowBase& relativeTo)
 {
-#ifdef SFML_HARMONY_2IN1
-    const auto global = getMousePosition();
-    Vector2i   origin;
-    if (getClientOrigin(origin))
-        return global - origin;
-    return global - relativeTo.getPosition();
-#else
-    (void)relativeTo;
+    if (Harmony::usesDesktopWindow())
+    {
+        const auto global = getMousePosition();
+        Vector2i   origin;
+        if (getClientOrigin(origin))
+            return global - origin;
+        return global - relativeTo.getPosition();
+    }
     return getMousePosition();
-#endif
 }
 
 

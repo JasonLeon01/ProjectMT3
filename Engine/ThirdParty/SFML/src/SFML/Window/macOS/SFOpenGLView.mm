@@ -33,6 +33,8 @@
 
 #include <SFML/System/Err.hpp>
 
+#import <QuartzCore/CAMetalLayer.h>
+
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 
@@ -125,7 +127,6 @@
         [m_hiddenTextView setNextResponder:m_silentResponder];
 
         // If high DPI is requested, then use high resolution for the OpenGL view.
-        // Currently, isHighDpi is always expected to be NO, and so the OpenGL view will render scaled.
         // Note: setWantsBestResolutionOpenGLSurface requires YES to work properly, rather than simply non-zero value.
         // isHighDpi is an Objective-C BOOL, which can have non-zero values other than YES.
         m_highDpi = isHighDpi ? YES : NO;
@@ -144,7 +145,8 @@
 {
     // In order to prevent an infinite recursion when the window/view is
     // resized to zero-height/width, we ignore update event when resizing.
-    if (![self inLiveResize])
+    // A Metal-hosting view has no OpenGL context to update.
+    if (![self inLiveResize] && (m_metalLayer == nil))
     {
         [super update];
     }
@@ -171,7 +173,7 @@
                name:NSWindowWillCloseNotification
              object:[self window]];
 
-    // Register for changed screen and changed screen's profile events
+    // Track both screen changes and backing-scale changes within the same screen.
     [[NSNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(updateScaleFactor)
@@ -180,7 +182,7 @@
     [[NSNotificationCenter defaultCenter]
         addObserver:self
            selector:@selector(updateScaleFactor)
-               name:NSWindowDidChangeScreenProfileNotification
+               name:NSWindowDidChangeBackingPropertiesNotification
              object:[self window]];
 
     // Now that we have a window, set up correctly the scale factor and cursor grabbing
@@ -219,9 +221,8 @@
     // Convert it to screen coordinates
     point = [self convertPointToScreen:point];
 
-    // Flip screen coordinates to match CGDisplayMoveCursorToPoint referential.
-    const double screenHeight = [[[self window] screen] frame].size.height;
-    point.y                   = screenHeight - point.y;
+    // Quartz global coordinates have their origin at the top-left of the primary screen.
+    point.y = NSMaxY([[[NSScreen screens] firstObject] frame]) - point.y;
 
     return point;
 }
@@ -235,18 +236,35 @@
 
 
 ////////////////////////////////////////////////////////
+- (CAMetalLayer*)metalLayer
+{
+    if (m_metalLayer == nil)
+    {
+        m_metalLayer = [[CAMetalLayer alloc] init];
+        [m_metalLayer setContentsScale:m_scaleFactor];
+        [m_metalLayer setNeedsDisplayOnBoundsChange:NO];
+        // Setting the layer before wantsLayer makes this a layer-hosting view
+        [self setLayer:m_metalLayer];
+        [self setWantsLayer:YES];
+    }
+    return m_metalLayer;
+}
+
+
+////////////////////////////////////////////////////////
 - (void)updateScaleFactor
 {
     NSWindow* window         = [self window];
     NSScreen* screen         = window ? [window screen] : [NSScreen mainScreen];
     CGFloat   oldScaleFactor = m_scaleFactor;
-    m_scaleFactor            = m_highDpi ? [screen backingScaleFactor] : 1.0;
+    m_scaleFactor            = m_highDpi ? (window ? [window backingScaleFactor] : [screen backingScaleFactor]) : 1.0;
+    [m_metalLayer setContentsScale:m_scaleFactor];
 
     // Send a resize event if the scaling factor changed
     if ((m_scaleFactor != oldScaleFactor) && (m_requester != nullptr))
     {
         NSSize newSize = [self frame].size;
-        m_requester->windowResized({static_cast<unsigned int>(newSize.width), static_cast<unsigned int>(newSize.height)});
+        m_requester->windowResized(newSize.width, newSize.height);
     }
 }
 
@@ -278,7 +296,7 @@
 
     // The new size
     NSSize newSize = [self frame].size;
-    m_requester->windowResized({static_cast<unsigned int>(newSize.width), static_cast<unsigned int>(newSize.height)});
+    m_requester->windowResized(newSize.width, newSize.height);
 }
 
 ////////////////////////////////////////////////////////
@@ -359,6 +377,7 @@
     [m_hiddenTextView release];
     [m_silentResponder release];
     [m_trackingArea release];
+    [m_metalLayer release];
 
     [self setRequesterTo:nullptr];
 

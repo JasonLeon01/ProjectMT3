@@ -1,1 +1,0 @@
-SFML Harmony rawfile stream is available.

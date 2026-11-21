@@ -11,6 +11,7 @@ function View:init(instance)
     UiView.init(self, instance)
     local controls = {
         Background = assert(self.instance:requireControl("Background")),
+        OperationText = assert(self.instance:requireControl("OperationText")),
         ProgressBar = assert(self.instance:requireControl("ProgressBar")),
         Root = assert(self.instance:requireControl("Root"))
     }

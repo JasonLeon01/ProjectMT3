@@ -35,6 +35,7 @@
 
 #include <miniaudio.h>
 
+#include <atomic>
 #include <limits>
 
 
@@ -80,6 +81,7 @@ struct SoundBase
     void deinitialize();
     void processEffect(const float** framesIn, std::uint32_t& frameCountIn, float** framesOut, std::uint32_t& frameCountOut) const;
     void connectEffect(bool connect);
+    void setEffectProcessor(SoundSource::EffectProcessor processor);
 
     ////////////////////////////////////////////////////////////
     // Member data
@@ -95,17 +97,17 @@ struct SoundBase
     ma_node_vtable effectNodeVTable{};       //!< Vtable of the effect node
     EffectNode     effectNode;               //!< The engine node that performs effect processing
     std::vector<ma_channel> soundChannelMap; //!< The map of position in sample frame to sound channel (miniaudio channels)
-    ma_sound                     sound{};    //!< The sound
-    SoundSource::Status          status{SoundSource::Status::Stopped}; //!< The status
-    SoundSource::EffectProcessor effectProcessor;                      //!< The effect processor
+    ma_sound                         sound{};                              //!< The sound
+    std::atomic<SoundSource::Status> status{SoundSource::Status::Stopped}; //!< The status
+    SoundSource::EffectProcessor     effectProcessor;                      //!< The effect processor
     AudioDevice::ResourceEntryIter resourceEntryIter; //!< Iterator to the resource entry registered with the AudioDevice
     MiniaudioUtils::SavedSettings savedSettings; //!< Saved settings used to restore ma_sound state in case we need to recreate it
 };
 
-[[nodiscard]] ma_channel    soundChannelToMiniaudioChannel(SoundChannel soundChannel);
-[[nodiscard]] SoundChannel  miniaudioChannelToSoundChannel(ma_channel soundChannel);
-[[nodiscard]] Time          getPlayingOffset(ma_sound& sound);
-[[nodiscard]] std::uint64_t getFrameIndex(ma_sound& sound, Time timeOffset);
+[[nodiscard]] ma_channel   soundChannelToMiniaudioChannel(SoundChannel soundChannel);
+[[nodiscard]] SoundChannel miniaudioChannelToSoundChannel(ma_channel soundChannel);
+[[nodiscard]] Time         getPlayingOffset(ma_sound& sound);
+void                       seekToTime(ma_sound& sound, Time timeOffset);
 
 } // namespace priv::MiniaudioUtils
 } // namespace sf

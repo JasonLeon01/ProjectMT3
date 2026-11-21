@@ -31,6 +31,14 @@ jobs:
       package_inputs: ${{ toJSON(needs.check.outputs) }}
     secrets: inherit
 
+  webgl:
+    name: Package WebGL
+    needs: check
+    uses: ./.github/workflows/package-webgl.yml
+    with:
+      package_inputs: ${{ toJSON(needs.check.outputs) }}
+    secrets: inherit
+
   android:
     name: Package AOS ARM64
     needs: check

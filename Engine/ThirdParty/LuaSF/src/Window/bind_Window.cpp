@@ -11,7 +11,7 @@
 #include <utility>
 #include <vector>
 
-namespace { constexpr std::array<std::string_view, 40> docs = {
+namespace { constexpr std::array<std::string_view, 42> docs = {
     "\\brief Window that serves as a target for OpenGL rendering",
     "\\brief Default constructor\n\nThis constructor doesn't actually create the window,\nuse the other constructors or call `create()` to do so.",
     "\\brief Construct a new window\n\nThis constructor creates the window with the size and pixel\ndepth defined in `mode`. An optional style can be passed to\ncustomize the look and behavior of the window (borders,\ntitle bar, resizable, closable, ...). An optional state can\nbe provided. If `state` is `State::Fullscreen`, then `mode`\nmust be a valid video mode.\n\nThe last parameter is an optional structure specifying\nadvanced OpenGL context settings such as anti-aliasing,\ndepth-buffer bits, etc.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param style    %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state    %Window state\n\\param settings Additional settings for the underlying OpenGL context",
@@ -41,6 +41,8 @@ namespace { constexpr std::array<std::string_view, 40> docs = {
     "\\brief Request the current window to be made the active\nforeground window\n\nAt any given time, only one window may have the input focus\nto receive input events such as keystrokes or mouse events.\nIf a window requests focus, it only hints to the operating\nsystem, that it would like to be focused. The operating system\nis free to deny the request.\nThis is not to be confused with `setActive()`.\n\n\\see `hasFocus`",
     "\\brief Check whether the window has the input focus\n\nAt any given time, only one window may have the input focus\nto receive input events such as keystrokes or most mouse\nevents.\n\n\\return `true` if window has focus, `false` otherwise\n\\see `requestFocus`",
     "\\brief Get the OS-specific handle of the window\n\nThe type of the returned handle is `sf::WindowHandle`,\nwhich is a type alias to the handle type defined by the OS.\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return System handle of the window",
+    "\\brief Function called after the window has been created\n\nThis function is called so that derived classes can\nperform their own specific initialization as soon as\nthe window is created.",
+    "\\brief Function called after the window has been resized\n\nThis function is called so that derived classes can\nperform custom actions when the size of the window changes.",
     "\\brief Create (or recreate) the window\n\nIf the window was already created, it closes it first.\nIf `state` is `State::Fullscreen`, then `mode` must be\na valid video mode.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param style    %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state    %Window state",
     "\\brief Create (or recreate) the window\n\nIf the window was already created, it closes it first.\nIf `state` is `State::Fullscreen`, then `mode` must be\na valid video mode.\n\nThe last parameter is a structure specifying advanced OpenGL\ncontext settings such as anti-aliasing, depth-buffer bits, etc.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param style    %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state    %Window state\n\\param settings Additional settings for the underlying OpenGL context",
     "\\brief Create (or recreate) the window\n\nIf the window was already created, it closes it first.\nIf `state` is `State::Fullscreen`, then `mode` must be\na valid video mode.\n\n\\param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title    Title of the window\n\\param state    %Window state",
@@ -56,6 +58,7 @@ namespace { constexpr std::array<std::string_view, 40> docs = {
 
 void bind_Window(lua_glue::StateView lua) {
     lua_glue::Table sf = lua_sf::sf_table(lua);
+    // Skipped namespace priv by generator policy.
     // Skipped namespace priv by generator policy.
     auto type_sf__Window = lua_glue::BindClass<sf::Window>(sf, "Window");
     lua_glue::BindBase<sf::Window, sf::WindowBase>(type_sf__Window);
@@ -115,7 +118,7 @@ void bind_Window(lua_glue::StateView lua) {
         },
         docs[1]
     );
-    LUASF_STUB_DOC(docs[30]);
+    LUASF_STUB_DOC(docs[32]);
     LUASF_STUB_FUNCTION("sf.Window", "create", "fun(self: sf.Window, mode: sf.VideoMode, title: string, style: integer, state: sf.State, settings: sf.ContextSettings)");
     LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, mode: sf.VideoMode, title: string, style?: integer, state?: sf.State)");
     LUASF_STUB_OVERLOAD("sf.Window", "create", "fun(self: sf.Window, mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings)");
@@ -126,7 +129,7 @@ void bind_Window(lua_glue::StateView lua) {
         [](sf::Window& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state, const sf::ContextSettings& settings) {
             self.create(mode, lua_sf::to_sf_string(title), style.value(), state, settings);
         },
-        docs[30]
+        docs[32]
     );
     lua_glue::BindCallable(type_sf__Window, "create",
         [](sf::Window& self, sf::VideoMode mode, std::string title, lua_sf::LuaIntegral<std::uint32_t> style, sf::State state) {
@@ -140,31 +143,31 @@ void bind_Window(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<sf::State>(sf::State::Windowed);
         }}},
-        docs[29]
+        docs[31]
     );
     lua_glue::BindCallable(type_sf__Window, "create",
         [](sf::Window& self, sf::VideoMode mode, std::string title, sf::State state, const sf::ContextSettings& settings) {
             self.create(mode, lua_sf::to_sf_string(title), state, settings);
         },
-        docs[32]
+        docs[34]
     );
     lua_glue::BindCallable(type_sf__Window, "create",
         [](sf::Window& self, sf::VideoMode mode, std::string title, sf::State state) {
             self.create(mode, lua_sf::to_sf_string(title), state);
         },
-        docs[31]
+        docs[33]
     );
     lua_glue::BindCallable(type_sf__Window, "create",
         [](sf::Window& self, const lua_sf::WindowHandle& handle, const sf::ContextSettings& settings) {
             self.create(handle.getHandle(), settings);
         },
-        docs[34]
+        docs[36]
     );
     lua_glue::BindCallable(type_sf__Window, "create",
         [](sf::Window& self, const lua_sf::WindowHandle& handle) {
             self.create(handle.getHandle());
         },
-        docs[33]
+        docs[35]
     );
     LUASF_STUB_DOC(docs[8]);
     LUASF_STUB_FUNCTION("sf.Window", "close", "fun(self: sf.Window)");
@@ -341,32 +344,48 @@ void bind_Window(lua_glue::StateView lua) {
         },
         docs[28]
     );
-    LUASF_STUB_DOC(docs[35]);
+    LUASF_STUB_DOC(docs[29]);
+    LUASF_STUB_FUNCTION("sf.Window", "onCreate", "fun(self: sf.Window)");
+    lua_glue::BindCallable(type_sf__Window, "onCreate",
+        [](sf::Window& self) {
+            static_cast<sf::WindowBase&>(self).onCreate();
+        },
+        docs[29]
+    );
+    LUASF_STUB_DOC(docs[30]);
+    LUASF_STUB_FUNCTION("sf.Window", "onResize", "fun(self: sf.Window)");
+    lua_glue::BindCallable(type_sf__Window, "onResize",
+        [](sf::Window& self) {
+            static_cast<sf::WindowBase&>(self).onResize();
+        },
+        docs[30]
+    );
+    LUASF_STUB_DOC(docs[37]);
     LUASF_STUB_FUNCTION("sf.Window", "getSettings", "fun(self: sf.Window): sf.ContextSettings");
     lua_glue::BindCallable(type_sf__Window, "getSettings",
         [](const sf::Window& self) {
             return std::cref(self.getSettings());
         },
-        docs[35],
+        docs[37],
         lua_glue::ReturnPolicy::ReferenceInternal
     );
-    LUASF_STUB_DOC(docs[36]);
+    LUASF_STUB_DOC(docs[38]);
     LUASF_STUB_FUNCTION("sf.Window", "setVerticalSyncEnabled", "fun(self: sf.Window, enabled: boolean)");
     lua_glue::BindCallable(type_sf__Window, "setVerticalSyncEnabled",
         [](sf::Window& self, bool enabled) {
             self.setVerticalSyncEnabled(enabled);
         },
-        docs[36]
+        docs[38]
     );
-    LUASF_STUB_DOC(docs[37]);
+    LUASF_STUB_DOC(docs[39]);
     LUASF_STUB_FUNCTION("sf.Window", "setFramerateLimit", "fun(self: sf.Window, limit: integer)");
     lua_glue::BindCallable(type_sf__Window, "setFramerateLimit",
         [](sf::Window& self, lua_sf::LuaIntegral<unsigned int> limit) {
             self.setFramerateLimit(limit.value());
         },
-        docs[37]
+        docs[39]
     );
-    LUASF_STUB_DOC(docs[38]);
+    LUASF_STUB_DOC(docs[40]);
     LUASF_STUB_FUNCTION("sf.Window", "setActive", "fun(self: sf.Window, active?: boolean): boolean");
     lua_glue::BindCallable(type_sf__Window, "setActive",
         [](const sf::Window& self, bool active) -> bool {
@@ -376,15 +395,14 @@ void bind_Window(lua_glue::StateView lua) {
             using namespace sf;
             return static_cast<bool>(true);
         }}},
-        docs[38]
+        docs[40]
     );
-    LUASF_STUB_DOC(docs[39]);
+    LUASF_STUB_DOC(docs[41]);
     LUASF_STUB_FUNCTION("sf.Window", "display", "fun(self: sf.Window)");
     lua_glue::BindCallable(type_sf__Window, "display",
         [](sf::Window& self) {
             self.display();
         },
-        docs[39]
+        docs[41]
     );
-    // Skipped sf::Window::createVulkanSurface(const VkInstance &, VkSurfaceKHR &, const VkAllocationCallbacks *): unsupported parameter type const VkInstance&.
 }

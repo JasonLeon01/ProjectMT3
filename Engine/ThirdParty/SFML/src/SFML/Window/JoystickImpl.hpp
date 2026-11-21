@@ -61,7 +61,9 @@ struct JoystickState
 } // namespace sf::priv
 
 
-#if defined(SFML_SYSTEM_WINDOWS)
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+#include <SFML/Window/Emscripten/JoystickImpl.hpp>
+#elif defined(SFML_SYSTEM_WINDOWS)
 
 #include <SFML/Window/Win32/JoystickImpl.hpp>
 

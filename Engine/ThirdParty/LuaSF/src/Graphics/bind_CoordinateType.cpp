@@ -12,7 +12,7 @@
 #include <vector>
 
 namespace { constexpr std::array<std::string_view, 3> docs = {
-    "\\ingroup graphics\n\\brief Types of texture coordinates that can be used for rendering\n\n\\see `sf::RenderStates::coordinateType`",
+    "\\ingroup graphics\n\\brief Types of texture coordinates that can be used for rendering\n\n\\see `sf::Texture::bind`",
     "Texture coordinates in range [0 .. 1]",
     "Texture coordinates in range [0 .. size]",
 }; }

@@ -18,6 +18,12 @@ TEST_CASE("[Network] sf::Http")
     SECTION("setHost")
     {
         sf::Http http;
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+        // The browser resolves the host when fetch sends the request.
+        constexpr bool acceptsUnresolvedHost = true;
+#else
+        constexpr bool acceptsUnresolvedHost = false;
+#endif
 
         SECTION("Valid host w/ prefix")
         {
@@ -29,14 +35,14 @@ TEST_CASE("[Network] sf::Http")
             CHECK(http.setHost("google.com"));
         }
 
-        SECTION("Invalid host w/ prefix")
+        SECTION("Unresolved host w/ prefix")
         {
-            CHECK(!http.setHost("http://dummy"));
+            CHECK(http.setHost("http://dummy") == acceptsUnresolvedHost);
         }
 
-        SECTION("Invalid host w/o prefix")
+        SECTION("Unresolved host w/o prefix")
         {
-            CHECK(!http.setHost("dummy"));
+            CHECK(http.setHost("dummy") == acceptsUnresolvedHost);
         }
     }
 

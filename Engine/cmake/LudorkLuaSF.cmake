@@ -67,9 +67,25 @@ set(LUASF_GLUE_ROOT "${LUDORK_LUAGLUE_SOURCE_DIR}" CACHE PATH
     "LuaGlue source project used by LuaSF" FORCE)
 
 function(ludork_add_external_sfml)
+    set(SFML_BUILD_VULKAN_BACKEND OFF CACHE BOOL "" FORCE)
+    set(SFML_BUILD_DIRECTX_BACKEND OFF CACHE BOOL "" FORCE)
+    set(SFML_BUILD_METAL_BACKEND OFF CACHE BOOL "" FORCE)
+    set(SFML_BUILD_OPENGL_BACKEND ON CACHE BOOL "" FORCE)
+    set(SFML_OPENGL_ES OFF CACHE BOOL "" FORCE)
+    if(EMSCRIPTEN OR CMAKE_SYSTEM_NAME STREQUAL "Android" OR CMAKE_SYSTEM_NAME STREQUAL "OHOS")
+        set(SFML_OPENGL_ES ON CACHE BOOL "" FORCE)
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+        set(SFML_BUILD_OPENGL_BACKEND OFF CACHE BOOL "" FORCE)
+        set(SFML_BUILD_METAL_BACKEND ON CACHE BOOL "" FORCE)
+    elseif(WIN32)
+        set(SFML_BUILD_DIRECTX_BACKEND ON CACHE BOOL "" FORCE)
+    elseif(APPLE)
+        set(SFML_BUILD_METAL_BACKEND ON CACHE BOOL "" FORCE)
+    endif()
     if(CMAKE_SYSTEM_NAME STREQUAL "iOS"
        OR CMAKE_SYSTEM_NAME STREQUAL "Android"
-       OR CMAKE_SYSTEM_NAME STREQUAL "OHOS")
+       OR CMAKE_SYSTEM_NAME STREQUAL "OHOS"
+       OR EMSCRIPTEN)
         set(BUILD_SHARED_LIBS OFF)
     elseif(DEFINED LUASF_BUILD_SHARED_SFML)
         set(BUILD_SHARED_LIBS ${LUASF_BUILD_SHARED_SFML})
@@ -82,6 +98,10 @@ function(ludork_add_external_sfml)
     add_subdirectory("${LUDORK_SFML_SOURCE_DIR}" SFML)
 endfunction()
 ludork_add_external_sfml()
+
+if(EMSCRIPTEN)
+    set_property(TARGET sfml-audio PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
+endif()
 
 if(MINGW)
     # SFML keeps its DLL exports; later consumers use MinGW auto-import for inline data.

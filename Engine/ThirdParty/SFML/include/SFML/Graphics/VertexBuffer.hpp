@@ -33,13 +33,22 @@
 #include <SFML/Graphics/PrimitiveType.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
 
-#include <SFML/Window/GlResource.hpp>
+#include <memory>
 
 #include <cstddef>
 
 
 namespace sf
 {
+namespace rhi
+{
+class Buffer;
+}
+namespace priv
+{
+class RhiAccess;
+}
+
 class RenderTarget;
 struct Vertex;
 
@@ -47,7 +56,7 @@ struct Vertex;
 /// \brief Vertex buffer storage for one or more 2D primitives
 ///
 ////////////////////////////////////////////////////////////
-class SFML_GRAPHICS_API VertexBuffer : public Drawable, private GlResource
+class SFML_GRAPHICS_API VertexBuffer : public Drawable
 {
 public:
     ////////////////////////////////////////////////////////////
@@ -236,6 +245,7 @@ public:
     /// or implement a temporary workaround until a bug is fixed.
     ///
     /// \return OpenGL handle of the vertex buffer or 0 if not yet created
+    /// Returns zero when the resource belongs to a non-OpenGL backend.
     ///
     ////////////////////////////////////////////////////////////
     [[nodiscard]] unsigned int getNativeHandle() const;
@@ -322,22 +332,12 @@ public:
     [[nodiscard]] static bool isAvailable();
 
 private:
-    ////////////////////////////////////////////////////////////
-    /// \brief Draw the vertex buffer to a render target
-    ///
-    /// \param target Render target to draw to
-    /// \param states Current render states
-    ///
-    ////////////////////////////////////////////////////////////
-    void draw(RenderTarget& target, RenderStates states) const override;
-
-    ////////////////////////////////////////////////////////////
-    // Member data
-    ////////////////////////////////////////////////////////////
-    unsigned int  m_buffer{};                             //!< Internal buffer identifier
-    std::size_t   m_size{};                               //!< Size in Vertices of the currently allocated buffer
-    PrimitiveType m_primitiveType{PrimitiveType::Points}; //!< Type of primitives to draw
-    Usage         m_usage{Usage::Stream};                 //!< How this vertex buffer is to be used
+    friend class priv::RhiAccess;
+    void                         draw(RenderTarget& target, RenderStates states) const override;
+    std::shared_ptr<rhi::Buffer> m_resource;
+    std::size_t                  m_size{};
+    PrimitiveType                m_primitiveType{PrimitiveType::Points};
+    Usage                        m_usage{Usage::Stream};
 };
 
 ////////////////////////////////////////////////////////////

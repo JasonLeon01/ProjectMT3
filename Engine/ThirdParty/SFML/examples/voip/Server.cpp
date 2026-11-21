@@ -16,6 +16,7 @@
 #include <cstring>
 
 
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
 constexpr std::uint8_t serverAudioData   = 1;
 constexpr std::uint8_t serverEndOfStream = 2;
 
@@ -203,3 +204,9 @@ void doServer(unsigned short port)
         sf::sleep(sf::milliseconds(100));
     }
 }
+#else
+void doServer(unsigned short)
+{
+    std::cout << "sf::TcpListener is not part of the web build, so this program cannot accept VoIP clients." << std::endl;
+}
+#endif

@@ -1,0 +1,97 @@
+name: Package WebGL
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      package_inputs:
+        description: Frozen inputs from Package Game; empty selects this platform's tools.
+        type: string
+        required: false
+        default: ''
+    secrets:
+      LUDORK_ACTIONS_TOKEN:
+        required: false
+      LUDORK_SERVER_URL:
+        required: true
+      LUDORK_SERVER_KEY:
+        required: true
+
+permissions:
+  contents: read
+  actions: read
+
+# Shared by direct runs and calls from Package Game; distinct from the parent's lock.
+concurrency:
+  group: package-webgl
+  cancel-in-progress: false
+  queue: max
+
+jobs:
+  check:
+    name: Select package inputs
+    uses: ./.github/workflows/package-inputs.yml
+    with:
+      platform: macos-arm64
+      package_inputs: ${{ inputs.package_inputs }}
+    secrets:
+      LUDORK_ACTIONS_TOKEN: ${{ secrets.LUDORK_ACTIONS_TOKEN }}
+
+  package:
+    name: Package WebGL
+    needs: check
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      PROJECT_SHA: ${{ needs.check.outputs.project_sha }}
+      LUDORK_SHA: ${{ needs.check.outputs.macos_sha }}
+      LUDORK_CHECKED_SHA: ${{ needs.check.outputs.ludork_checked_sha }}
+      LUDORK_RUN_ID: ${{ needs.check.outputs.macos_run_id }}
+      LUDORK_ARTIFACT_ID: ${{ needs.check.outputs.macos_artifact_id }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.check.outputs.project_sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - name: Download Ludork BuildTools
+        uses: actions/download-artifact@v8
+        with:
+          repository: JasonLeon01/Ludork
+          run-id: ${{ needs.check.outputs.macos_run_id }}
+          skip-decompress: true
+          artifact-ids: ${{ needs.check.outputs.macos_artifact_id }}
+          github-token: ${{ secrets.LUDORK_ACTIONS_TOKEN || github.token }}
+          path: ${{ runner.temp }}/ludork-webgl-artifact
+          merge-multiple: true
+      - name: Install Emscripten 7.0.0
+        shell: bash
+        run: |
+          set -euo pipefail
+          sdk="$RUNNER_TEMP/emsdk"
+          git clone --depth 1 --branch 7.0.0 https://github.com/emscripten-core/emsdk.git "$sdk"
+          "$sdk/emsdk" install 7.0.0
+          "$sdk/emsdk" activate 7.0.0
+          echo "EMSDK=$sdk" >> "$GITHUB_ENV"
+
+      - name: Build and validate WebGL package
+        id: webgl
+        shell: bash
+        env:
+          LUDORK_SERVER_ENABLED: '1'
+          LUDORK_SERVER_URL: ${{ secrets.LUDORK_SERVER_URL }}
+          LUDORK_SERVER_KEY: ${{ secrets.LUDORK_SERVER_KEY }}
+        run: |
+          bash .github/scripts/package-webgl.sh \
+            "$GITHUB_WORKSPACE" "$RUNNER_TEMP/ludork-webgl-artifact" "$RUNNER_TEMP/projectmt3-webgl-package"
+
+      - name: Upload WebGL package
+        uses: actions/upload-artifact@v7
+        with:
+          name: ProjectMT3-webgl-${{ needs.check.outputs.project_sha }}
+          path: ${{ steps.webgl.outputs.site }}
+          if-no-files-found: error
+          retention-days: 7
+          overwrite: true

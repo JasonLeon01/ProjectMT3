@@ -35,6 +35,7 @@
 #include <miniaudio.h>
 
 #include <ostream>
+#include <utility>
 
 #include <cassert>
 #include <cstring>
@@ -177,6 +178,7 @@ void MiniaudioUtils::SoundBase::initialize(ma_sound_end_proc endCallback)
     nodeConfig.vtable               = &effectNodeVTable;
     nodeConfig.pInputChannels       = &nodeChannelCount;
     nodeConfig.pOutputChannels      = &nodeChannelCount;
+    nodeConfig.initialState         = ma_node_state_stopped;
 
     if (const ma_result result = ma_node_init(ma_engine_get_node_graph(engine), &nodeConfig, nullptr, &effectNode);
         result != MA_SUCCESS)
@@ -184,8 +186,6 @@ void MiniaudioUtils::SoundBase::initialize(ma_sound_end_proc endCallback)
         err() << "Failed to initialize effect node: " << ma_result_description(result) << std::endl;
         return;
     }
-
-    ma_node_set_state(&effectNode, ma_node_state_stopped);
 
     effectNode.impl         = this;
     effectNode.channelCount = nodeChannelCount;
@@ -206,6 +206,20 @@ void MiniaudioUtils::SoundBase::deinitialize()
     savedSettings = saveSettings(sound);
     ma_sound_uninit(&sound);
     ma_node_uninit(&effectNode, nullptr);
+}
+
+
+////////////////////////////////////////////////////////////
+void MiniaudioUtils::SoundBase::setEffectProcessor(SoundSource::EffectProcessor processor)
+{
+    const auto previousState = ma_node_get_state(&effectNode);
+    ma_node_set_state(&effectNode, ma_node_state_stopped);
+    AudioDevice::waitForReadingComplete();
+
+    effectProcessor = std::move(processor);
+    connectEffect(bool{effectProcessor});
+
+    ma_node_set_state(&effectNode, previousState);
 }
 
 
@@ -397,7 +411,7 @@ Time MiniaudioUtils::getPlayingOffset(ma_sound& sound)
 
 
 ////////////////////////////////////////////////////////////
-std::uint64_t MiniaudioUtils::getFrameIndex(ma_sound& sound, Time timeOffset)
+void MiniaudioUtils::seekToTime(ma_sound& sound, Time timeOffset)
 {
     std::uint32_t sampleRate{};
 
@@ -409,8 +423,6 @@ std::uint64_t MiniaudioUtils::getFrameIndex(ma_sound& sound, Time timeOffset)
 
     if (const ma_result result = ma_sound_seek_to_pcm_frame(&sound, frameIndex); result != MA_SUCCESS)
         err() << "Failed to seek sound to pcm frame: " << ma_result_description(result) << std::endl;
-
-    return frameIndex;
 }
 
 } // namespace sf::priv

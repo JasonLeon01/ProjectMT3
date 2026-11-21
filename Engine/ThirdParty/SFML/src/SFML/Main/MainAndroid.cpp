@@ -340,10 +340,12 @@ void onNativeWindowCreated(ANativeActivity* activity, ANativeWindow* window)
 
     // Update the activity states
     states.window = window;
+    if (!states.windowAttached)
+        return;
 
-    // If we have no context it's during window creation so don't send the focus event or it will try
+    // If we have no surface it's during window creation so don't send the focus event or it will try
     // to recreate the surface again
-    if (states.context)
+    if (states.surface && states.forwardEvent)
     {
         states.forwardEvent(sf::Event::FocusGained{});
     }
@@ -367,7 +369,10 @@ void onNativeWindowDestroyed(ANativeActivity* activity, ANativeWindow* /* window
     // Update the activity states
     states.window = nullptr;
 
-    // Notify SFML mechanism
+    if (!states.windowAttached || !states.forwardEvent)
+        return;
+
+    // Notify the SFML event thread before releasing the native window.
     states.forwardEvent(sf::Event::FocusLost{});
 
     // Wait for the event to be taken into account by SFML
@@ -386,8 +391,17 @@ void onNativeWindowRedrawNeeded(ANativeActivity* /* activity */, ANativeWindow* 
 }
 
 ////////////////////////////////////////////////////////////
-void onNativeWindowResized(ANativeActivity* /* activity */, ANativeWindow* /* window */)
+void onNativeWindowResized(ANativeActivity* activity, ANativeWindow* window)
 {
+    auto&                 states = retrieveStates(*activity);
+    const std::lock_guard lock(states.mutex);
+    if (window && states.forwardEvent)
+    {
+        const auto width  = ANativeWindow_getWidth(window);
+        const auto height = ANativeWindow_getHeight(window);
+        if (width > 0 && height > 0)
+            states.forwardEvent(sf::Event::Resized{sf::Vector2u(sf::Vector2i(width, height))});
+    }
 }
 
 ////////////////////////////////////////////////////////////

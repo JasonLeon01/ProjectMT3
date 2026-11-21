@@ -107,6 +107,6 @@ namespace Vulkan
 /// \ingroup window
 ///
 /// This namespace contains functions to help you use SFML
-/// for windowing and write your own Vulkan code for graphics
+/// to query the Vulkan loader or use Vulkan directly with the native window handle
 ///
 ////////////////////////////////////////////////////////////

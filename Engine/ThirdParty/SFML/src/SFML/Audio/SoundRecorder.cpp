@@ -31,6 +31,40 @@
 #include <SFML/System/Sleep.hpp>
 
 #include <miniaudio.h>
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+#include <emscripten.h>
+
+// Keep permission requests on the start() call stack, without changing the public API.
+// JavaScript bodies must not be formatted as C++.
+// clang-format off
+EM_ASYNC_JS(int, sfmlStartCapture, (int index), {
+    var device = window.miniaudio.get_device_by_index(index);
+    try
+    {
+        var stream = await navigator.mediaDevices.getUserMedia({audio: true, video: false});
+        if (device.destroyed)
+        {
+            stream.getTracks().forEach((track) => track.stop());
+            return 0;
+        }
+        device.captureStream = stream;
+        device.streamNode    = device.webaudio.createMediaStreamSource(stream);
+        device.streamNode.connect(device.scriptNode);
+        device.scriptNode.connect(device.webaudio.destination);
+        return 1;
+    } catch (error)
+    {
+        console.warn('SFML microphone initialization failed: ' + error);
+        if (device.captureStream)
+        {
+            device.captureStream.getTracks().forEach((track) => track.stop());
+            device.captureStream = null;
+        }
+        return 0;
+    }
+});
+// clang-format on
+#endif
 
 #include <algorithm>
 #include <array>
@@ -126,7 +160,8 @@ struct SoundRecorder::Impl
         }
 
         // Enumerate the capture devices
-        ma_device_info* deviceInfos = nullptr;
+        // miniaudio writes this pointer through a mutable output parameter.
+        ma_device_info* deviceInfos = nullptr; // NOLINT(misc-const-correctness)
         std::uint32_t   deviceCount = 0;
 
         if (const auto result = ma_context_get_devices(&context, nullptr, nullptr, &deviceInfos, &deviceCount);
@@ -306,6 +341,14 @@ bool SoundRecorder::start(unsigned int sampleRate)
     // Notify derived class
     if (onStart())
     {
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+        if (!sfmlStartCapture(static_cast<int>(m_impl->captureDevice->webaudio.deviceIndex)))
+        {
+            err() << "Microphone permission denied or capture initialization failed" << std::endl;
+            onStop();
+            return false;
+        }
+#endif
         // Start the capture
         if (const auto result = ma_device_start(&*m_impl->captureDevice); result != MA_SUCCESS)
         {
@@ -379,6 +422,11 @@ std::string SoundRecorder::getDefaultDevice()
 ////////////////////////////////////////////////////////////
 bool SoundRecorder::setDevice(const std::string& name)
 {
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+    // Reject unsupported device names without poisoning subsequent recording attempts.
+    if (name != getDefaultDevice())
+        return false;
+#endif
     // Store the device name and re-initialize if necessary
     if (m_impl->deviceName != name)
     {

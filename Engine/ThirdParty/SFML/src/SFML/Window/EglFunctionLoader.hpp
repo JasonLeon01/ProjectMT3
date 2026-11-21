@@ -47,11 +47,10 @@ namespace sf::priv
 ////////////////////////////////////////////////////////////
 inline GlFunctionPointer getEglGlFunction(const char* name)
 {
-    if (const auto address = eglGetProcAddress(name))
+    if (const auto address = eglGetProcAddress ? eglGetProcAddress(name) : nullptr)
         return reinterpret_cast<GlFunctionPointer>(address);
 
-        // EGL does not require eglGetProcAddress to return core GL/GLES
-        // functions, so fall back to the linked client library.
+        // EGL can return null for core GL/GLES functions. Try the client library.
 #if defined(SFML_SYSTEM_WINDOWS)
     static const HMODULE module = []
     {
@@ -81,9 +80,7 @@ inline GlFunctionPointer getEglGlFunction(const char* name)
     static void* const module = []
     {
 #ifdef SFML_OPENGL_ES
-        static constexpr std::array libraries = {"libGLESv2.so.2", "libGLESv2.so"};
-#elif defined(SFML_SYSTEM_HARMONY)
-        static constexpr std::array libraries = {"libGLv4.so"};
+        static constexpr std::array libraries = {"libGLESv3.so", "libGLESv2.so.2", "libGLESv2.so"};
 #else
         static constexpr std::array libraries = {"libOpenGL.so.0", "libGL.so.1", "libGL.so"};
 #endif

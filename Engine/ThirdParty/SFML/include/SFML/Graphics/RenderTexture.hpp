@@ -41,10 +41,6 @@
 
 namespace sf
 {
-namespace priv
-{
-class RenderTextureImpl;
-}
 
 ////////////////////////////////////////////////////////////
 /// \brief Target for off-screen 2D rendering into a texture
@@ -271,8 +267,7 @@ private:
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    std::unique_ptr<priv::RenderTextureImpl> m_impl;    //!< Platform/hardware specific implementation
-    Texture                                  m_texture; //!< Target texture to draw on
+    Texture m_texture; //!< Target texture to draw on
 };
 
 } // namespace sf

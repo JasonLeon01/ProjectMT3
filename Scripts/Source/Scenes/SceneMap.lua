@@ -6,6 +6,7 @@ local EventKey = require("Enums.EventKey")
 local Logging = require("Global.Utils.Logging")
 local GameSystem = require("Source.System")
 local GameplayScene = require("Source.Gameplay.GameplayScene")
+local MapBuilder = require("Source.SceneComponents.MapBuilder")
 local LiveDebug = require("Internal.LiveDebug")
 local MapSession = require("Source.Scenes.SceneMap.MapSession")
 local Dialogue = require("Source.Scenes.SceneMap.Dialogue")
@@ -48,6 +49,19 @@ function Scene:setInst(inst)
     self.inst = inst
 end
 
+function Scene:enterWhenReady(enter)
+    if PLATFORM ~= "web" then
+        enter()
+        return nil
+    end
+    return asyncio.create_required_task(function ()
+        asyncio.sleep(0.0)
+        local startMap = self.inst:getCurrentMapPath() or GameSystem.GetStartMap()
+        self._preparedEntry = MapBuilder.new():prepareInitialMap(startMap)
+        enter()
+    end)
+end
+
 function Scene:onCreate()
     self._gameplayRequestsActive = true
     self._gameOverRequest = nil
@@ -57,7 +71,8 @@ function Scene:onCreate()
     uiManager:setFocusNavigationEnabled(true)
     self.player = self.inst:getPlayer()
     self._environment = Environment.new()
-    self._maps = MapSession.new(self, self._environment)
+    self._maps = MapSession.new(self, self._environment, self._preparedEntry)
+    self._preparedEntry = nil
     self._dialogue = Dialogue.new(self)
     self._mapMessages = MapMessages.new(self)
     self._messageGesture = MapMessageGesture.new(self)

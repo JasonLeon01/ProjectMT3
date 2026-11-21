@@ -32,7 +32,14 @@ TEST_CASE("[Network] sf::UdpSocket")
             sf::UdpSocket udpSocket;
             CHECK(udpSocket.bind(sf::Socket::AnyPort, sf::IpAddress::Broadcast) == sf::Socket::Status::Error);
             CHECK(udpSocket.bind(sf::Socket::AnyPort) == sf::Socket::Status::Done);
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+            // The browser cannot occupy a host port. AnyPort stays 0; an explicit port is recorded.
+            CHECK(udpSocket.getLocalPort() == 0);
+            CHECK(udpSocket.bind(41000) == sf::Socket::Status::Done);
+            CHECK(udpSocket.getLocalPort() == 41000);
+#else
             CHECK(udpSocket.getLocalPort() != 0);
+#endif
 
             udpSocket.unbind();
             CHECK(udpSocket.getLocalPort() == 0);
@@ -42,7 +49,11 @@ TEST_CASE("[Network] sf::UdpSocket")
         {
             sf::UdpSocket udpSocket;
             CHECK(udpSocket.bind(sf::Socket::AnyPort, sf::IpAddress::AnyV6) == sf::Socket::Status::Done);
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+            CHECK(udpSocket.getLocalPort() == 0);
+#else
             CHECK(udpSocket.getLocalPort() != 0);
+#endif
 
             udpSocket.unbind();
             CHECK(udpSocket.getLocalPort() == 0);

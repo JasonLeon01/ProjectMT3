@@ -1,4 +1,5 @@
 #include <SFML/Graphics/Font.hpp>
+#include <SFML/Graphics/GraphicsBackend.hpp>
 
 // Other 1st party headers
 #include <SFML/Graphics/Texture.hpp>
@@ -65,7 +66,7 @@ TEST_CASE("[Graphics] sf::Font", runDisplayTests())
                 CHECK(texture.isSmooth());
                 CHECK(!texture.isSrgb());
                 CHECK(!texture.isRepeated());
-                CHECK(texture.getNativeHandle() != 0);
+                CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
                 CHECK(font.isSmooth());
             }
         }
@@ -102,7 +103,7 @@ TEST_CASE("[Graphics] sf::Font", runDisplayTests())
                 CHECK(texture.isSmooth());
                 CHECK(!texture.isSrgb());
                 CHECK(!texture.isRepeated());
-                CHECK(texture.getNativeHandle() != 0);
+                CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
                 CHECK(font.isSmooth());
             }
         }
@@ -130,7 +131,7 @@ TEST_CASE("[Graphics] sf::Font", runDisplayTests())
             CHECK(texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
             CHECK(font.isSmooth());
         }
     }
@@ -170,7 +171,7 @@ TEST_CASE("[Graphics] sf::Font", runDisplayTests())
             CHECK(texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
             CHECK(font.isSmooth());
         }
     }
@@ -209,7 +210,7 @@ TEST_CASE("[Graphics] sf::Font", runDisplayTests())
             CHECK(texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
             CHECK(font.isSmooth());
         }
     }
@@ -247,7 +248,7 @@ TEST_CASE("[Graphics] sf::Font", runDisplayTests())
             CHECK(texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
             CHECK(font.isSmooth());
         }
     }

@@ -7,6 +7,7 @@
 ---@field private _gameplayRequestsActive           boolean
 ---@field private _gameOverRequest                  { player: Source.MapActors.Player.Player, gameMap: GameMap } | nil
 ---@field private _maps                             Source.Scenes.SceneMap.MapSession
+---@field private _preparedEntry                    Source.SceneComponents.SceneMapBuilder.PreparedEntry | nil
 ---@field private _dialogue                         Source.Scenes.SceneMap.Dialogue
 ---@field private _windows                          Source.Scenes.SceneMap.Windows
 ---@field private _environment                      Source.Scenes.SceneMap.Environment
@@ -36,6 +37,11 @@ function Scene:onEnter() end
 --- - @param inst The GameInstance to use.
 ---@param inst Source.GameInstance.GameInstance
 function Scene:setInst(inst) end
+
+--- Prepare detached Actors over multiple frames on Web, then activate the scene.
+---@param enter fun()
+---@return AsyncioTask | nil
+function Scene:enterWhenReady(enter) end
 
 ---@brief Create the player HUD and popup factories, then load the starting map.
 function Scene:onCreate() end

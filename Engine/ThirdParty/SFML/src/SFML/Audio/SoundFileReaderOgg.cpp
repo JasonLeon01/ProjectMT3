@@ -107,7 +107,7 @@ std::optional<SoundFileReader::Info> SoundFileReaderOgg::open(InputStream& strea
     }
 
     // Retrieve the music attributes
-    vorbis_info* vorbisInfo = ov_info(&m_vorbis, -1);
+    const vorbis_info* vorbisInfo = ov_info(&m_vorbis, -1);
 
     // When attempting to retrieve the total PCM sample count using ov_pcm_total() below,
     // make sure to set the read position back to the beginning of the file after calling ov_info().

@@ -36,7 +36,8 @@ option(LUASF_BUILD_SHARED_SFML "Build SFML as shared libraries for LuaSF" ON)
 option(LUASF_GENERATE_LUA_STUB "Generate Lua language-server stub from the built LuaSF module" ON)
 if(CMAKE_SYSTEM_NAME STREQUAL "iOS"
    OR CMAKE_SYSTEM_NAME STREQUAL "Android"
-   OR CMAKE_SYSTEM_NAME STREQUAL "OHOS")
+   OR CMAKE_SYSTEM_NAME STREQUAL "OHOS"
+   OR CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
     set(LUASF_BUILD_SHARED_SFML OFF CACHE BOOL "Build SFML as shared libraries for LuaSF" FORCE)
     set(LUASF_LIBRARY_TYPE STATIC)
 else()
@@ -74,8 +75,15 @@ set(SFML_BUILD_EXAMPLES OFF)
 set(SFML_BUILD_DOC OFF)
 set(SFML_BUILD_TEST_SUITE OFF)
 
-if(APPLE)
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum macOS deployment target")
+if(APPLE AND NOT CMAKE_OSX_DEPLOYMENT_TARGET)
+    # project() seeds an empty CMAKE_OSX_DEPLOYMENT_TARGET cache entry, so a plain
+    # CACHE set is a no-op and FORCE is required. SFML needs a concrete floor
+    # (>= 13.0 on macOS, >= 16.0 on iOS) and rejects an empty value.
+    if(CMAKE_SYSTEM_NAME STREQUAL "iOS")
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "16.0" CACHE STRING "Minimum iOS deployment target" FORCE)
+    else()
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "13.0" CACHE STRING "Minimum macOS deployment target" FORCE)
+    endif()
 endif()
 
 if(NOT TARGET sfml-system)
@@ -105,7 +113,7 @@ if(NOT TARGET ${LUASF_LUA_TARGET})
         )
     elseif(CMAKE_SYSTEM_NAME STREQUAL "iOS")
         target_compile_definitions(${LUASF_LUA_TARGET} PRIVATE LUA_USE_IOS)
-    elseif(CMAKE_SYSTEM_NAME STREQUAL "OHOS")
+    elseif(CMAKE_SYSTEM_NAME STREQUAL "OHOS" OR CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
         target_compile_definitions(${LUASF_LUA_TARGET} PRIVATE LUA_USE_POSIX)
         target_link_libraries(${LUASF_LUA_TARGET} PRIVATE m)
     elseif(APPLE)
@@ -182,6 +190,7 @@ set(LUASF_BINDING_SOURCES
     "src/Graphics/bind_BlendMode.cpp"
     "src/Graphics/bind_Color.cpp"
     "src/Graphics/bind_CoordinateType.cpp"
+    "src/Graphics/bind_GraphicsBackend.cpp"
     "src/Graphics/bind_Image.cpp"
     "src/Graphics/bind_PrimitiveType.cpp"
     "src/Graphics/bind_Rect.cpp"
@@ -302,6 +311,7 @@ set(LUASF_BINDING_HEADERS
     "include/Graphics/bind_BlendMode.hpp"
     "include/Graphics/bind_Color.hpp"
     "include/Graphics/bind_CoordinateType.hpp"
+    "include/Graphics/bind_GraphicsBackend.hpp"
     "include/Graphics/bind_Image.hpp"
     "include/Graphics/bind_PrimitiveType.hpp"
     "include/Graphics/bind_Rect.hpp"

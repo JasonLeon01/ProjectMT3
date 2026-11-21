@@ -163,7 +163,6 @@ bool Font::openFromFile(const std::filesystem::path& filename)
 
     // Create the input stream and open the file
     const auto stream = std::make_shared<FileInputStream>();
-    const auto type   = "file"sv;
 
     if (!stream->open(filename))
     {
@@ -173,7 +172,7 @@ bool Font::openFromFile(const std::filesystem::path& filename)
     }
 
     // Open the font, and if succesful save the stream to keep it alive
-    if (openFromStreamImpl(*stream, type))
+    if (openFromStreamImpl(*stream, "file"sv))
     {
         m_stream = stream;
         return true;
@@ -625,8 +624,8 @@ Glyph Font::loadGlyph(std::uint32_t id, unsigned int characterSize, bool bold, f
         // Resize the pixel buffer to the new size and fill it with transparent white pixels
         m_pixelBuffer.resize(std::size_t{size.x} * std::size_t{size.y} * 4);
 
-        std::uint8_t* current = m_pixelBuffer.data();
-        std::uint8_t* end     = current + size.x * size.y * 4;
+        std::uint8_t* current = m_pixelBuffer.data(); // NOLINT(misc-const-correctness): writes through the incremented pointer
+        const std::uint8_t* end = current + size.x * size.y * 4;
 
         while (current != end)
         {

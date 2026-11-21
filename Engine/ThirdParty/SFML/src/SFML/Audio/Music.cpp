@@ -254,7 +254,7 @@ void Music::setLoopPoints(TimeSpan timePoints)
 ////////////////////////////////////////////////////////////
 bool Music::onGetData(SoundStream::Chunk& data)
 {
-    const std::lock_guard lock(m_impl->mutex);
+    const std::scoped_lock lock(m_impl->mutex);
 
     std::size_t         toFill        = m_impl->samples.size();
     std::uint64_t       currentOffset = m_impl->file.getSampleOffset();
@@ -280,7 +280,7 @@ bool Music::onGetData(SoundStream::Chunk& data)
 ////////////////////////////////////////////////////////////
 void Music::onSeek(Time timeOffset)
 {
-    const std::lock_guard lock(m_impl->mutex);
+    const std::scoped_lock lock(m_impl->mutex);
     m_impl->file.seek(timeOffset);
 }
 
@@ -289,8 +289,8 @@ void Music::onSeek(Time timeOffset)
 std::optional<std::uint64_t> Music::onLoop()
 {
     // Called by underlying SoundStream so we can determine where to loop.
-    const std::lock_guard lock(m_impl->mutex);
-    const std::uint64_t   currentOffset = m_impl->file.getSampleOffset();
+    const std::scoped_lock lock(m_impl->mutex);
+    const std::uint64_t    currentOffset = m_impl->file.getSampleOffset();
 
     if (isLooping() && (m_impl->loopSpan.length != 0) &&
         (currentOffset == m_impl->loopSpan.offset + m_impl->loopSpan.length))

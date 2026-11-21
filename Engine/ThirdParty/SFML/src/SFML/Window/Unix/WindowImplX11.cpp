@@ -66,12 +66,14 @@
 #include <cassert>
 #include <cstring>
 
+#ifdef SFML_RENDER_GL
 #ifdef SFML_OPENGL_ES
 #include <SFML/Window/EglContext.hpp>
 using ContextType = sf::priv::EglContext;
 #else
 #include <SFML/Window/Unix/GlxContext.hpp>
 using ContextType = sf::priv::GlxContext;
+#endif
 #endif
 
 ////////////////////////////////////////////////////////////
@@ -573,20 +575,22 @@ WindowImplX11::WindowImplX11(VideoMode mode, const String& title, std::uint32_t 
     Visual* visual = nullptr;
     int     depth  = 0;
 
-    // Check if the user chose to not create an OpenGL context (settings.attributeFlags will be 0xFFFFFFFF)
-    if (settings.attributeFlags == 0xFFFFFFFF)
+#ifdef SFML_RENDER_GL
+    if (std::holds_alternative<OpenGLSettings>(settings.backend) ||
+        std::holds_alternative<OpenGLESSettings>(settings.backend))
     {
-        // Choose default visual since the user is going to use their own rendering API
+        const XVisualInfo visualInfo = ContextType::selectBestVisual(m_display.get(), mode.bitsPerPixel, settings);
+        visual                       = visualInfo.visual;
+        depth                        = visualInfo.depth;
+    }
+#else
+    (void)settings;
+#endif
+
+    if (!visual)
+    {
         visual = DefaultVisual(m_display.get(), m_screen);
         depth  = DefaultDepth(m_display.get(), m_screen);
-    }
-    else
-    {
-        // Choose the visual according to the context settings
-        const XVisualInfo visualInfo = ContextType::selectBestVisual(m_display.get(), mode.bitsPerPixel, settings);
-
-        visual = visualInfo.visual;
-        depth  = visualInfo.depth;
     }
 
     // Define the window attributes

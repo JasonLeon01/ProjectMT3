@@ -128,14 +128,14 @@
           "offsets": {
             "left": -40,
             "top": -8,
-            "right": 208,
-            "bottom": 176
+            "right": 0,
+            "bottom": 0
           },
           "alignment": [
             1,
             0
           ],
-          "autoSize": false,
+          "autoSize": true,
           "zOrder": 1
         },
         "editor": {},

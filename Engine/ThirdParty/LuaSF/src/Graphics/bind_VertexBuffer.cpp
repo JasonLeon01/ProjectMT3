@@ -23,7 +23,7 @@ namespace { constexpr std::array<std::string_view, 23> docs = {
     "\\brief Update a part of the buffer from an array of vertices\n\n`offset` is specified as the number of vertices to skip\nfrom the beginning of the buffer.\n\nIf `offset` is 0 and `vertexCount` is equal to the size of\nthe currently created buffer, its whole contents are replaced.\n\nIf `offset` is 0 and `vertexCount` is greater than the\nsize of the currently created buffer, a new buffer is created\ncontaining the vertex data.\n\nIf `offset` is 0 and `vertexCount` is less than the size of\nthe currently created buffer, only the corresponding region\nis updated.\n\nIf `offset` is not 0 and `offset` + `vertexCount` is greater\nthan the size of the currently created buffer, the update fails.\n\nNo additional check is performed on the size of the vertex\narray. Passing invalid arguments will lead to undefined\nbehavior.\n\n\\param vertices    Array of vertices to copy to the buffer\n\\param vertexCount Number of vertices to copy\n\\param offset      Offset in the buffer to copy to\n\n\\return `true` if the update was successful",
     "\\brief Copy the contents of another buffer into this buffer\n\n\\param vertexBuffer Vertex buffer whose contents to copy into this vertex buffer\n\n\\return `true` if the copy was successful",
     "\\brief Swap the contents of this vertex buffer with those of another\n\n\\param right Instance to swap with",
-    "\\brief Get the underlying OpenGL handle of the vertex buffer.\n\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return OpenGL handle of the vertex buffer or 0 if not yet created",
+    "\\brief Get the underlying OpenGL handle of the vertex buffer.\n\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return OpenGL handle of the vertex buffer or 0 if not yet created\nReturns zero when the resource belongs to a non-OpenGL backend.",
     "\\brief Set the type of primitives to draw\n\nThis function defines how the vertices must be interpreted\nwhen it's time to draw them.\n\nThe default primitive type is `sf::PrimitiveType::Points`.\n\n\\param type Type of primitive",
     "\\brief Get the type of primitives drawn by the vertex buffer\n\n\\return Primitive type",
     "\\brief Set the usage specifier of this vertex buffer\n\nThis function provides a hint about how this vertex buffer is\ngoing to be used in terms of data update frequency.\n\nAfter changing the usage specifier, the vertex buffer has\nto be updated with new data for the usage specifier to\ntake effect.\n\nThe default usage type is `sf::VertexBuffer::Usage::Stream`.\n\n\\param usage Usage specifier",
@@ -39,6 +39,8 @@ namespace { constexpr std::array<std::string_view, 23> docs = {
 
 void bind_VertexBuffer(lua_glue::StateView lua) {
     lua_glue::Table sf = lua_sf::sf_table(lua);
+    // Skipped namespace rhi by generator policy.
+    // Skipped namespace priv by generator policy.
     auto type_sf__VertexBuffer = lua_glue::BindClass<sf::VertexBuffer>(sf, "VertexBuffer");
     lua_glue::BindBase<sf::VertexBuffer, sf::Drawable>(type_sf__VertexBuffer);
     lua_glue::Table table_sf__VertexBuffer = sf["VertexBuffer"].get<lua_glue::Table>();

@@ -30,7 +30,12 @@
 
 #include <SFML/System/Utf.hpp>
 
+#ifdef SFML_RENDER_GL
+#include <SFML/Window/iOS/EaglContext.hpp>
+
 #include <QuartzCore/CAEAGLLayer.h>
+#endif
+#include <QuartzCore/CAMetalLayer.h>
 
 #include <cstring>
 
@@ -40,6 +45,9 @@
 
 // NOLINTNEXTLINE(readability-identifier-naming)
 @property (nonatomic) NSMutableArray* touches;
+
+// NOLINTNEXTLINE(readability-identifier-naming)
+@property (nonatomic, strong) CAMetalLayer* metalSublayer;
 
 @end
 
@@ -168,17 +176,47 @@
 ////////////////////////////////////////////////////////////
 - (void)layoutSubviews
 {
+    [super layoutSubviews];
+
+    if (self.metalSublayer)
+    {
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.metalSublayer.frame         = self.layer.bounds;
+        self.metalSublayer.contentsScale = self.contentScaleFactor;
+        [CATransaction commit];
+    }
+
+#ifdef SFML_RENDER_GL
     // update the attached context's buffers
     if (self.context)
         self.context->recreateRenderBuffers(self);
+#endif
 }
 
 
+////////////////////////////////////////////////////////////
+- (CAMetalLayer*)metalLayer
+{
+    if (!self.metalSublayer)
+    {
+        self.metalSublayer               = [CAMetalLayer layer];
+        self.metalSublayer.frame         = self.layer.bounds;
+        self.metalSublayer.contentsScale = self.contentScaleFactor;
+        self.metalSublayer.opaque        = YES;
+        [self.layer addSublayer:self.metalSublayer];
+    }
+    return self.metalSublayer;
+}
+
+
+#ifdef SFML_RENDER_GL
 ////////////////////////////////////////////////////////////
 + (Class)layerClass
 {
     return [CAEAGLLayer class];
 }
+#endif
 
 ////////////////////////////////////////////////////////////
 - (id)initWithFrame:(CGRect)frame andContentScaleFactor:(CGFloat)factor
@@ -192,6 +230,7 @@
         self.context = nullptr;
         self.touches = [NSMutableArray array];
 
+#ifdef SFML_RENDER_GL
         // Configure the EAGL layer
         auto* eaglLayer              = static_cast<CAEAGLLayer*>(self.layer);
         eaglLayer.opaque             = YES;
@@ -201,6 +240,9 @@
                                          kEAGLColorFormatRGBA8,
                                          kEAGLDrawablePropertyColorFormat,
                                          nil];
+#else
+        self.layer.opaque = YES;
+#endif
 
         // Enable user interactions on the view (multi-touch events)
         self.userInteractionEnabled = true;

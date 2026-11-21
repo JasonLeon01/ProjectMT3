@@ -36,7 +36,6 @@
 #include <SFML/Window/Sensor.hpp>
 #include <SFML/Window/SensorImpl.hpp>
 #include <SFML/Window/VideoMode.hpp>
-#include <SFML/Window/Vulkan.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include <SFML/Window/WindowHandle.hpp>
 
@@ -152,6 +151,19 @@ public:
     ///
     ////////////////////////////////////////////////////////////
     [[nodiscard]] virtual WindowHandle getNativeHandle() const = 0;
+
+#if defined(SFML_SYSTEM_MACOS) || defined(SFML_SYSTEM_IOS)
+    ////////////////////////////////////////////////////////////
+    /// \brief Get the CAMetalLayer covering the rendering area
+    ///
+    /// The layer is created on first use; OpenGL contexts must not
+    /// be attached to the same window afterwards.
+    ///
+    /// \return Pointer to the CAMetalLayer, disguised as `void*`
+    ///
+    ////////////////////////////////////////////////////////////
+    [[nodiscard]] virtual void* getMetalLayer() const = 0;
+#endif
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the position of the window
@@ -293,17 +305,6 @@ public:
     ////////////////////////////////////////////////////////////
     [[nodiscard]] virtual bool hasFocus() const = 0;
 
-    ////////////////////////////////////////////////////////////
-    /// \brief Create a Vulkan rendering surface
-    ///
-    /// \param instance  Vulkan instance
-    /// \param surface   Created surface
-    /// \param allocator Allocator to use
-    ///
-    /// \return `true` if surface creation was successful, `false` otherwise
-    ///
-    ////////////////////////////////////////////////////////////
-    bool createVulkanSurface(const VkInstance& instance, VkSurfaceKHR& surface, const VkAllocationCallbacks* allocator) const;
 
 protected:
     ////////////////////////////////////////////////////////////

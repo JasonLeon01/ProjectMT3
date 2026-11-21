@@ -102,18 +102,12 @@ void ensureExtensionsInit(HDC deviceContext)
 namespace sf::priv
 {
 ////////////////////////////////////////////////////////////
-WglContext::WglContext(WglContext* shared) : WglContext(shared, ContextSettings{}, {1u, 1u})
-{
-}
-
-
-////////////////////////////////////////////////////////////
 WglContext::WglContext(WglContext* shared, const ContextSettings& settings, const WindowImpl& owner, unsigned int bitsPerPixel)
 {
     WglContextImpl::ensureInit();
 
     // Save the creation settings
-    m_settings = settings;
+    m_settings = GlSettings(settings);
 
     // Create the rendering surface from the owner window
     createSurface(owner.getNativeHandle(), bitsPerPixel);
@@ -129,7 +123,7 @@ WglContext::WglContext(WglContext* shared, const ContextSettings& settings, Vect
     WglContextImpl::ensureInit();
 
     // Save the creation settings
-    m_settings = settings;
+    m_settings = GlSettings(settings);
 
     // Create the rendering surface (window or pbuffer if supported)
     createSurface(shared, size, VideoMode::getDesktopMode().bitsPerPixel);
@@ -699,121 +693,91 @@ void WglContext::createContext(WglContext* shared)
         return;
 
     // Get a working copy of the context settings
-    const ContextSettings settings = m_settings;
+    const GlSettings settings = m_settings;
 
     // Get the context to share display lists with
     HGLRC sharedContext = shared ? shared->m_context : nullptr;
 
-    // Create the OpenGL context -- first try using wglCreateContextAttribsARB
-    while (!m_context && (m_settings.majorVersion >= 2))
+    // WGL extension entry points require a current context, even when
+    // the first context requested by the application is a Core context.
+    if (!sharedContext && !SF_GLAD_WGL_ARB_create_context)
     {
-        if (SF_GLAD_WGL_ARB_create_context)
+        if (const HGLRC bootstrap = wglCreateContext(m_deviceContext))
         {
-            std::vector<int> attributes;
-
-            attributes.push_back(WGL_CONTEXT_MAJOR_VERSION_ARB);
-            attributes.push_back(static_cast<int>(m_settings.majorVersion));
-            attributes.push_back(WGL_CONTEXT_MINOR_VERSION_ARB);
-            attributes.push_back(static_cast<int>(m_settings.minorVersion));
-
-            const bool profileVersion = (m_settings.majorVersion > 3) ||
-                                        ((m_settings.majorVersion == 3) && (m_settings.minorVersion >= 2));
-
-            // Profile masks are only valid for OpenGL 3.2 and newer
-            if (profileVersion && SF_GLAD_WGL_ARB_create_context_profile)
+            const HGLRC previous   = wglGetCurrentContext();
+            const HDC   previousDc = wglGetCurrentDC();
+            if (wglMakeCurrent(m_deviceContext, bootstrap))
             {
-                const int profile = (m_settings.attributeFlags & ContextSettings::Core)
-                                        ? WGL_CONTEXT_CORE_PROFILE_BIT_ARB
-                                        : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB;
-
-                attributes.push_back(WGL_CONTEXT_PROFILE_MASK_ARB);
-                attributes.push_back(profile);
+                auto* const previousContext    = WglContextImpl::currentContext;
+                WglContextImpl::currentContext = this;
+                WglContextImpl::ensureExtensionsInit(m_deviceContext);
+                WglContextImpl::currentContext = previousContext;
+                wglMakeCurrent(previousDc, previous);
             }
-            else if (profileVersion && (m_settings.attributeFlags & ContextSettings::Core))
-            {
-                err() << "Selecting an OpenGL profile during context creation is not supported, disabling core profile"
-                      << std::endl;
-
-                m_settings.attributeFlags &= ~static_cast<std::uint32_t>(ContextSettings::Core);
-            }
-
-            if (m_settings.attributeFlags & ContextSettings::Debug)
-            {
-                attributes.push_back(WGL_CONTEXT_FLAGS_ARB);
-                attributes.push_back(WGL_CONTEXT_DEBUG_BIT_ARB);
-            }
-
-            // Append the terminating 0
-            attributes.push_back(0);
-            attributes.push_back(0);
-
-            if (sharedContext)
-            {
-                static std::recursive_mutex mutex;
-                const std::lock_guard       lock(mutex);
-
-                if (WglContextImpl::currentContext == shared)
-                {
-                    if (wglMakeCurrent(shared->m_deviceContext, nullptr) == FALSE)
-                    {
-                        err() << "Failed to deactivate shared context before sharing: " << getErrorString(GetLastError())
-                              << std::endl;
-                        return;
-                    }
-
-                    WglContextImpl::currentContext = nullptr;
-                }
-            }
-
-            // Create the context
-            m_context = wglCreateContextAttribsARB(m_deviceContext, sharedContext, attributes.data());
+            wglDeleteContext(bootstrap);
         }
-        else
-        {
-            // If wglCreateContextAttribsARB is not supported, there is no need to keep trying
+    }
+
+    // Create the OpenGL context -- first try using wglCreateContextAttribsARB
+    for (const auto profile : {settings.profile, OpenGLProfile::Core})
+    {
+        if (!SF_GLAD_WGL_ARB_create_context)
             break;
-        }
 
-        // If we couldn't create the context, first try disabling flags,
-        // then lower the version number and try again -- stop at 2.0
-        // Invalid version numbers will be generated by this algorithm (like 3.9), but we really don't care
-        if (!m_context)
+        if (m_context || (profile == OpenGLProfile::Core && settings.profile == OpenGLProfile::Compatibility))
+            break;
+
+        const bool core    = profile == OpenGLProfile::Core;
+        const auto [major,
+                    minor] = core ? std::max(std::pair{settings.majorVersion, settings.minorVersion}, std::pair{3u, 2u})
+                                  : std::pair{settings.majorVersion, settings.minorVersion};
+        std::vector<int> attributes{WGL_CONTEXT_MAJOR_VERSION_ARB,
+                                    static_cast<int>(major),
+                                    WGL_CONTEXT_MINOR_VERSION_ARB,
+                                    static_cast<int>(minor)};
+        if (major > 3 || (major == 3 && minor >= 2))
         {
-            if (m_settings.attributeFlags != ContextSettings::Default)
-            {
-                m_settings.attributeFlags = ContextSettings::Default;
-            }
-            else if ((m_settings.majorVersion == 2) && (m_settings.minorVersion == 0))
-            {
+            if (!SF_GLAD_WGL_ARB_create_context_profile)
                 break;
-            }
-            else if (m_settings.minorVersion > 0)
-            {
-                // If the minor version is not 0, we decrease it and try again
-                --m_settings.minorVersion;
+            attributes.push_back(WGL_CONTEXT_PROFILE_MASK_ARB);
+            attributes.push_back(core ? WGL_CONTEXT_CORE_PROFILE_BIT_ARB : WGL_CONTEXT_COMPATIBILITY_PROFILE_BIT_ARB);
+        }
+        if (settings.attributeFlags & GlSettings::Debug)
+        {
+            attributes.push_back(WGL_CONTEXT_FLAGS_ARB);
+            attributes.push_back(WGL_CONTEXT_DEBUG_BIT_ARB);
+        }
+        attributes.push_back(0);
 
-                m_settings.attributeFlags = settings.attributeFlags;
-            }
-            else
-            {
-                // If the minor version is 0, we decrease the major version
-                --m_settings.majorVersion;
-                m_settings.minorVersion = 9;
+        if (sharedContext)
+        {
+            static std::recursive_mutex mutex;
+            const std::lock_guard       lock(mutex);
 
-                m_settings.attributeFlags = settings.attributeFlags;
+            if (WglContextImpl::currentContext == shared)
+            {
+                if (wglMakeCurrent(shared->m_deviceContext, nullptr) == FALSE)
+                {
+                    err() << "Failed to deactivate shared context before sharing: " << getErrorString(GetLastError())
+                          << std::endl;
+                    return;
+                }
+
+                WglContextImpl::currentContext = nullptr;
             }
         }
+
+        // Create the context
+        m_context = wglCreateContextAttribsARB(m_deviceContext, sharedContext, attributes.data());
+
+        if (settings.profile != OpenGLProfile::Automatic)
+            break;
     }
 
     // If wglCreateContextAttribsARB failed, use wglCreateContext
     if (!m_context)
     {
-        // A legacy WGL context may expose a newer compatibility version.
-        // GlContext::initialize validates that the actual version is at least 2.0.
-        m_settings.majorVersion   = 2;
-        m_settings.minorVersion   = 0;
-        m_settings.attributeFlags = ContextSettings::Default;
-
+        // The actual version and profile are checked after activation.
         m_context = wglCreateContext(m_deviceContext);
         if (!m_context)
         {
@@ -841,7 +805,11 @@ void WglContext::createContext(WglContext* shared)
             }
 
             if (wglShareLists(sharedContext, m_context) == FALSE)
+            {
                 err() << "Failed to share the OpenGL context: " << getErrorString(GetLastError()) << std::endl;
+                wglDeleteContext(m_context);
+                m_context = nullptr;
+            }
         }
     }
 

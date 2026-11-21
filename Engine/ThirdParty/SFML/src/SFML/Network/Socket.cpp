@@ -25,8 +25,8 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
+#include <SFML/Network/Backend.hpp>
 #include <SFML/Network/Socket.hpp>
-#include <SFML/Network/SocketImpl.hpp>
 
 #include <SFML/System/Err.hpp>
 
@@ -37,7 +37,7 @@
 namespace sf
 {
 ////////////////////////////////////////////////////////////
-Socket::Socket(Type type) : m_type(type), m_socket(priv::SocketImpl::invalidSocket())
+Socket::Socket(Type type) : m_type(type), m_socket(priv::socketInvalid())
 {
 }
 
@@ -53,7 +53,7 @@ Socket::~Socket()
 ////////////////////////////////////////////////////////////
 Socket::Socket(Socket&& socket) noexcept :
     m_type(socket.m_type),
-    m_socket(std::exchange(socket.m_socket, priv::SocketImpl::invalidSocket())),
+    m_socket(std::exchange(socket.m_socket, priv::socketInvalid())),
     m_isBlocking(socket.m_isBlocking)
 {
 }
@@ -68,7 +68,7 @@ Socket& Socket::operator=(Socket&& socket) noexcept
     close();
 
     m_type       = socket.m_type;
-    m_socket     = std::exchange(socket.m_socket, priv::SocketImpl::invalidSocket());
+    m_socket     = std::exchange(socket.m_socket, priv::socketInvalid());
     m_isBlocking = socket.m_isBlocking;
     return *this;
 }
@@ -78,8 +78,8 @@ Socket& Socket::operator=(Socket&& socket) noexcept
 void Socket::setBlocking(bool blocking)
 {
     // Apply if the socket is already created
-    if (m_socket != priv::SocketImpl::invalidSocket())
-        priv::SocketImpl::setBlocking(m_socket, blocking);
+    if (m_socket != priv::socketInvalid())
+        priv::socketSetBlocking(m_socket, blocking);
 
     m_isBlocking = blocking;
 }
@@ -103,13 +103,10 @@ SocketHandle Socket::getNativeHandle() const
 void Socket::create(IpAddress::Type addressType)
 {
     // Don't create the socket if it already exists
-    if (m_socket == priv::SocketImpl::invalidSocket())
+    if (m_socket == priv::socketInvalid())
     {
-        const SocketHandle handle = socket(addressType == IpAddress::Type::IpV4 ? PF_INET : PF_INET6,
-                                           m_type == Type::Tcp ? SOCK_STREAM : SOCK_DGRAM,
-                                           0);
-
-        if (handle == priv::SocketImpl::invalidSocket())
+        const SocketHandle handle = priv::socketCreate(m_type == Type::Tcp, addressType);
+        if (handle == priv::socketInvalid())
         {
             err() << "Failed to create socket" << std::endl;
             return;
@@ -124,7 +121,7 @@ void Socket::create(IpAddress::Type addressType)
 void Socket::create(SocketHandle handle)
 {
     // Don't create the socket if it already exists
-    if (m_socket == priv::SocketImpl::invalidSocket())
+    if (m_socket == priv::socketInvalid())
     {
         // Assign the new handle
         m_socket = handle;
@@ -132,33 +129,7 @@ void Socket::create(SocketHandle handle)
         // Set the current blocking state
         setBlocking(m_isBlocking);
 
-        if (m_type == Type::Tcp)
-        {
-            // Disable the Nagle algorithm (i.e. removes buffering of TCP packets)
-            int yes = 1;
-            if (setsockopt(m_socket, IPPROTO_TCP, TCP_NODELAY, reinterpret_cast<char*>(&yes), sizeof(yes)) == -1)
-            {
-                err() << "Failed to set socket option \"TCP_NODELAY\" ; "
-                      << "all your TCP packets will be buffered" << std::endl;
-            }
-
-// On macOS, disable the SIGPIPE signal on disconnection
-#ifdef SFML_SYSTEM_MACOS
-            if (setsockopt(m_socket, SOL_SOCKET, SO_NOSIGPIPE, reinterpret_cast<char*>(&yes), sizeof(yes)) == -1)
-            {
-                err() << "Failed to set socket option \"SO_NOSIGPIPE\"" << std::endl;
-            }
-#endif
-        }
-        else
-        {
-            // Enable broadcast by default for UDP sockets
-            int yes = 1;
-            if (setsockopt(m_socket, SOL_SOCKET, SO_BROADCAST, reinterpret_cast<char*>(&yes), sizeof(yes)) == -1)
-            {
-                err() << "Failed to enable broadcast on UDP socket" << std::endl;
-            }
-        }
+        priv::socketConfigure(m_socket, m_type == Type::Tcp);
     }
 }
 
@@ -167,10 +138,10 @@ void Socket::create(SocketHandle handle)
 void Socket::close()
 {
     // Close the socket
-    if (m_socket != priv::SocketImpl::invalidSocket())
+    if (m_socket != priv::socketInvalid())
     {
-        priv::SocketImpl::close(m_socket);
-        m_socket = priv::SocketImpl::invalidSocket();
+        priv::socketClose(m_socket);
+        m_socket = priv::socketInvalid();
     }
 }
 

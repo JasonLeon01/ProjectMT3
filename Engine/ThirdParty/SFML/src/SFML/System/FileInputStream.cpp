@@ -33,13 +33,12 @@
 #include <SFML/System/Android/ResourceStream.hpp>
 #endif
 #ifdef SFML_SYSTEM_HARMONY
-#include <SFML/System/Err.hpp>
-#include <SFML/System/Harmony/ResourceManagerImpl.hpp>
 #include <SFML/System/Harmony/ResourceStream.hpp>
+
+#include <string_view>
 #endif
 #include <memory>
-#include <ostream>
-#include <string_view>
+#include <utility>
 
 #include <cstddef>
 
@@ -81,83 +80,54 @@ bool FileInputStream::open(const std::filesystem::path& filename)
 {
 #ifdef SFML_SYSTEM_ANDROID
     m_androidFile.reset();
-    m_file.reset();
 #endif
 
 #ifdef SFML_SYSTEM_HARMONY
-    static constexpr std::string_view rawFilePrefix{"rawfile:/"};
-
     m_harmonyFile.reset();
     m_file.reset();
-
-    const auto filenameString = filename.generic_string();
-    if (filenameString.compare(0, rawFilePrefix.size(), rawFilePrefix) == 0)
+    constexpr std::string_view prefix = "rawfile:/";
+    const auto                 path   = filename.generic_string();
+    const bool                 raw    = path.compare(0, prefix.size(), prefix) == 0;
+    if (!raw)
+        m_file.reset(openFile(filename, "rb"));
+    if (!m_file && (raw || filename.is_relative()))
     {
-        if (!priv::Harmony::acquireResourceManagerLease())
+        auto stream = std::make_unique<priv::HarmonyResourceStream>();
+        if (stream->open(raw ? std::filesystem::path(path.substr(prefix.size())) : filename))
         {
-            err() << "Failed to open OpenHarmony rawfile: no NativeResourceManager has been registered" << std::endl;
-            return false;
+            m_harmonyFile = std::move(stream);
+            return true;
         }
-
-        m_harmonyFile = std::make_unique<priv::HarmonyResourceStream>();
-        if (!m_harmonyFile->open(filenameString.substr(rawFilePrefix.size())))
-        {
-            m_harmonyFile.reset();
-            err() << "Failed to open OpenHarmony rawfile: " << filenameString << std::endl;
-            return false;
-        }
-
-        return true;
     }
-#endif
-
-    m_file.reset(openFile(filename, "rb"));
-#if !defined(SFML_SYSTEM_ANDROID) && !defined(SFML_SYSTEM_HARMONY)
-    return m_file != nullptr;
 #else
-    if (m_file)
-        return true;
+    m_file.reset(openFile(filename, "rb"));
+#endif
 
 #ifdef SFML_SYSTEM_ANDROID
-    if (filename.is_relative() && priv::getActivityStatesPtr() != nullptr)
+    if (!m_file && filename.is_relative() && priv::getActivityStatesPtr() != nullptr)
     {
-        m_androidFile = std::make_unique<priv::ResourceStream>();
-        if (m_androidFile->open(filename) && m_androidFile->tell().has_value())
+        auto asset = std::make_unique<priv::ResourceStream>();
+        if (asset->open(filename))
+        {
+            m_androidFile = std::move(asset);
             return true;
-
-        m_androidFile.reset();
+        }
     }
 #endif
 
-#ifdef SFML_SYSTEM_HARMONY
-    // Packaged resources are only a fallback for relative filesystem paths.
-    // Absolute paths always refer to the application sandbox/filesystem.
-    if (filename.is_relative() && priv::Harmony::acquireResourceManagerLease())
-    {
-        m_harmonyFile = std::make_unique<priv::HarmonyResourceStream>();
-        if (m_harmonyFile->open(filename))
-            return true;
-
-        m_harmonyFile.reset();
-    }
-#endif
-
-    return false;
-#endif
+    return m_file != nullptr;
 }
 
 
 ////////////////////////////////////////////////////////////
 std::optional<std::size_t> FileInputStream::read(void* data, std::size_t size)
 {
-#ifdef SFML_SYSTEM_HARMONY
-    if (m_harmonyFile)
-        return m_harmonyFile->read(data, size);
-#endif
-
 #ifdef SFML_SYSTEM_ANDROID
     if (m_androidFile)
         return m_androidFile->read(data, size);
+#elif defined(SFML_SYSTEM_HARMONY)
+    if (m_harmonyFile)
+        return m_harmonyFile->read(data, size);
 #endif
     if (!m_file)
         return std::nullopt;
@@ -168,14 +138,12 @@ std::optional<std::size_t> FileInputStream::read(void* data, std::size_t size)
 ////////////////////////////////////////////////////////////
 std::optional<std::size_t> FileInputStream::seek(std::size_t position)
 {
-#ifdef SFML_SYSTEM_HARMONY
-    if (m_harmonyFile)
-        return m_harmonyFile->seek(position);
-#endif
-
 #ifdef SFML_SYSTEM_ANDROID
     if (m_androidFile)
         return m_androidFile->seek(position);
+#elif defined(SFML_SYSTEM_HARMONY)
+    if (m_harmonyFile)
+        return m_harmonyFile->seek(position);
 #endif
     if (!m_file)
         return std::nullopt;
@@ -189,14 +157,12 @@ std::optional<std::size_t> FileInputStream::seek(std::size_t position)
 ////////////////////////////////////////////////////////////
 std::optional<std::size_t> FileInputStream::tell()
 {
-#ifdef SFML_SYSTEM_HARMONY
-    if (m_harmonyFile)
-        return m_harmonyFile->tell();
-#endif
-
 #ifdef SFML_SYSTEM_ANDROID
     if (m_androidFile)
         return m_androidFile->tell();
+#elif defined(SFML_SYSTEM_HARMONY)
+    if (m_harmonyFile)
+        return m_harmonyFile->tell();
 #endif
     if (!m_file)
         return std::nullopt;
@@ -208,14 +174,12 @@ std::optional<std::size_t> FileInputStream::tell()
 ////////////////////////////////////////////////////////////
 std::optional<std::size_t> FileInputStream::getSize()
 {
-#ifdef SFML_SYSTEM_HARMONY
-    if (m_harmonyFile)
-        return m_harmonyFile->getSize();
-#endif
-
 #ifdef SFML_SYSTEM_ANDROID
     if (m_androidFile)
         return m_androidFile->getSize();
+#elif defined(SFML_SYSTEM_HARMONY)
+    if (m_harmonyFile)
+        return m_harmonyFile->getSize();
 #endif
     if (!m_file)
         return std::nullopt;

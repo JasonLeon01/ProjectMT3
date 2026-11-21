@@ -1,9 +1,13 @@
 #include <SFML/Network/SocketSelector.hpp>
 
 // Other 1st party headers
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
 #include <SFML/Network/TcpListener.hpp>
+#endif
 #include <SFML/Network/TcpSocket.hpp>
 #include <SFML/Network/UdpSocket.hpp>
+
+#include <SFML/System/Clock.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -33,8 +37,20 @@ TEST_CASE("[Network] sf::SocketSelector")
         const sf::SocketSelector socketSelector;
         CHECK(!socketSelector.isReady(socket));
     }
+
+#if defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_ANDROID) || defined(SFML_SYSTEM_HARMONY) || \
+    defined(SFML_SYSTEM_WINDOWS)
+    SECTION("An empty selector honors a finite timeout")
+    {
+        sf::SocketSelector selector;
+        const sf::Clock    clock;
+        CHECK_FALSE(selector.wait(sf::milliseconds(40)));
+        CHECK(clock.getElapsedTime() >= sf::milliseconds(30));
+    }
+#endif
 }
 
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
 TEST_CASE("[Network] sf::SocketSelector Many Connections", runIpV4LoopbackTests())
 {
     std::cout << "Running sf::SocketSelector Many Connections tests with SFML_NETWORK_TESTS_MAX_FDS set to "
@@ -199,3 +215,4 @@ TEST_CASE("[Network] sf::SocketSelector Many Connections", runIpV4LoopbackTests(
     for (const auto& state : incomingConnections)
         CHECK(std::memcmp(state.data.get(), randomData.get(), randomDataSize) == 0);
 }
+#endif

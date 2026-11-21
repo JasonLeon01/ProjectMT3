@@ -17,6 +17,7 @@ namespace
 {
 constexpr std::string_view commonName = "SFML TLS Example"; // Part of certificate
 
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
 // Generated with: openssl ecparam -out key.pem -name secp384r1 -genkey
 constexpr std::string_view privateKey = R"(-----BEGIN EC PARAMETERS-----
 BgUrgQQAIg==
@@ -27,6 +28,7 @@ MIGkAgEBBDD4ybj384qP07KjAqKoU4XwVyRH/Sy2kMYrtCr0SU/R0sCSxSPNwAXW
 lUKEP2OPwacLVul1OlW9QYJh4VFvtGvKyNEd1YCpBFUyASfeev8ZNBaLpMb20e3S
 ztTSrGCF1rJynnEoGJrIh3trvRAKD0E=
 -----END EC PRIVATE KEY-----)";
+#endif
 
 // Generated with: openssl req -new -key key.pem -x509 -nodes -days 36500 -sha384 -out cert.pem
 // Country Name (2 letter code) [AU]:.
@@ -58,6 +60,11 @@ RZlDlROT9eBnJ76WeMDiPMz+7E/oUdvGCAhuZb0=
 ////////////////////////////////////////////////////////////
 void runTcpServer(unsigned short port, bool tls)
 {
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+    (void)port;
+    (void)tls;
+    std::cout << "sf::TcpListener is not part of the web build, so this program cannot accept TCP clients." << std::endl;
+#else
     // Create a server socket to accept new connections
     sf::TcpListener listener;
 
@@ -98,6 +105,7 @@ void runTcpServer(unsigned short port, bool tls)
     if (socket.receive(in.data(), in.size(), received) != sf::Socket::Status::Done)
         return;
     std::cout << "Answer received from the client: " << std::quoted(in.data()) << std::endl;
+#endif
 }
 
 

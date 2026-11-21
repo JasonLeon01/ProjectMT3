@@ -48,8 +48,6 @@ class WglContext : public GlContext
 {
 public:
     ////////////////////////////////////////////////////////////
-    WglContext(WglContext* shared);
-
     ////////////////////////////////////////////////////////////
     WglContext(WglContext* shared, const ContextSettings& settings, const WindowImpl& owner, unsigned int bitsPerPixel);
 

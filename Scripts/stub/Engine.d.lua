@@ -87,6 +87,7 @@
 ---@field MapFogSettings Engine.MapFogSettings
 ---@field MaterialCacheRequest Engine.MaterialCacheRequest
 ---@field RectBase Engine.RectBase
+---@field ShaderCacheRequest Engine.ShaderCacheRequest
 ---@field TileLayerGraphics Engine.TileLayerGraphics
 ---@field InjectedInputEvent Engine.InjectedInputEvent
 ---@field InputActionKey Engine.InputActionKey
@@ -226,6 +227,7 @@
 ---@field warnOnce fun(key: string, message: string): nil
 ---@field getUserDataPath fun(appNameOverride?: string|nil): string
 ---@field prepareMaterialCache fun(): Engine.MaterialCacheRequest
+---@field prepareShaderCache fun(additionalPrograms?: string[][]): Engine.ShaderCacheRequest
 ---@field getSavePath fun(appNameOverride?: string|nil): string
 ---@field getMainConfigPath fun(appNameOverride?: string|nil): string
 ---@field getAnimationSourceRoot fun(): string
@@ -464,6 +466,11 @@ function Engine.getUserDataPath(appNameOverride) end
 --- Prepare generated material programs in the current application's user data.
 ---@return Engine.MaterialCacheRequest
 function Engine.prepareMaterialCache() end
+
+--- Translate and prepare all game shader programs after material generation.
+---@param additionalPrograms? string[][]
+---@return Engine.ShaderCacheRequest
+function Engine.prepareShaderCache(additionalPrograms) end
 
 ---@param appNameOverride? string|nil
 ---@return string
@@ -1959,6 +1966,22 @@ function RectBase.init(self) end
 function RectBase:render(dst, edge, edgeSprite, backSprite, cachedCorners, cachedEdges, renderStates) end
 Engine.RectBase = RectBase
 
+---@class Engine.ShaderCacheRequest
+local ShaderCacheRequest = {}
+--- Return pending, ready, failed or cancelled without blocking.
+---@return string
+function ShaderCacheRequest:getStatus() end
+--- Return shader preparation progress between zero and one.
+---@return number
+function ShaderCacheRequest:getProgress() end
+--- Confirm completion or propagate the preparation error.
+---@return nil
+function ShaderCacheRequest:getResult() end
+--- Cancel preparation and wait for the worker to finish.
+---@return nil
+function ShaderCacheRequest:cancel() end
+Engine.ShaderCacheRequest = ShaderCacheRequest
+
 --- @brief GPU-accelerated tile layer renderer using vertex arrays
 ---
 --- Renders both static tile-id grids and RPG Maker XP-style autotile
@@ -2530,26 +2553,22 @@ local ContextSettings = {}
 ---@param depthBits? integer
 ---@param stencilBits? integer
 ---@param antiAliasingLevel? integer
----@param majorVersion? integer
----@param minorVersion? integer
----@param attributeFlags? integer
 ---@param sRgbCapable? boolean
+---@param backend? sf.ContextSettings.BackendSettings
 ---@return Engine.ContextSettings
-function ContextSettings.new(depthBits, stencilBits, antiAliasingLevel, majorVersion, minorVersion, attributeFlags, sRgbCapable) end
----@param values table<string, integer|boolean>
+function ContextSettings.new(depthBits, stencilBits, antiAliasingLevel, sRgbCapable, backend) end
+---@param values table<string, integer|boolean|nil|sf.OpenGLSettings|sf.OpenGLESSettings|sf.VulkanSettings|sf.DirectXSettings|sf.MetalSettings>
 ---@return Engine.ContextSettings
 function ContextSettings.new(values) end
 ---@param self Engine.ContextSettings
 ---@param depthBits? integer
 ---@param stencilBits? integer
 ---@param antiAliasingLevel? integer
----@param majorVersion? integer
----@param minorVersion? integer
----@param attributeFlags? integer
 ---@param sRgbCapable? boolean
-function ContextSettings.init(self, depthBits, stencilBits, antiAliasingLevel, majorVersion, minorVersion, attributeFlags, sRgbCapable) end
+---@param backend? sf.ContextSettings.BackendSettings
+function ContextSettings.init(self, depthBits, stencilBits, antiAliasingLevel, sRgbCapable, backend) end
 ---@param self Engine.ContextSettings
----@param values table<string, integer|boolean>
+---@param values table<string, integer|boolean|nil|sf.OpenGLSettings|sf.OpenGLESSettings|sf.VulkanSettings|sf.DirectXSettings|sf.MetalSettings>
 function ContextSettings.init(self, values) end
 Engine.ContextSettings = ContextSettings
 

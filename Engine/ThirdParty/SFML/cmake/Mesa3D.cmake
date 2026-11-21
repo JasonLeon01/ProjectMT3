@@ -32,14 +32,14 @@ set(MESA3D_DEVEL_PATH "${PROJECT_BINARY_DIR}/${MESA3D_DEVEL_ARCHIVE_DIRECTORY}")
 if(SFML_OS_WINDOWS AND SFML_USE_MESA3D)
     # we are installing the files
 
-    if(SFML_OPENGL_ES)
+    if(SFML_BUILD_OPENGL_BACKEND AND SFML_OPENGL_ES)
         set(MESA3D_DEVEL_INCLUDE_PATH "${MESA3D_DEVEL_PATH}/include")
         set(MESA3D_DEVEL_LIBRARY_PATH "${MESA3D_DEVEL_PATH}/lib/${MESA3D_ARCH}")
 
         # OpenGL ES builds need the matching Mesa development files in addition
         # to the runtime files copied below.
         if(NOT EXISTS "${MESA3D_DEVEL_INCLUDE_PATH}/EGL/egl.h" OR
-           NOT EXISTS "${MESA3D_DEVEL_INCLUDE_PATH}/GLES2/gl2.h" OR
+           NOT EXISTS "${MESA3D_DEVEL_INCLUDE_PATH}/GLES3/gl3.h" OR
            NOT EXISTS "${MESA3D_DEVEL_LIBRARY_PATH}/libEGL.lib" OR
            NOT EXISTS "${MESA3D_DEVEL_LIBRARY_PATH}/libGLESv2.lib")
             message(STATUS "Downloading ${MESA3D_DEVEL_ARCHIVE}")
@@ -72,6 +72,7 @@ if(SFML_OS_WINDOWS AND SFML_USE_MESA3D)
 
         install(DIRECTORY "${MESA3D_DEVEL_INCLUDE_PATH}/EGL"
                           "${MESA3D_DEVEL_INCLUDE_PATH}/GLES2"
+                          "${MESA3D_DEVEL_INCLUDE_PATH}/GLES3"
                           "${MESA3D_DEVEL_INCLUDE_PATH}/KHR"
                 DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
                 COMPONENT devel)

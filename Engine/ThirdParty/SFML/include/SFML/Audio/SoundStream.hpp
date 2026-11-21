@@ -267,6 +267,8 @@ protected:
     ///
     /// This function must be overridden by derived classes to
     /// allow random seeking into the stream source.
+    /// When the playback offset is applied, this function is called
+    /// on the audio thread.
     ///
     /// \param timeOffset New playing position, relative to the beginning of the stream
     ///

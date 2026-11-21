@@ -37,6 +37,7 @@
 #define SF_GLAD_GL_IMPLEMENTATION_INCLUDED
 #define SF_GLAD_GL_IMPLEMENTATION
 #include <glad/gl.h>
+#undef SF_GLAD_GL_IMPLEMENTATION
 #endif
 
 #include <mutex>
@@ -85,8 +86,8 @@ namespace sf::priv
 ////////////////////////////////////////////////////////////
 void ensureExtensionsInit()
 {
-    static std::mutex     mutex;
-    const std::lock_guard lock(mutex);
+    static std::mutex      mutex;
+    const std::scoped_lock lock(mutex);
 
     if (Context::getActiveContextId() == 0)
         throw Exception("Cannot initialize OpenGL entry points without an active context");
@@ -110,8 +111,13 @@ void ensureExtensionsInit()
         loadedVersion = gladLoadGL(Context::getFunction);
 #endif
 
-        if (!loadedVersion || (GLAD_VERSION_MAJOR(loadedVersion) < 2))
-            throw Exception("Failed to load the OpenGL 2.0 shader rendering entry points required by sfml-graphics");
+#ifdef SFML_OPENGL_ES
+        constexpr int minimumMajor = 3;
+#else
+        constexpr int minimumMajor = 2;
+#endif
+        if (!loadedVersion || GLAD_VERSION_MAJOR(loadedVersion) < minimumMajor)
+            throw Exception("Failed to load the OpenGL entry points required by sfml-graphics");
 
         loadedContextVersion = version;
 

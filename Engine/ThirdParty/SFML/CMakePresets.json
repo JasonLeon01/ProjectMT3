@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "configurePresets":[
+  "configurePresets": [
     {
       "name": "dev",
       "binaryDir": "build",
@@ -11,6 +11,21 @@
         "SFML_BUILD_EXAMPLES": "ON",
         "SFML_BUILD_TEST_SUITE": "ON",
         "SFML_ENABLE_STDLIB_ASSERTIONS": "ON",
+        "SFML_WARNINGS_AS_ERRORS": "ON"
+      }
+    },
+    {
+      "name": "web",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/web",
+      "installDir": "${sourceDir}/build/web/install",
+      "toolchainFile": "$env{EMSDK}/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "BUILD_SHARED_LIBS": "OFF",
+        "SFML_USE_SYSTEM_DEPS": "OFF",
+        "SFML_BUILD_EXAMPLES": "ON",
         "SFML_WARNINGS_AS_ERRORS": "ON"
       }
     }

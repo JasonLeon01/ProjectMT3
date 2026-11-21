@@ -38,7 +38,11 @@
 // Identify the operating system
 // see https://sourceforge.net/p/predef/wiki/Home/
 ////////////////////////////////////////////////////////////
-#if defined(_WIN32)
+#if defined(__EMSCRIPTEN__)
+
+#define SFML_SYSTEM_EMSCRIPTEN
+
+#elif defined(_WIN32)
 
 // Windows
 #define SFML_SYSTEM_WINDOWS
@@ -68,18 +72,6 @@
 
 #endif
 
-#elif defined(__OHOS__)
-
-// OpenHarmony/HarmonyOS. CMake propagates the selected device form through
-// SFML's public targets; standalone header users retain the mobile default.
-#define SFML_SYSTEM_HARMONY
-
-#if defined(SFML_HARMONY_MOBILE) && defined(SFML_HARMONY_2IN1)
-#error SFML_HARMONY_MOBILE and SFML_HARMONY_2IN1 cannot be enabled together
-#elif !defined(SFML_HARMONY_MOBILE) && !defined(SFML_HARMONY_2IN1)
-#define SFML_HARMONY_MOBILE
-#endif
-
 #elif defined(__unix__)
 
 // UNIX system, see which one it is
@@ -87,6 +79,10 @@
 
 // Android
 #define SFML_SYSTEM_ANDROID
+
+#elif defined(__OHOS__)
+
+#define SFML_SYSTEM_HARMONY
 
 #elif defined(__linux__)
 

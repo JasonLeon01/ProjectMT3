@@ -33,13 +33,11 @@
 #include <SFML/System/Win32/WindowsHeader.hpp>
 #endif
 
+#include <SFML/Network/Backend.hpp>
 #include <SFML/Network/Dns.hpp>
 #include <SFML/Network/Http.hpp>
 #include <SFML/Network/IpAddress.hpp>
 #include <SFML/Network/SocketImpl.hpp>
-
-#include <SFML/System/Err.hpp>
-#include <SFML/System/Utils.hpp>
 
 #include <algorithm>
 #include <istream>
@@ -226,105 +224,7 @@ bool IpAddress::isV6() const
 ////////////////////////////////////////////////////////////
 std::optional<IpAddress> IpAddress::getLocalAddress(Type type)
 {
-    // The method here is to connect a UDP socket to a public ip,
-    // and get the local socket address with the getsockname function.
-    // UDP connection will not send anything to the network, so this function won't cause any overhead.
-
-    if (type == Type::IpV4)
-    {
-        // Create the socket
-        const SocketHandle sock = socket(PF_INET, SOCK_DGRAM, 0);
-        if (sock == priv::SocketImpl::invalidSocket())
-        {
-            err() << "Failed to retrieve local address (invalid socket)" << std::endl;
-            return std::nullopt;
-        }
-
-        // Connect the socket to a public ip (here 1.1.1.1) on any
-        // port. This will give the local address of the network interface
-        // used for default routing which is usually what we want.
-        sockaddr_in address = priv::SocketImpl::createAddress(0x01010101, 9);
-        if (connect(sock, reinterpret_cast<sockaddr*>(&address), sizeof(address)) == -1)
-        {
-            priv::SocketImpl::close(sock);
-
-            err() << "Failed to retrieve local address (socket connection failure)" << std::endl;
-            return std::nullopt;
-        }
-
-        // Get the local address of the socket connection
-        priv::SocketImpl::AddrLength size = sizeof(address);
-        if (getsockname(sock, reinterpret_cast<sockaddr*>(&address), &size) == -1)
-        {
-            priv::SocketImpl::close(sock);
-
-            err() << "Failed to retrieve local address (socket local address retrieval failure)" << std::endl;
-            return std::nullopt;
-        }
-
-        // Close the socket
-        priv::SocketImpl::close(sock);
-
-        // Finally build the IP address
-        return IpAddress(ntohl(address.sin_addr.s_addr));
-    }
-
-    // If we get to this point the user wants to get the local IPv6 address
-
-    // Create the socket
-    const SocketHandle sock = socket(PF_INET6, SOCK_DGRAM, 0);
-    if (sock == priv::SocketImpl::invalidSocket())
-    {
-        err() << "Failed to retrieve local address (invalid socket)" << std::endl;
-        return std::nullopt;
-    }
-
-    // Connect the socket to a public ip (here 2a00::1) on any
-    // port. This will give the local address of the network interface
-    // used for default routing which is usually what we want.
-    sockaddr_in6 address = priv::SocketImpl::
-        createAddress(std::array<std::uint8_t,
-                                 16>{0x2a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01},
-                      9);
-    if (connect(sock, reinterpret_cast<sockaddr*>(&address), sizeof(address)) == -1)
-    {
-        priv::SocketImpl::close(sock);
-
-        err() << "Failed to retrieve local address (socket connection failure)" << std::endl;
-        return std::nullopt;
-    }
-
-    // Get the local address of the socket connection
-    priv::SocketImpl::AddrLength size = sizeof(address);
-    if (getsockname(sock, reinterpret_cast<sockaddr*>(&address), &size) == -1)
-    {
-        priv::SocketImpl::close(sock);
-
-        err() << "Failed to retrieve local address (socket local address retrieval failure)" << std::endl;
-        return std::nullopt;
-    }
-
-    // Close the socket
-    priv::SocketImpl::close(sock);
-
-    // Finally build the IP address
-    return IpAddress(
-        {address.sin6_addr.s6_addr[0],
-         address.sin6_addr.s6_addr[1],
-         address.sin6_addr.s6_addr[2],
-         address.sin6_addr.s6_addr[3],
-         address.sin6_addr.s6_addr[4],
-         address.sin6_addr.s6_addr[5],
-         address.sin6_addr.s6_addr[6],
-         address.sin6_addr.s6_addr[7],
-         address.sin6_addr.s6_addr[8],
-         address.sin6_addr.s6_addr[9],
-         address.sin6_addr.s6_addr[10],
-         address.sin6_addr.s6_addr[11],
-         address.sin6_addr.s6_addr[12],
-         address.sin6_addr.s6_addr[13],
-         address.sin6_addr.s6_addr[14],
-         address.sin6_addr.s6_addr[15]});
+    return priv::localAddress(type);
 }
 
 

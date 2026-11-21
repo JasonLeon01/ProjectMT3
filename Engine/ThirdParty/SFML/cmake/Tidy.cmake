@@ -32,7 +32,19 @@ endif()
 execute_process(COMMAND ${CMAKE_COMMAND} -DPROJECT_BINARY_DIR=${PROJECT_BINARY_DIR} -P ${CMAKE_SOURCE_DIR}/tools/tidy/PatchTidy.cmake)
 
 # Run
-execute_process(COMMAND ${Python_EXECUTABLE} ${RUN_CLANG_TIDY} -clang-tidy-binary ${CLANG_TIDY_EXECUTABLE} -quiet -p ${PROJECT_BINARY_DIR} RESULTS_VARIABLE EXIT_CODE)
+set(TIDY_BUILD_DIR "${PROJECT_BINARY_DIR}")
+if(SFML_OS_EMSCRIPTEN)
+    execute_process(COMMAND ${Python_EXECUTABLE} ${CMAKE_SOURCE_DIR}/tools/tidy/PrepareWebTidy.py
+                    ${PROJECT_BINARY_DIR} ${SFML_CXX_COMPILER}
+                    COMMAND_ERROR_IS_FATAL ANY)
+    set(TIDY_BUILD_DIR "${PROJECT_BINARY_DIR}/tidy-web")
+endif()
+set(TIDY_CHECK_ARGUMENTS)
+if(CLANG_TIDY_CHECKS)
+    list(APPEND TIDY_CHECK_ARGUMENTS "-checks=${CLANG_TIDY_CHECKS}")
+endif()
+execute_process(COMMAND ${Python_EXECUTABLE} ${RUN_CLANG_TIDY} -clang-tidy-binary ${CLANG_TIDY_EXECUTABLE}
+                ${TIDY_CHECK_ARGUMENTS} -quiet -p ${TIDY_BUILD_DIR} RESULTS_VARIABLE EXIT_CODE)
 if(NOT EXIT_CODE STREQUAL 0)
     message(FATAL_ERROR "Analysis failed")
 endif()

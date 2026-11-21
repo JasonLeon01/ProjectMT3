@@ -206,7 +206,7 @@ void SoundFileWriterOgg::write(const std::int16_t* samples, std::uint64_t count)
     while (frameCount > 0)
     {
         // Prepare a buffer to hold our samples
-        float** buffer = vorbis_analysis_buffer(&m_state, bufferSize);
+        float* const* buffer = vorbis_analysis_buffer(&m_state, bufferSize);
         assert(buffer && "Vorbis buffer failed to allocate");
 
         // Write the samples to the buffer, converted to float and remapped to target channels

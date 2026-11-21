@@ -21,7 +21,7 @@ function MapMessageGesture:cancel()
 end
 
 function MapMessageGesture:update()
-    if not LUDORK_MOBILE then return end
+    if not LUDORK_MOBILE and PLATFORM ~= "web" then return end
     if self._scene:isInputBlocked() or self._scene:isMapClickMoveBlocked() or self._scene:isMapTransferInProgress()
         or Transition.isTransitionPending() or Transition.isInTransition() then
         self:cancel()

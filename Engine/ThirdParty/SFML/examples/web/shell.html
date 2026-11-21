@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>SFML Tennis</title>
+<style>body{margin:0;background:#222;color:white;font-family:sans-serif;text-align:center}canvas{display:block;margin:auto;max-width:100%;outline:none}#status{padding:1rem}</style></head>
+<body><div id="status">Loading resources…</div><canvas id="canvas" tabindex="0"></canvas><button id="restart" type="button" hidden>Restart</button>
+<script>
+var gameExited = false;
+var Module = {
+  canvas: document.getElementById('canvas'),
+  setStatus: function(text) { if (!gameExited) document.getElementById('status').textContent = text || 'Click the game to enable audio. Space: play; arrows: move; Escape: exit.'; },
+  onExit: function(code) {
+    gameExited = true;
+    Module.canvas.style.display = 'none';
+    document.getElementById('status').textContent = code === 0 ? 'Game exited. You can close this page or restart.' : 'Game exited with an error (' + code + ').';
+    document.getElementById('restart').hidden = false;
+  },
+  print: console.log,
+  printErr: console.error
+};
+Module.canvas.addEventListener('contextmenu', function(event) { event.preventDefault(); });
+Module.canvas.addEventListener('mousedown', function() { Module.canvas.focus(); });
+document.getElementById('restart').addEventListener('click', function() { location.reload(); });
+</script>
+{{{ SCRIPT }}}
+</body></html>

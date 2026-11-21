@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "order_cache_version": 4,
-  "input_hash": "a189db515258f911386bc71ccb3f03117b4fc6bdc7af82617eaf8aed15881cf8",
+  "input_hash": "0065462fd867c8109be2231fa531cc82e0d16f9498f1b341daeb76728e931df0",
   "order": [
     "bind_Drawable",
     "bind_Handle",
@@ -34,6 +34,7 @@
     "bind_BlendMode",
     "bind_Color",
     "bind_CoordinateType",
+    "bind_GraphicsBackend",
     "bind_Image",
     "bind_PrimitiveType",
     "bind_Rect",
@@ -146,6 +147,7 @@
     "bind_Glyph": [
       "bind_Rect"
     ],
+    "bind_GraphicsBackend": [],
     "bind_Handle": [],
     "bind_Http": [
       "bind_IpAddress",
@@ -300,6 +302,7 @@
       "bind_VertexArray"
     ],
     "bind_Texture": [
+      "bind_CoordinateType",
       "bind_Image",
       "bind_Vector2"
     ],

@@ -200,14 +200,9 @@ sf.FileInputStream.tell = function() end
 sf.FileInputStream.getSize = function() end
 --- @brief Open the stream from a file path
 ---
---- On OpenHarmony/HarmonyOS, a path beginning with `rawfile:/`
---- explicitly addresses the HAP rawfile directory. A relative path is
---- first opened from the application filesystem and then, if that fails,
---- from rawfile. `SFML::Main` initializes the native resource manager
---- before application code starts.
---- On Android, paths are first opened from the application filesystem.
---- Relative paths fall back to the packaged asset directory when no
---- filesystem file exists.
+--- On Android and OpenHarmony, the filesystem is checked first. Relative paths fall
+--- back to packaged assets if the file cannot be opened. On OpenHarmony,
+--- `rawfile:/path` explicitly selects a packaged resource.
 ---
 --- @param filename Name of the file to open
 ---
@@ -980,35 +975,63 @@ sf.Clipboard.getString = function() end
 --- to the clipboard
 ---@type fun(text: string)
 sf.Clipboard.setString = function() end
---- @brief Structure defining the settings of the OpenGL
---- context attached to a window
----@class sf.ContextSettings
---- Bits of the depth buffer
----@field depthBits integer
---- Bits of the stencil buffer
----@field stencilBits integer
---- Level of anti-aliasing
----@field antiAliasingLevel integer
---- Major number of the context version to create
+--- The profile requested for a desktop OpenGL context.
+---@class sf.OpenGLProfile
+---@field Automatic sf.OpenGLProfile
+---@field Compatibility sf.OpenGLProfile
+---@field Core sf.OpenGLProfile
+sf.OpenGLProfile = sf.OpenGLProfile or {}
+
+---@class sf.OpenGLSettings
 ---@field majorVersion integer
---- Minor number of the context version to create
 ---@field minorVersion integer
---- The attribute flags to create the context with
----@field attributeFlags integer
---- Whether the context framebuffer is sRGB capable
+---@field profile sf.OpenGLProfile
+---@field debug boolean
+sf.OpenGLSettings = sf.OpenGLSettings or {}
+---@type fun(): sf.OpenGLSettings
+sf.OpenGLSettings.new = function() end
+
+---@class sf.OpenGLESSettings
+---@field majorVersion integer
+---@field minorVersion integer
+sf.OpenGLESSettings = sf.OpenGLESSettings or {}
+---@type fun(): sf.OpenGLESSettings
+sf.OpenGLESSettings.new = function() end
+
+---@class sf.VulkanSettings
+---@field majorVersion integer
+---@field minorVersion integer
+sf.VulkanSettings = sf.VulkanSettings or {}
+---@type fun(): sf.VulkanSettings
+sf.VulkanSettings.new = function() end
+--- Minimum Direct3D feature level, using the Direct3D 11 API.
+--- Supported levels are 10_0, 10_1, 11_0, 11_1, 12_0 and 12_1.
+---@class sf.DirectXSettings
+---@field majorVersion integer
+---@field minorVersion integer
+sf.DirectXSettings = sf.DirectXSettings or {}
+---@type fun(): sf.DirectXSettings
+sf.DirectXSettings.new = function() end
+--- Selects the Metal backend on macOS and iOS.
+--- The available Metal version is determined by the deployment target
+--- (macOS 13.0 / iOS 16.0 at minimum), so no version is requested here.
+---@class sf.MetalSettings
+sf.MetalSettings = sf.MetalSettings or {}
+---@type fun(): sf.MetalSettings
+sf.MetalSettings.new = function() end
+--- Framebuffer options and minimum API version for a rendering target.
+--- An empty backend setting inherits the current graphics device's configuration.
+--- Window::getSettings() reports the actual settings selected by the driver.
+---@class sf.ContextSettings
+---@field depthBits integer
+---@field stencilBits integer
+---@field antiAliasingLevel integer
 ---@field sRgbCapable boolean
+---@field backend nil|sf.OpenGLSettings|sf.OpenGLESSettings|sf.VulkanSettings|sf.DirectXSettings|sf.MetalSettings
 sf.ContextSettings = sf.ContextSettings or {}
 ---@type fun(): sf.ContextSettings
 sf.ContextSettings.new = function() end
---- @brief Enumeration of the context attribute flags
----@class sf.ContextSettings.Attribute
---- Non-debug, compatibility context (this and the core attribute are mutually exclusive)
----@field Default integer
---- Core attribute
----@field Core integer
---- Debug attribute
----@field Debug integer
-sf.ContextSettings.Attribute = sf.ContextSettings.Attribute or {}
+---@alias sf.ContextSettings.BackendSettings nil|sf.OpenGLSettings|sf.OpenGLESSettings|sf.VulkanSettings|sf.DirectXSettings|sf.MetalSettings
 ---@type fun(self: sf.ContextSettings): sf.ContextSettings
 sf.ContextSettings.copy = function() end
 ---@type fun(self: sf.ContextSettings): sf.ContextSettings
@@ -2745,6 +2768,19 @@ sf.WindowBase.hasFocus = function() end
 --- @return System handle of the window
 ---@type fun(self: sf.WindowBase): sf.WindowHandle
 sf.WindowBase.getNativeHandle = function() end
+--- @brief Function called after the window has been created
+---
+--- This function is called so that derived classes can
+--- perform their own specific initialization as soon as
+--- the window is created.
+---@type fun(self: sf.WindowBase)
+sf.WindowBase.onCreate = function() end
+--- @brief Function called after the window has been resized
+---
+--- This function is called so that derived classes can
+--- perform custom actions when the size of the window changes.
+---@type fun(self: sf.WindowBase)
+sf.WindowBase.onResize = function() end
 --- @brief Window that serves as a target for OpenGL rendering
 ---@class sf.Window : sf.WindowBase
 sf.Window = sf.Window or {}
@@ -3030,6 +3066,19 @@ sf.Window.hasFocus = function() end
 --- @return System handle of the window
 ---@type fun(self: sf.Window): sf.WindowHandle
 sf.Window.getNativeHandle = function() end
+--- @brief Function called after the window has been created
+---
+--- This function is called so that derived classes can
+--- perform their own specific initialization as soon as
+--- the window is created.
+---@type fun(self: sf.Window)
+sf.Window.onCreate = function() end
+--- @brief Function called after the window has been resized
+---
+--- This function is called so that derived classes can
+--- perform custom actions when the size of the window changes.
+---@type fun(self: sf.Window)
+sf.Window.onResize = function() end
 --- @brief Get the settings of the OpenGL context of the window
 ---
 --- Note that these settings may be different from what was
@@ -3245,13 +3294,51 @@ sf.Color.deepcopy = function() end
 --- @ingroup graphics
 --- @brief Types of texture coordinates that can be used for rendering
 ---
---- @see `sf::RenderStates::coordinateType`
+--- @see `sf::Texture::bind`
 ---@class sf.CoordinateType
 --- Texture coordinates in range [0 .. 1]
 ---@field Normalized sf.CoordinateType
 --- Texture coordinates in range [0 .. size]
 ---@field Pixels sf.CoordinateType
 sf.CoordinateType = sf.CoordinateType or {}
+
+---@class sf.GraphicsBackend
+---@field Automatic sf.GraphicsBackend
+---@field OpenGL sf.GraphicsBackend
+---@field OpenGLES sf.GraphicsBackend
+---@field Vulkan sf.GraphicsBackend
+---@field DirectX sf.GraphicsBackend
+---@field Metal sf.GraphicsBackend
+sf.GraphicsBackend = sf.GraphicsBackend or {}
+--- Select a graphics backend and optional minimum version before creating GPU resources.
+--- Returns false if the backend is unavailable in this build, the settings are invalid,
+--- or an already initialized device cannot meet the request.
+---@type fun(backend: sf.GraphicsBackend, settings?: nil|sf.OpenGLSettings|sf.OpenGLESSettings|sf.VulkanSettings|sf.DirectXSettings|sf.MetalSettings): boolean
+sf.setGraphicsBackend = function() end
+--- Return the active backend, or Automatic before the first successful initialization.
+---@type fun(): sf.GraphicsBackend
+sf.getGraphicsBackend = function() end
+--- Merge previously exported driver pipeline cache data into the active device's cache.
+--- Supported by Vulkan and Metal. Initializes the selected backend if necessary;
+--- select it with setGraphicsBackend first. Data is copied during the call and must be
+--- an unmodified blob previously returned by getPipelineCacheData (or vkGetPipelineCacheData).
+--- On Metal the blob is a serialized MTLBinaryArchive; several blobs may be loaded.
+--- Returns false for null/empty data, incompatible cache headers, unsupported backends,
+--- or a driver error. The cache is shared by all shaders, including the built-in shaders.
+--- Load before drawing to accelerate subsequent pipeline creation; SPIR-V is still required.
+--- File storage, integrity checks, prewarming and cache invalidation belong to the application.
+---@type fun(data: any): boolean
+sf.loadPipelineCacheFromMemory = function() end
+--- Export the active device's driver pipeline cache for reuse in a later run.
+--- Supported by Vulkan and Metal. Initializes the selected backend if necessary.
+--- Returns nullopt for unsupported backends or a driver error. Export after drawing or
+--- prewarming the desired shader/render-state combinations. Cache hits and compilation
+--- avoidance are driver-dependent; hardware/driver changes can invalidate the data.
+--- On Metal the export contains the pipelines created since the device was initialized,
+--- as an MTLBinaryArchive that is specific to the GPU and OS version.
+--- Direct3D 11 driver caches are managed by the OS/driver and cannot be exported here.
+---@type fun(): integer[]|nil
+sf.getPipelineCacheData = function() end
 --- @brief Class for loading, manipulating and saving images
 ---@class sf.Image
 sf.Image = sf.Image or {}
@@ -3587,10 +3674,8 @@ sf.Shader = sf.Shader or {}
 --- This constructor loads the vertex, geometry and fragment
 --- shaders. If one of them fails to load, the shader is left
 --- empty (the valid shader is unloaded).
---- The sources must be text files containing valid shaders
---- in GLSL language. GLSL is a C-like language dedicated to
---- OpenGL shaders; you'll probably need to read a good documentation
---- for it before writing your own shaders.
+--- Accepted formats depend on the selected graphics backend;
+--- see the class documentation for source and binary requirements.
 ---
 --- @param vertexShaderFilename   Path of the vertex shader file to load
 --- @param geometryShaderFilename Path of the geometry shader file to load
@@ -3615,10 +3700,8 @@ function sf.Shader.new(vertexShaderFilename, geometryShaderFilename, fragmentSha
 --- This function loads the vertex, geometry and fragment
 --- shaders. If one of them fails to load, the shader is left
 --- empty (the valid shader is unloaded).
---- The sources must be text files containing valid shaders
---- in GLSL language. GLSL is a C-like language dedicated to
---- OpenGL shaders; you'll probably need to read a good documentation
---- for it before writing your own shaders.
+--- Accepted formats depend on the selected graphics backend;
+--- see the class documentation for source and binary requirements.
 ---
 --- @param vertexShaderFilename   Path of the vertex shader file to load
 --- @param geometryShaderFilename Path of the geometry shader file to load
@@ -3635,19 +3718,17 @@ function sf.Shader.new(vertexShaderFilename, geometryShaderFilename, fragmentSha
 ---@param fragmentShaderFilename string
 ---@return boolean
 function sf.Shader.loadFromFile(self, vertexShaderFilename, geometryShaderFilename, fragmentShaderFilename) end
---- @brief Load the vertex, geometry and fragment shaders from source codes in memory
+--- @brief Load the vertex, geometry and fragment shaders from sources or bytecode in memory
 ---
 --- This function loads the vertex, geometry and fragment
 --- shaders. If one of them fails to load, the shader is left
 --- empty (the valid shader is unloaded).
---- The sources must be valid shaders in GLSL language. GLSL is
---- a C-like language dedicated to OpenGL shaders; you'll
---- probably need to read a good documentation for it before
---- writing your own shaders.
+--- Accepted formats depend on the selected graphics backend;
+--- see the class documentation for source and binary requirements.
 ---
---- @param vertexShader   String containing the source code of the vertex shader
---- @param geometryShader String containing the source code of the geometry shader
---- @param fragmentShader String containing the source code of the fragment shader
+--- @param vertexShader   String view containing the source or bytecode of the vertex shader
+--- @param geometryShader String view containing the source or bytecode of the geometry shader
+--- @param fragmentShader String view containing the source or bytecode of the fragment shader
 ---
 --- @return `true` if loading succeeded, `false` if it failed
 ---
@@ -3665,10 +3746,8 @@ function sf.Shader.loadFromMemory(self, vertexShader, geometryShader, fragmentSh
 --- This function loads the vertex, geometry and fragment
 --- shaders. If one of them fails to load, the shader is left
 --- empty (the valid shader is unloaded).
---- The source codes must be valid shaders in GLSL language.
---- GLSL is a C-like language dedicated to OpenGL shaders;
---- you'll probably need to read a good documentation for
---- it before writing your own shaders.
+--- Accepted formats depend on the selected graphics backend;
+--- see the class documentation for source and binary requirements.
 ---
 --- @param vertexShaderStream   Source stream to read the vertex shader from
 --- @param geometryShaderStream Source stream to read the geometry shader from
@@ -3688,26 +3767,26 @@ function sf.Shader.loadFromStream(self, vertexShaderStream, geometryShaderStream
 --- @brief Specify value for @p float uniform
 ---
 --- @param name Name of the uniform variable in GLSL
---- @param x    Value of the float scalar
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector2f)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector3f)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector4f)
----@overload fun(self: sf.Shader, name: string, x: integer)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector2i)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector3i)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector4i)
----@overload fun(self: sf.Shader, name: string, x: boolean)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector2b)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector3b)
----@overload fun(self: sf.Shader, name: string, vector: sf.Vector4b)
----@overload fun(self: sf.Shader, name: string, matrix: sf.Mat3)
----@overload fun(self: sf.Shader, name: string, matrix: sf.Mat4)
+--- @param value    Value of the float scalar
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector2f)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector3f)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector4f)
+---@overload fun(self: sf.Shader, name: string, value: integer)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector2i)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector3i)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector4i)
+---@overload fun(self: sf.Shader, name: string, value: boolean)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector2b)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector3b)
+---@overload fun(self: sf.Shader, name: string, value: sf.Vector4b)
+---@overload fun(self: sf.Shader, name: string, value: sf.Mat3)
+---@overload fun(self: sf.Shader, name: string, value: sf.Mat4)
 ---@overload fun(self: sf.Shader, name: string, texture: sf.Texture)
 ---@overload fun(self: sf.Shader, name: string, arg1: sf.Shader.CurrentTextureType)
 ---@param self sf.Shader
 ---@param name string
----@param x number
-function sf.Shader.setUniform(self, name, x) end
+---@param value number
+function sf.Shader.setUniform(self, name, value) end
 ---@overload fun(self: sf.Shader, name: string, values: sf.Vector2f[])
 ---@overload fun(self: sf.Shader, name: string, values: sf.Vector3f[])
 ---@overload fun(self: sf.Shader, name: string, values: sf.Vector4f[])
@@ -3736,6 +3815,7 @@ sf.Shader.setUniformMat4Array = function() end
 --- or implement a temporary workaround until a bug is fixed.
 ---
 --- @return OpenGL handle of the shader or 0 if not yet loaded
+--- Returns zero when the resource belongs to a non-OpenGL backend.
 ---@type fun(self: sf.Shader): integer
 sf.Shader.getNativeHandle = function() end
 --- @brief Bind a shader for rendering
@@ -4133,6 +4213,7 @@ sf.Texture.swap = function() end
 --- or implement a temporary workaround until a bug is fixed.
 ---
 --- @return OpenGL handle of the texture or 0 if not yet created
+--- Returns zero when the resource belongs to a non-OpenGL backend.
 ---@type fun(self: sf.Texture): integer
 sf.Texture.getNativeHandle = function() end
 --- @brief Bind a texture for rendering
@@ -4140,9 +4221,6 @@ sf.Texture.getNativeHandle = function() end
 --- This function is not part of the graphics API, it mustn't be
 --- used when drawing SFML entities. It must be used only if you
 --- mix `sf::Texture` with OpenGL code.
---- It only changes the `GL_TEXTURE_2D` binding. Direct OpenGL
---- rendering code is responsible for converting texture coordinates
---- in its shader when pixel coordinates are used.
 ---
 --- @code
 --- sf::Texture t1, t2;
@@ -4155,8 +4233,18 @@ sf.Texture.getNativeHandle = function() end
 --- // draw OpenGL stuff that use no texture...
 --- @endcode
 ---
+--- The `coordinateType` argument controls how texture
+--- coordinates will be interpreted. If Normalized (the default), they
+--- must be in range [0 .. 1], which is the default way of handling
+--- texture coordinates with OpenGL. If Pixels, they must be given
+--- in pixels (range [0 .. size]). This mode is used internally by
+--- the graphics classes of SFML, it makes the definition of texture
+--- coordinates more intuitive for the high-level API, users don't need
+--- to compute normalized values.
+---
 --- @param texture Pointer to the texture to bind, can be null to use no texture
----@type fun(texture: sf.Texture)
+--- @param coordinateType Type of texture coordinates to use
+---@type fun(texture: sf.Texture, coordinateType?: sf.CoordinateType)
 sf.Texture.bind = function() end
 --- @brief Get the maximum texture size allowed
 ---
@@ -4478,7 +4566,7 @@ function sf.Transform.new(a00, a01, a02, a10, a11, a12, a20, a21, a22) end
 ---
 --- @code
 --- sf::Transform transform = ...;
---- glUniformMatrix4fv(location, 1, GL_FALSE, transform.getMatrix());
+--- glLoadMatrixf(transform.getMatrix());
 --- @endcode
 ---
 --- @return Pointer to a 4x4 matrix
@@ -7622,6 +7710,7 @@ sf.VertexBuffer.swap = function() end
 --- or implement a temporary workaround until a bug is fixed.
 ---
 --- @return OpenGL handle of the vertex buffer or 0 if not yet created
+--- Returns zero when the resource belongs to a non-OpenGL backend.
 ---@type fun(self: sf.VertexBuffer): integer
 sf.VertexBuffer.getNativeHandle = function() end
 --- @brief Set the type of primitives to draw
@@ -8046,7 +8135,7 @@ sf.RenderTarget.isSrgb = function() end
 --- @return `true` if operation was successful, `false` otherwise
 ---@type fun(self: sf.RenderTarget, active?: boolean): boolean
 sf.RenderTarget.setActive = function() end
---- @brief Save the OpenGL render states modified by SFML
+--- @brief Save the current OpenGL render states and matrices
 ---
 --- This function can be used when you mix SFML drawing
 --- and direct OpenGL rendering. Combined with popGLStates,
@@ -8065,10 +8154,9 @@ sf.RenderTarget.setActive = function() end
 --- // OpenGL code here...
 --- @endcode
 ---
---- Note that this function is quite expensive: it saves the
---- program, textures, vertex attributes and the other OpenGL
---- states that SFML drawing can modify. State outside this set
---- is deliberately not covered.
+--- Note that this function is quite expensive: it saves all the
+--- possible OpenGL states and matrices, even the ones you
+--- don't care about. Therefore it should be used wisely.
 --- It is provided for convenience, but the best results will
 --- be achieved if you handle OpenGL states yourself (because
 --- you know which states have really changed, and need to be
@@ -8078,7 +8166,7 @@ sf.RenderTarget.setActive = function() end
 --- @see `popGLStates`
 ---@type fun(self: sf.RenderTarget)
 sf.RenderTarget.pushGLStates = function() end
---- @brief Restore the previously saved OpenGL render states
+--- @brief Restore the previously saved OpenGL render states and matrices
 ---
 --- See the description of `pushGLStates` to get a detailed
 --- description of these functions.
@@ -8097,9 +8185,11 @@ sf.RenderTarget.popGLStates = function() end
 --- Example:
 --- @code
 --- // OpenGL code here...
+--- glPushAttrib(...);
 --- window.resetGLStates();
 --- window.draw(...);
 --- window.draw(...);
+--- glPopAttrib(...);
 --- // OpenGL code here...
 --- @endcode
 ---@type fun(self: sf.RenderTarget)
@@ -8310,7 +8400,7 @@ sf.RenderTexture.isSrgb = function() end
 --- @return `true` if operation was successful, `false` otherwise
 ---@type fun(self: sf.RenderTexture, active?: boolean): boolean
 sf.RenderTexture.setActive = function() end
---- @brief Save the OpenGL render states modified by SFML
+--- @brief Save the current OpenGL render states and matrices
 ---
 --- This function can be used when you mix SFML drawing
 --- and direct OpenGL rendering. Combined with popGLStates,
@@ -8329,10 +8419,9 @@ sf.RenderTexture.setActive = function() end
 --- // OpenGL code here...
 --- @endcode
 ---
---- Note that this function is quite expensive: it saves the
---- program, textures, vertex attributes and the other OpenGL
---- states that SFML drawing can modify. State outside this set
---- is deliberately not covered.
+--- Note that this function is quite expensive: it saves all the
+--- possible OpenGL states and matrices, even the ones you
+--- don't care about. Therefore it should be used wisely.
 --- It is provided for convenience, but the best results will
 --- be achieved if you handle OpenGL states yourself (because
 --- you know which states have really changed, and need to be
@@ -8342,7 +8431,7 @@ sf.RenderTexture.setActive = function() end
 --- @see `popGLStates`
 ---@type fun(self: sf.RenderTexture)
 sf.RenderTexture.pushGLStates = function() end
---- @brief Restore the previously saved OpenGL render states
+--- @brief Restore the previously saved OpenGL render states and matrices
 ---
 --- See the description of `pushGLStates` to get a detailed
 --- description of these functions.
@@ -8361,9 +8450,11 @@ sf.RenderTexture.popGLStates = function() end
 --- Example:
 --- @code
 --- // OpenGL code here...
+--- glPushAttrib(...);
 --- window.resetGLStates();
 --- window.draw(...);
 --- window.draw(...);
+--- glPopAttrib(...);
 --- // OpenGL code here...
 --- @endcode
 ---@type fun(self: sf.RenderTexture)
@@ -8493,14 +8584,10 @@ function sf.RenderWindow.new(mode, title, style, state, settings) end
 --- If `state` is `State::Fullscreen`, then `mode` must be
 --- a valid video mode.
 ---
---- The last parameter is a structure specifying advanced OpenGL
---- context settings such as anti-aliasing, depth-buffer bits, etc.
----
---- @param mode     Video mode to use (defines the width, height and depth of the rendering area of the window)
---- @param title    Title of the window
---- @param style    %Window style, a bitwise OR combination of `sf::Style` enumerators
---- @param state    %Window state
---- @param settings Additional settings for the underlying OpenGL context
+--- @param mode  Video mode to use (defines the width, height and depth of the rendering area of the window)
+--- @param title Title of the window
+--- @param style %Window style, a bitwise OR combination of `sf::Style` enumerators
+--- @param state %Window state
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, style?: integer, state?: sf.State)
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State, settings: sf.ContextSettings)
 ---@overload fun(self: sf.RenderWindow, mode: sf.VideoMode, title: string, state: sf.State)
@@ -8513,13 +8600,6 @@ function sf.RenderWindow.new(mode, title, style, state, settings) end
 ---@param state sf.State
 ---@param settings sf.ContextSettings
 function sf.RenderWindow.create(self, mode, title, style, state, settings) end
---- @brief Close the window and destroy all the attached resources
----
---- After calling this function, the `sf::Window` instance remains
---- valid and you can call `create()` to recreate the window.
---- All other functions such as `pollEvent()` or `display()` will
---- still work (i.e. you don't have to test `isOpen()` every time),
---- and will have no effect on closed windows.
 ---@type fun(self: sf.RenderWindow)
 sf.RenderWindow.close = function() end
 --- @brief Tell whether or not the window is open
@@ -8735,6 +8815,19 @@ sf.RenderWindow.hasFocus = function() end
 --- @return System handle of the window
 ---@type fun(self: sf.RenderWindow): sf.WindowHandle
 sf.RenderWindow.getNativeHandle = function() end
+--- @brief Function called after the window has been created
+---
+--- This function is called so that derived classes can
+--- perform their own specific initialization as soon as
+--- the window is created.
+---@type fun(self: sf.RenderWindow)
+sf.RenderWindow.onCreate = function() end
+--- @brief Function called after the window has been resized
+---
+--- This function is called so that derived classes can
+--- perform custom actions when the size of the window changes.
+---@type fun(self: sf.RenderWindow)
+sf.RenderWindow.onResize = function() end
 --- @brief Get the settings of the OpenGL context of the window
 ---
 --- Note that these settings may be different from what was
@@ -8957,7 +9050,7 @@ function sf.RenderWindow.draw(self, vertexBuffer, firstVertex, vertexCount, stat
 --- @return `true` if the window use sRGB encoding, `false` otherwise
 ---@type fun(self: sf.RenderWindow): boolean
 sf.RenderWindow.isSrgb = function() end
---- @brief Save the OpenGL render states modified by SFML
+--- @brief Save the current OpenGL render states and matrices
 ---
 --- This function can be used when you mix SFML drawing
 --- and direct OpenGL rendering. Combined with popGLStates,
@@ -8976,10 +9069,9 @@ sf.RenderWindow.isSrgb = function() end
 --- // OpenGL code here...
 --- @endcode
 ---
---- Note that this function is quite expensive: it saves the
---- program, textures, vertex attributes and the other OpenGL
---- states that SFML drawing can modify. State outside this set
---- is deliberately not covered.
+--- Note that this function is quite expensive: it saves all the
+--- possible OpenGL states and matrices, even the ones you
+--- don't care about. Therefore it should be used wisely.
 --- It is provided for convenience, but the best results will
 --- be achieved if you handle OpenGL states yourself (because
 --- you know which states have really changed, and need to be
@@ -8989,7 +9081,7 @@ sf.RenderWindow.isSrgb = function() end
 --- @see `popGLStates`
 ---@type fun(self: sf.RenderWindow)
 sf.RenderWindow.pushGLStates = function() end
---- @brief Restore the previously saved OpenGL render states
+--- @brief Restore the previously saved OpenGL render states and matrices
 ---
 --- See the description of `pushGLStates` to get a detailed
 --- description of these functions.
@@ -9008,9 +9100,11 @@ sf.RenderWindow.popGLStates = function() end
 --- Example:
 --- @code
 --- // OpenGL code here...
+--- glPushAttrib(...);
 --- window.resetGLStates();
 --- window.draw(...);
 --- window.draw(...);
+--- glPopAttrib(...);
 --- // OpenGL code here...
 --- @endcode
 ---@type fun(self: sf.RenderWindow)

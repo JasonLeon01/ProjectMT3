@@ -132,10 +132,11 @@ struct HostState
 
 
 HostState& getHostState();
+bool       usesDesktopWindow();
 
-SurfaceSnapshot   getSurfaceSnapshot();
-std::deque<Event> drainEvents();
-void              enqueueEvent(Event event);
+SFML_WINDOW_API SurfaceSnapshot getSurfaceSnapshot();
+std::deque<Event>               drainEvents();
+void                            enqueueEvent(Event event);
 void submitTextEdit(std::size_t backwardDeletions, std::size_t forwardDeletions, std::u32string_view insertedText);
 
 bool claimWindow();

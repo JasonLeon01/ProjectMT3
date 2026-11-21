@@ -103,22 +103,15 @@ protected:
 ///         states.texture = &m_texture;
 ///         target.draw(m_vertices, states);
 ///
-///         // ... or draw with a GL2 shader directly
-///         (void)target.setActive(true);
-///         target.pushGLStates();
-///         glUseProgram(m_program);
-///         glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-///         glEnableVertexAttribArray(0);
-///         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, nullptr);
-///         glDrawArrays(GL_TRIANGLES, 0, 3);
-///         target.popGLStates();
+///         // ... or draw with OpenGL directly
+///         glBegin(GL_TRIANGLES);
+///         ...
+///         glEnd();
 ///     }
 ///
 ///     sf::Sprite m_sprite;
 ///     sf::Texture m_texture;
 ///     sf::VertexArray m_vertices;
-///     unsigned int m_program{};
-///     unsigned int m_vertexBuffer{};
 /// };
 /// \endcode
 ///

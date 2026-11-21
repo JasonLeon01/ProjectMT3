@@ -28,7 +28,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Window/ContextSettings.hpp>
-#include <SFML/Window/GlResource.hpp>
 #include <SFML/Window/WindowBase.hpp>
 #include <SFML/Window/WindowEnums.hpp>
 #include <SFML/Window/WindowHandle.hpp>
@@ -45,14 +44,18 @@ namespace sf
 {
 namespace priv
 {
-class GlContext;
+class RhiAccess;
+}
+namespace priv
+{
+class WindowSurface;
 }
 
 ////////////////////////////////////////////////////////////
 /// \brief Window that serves as a target for OpenGL rendering
 ///
 ////////////////////////////////////////////////////////////
-class SFML_WINDOW_API Window : public WindowBase, GlResource
+class SFML_WINDOW_API Window : public WindowBase
 {
 public:
     ////////////////////////////////////////////////////////////
@@ -339,6 +342,16 @@ public:
     void display();
 
 private:
+    friend class priv::RhiAccess;
+    friend class RenderWindow;
+    friend class Texture;
+
+    [[nodiscard]] virtual std::unique_ptr<priv::WindowSurface> createSurface(const ContextSettings&  settings,
+                                                                             const priv::WindowImpl& owner,
+                                                                             unsigned int            bitsPerPixel);
+
+    [[nodiscard]] priv::WindowSurface* getSurface() const;
+
     ////////////////////////////////////////////////////////////
     /// \brief Perform some common internal initializations
     ///
@@ -348,9 +361,9 @@ private:
     ////////////////////////////////////////////////////////////
     // Member data
     ////////////////////////////////////////////////////////////
-    std::unique_ptr<priv::GlContext> m_context;        //!< Platform-specific implementation of the OpenGL context
-    Clock                            m_clock;          //!< Clock for measuring the elapsed time between frames
-    Time                             m_frameTimeLimit; //!< Current framerate limit
+    std::unique_ptr<priv::WindowSurface> m_surface;        //!< Rendering surface attached to the native window
+    Clock                                m_clock;          //!< Clock for measuring the elapsed time between frames
+    Time                                 m_frameTimeLimit; //!< Current framerate limit
 };
 
 } // namespace sf

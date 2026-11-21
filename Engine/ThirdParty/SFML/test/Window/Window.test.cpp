@@ -34,9 +34,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.getSettings().depthBits == 0);
             CHECK(window.getSettings().stencilBits == 0);
             CHECK(window.getSettings().antiAliasingLevel == 0);
-            CHECK(window.getSettings().majorVersion == 2);
-            CHECK(window.getSettings().minorVersion == 0);
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(std::holds_alternative<std::monostate>(window.getSettings().backend));
             CHECK(!window.getSettings().sRgbCapable);
         }
 
@@ -46,7 +44,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(360, 240));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, and style constructor")
@@ -55,7 +53,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(360, 240));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, style, and state constructor")
@@ -64,7 +62,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(360, 240));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, style, state, and context settings constructor")
@@ -87,7 +85,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(360, 240));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, state, and context settings constructor")
@@ -114,7 +112,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(240, 360));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, and style")
@@ -123,7 +121,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(240, 360));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, style, and state")
@@ -132,7 +130,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(240, 360));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, style, state, and context settings")
@@ -155,7 +153,7 @@ TEST_CASE("[Window] sf::Window", runDisplayTests())
             CHECK(window.isOpen());
             CHECK(window.getSize() == sf::Vector2u(240, 360));
             CHECK(window.getNativeHandle() != sf::WindowHandle());
-            CHECK(window.getSettings().attributeFlags == sf::ContextSettings::Default);
+            CHECK(!std::holds_alternative<std::monostate>(window.getSettings().backend));
         }
 
         SECTION("Mode, title, state, and context settings")

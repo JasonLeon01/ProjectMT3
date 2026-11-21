@@ -93,6 +93,8 @@ struct Caller<Return (*)(Argument)>
 
 ////////////////////////////////////////////////////////////
 template <typename... Handlers>
+// Some MSVC clang-tidy versions miss std::forward inside the pack expansion below.
+// NOLINTNEXTLINE(cppcoreguidelines-missing-std-forward)
 void WindowBase::handleEvents(Handlers&&... handlers)
 {
     static_assert(sizeof...(Handlers) > 0, "Must provide at least one handler");

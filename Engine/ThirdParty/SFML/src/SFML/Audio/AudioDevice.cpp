@@ -183,7 +183,7 @@ bool AudioDevice::reinitialize()
     if (!instance)
         return true;
 
-    const std::lock_guard lock(instance->m_resourcesMutex);
+    const std::scoped_lock lock(instance->m_resourcesMutex);
 
     // Deinitialize all audio resources
     for (const auto& entry : instance->m_resources)
@@ -403,6 +403,11 @@ std::optional<std::string> AudioDevice::getDevice()
 #ifdef SFML_SYSTEM_HARMONY
     return instance->m_playbackDevice->getName();
 #else
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+    if (getCurrentDeviceSelection().useNull)
+        return "NULL Playback Device";
+#endif
+
     std::array<char, MA_MAX_DEVICE_NAME_LENGTH + 1> deviceName{};
     std::size_t                                     deviceNameLength{};
 
@@ -437,7 +442,8 @@ bool AudioDevice::isDefaultDevice()
     // since it is used either as a fallback when other backends
     // don't provide devices themselves or when the user
     // explicitly requests it to discard audio data
-    return (instance->m_context->backend != ma_backend_null) && (instance->m_playbackDevice->playback.pID == nullptr);
+    return !getCurrentDeviceSelection().useNull && (instance->m_context->backend != ma_backend_null) &&
+           (instance->m_playbackDevice->playback.pID == nullptr);
 #endif
 }
 
@@ -445,8 +451,8 @@ bool AudioDevice::isDefaultDevice()
 ////////////////////////////////////////////////////////////
 void AudioDevice::setNotificationCallback(PlaybackDevice::NotificationCallback callback)
 {
-    auto&                 notificationCallback = getNotificationCallback();
-    const std::lock_guard lock(notificationCallback.mutex);
+    auto&                  notificationCallback = getNotificationCallback();
+    const std::scoped_lock lock(notificationCallback.mutex);
     notificationCallback.callback = std::move(callback);
 }
 
@@ -476,7 +482,7 @@ AudioDevice::ResourceEntryIter AudioDevice::registerResource(void*              
     // There should always be an AudioDevice instance when registerResource is called
     auto* instance = getInstance();
     assert(instance && "AudioDevice instance should exist when calling AudioDevice::registerResource");
-    const std::lock_guard lock(instance->m_resourcesMutex);
+    const std::scoped_lock lock(instance->m_resourcesMutex);
     return instance->m_resources.insert(instance->m_resources.end(), {resource, deinitializeFunc, reinitializeFunc});
 }
 
@@ -487,7 +493,7 @@ void AudioDevice::unregisterResource(AudioDevice::ResourceEntryIter resourceEntr
     // There should always be an AudioDevice instance when unregisterResource is called
     auto* instance = getInstance();
     assert(instance && "AudioDevice instance should exist when calling AudioDevice::unregisterResource");
-    const std::lock_guard lock(instance->m_resourcesMutex);
+    const std::scoped_lock lock(instance->m_resourcesMutex);
     instance->m_resources.erase(resourceEntry); // NOLINT(performance-unnecessary-value-param)
 }
 
@@ -496,7 +502,7 @@ void AudioDevice::unregisterResource(AudioDevice::ResourceEntryIter resourceEntr
 void AudioDevice::waitForReadingComplete()
 {
     // Once we can lock the reading mutex it means the engine read cycle has been completed
-    const std::lock_guard lock(getInstance()->m_readingDataMutex);
+    const std::scoped_lock lock(getInstance()->m_readingDataMutex);
 }
 
 
@@ -737,13 +743,19 @@ bool AudioDevice::initialize()
     auto contextConfig                         = ma_context_config_init();
     contextConfig.pLog                         = &*m_log;
     std::uint32_t                  deviceCount = 0;
-    const auto                     nullBackend = ma_backend_null;
     std::vector<const ma_backend*> backendLists;
 
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+    // miniaudio's threaded null backend is unavailable on Web. Keep the browser
+    // callback clock and discard its output for the existing null-device API.
+    backendLists.push_back(nullptr);
+#else
+    const auto nullBackend = ma_backend_null;
     if (!getCurrentDeviceSelection().useNull)
         backendLists.push_back(nullptr);
 
     backendLists.push_back(&nullBackend);
+#endif
 
     for (const auto* backendList : backendLists)
     {
@@ -797,17 +809,21 @@ bool AudioDevice::initialize()
 
         if (audioDevice.m_engine)
         {
-            const std::lock_guard lock(audioDevice.m_readingDataMutex);
+            const std::scoped_lock lock(audioDevice.m_readingDataMutex);
             if (const auto result = ma_engine_read_pcm_frames(&*audioDevice.m_engine, output, frameCount, nullptr);
                 result != MA_SUCCESS)
                 err() << "Failed to read PCM frames from audio engine: " << ma_result_description(result) << std::endl;
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+            if (getCurrentDeviceSelection().useNull)
+                std::fill_n(static_cast<float*>(output), static_cast<std::size_t>(frameCount) * device->playback.channels, 0.f);
+#endif
         }
     };
     playbackDeviceConfig.notificationCallback = [](const ma_device_notification* notification)
     {
-        auto&                 notificationCallback = getNotificationCallback();
-        const std::lock_guard lock(notificationCallback.mutex);
-        const auto&           callback = notificationCallback.callback;
+        auto&                  notificationCallback = getNotificationCallback();
+        const std::scoped_lock lock(notificationCallback.mutex);
+        const auto&            callback = notificationCallback.callback;
 
         if (!callback)
             return;
@@ -866,7 +882,13 @@ bool AudioDevice::initialize()
     // If this does cause issues we would have to expose setting this value
     // through the public API so the developer can set it to an appropriate
     // value depending on the audio data they intend to play
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+    // ScriptProcessorNode accepts powers of two from 256 through 16384.
+    playbackDeviceConfig.periodSizeInFrames = 1024;
+#else
     playbackDeviceConfig.periodSizeInFrames = 256; // Set to 256 frames to support playing short audio clips without issues
+#endif
+
     if (const auto result = ma_device_init(&*m_context, &playbackDeviceConfig, &*m_playbackDevice); result != MA_SUCCESS)
     {
         m_playbackDevice.reset();
@@ -924,7 +946,8 @@ bool AudioDevice::initialize()
 ////////////////////////////////////////////////////////////
 AudioDevice*& AudioDevice::getInstance()
 {
-    static AudioDevice* instance{};
+    // Returned by mutable reference; callers replace and mutate the device.
+    static AudioDevice* instance{}; // NOLINT(misc-const-correctness)
     return instance;
 }
 

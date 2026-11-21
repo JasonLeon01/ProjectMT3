@@ -1,3 +1,4 @@
+#include <SFML/Graphics/GraphicsBackend.hpp>
 #include <SFML/Graphics/VertexBuffer.hpp>
 
 // Other 1st party headers
@@ -118,7 +119,7 @@ TEST_CASE("[Graphics] sf::VertexBuffer", "[.display]")
 
             CHECK(vertexBuffer.update(vertices.data()));
             CHECK(vertexBuffer.getVertexCount() == 128);
-            CHECK(vertexBuffer.getNativeHandle() != 0);
+            CHECK((vertexBuffer.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
 
         SECTION("Vertices, count, and offset")
@@ -155,12 +156,12 @@ TEST_CASE("[Graphics] sf::VertexBuffer", "[.display]")
         sf::swap(vertexBuffer1, vertexBuffer2);
 
         CHECK(vertexBuffer1.getVertexCount() == 60);
-        CHECK(vertexBuffer1.getNativeHandle() != 0);
+        CHECK((vertexBuffer1.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         CHECK(vertexBuffer1.getPrimitiveType() == sf::PrimitiveType::TriangleStrip);
         CHECK(vertexBuffer1.getUsage() == sf::VertexBuffer::Usage::Stream);
 
         CHECK(vertexBuffer2.getVertexCount() == 50);
-        CHECK(vertexBuffer2.getNativeHandle() != 0);
+        CHECK((vertexBuffer2.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         CHECK(vertexBuffer2.getPrimitiveType() == sf::PrimitiveType::LineStrip);
         CHECK(vertexBuffer2.getUsage() == sf::VertexBuffer::Usage::Dynamic);
     }

@@ -29,7 +29,9 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Config.hpp>
 
-#if defined(SFML_SYSTEM_WINDOWS)
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+#include <SFML/Window/Emscripten/ClipboardImpl.hpp>
+#elif defined(SFML_SYSTEM_WINDOWS)
 #include <SFML/Window/Win32/ClipboardImpl.hpp>
 #elif defined(SFML_SYSTEM_LINUX) || defined(SFML_SYSTEM_FREEBSD) || defined(SFML_SYSTEM_OPENBSD) || \
     defined(SFML_SYSTEM_NETBSD)

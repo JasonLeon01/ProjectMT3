@@ -426,6 +426,10 @@ void generateTerrain(sf::Vertex* buffer)
 ////////////////////////////////////////////////////////////
 int main()
 {
+    // These shader resources use desktop compatibility GLSL.
+    if (!sf::setGraphicsBackend(sf::GraphicsBackend::OpenGL, sf::OpenGLSettings{2, 0, sf::OpenGLProfile::Compatibility}))
+        return EXIT_FAILURE;
+
     // Create the window of the application
     sf::RenderWindow window(sf::VideoMode(windowSize), "SFML Island", sf::Style::Titlebar | sf::Style::Close);
     window.setVerticalSyncEnabled(true);

@@ -1,5 +1,8 @@
 # detect the OS
-if(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
+if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
+    set(SFML_OS_EMSCRIPTEN 1)
+    set(OPENGL_ES 1)
+elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Windows")
     set(SFML_OS_WINDOWS 1)
 
     # don't use the OpenGL ES implementation on Windows
@@ -34,7 +37,7 @@ elseif(${CMAKE_SYSTEM_NAME} STREQUAL "OHOS")
     set(SFML_OS_UNIX 1)
     set(SFML_OS_HARMONY 1)
 
-    # OpenHarmony mobile devices expose EGL and OpenGL ES only.
+    # Use the GLES profile when building the OpenGL backend on OpenHarmony.
     set(OPENGL_ES 1)
 elseif(CMAKE_SYSTEM_NAME MATCHES "^k?FreeBSD$")
     set(SFML_OS_FREEBSD 1)

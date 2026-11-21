@@ -1,16 +1,18 @@
 set(WINDOW_SRC
     Clipboard.test.cpp
-    Context.test.cpp
     ContextSettings.test.cpp
     Event.test.cpp
-    HarmonyCancelableInitialization.test.cpp
-    HarmonyEventQueue.test.cpp
-    HarmonyFullscreenModeCache.test.cpp
-    GlResource.test.cpp
     Joystick.test.cpp
     Mouse.test.cpp
     VideoMode.test.cpp
 )
+
+if(SFML_BUILD_OPENGL_BACKEND)
+    list(APPEND WINDOW_SRC Context.test.cpp GlResource.test.cpp)
+    if(NOT SFML_OS_IOS)
+        list(APPEND WINDOW_SRC Window.test.cpp)
+    endif()
+endif()
 
 if(NOT SFML_OS_IOS)
     list(APPEND WINDOW_SRC
@@ -20,7 +22,6 @@ if(NOT SFML_OS_IOS)
         Vulkan.test.cpp
 
         # At the time of writing these tests all pass except the window size ones
-        Window.test.cpp
         WindowBase.test.cpp
     )
 endif()

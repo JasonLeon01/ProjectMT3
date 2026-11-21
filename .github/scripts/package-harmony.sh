@@ -21,7 +21,7 @@ decode_secret HOS_SIGNING_CERTIFICATE "$certificate"
 decode_secret HOS_PROVISIONING_PROFILE "$profile"
 harmony_arguments=(--dev --encrypt-data --compile-lua --use-ldpak
     --sign --keystore "$keystore" --certificate "$certificate" --profile "$profile"
-    --key-alias "$HOS_ALIAS" --device-form mobile --graphics-api opengl-es)
+    --key-alias "$HOS_ALIAS")
 run_harmony_pack() {
     printf '%s\n%s\n' "$HOS_KEY_STORE_PASSWORD" "$HOS_KEY_PASSWORD" | \
         sh "$work/BuildTools/pack_harmony.sh" "$@" "${harmony_arguments[@]}" "$project" "$output"
@@ -30,6 +30,6 @@ run_harmony_pack --check
 run_harmony_pack
 
 haps=("$output"/*.hap)
-[[ ${#haps[@]} == 1 && -s "${haps[0]}" && "${haps[0]}" == *-harmony-mobile-signed.hap ]]
+[[ ${#haps[@]} == 1 && -s "${haps[0]}" && "${haps[0]}" == *-harmony-signed.hap ]]
 python3 "$ci" validate-hap "${haps[0]}" "$project"
-python3 "$ci" metadata "$project" "$output" harmony-mobile-arm64-v8a --artifact "${haps[0]}" --signed
+python3 "$ci" metadata "$project" "$output" harmony-arm64-v8a --artifact "${haps[0]}" --signed

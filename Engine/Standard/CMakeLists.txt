@@ -9,8 +9,17 @@ if(LUDORK_WITH_LUA)
         "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
     list(FILTER LUDORK_STANDARD_SOURCES EXCLUDE REGEX
         ".*/src/Runtime/ClassRuntime/.*\\.cpp$")
+    if(EMSCRIPTEN)
+        list(FILTER LUDORK_STANDARD_SOURCES EXCLUDE REGEX
+            ".*/src/Runtime/(EditorConsole|EditorLiveDebugImpl)\\.cpp$")
+    else()
+        list(FILTER LUDORK_STANDARD_SOURCES EXCLUDE REGEX
+            ".*/src/Runtime/EditorConsoleWeb\\.cpp$")
+    endif()
 else()
     set(LUDORK_STANDARD_SOURCES
+        src/Core/BackgroundTask.cpp
+        src/Core/PersistentStorage.cpp
         src/Core/Base64.cpp
         src/Core/Compression.cpp
         src/Core/DataFile.cpp
@@ -44,6 +53,9 @@ target_include_directories(LudorkStandard
     PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include"
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src")
 target_link_libraries(LudorkStandard PRIVATE Threads::Threads zlibstatic utf8proc)
+if(CMAKE_SYSTEM_NAME STREQUAL "OHOS")
+    target_link_libraries(LudorkStandard PUBLIC deviceinfo_ndk.z)
+endif()
 if(LUDORK_WITH_LUA)
     target_include_directories(LudorkStandard
         PUBLIC ${LUDORK_LUA_SOURCE_DIR}/src)

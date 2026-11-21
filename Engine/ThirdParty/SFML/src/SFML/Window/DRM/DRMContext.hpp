@@ -82,7 +82,7 @@ public:
     void setVerticalSyncEnabled(bool enabled) override;
 
     ////////////////////////////////////////////////////////////
-    void createContext(DRMContext* shared, const ContextSettings& settings);
+    void createContext(DRMContext* shared);
 
     ////////////////////////////////////////////////////////////
     void createSurface(Vector2u size, bool scanout);

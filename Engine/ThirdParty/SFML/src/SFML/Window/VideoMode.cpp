@@ -56,9 +56,9 @@ VideoMode VideoMode::getDesktopMode()
 const std::vector<VideoMode>& VideoMode::getFullscreenModes()
 {
 #ifdef SFML_SYSTEM_HARMONY
-    // Harmony display/surface dimensions are live lifecycle state. Do not let
-    // an early query permanently cache a fallback or an old primary-display
-    // mode while preserving references returned by earlier calls.
+    // The XComponent size is unavailable while the native DSO is being loaded
+    // and changes when the mobile surface rotates. Do not let an early query
+    // permanently cache the 1x1 fallback or a later query return an old size.
     return priv::Harmony::refreshFullscreenModes(priv::VideoModeImpl::getFullscreenModes());
 #else
     static const auto modes = []

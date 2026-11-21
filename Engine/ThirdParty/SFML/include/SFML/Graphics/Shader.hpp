@@ -31,9 +31,8 @@
 
 #include <SFML/Graphics/Glsl.hpp>
 
-#include <SFML/Window/GlResource.hpp>
-
 #include <filesystem>
+#include <memory>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -43,16 +42,25 @@
 
 namespace sf
 {
+
+namespace rhi
+{
+class ShaderProgram;
+enum class UniformType : unsigned char;
+} // namespace rhi
+namespace priv
+{
+class RhiAccess;
+}
+
 class InputStream;
-class RenderTarget;
 class Texture;
-class Transform;
 
 ////////////////////////////////////////////////////////////
 /// \brief Shader class (vertex, geometry and fragment)
 ///
 ////////////////////////////////////////////////////////////
-class SFML_GRAPHICS_API Shader : GlResource
+class SFML_GRAPHICS_API Shader
 {
 public:
     ////////////////////////////////////////////////////////////
@@ -130,14 +138,10 @@ public:
     ////////////////////////////////////////////////////////////
     /// \brief Construct from a shader file
     ///
-    /// This constructor loads a single vertex or fragment shader and
-    /// completes it with SFML's matching baseline stage. A geometry
-    /// shader must be loaded with both a vertex and fragment shader.
-    /// The source must be a text file containing a valid
-    /// shader in GLSL language. GLSL is a C-like language
-    /// dedicated to OpenGL shaders; you'll probably need to
-    /// read a good documentation for it before writing your
-    /// own shaders.
+    /// This constructor loads a single shader, vertex, geometry or
+    /// fragment, identified by the second argument.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param filename Path of the vertex, geometry or fragment shader file to load
     /// \param type     Type of shader (vertex, geometry or fragment)
@@ -155,10 +159,8 @@ public:
     /// This constructor loads both the vertex and the fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be text files containing valid shaders
-    /// in GLSL language. GLSL is a C-like language dedicated to
-    /// OpenGL shaders; you'll probably need to read a good documentation
-    /// for it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderFilename   Path of the vertex shader file to load
     /// \param fragmentShaderFilename Path of the fragment shader file to load
@@ -176,10 +178,8 @@ public:
     /// This constructor loads the vertex, geometry and fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be text files containing valid shaders
-    /// in GLSL language. GLSL is a C-like language dedicated to
-    /// OpenGL shaders; you'll probably need to read a good documentation
-    /// for it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderFilename   Path of the vertex shader file to load
     /// \param geometryShaderFilename Path of the geometry shader file to load
@@ -197,15 +197,12 @@ public:
     ////////////////////////////////////////////////////////////
     /// \brief Construct from shader in memory
     ///
-    /// This constructor loads a single vertex or fragment shader and
-    /// completes it with SFML's matching baseline stage. A geometry
-    /// shader must be loaded with both a vertex and fragment shader.
-    /// The source code must be a valid shader in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for
-    /// it before writing your own shaders.
+    /// This constructor loads a single shader, vertex, geometry
+    /// or fragment, identified by the second argument.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
-    /// \param shader String containing the source code of the shader
+    /// \param shader String view containing the source or bytecode of the shader
     /// \param type   Type of shader (vertex, geometry or fragment)
     ///
     /// \throws sf::Exception if loading was unsuccessful
@@ -221,13 +218,11 @@ public:
     /// This constructor loads both the vertex and the fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be valid shaders in GLSL language. GLSL is
-    /// a C-like language dedicated to OpenGL shaders; you'll
-    /// probably need to read a good documentation for it before
-    /// writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
-    /// \param vertexShader   String containing the source code of the vertex shader
-    /// \param fragmentShader String containing the source code of the fragment shader
+    /// \param vertexShader   String view containing the source or bytecode of the vertex shader
+    /// \param fragmentShader String view containing the source or bytecode of the fragment shader
     ///
     /// \throws sf::Exception if loading was unsuccessful
     ///
@@ -242,14 +237,12 @@ public:
     /// This constructor loads the vertex, geometry and fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be valid shaders in GLSL language. GLSL is
-    /// a C-like language dedicated to OpenGL shaders; you'll
-    /// probably need to read a good documentation for it before
-    /// writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
-    /// \param vertexShader   String containing the source code of the vertex shader
-    /// \param geometryShader String containing the source code of the geometry shader
-    /// \param fragmentShader String containing the source code of the fragment shader
+    /// \param vertexShader   String view containing the source or bytecode of the vertex shader
+    /// \param geometryShader String view containing the source or bytecode of the geometry shader
+    /// \param fragmentShader String view containing the source or bytecode of the fragment shader
     ///
     /// \throws sf::Exception if loading was unsuccessful
     ///
@@ -261,13 +254,10 @@ public:
     ////////////////////////////////////////////////////////////
     /// \brief Construct from a shader stream
     ///
-    /// This constructor loads a single vertex or fragment shader and
-    /// completes it with SFML's matching baseline stage. A geometry
-    /// shader must be loaded with both a vertex and fragment shader.
-    /// The source code must be a valid shader in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for it
-    /// before writing your own shaders.
+    /// This constructor loads a single shader, vertex, geometry
+    /// or fragment, identified by the second argument.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param stream Source stream to read from
     /// \param type   Type of shader (vertex, geometry or fragment)
@@ -285,10 +275,8 @@ public:
     /// This constructor loads both the vertex and the fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The source codes must be valid shaders in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for
-    /// it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderStream   Source stream to read the vertex shader from
     /// \param fragmentShaderStream Source stream to read the fragment shader from
@@ -306,10 +294,8 @@ public:
     /// This constructor loads the vertex, geometry and fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The source codes must be valid shaders in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for
-    /// it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderStream   Source stream to read the vertex shader from
     /// \param geometryShaderStream Source stream to read the geometry shader from
@@ -325,14 +311,10 @@ public:
     ////////////////////////////////////////////////////////////
     /// \brief Load the vertex, geometry or fragment shader from a file
     ///
-    /// This function loads a single vertex or fragment shader and
-    /// completes it with SFML's matching baseline stage. A geometry
-    /// shader must be loaded with both a vertex and fragment shader.
-    /// The source must be a text file containing a valid
-    /// shader in GLSL language. GLSL is a C-like language
-    /// dedicated to OpenGL shaders; you'll probably need to
-    /// read a good documentation for it before writing your
-    /// own shaders.
+    /// This function loads a single shader, vertex, geometry or
+    /// fragment, identified by the second argument.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param filename Path of the vertex, geometry or fragment shader file to load
     /// \param type     Type of shader (vertex, geometry or fragment)
@@ -350,10 +332,8 @@ public:
     /// This function loads both the vertex and the fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be text files containing valid shaders
-    /// in GLSL language. GLSL is a C-like language dedicated to
-    /// OpenGL shaders; you'll probably need to read a good documentation
-    /// for it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderFilename   Path of the vertex shader file to load
     /// \param fragmentShaderFilename Path of the fragment shader file to load
@@ -372,10 +352,8 @@ public:
     /// This function loads the vertex, geometry and fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be text files containing valid shaders
-    /// in GLSL language. GLSL is a C-like language dedicated to
-    /// OpenGL shaders; you'll probably need to read a good documentation
-    /// for it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderFilename   Path of the vertex shader file to load
     /// \param geometryShaderFilename Path of the geometry shader file to load
@@ -391,17 +369,14 @@ public:
                                     const std::filesystem::path& fragmentShaderFilename);
 
     ////////////////////////////////////////////////////////////
-    /// \brief Load the vertex, geometry or fragment shader from a source code in memory
+    /// \brief Load the vertex, geometry or fragment shader from source or bytecode in memory
     ///
-    /// This function loads a single vertex or fragment shader and
-    /// completes it with SFML's matching baseline stage. A geometry
-    /// shader must be loaded with both a vertex and fragment shader.
-    /// The source code must be a valid shader in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for
-    /// it before writing your own shaders.
+    /// This function loads a single shader, vertex, geometry
+    /// or fragment, identified by the second argument.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
-    /// \param shader String containing the source code of the shader
+    /// \param shader String view containing the source or bytecode of the shader
     /// \param type   Type of shader (vertex, geometry or fragment)
     ///
     /// \return `true` if loading succeeded, `false` if it failed
@@ -412,18 +387,16 @@ public:
     [[nodiscard]] bool loadFromMemory(std::string_view shader, Type type);
 
     ////////////////////////////////////////////////////////////
-    /// \brief Load both the vertex and fragment shaders from source codes in memory
+    /// \brief Load both the vertex and fragment shaders from sources or bytecode in memory
     ///
     /// This function loads both the vertex and the fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be valid shaders in GLSL language. GLSL is
-    /// a C-like language dedicated to OpenGL shaders; you'll
-    /// probably need to read a good documentation for it before
-    /// writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
-    /// \param vertexShader   String containing the source code of the vertex shader
-    /// \param fragmentShader String containing the source code of the fragment shader
+    /// \param vertexShader   String view containing the source or bytecode of the vertex shader
+    /// \param fragmentShader String view containing the source or bytecode of the fragment shader
     ///
     /// \return `true` if loading succeeded, `false` if it failed
     ///
@@ -433,19 +406,17 @@ public:
     [[nodiscard]] bool loadFromMemory(std::string_view vertexShader, std::string_view fragmentShader);
 
     ////////////////////////////////////////////////////////////
-    /// \brief Load the vertex, geometry and fragment shaders from source codes in memory
+    /// \brief Load the vertex, geometry and fragment shaders from sources or bytecode in memory
     ///
     /// This function loads the vertex, geometry and fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The sources must be valid shaders in GLSL language. GLSL is
-    /// a C-like language dedicated to OpenGL shaders; you'll
-    /// probably need to read a good documentation for it before
-    /// writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
-    /// \param vertexShader   String containing the source code of the vertex shader
-    /// \param geometryShader String containing the source code of the geometry shader
-    /// \param fragmentShader String containing the source code of the fragment shader
+    /// \param vertexShader   String view containing the source or bytecode of the vertex shader
+    /// \param geometryShader String view containing the source or bytecode of the geometry shader
+    /// \param fragmentShader String view containing the source or bytecode of the fragment shader
     ///
     /// \return `true` if loading succeeded, `false` if it failed
     ///
@@ -459,13 +430,10 @@ public:
     ////////////////////////////////////////////////////////////
     /// \brief Load the vertex, geometry or fragment shader from a custom stream
     ///
-    /// This function loads a single vertex or fragment shader and
-    /// completes it with SFML's matching baseline stage. A geometry
-    /// shader must be loaded with both a vertex and fragment shader.
-    /// The source code must be a valid shader in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for it
-    /// before writing your own shaders.
+    /// This function loads a single shader, vertex, geometry
+    /// or fragment, identified by the second argument.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param stream Source stream to read from
     /// \param type   Type of shader (vertex, geometry or fragment)
@@ -483,10 +451,8 @@ public:
     /// This function loads both the vertex and the fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The source codes must be valid shaders in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for
-    /// it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderStream   Source stream to read the vertex shader from
     /// \param fragmentShaderStream Source stream to read the fragment shader from
@@ -504,10 +470,8 @@ public:
     /// This function loads the vertex, geometry and fragment
     /// shaders. If one of them fails to load, the shader is left
     /// empty (the valid shader is unloaded).
-    /// The source codes must be valid shaders in GLSL language.
-    /// GLSL is a C-like language dedicated to OpenGL shaders;
-    /// you'll probably need to read a good documentation for
-    /// it before writing your own shaders.
+    /// Accepted formats depend on the selected graphics backend;
+    /// see the class documentation for source and binary requirements.
     ///
     /// \param vertexShaderStream   Source stream to read the vertex shader from
     /// \param geometryShaderStream Source stream to read the geometry shader from
@@ -526,28 +490,28 @@ public:
     /// \brief Specify value for \p float uniform
     ///
     /// \param name Name of the uniform variable in GLSL
-    /// \param x    Value of the float scalar
+    /// \param value    Value of the float scalar
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, float x);
+    void setUniform(const std::string& name, float value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p vec2 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the vec2 vector
+    /// \param value Value of the vec2 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, Glsl::Vec2 vector);
+    void setUniform(const std::string& name, Glsl::Vec2 value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p vec3 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the vec3 vector
+    /// \param value Value of the vec3 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Vec3& vector);
+    void setUniform(const std::string& name, const Glsl::Vec3& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p vec4 uniform
@@ -562,37 +526,37 @@ public:
     /// to a `vec4(1.0, 0.5, 0.0, 1.0)` in the shader.
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the vec4 vector
+    /// \param value Value of the vec4 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Vec4& vector);
+    void setUniform(const std::string& name, const Glsl::Vec4& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p int uniform
     ///
     /// \param name Name of the uniform variable in GLSL
-    /// \param x    Value of the int scalar
+    /// \param value    Value of the int scalar
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, int x);
+    void setUniform(const std::string& name, int value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p ivec2 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the ivec2 vector
+    /// \param value Value of the ivec2 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, Glsl::Ivec2 vector);
+    void setUniform(const std::string& name, Glsl::Ivec2 value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p ivec3 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the ivec3 vector
+    /// \param value Value of the ivec3 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Ivec3& vector);
+    void setUniform(const std::string& name, const Glsl::Ivec3& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p ivec4 uniform
@@ -606,64 +570,64 @@ public:
     /// mapped to `ivec4(255, 127, 0, 255)`.
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the ivec4 vector
+    /// \param value Value of the ivec4 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Ivec4& vector);
+    void setUniform(const std::string& name, const Glsl::Ivec4& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p bool uniform
     ///
     /// \param name Name of the uniform variable in GLSL
-    /// \param x    Value of the bool scalar
+    /// \param value    Value of the bool scalar
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, bool x);
+    void setUniform(const std::string& name, bool value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p bvec2 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the bvec2 vector
+    /// \param value Value of the bvec2 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, Glsl::Bvec2 vector);
+    void setUniform(const std::string& name, Glsl::Bvec2 value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p bvec3 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the bvec3 vector
+    /// \param value Value of the bvec3 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Bvec3& vector);
+    void setUniform(const std::string& name, const Glsl::Bvec3& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p bvec4 uniform
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param vector Value of the bvec4 vector
+    /// \param value Value of the bvec4 vector
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Bvec4& vector);
+    void setUniform(const std::string& name, const Glsl::Bvec4& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p mat3 matrix
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param matrix Value of the mat3 matrix
+    /// \param value Value of the mat3 matrix
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Mat3& matrix);
+    void setUniform(const std::string& name, const Glsl::Mat3& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify value for \p mat4 matrix
     ///
     /// \param name   Name of the uniform variable in GLSL
-    /// \param matrix Value of the mat4 matrix
+    /// \param value Value of the mat4 matrix
     ///
     ////////////////////////////////////////////////////////////
-    void setUniform(const std::string& name, const Glsl::Mat4& matrix);
+    void setUniform(const std::string& name, const Glsl::Mat4& value);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify a texture as \p sampler2D uniform
@@ -730,61 +694,61 @@ public:
     /// \brief Specify values for \p float[] array uniform
     ///
     /// \param name        Name of the uniform variable in GLSL
-    /// \param scalarArray pointer to array of \p float values
+    /// \param values pointer to array of \p float values
     /// \param length      Number of elements in the array
     ///
     ////////////////////////////////////////////////////////////
-    void setUniformArray(const std::string& name, const float* scalarArray, std::size_t length);
+    void setUniformArray(const std::string& name, const float* values, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify values for \p vec2[] array uniform
     ///
     /// \param name        Name of the uniform variable in GLSL
-    /// \param vectorArray pointer to array of \p vec2 values
+    /// \param values pointer to array of \p vec2 values
     /// \param length      Number of elements in the array
     ///
     ////////////////////////////////////////////////////////////
-    void setUniformArray(const std::string& name, const Glsl::Vec2* vectorArray, std::size_t length);
+    void setUniformArray(const std::string& name, const Glsl::Vec2* values, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify values for \p vec3[] array uniform
     ///
     /// \param name        Name of the uniform variable in GLSL
-    /// \param vectorArray pointer to array of \p vec3 values
+    /// \param values pointer to array of \p vec3 values
     /// \param length      Number of elements in the array
     ///
     ////////////////////////////////////////////////////////////
-    void setUniformArray(const std::string& name, const Glsl::Vec3* vectorArray, std::size_t length);
+    void setUniformArray(const std::string& name, const Glsl::Vec3* values, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify values for \p vec4[] array uniform
     ///
     /// \param name        Name of the uniform variable in GLSL
-    /// \param vectorArray pointer to array of \p vec4 values
+    /// \param values pointer to array of \p vec4 values
     /// \param length      Number of elements in the array
     ///
     ////////////////////////////////////////////////////////////
-    void setUniformArray(const std::string& name, const Glsl::Vec4* vectorArray, std::size_t length);
+    void setUniformArray(const std::string& name, const Glsl::Vec4* values, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify values for \p mat3[] array uniform
     ///
     /// \param name        Name of the uniform variable in GLSL
-    /// \param matrixArray pointer to array of \p mat3 values
+    /// \param values pointer to array of \p mat3 values
     /// \param length      Number of elements in the array
     ///
     ////////////////////////////////////////////////////////////
-    void setUniformArray(const std::string& name, const Glsl::Mat3* matrixArray, std::size_t length);
+    void setUniformArray(const std::string& name, const Glsl::Mat3* values, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Specify values for \p mat4[] array uniform
     ///
     /// \param name        Name of the uniform variable in GLSL
-    /// \param matrixArray pointer to array of \p mat4 values
+    /// \param values pointer to array of \p mat4 values
     /// \param length      Number of elements in the array
     ///
     ////////////////////////////////////////////////////////////
-    void setUniformArray(const std::string& name, const Glsl::Mat4* matrixArray, std::size_t length);
+    void setUniformArray(const std::string& name, const Glsl::Mat4* values, std::size_t length);
 
     ////////////////////////////////////////////////////////////
     /// \brief Get the underlying OpenGL handle of the shader.
@@ -794,6 +758,7 @@ public:
     /// or implement a temporary workaround until a bug is fixed.
     ///
     /// \return OpenGL handle of the shader or 0 if not yet loaded
+    /// Returns zero when the resource belongs to a non-OpenGL backend.
     ///
     ////////////////////////////////////////////////////////////
     [[nodiscard]] unsigned int getNativeHandle() const;
@@ -853,93 +818,12 @@ public:
     [[nodiscard]] static bool isGeometryAvailable();
 
 private:
-    friend class RenderTarget;
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Get the built-in GLSL 1.10 / ESSL 1.00 shader sources
-    ///
-    /// These shaders implement the standard SFML vertex/color/texture
-    /// pipeline and are also used to complete single-stage shaders.
-    ///
-    ////////////////////////////////////////////////////////////
-    [[nodiscard]] static std::string_view getDefaultVertexShaderSource();
-    [[nodiscard]] static std::string_view getDefaultFragmentShaderSource();
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Bind the shader and upload SFML's per-draw state
-    ///
-    /// \param modelView      Model-view matrix
-    /// \param projection     Projection matrix
-    /// \param textureMatrix  Texture coordinate transform
-    /// \param textureEnabled Whether the current draw uses a texture
-    ///
-    ////////////////////////////////////////////////////////////
-    void bindForDraw(const Transform& modelView, const Transform& projection, const float* textureMatrix, bool textureEnabled) const;
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Compile the shader(s) and create the program
-    ///
-    /// A missing baseline vertex or fragment stage is completed with
-    /// SFML's built-in stage. Geometry shaders require all three stages.
-    ///
-    /// \param vertexShaderCode   Source code of the vertex shader
-    /// \param geometryShaderCode Source code of the geometry shader
-    /// \param fragmentShaderCode Source code of the fragment shader
-    ///
-    /// \return `true` on success, `false` if any error happened
-    ///
-    ////////////////////////////////////////////////////////////
-    [[nodiscard]] bool compile(std::string_view vertexShaderCode,
-                               std::string_view geometryShaderCode,
-                               std::string_view fragmentShaderCode);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Bind all the textures used by the shader
-    ///
-    /// This function each texture to a different unit, and
-    /// updates the corresponding variables in the shader accordingly.
-    ///
-    ////////////////////////////////////////////////////////////
-    void bindTextures() const;
-
-    ////////////////////////////////////////////////////////////
-    /// \brief Get the location ID of a shader uniform
-    ///
-    /// \param name Name of the uniform variable to search
-    ///
-    /// \return Location ID of the uniform, or -1 if not found
-    ///
-    ////////////////////////////////////////////////////////////
-    int getUniformLocation(const std::string& name);
-
-    ////////////////////////////////////////////////////////////
-    /// \brief RAII object to save and restore the program
-    ///        binding while uniforms are being set
-    ///
-    /// Implementation is private in the .cpp file.
-    ///
-    ////////////////////////////////////////////////////////////
-    struct UniformBinder;
-
-    ////////////////////////////////////////////////////////////
-    // Types
-    ////////////////////////////////////////////////////////////
-    using TextureTable = std::unordered_map<int, const Texture*>;
-    using UniformTable = std::unordered_map<std::string, int>;
-
-    ////////////////////////////////////////////////////////////
-    // Member data
-    ////////////////////////////////////////////////////////////
-    unsigned int m_shaderProgram{};    //!< OpenGL identifier for the program
-    int          m_currentTexture{-1}; //!< Location of the current texture in the shader
-    int          m_modelViewMatrix{-1};
-    int          m_projectionMatrix{-1};
-    int          m_modelViewProjectionMatrix{-1};
-    int          m_textureMatrix{-1};
-    int          m_textureEnabled{-1};
-    int          m_defaultTexture{-1};
-    TextureTable m_textures; //!< Texture variables in the shader, mapped to their location
-    UniformTable m_uniforms; //!< Parameters location cache
+    friend class priv::RhiAccess;
+    void setUniformData(const std::string& name, rhi::UniformType type, const void* values, std::size_t count);
+    [[nodiscard]] bool compile(std::string_view vertex, std::string_view geometry, std::string_view fragment);
+    void               refreshSamplers() const;
+    std::shared_ptr<rhi::ShaderProgram>             m_resource;
+    std::unordered_map<std::string, const Texture*> m_samplers;
 };
 
 } // namespace sf
@@ -958,23 +842,33 @@ private:
 /// \li Geometry shaders, that process primitives
 /// \li Fragment (pixel) shaders, that process pixels
 ///
-/// A `sf::Shader` can be composed of a vertex shader, a fragment
-/// shader, both stages, or a complete vertex + geometry + fragment
-/// program. A single baseline vertex or fragment shader is completed
-/// with SFML's matching built-in stage. A geometry shader cannot be
-/// loaded on its own.
+/// A `sf::Shader` can be composed of either a vertex shader
+/// alone, a geometry shader alone, a fragment shader alone,
+/// or any combination of them. (see the variants of the
+/// load functions).
 ///
-/// SFML vertex data and per-draw matrices use the following GLSL
-/// contract:
-/// \li attributes `sf_Vertex`, `sf_Color`, `sf_MultiTexCoord0`
-/// \li uniforms `sf_ModelViewMatrix`, `sf_ProjectionMatrix`,
-///     `sf_ModelViewProjectionMatrix`, `sf_TextureMatrix`
-/// \li varyings `sf_FrontColor`, `sf_TexCoord0`
+/// The constructors and load functions accept the following formats:
+/// \li OpenGL/OpenGL ES: GLSL source text.
+/// \li Vulkan: binary SPIR-V compatible with the selected API version.
+/// \li DirectX (Direct3D 11): HLSL source text or precompiled DXBC bytecode.
+/// DXBC is recognized by its binary header, independently of file extension,
+/// and bypasses HLSL compilation. Retain reflection metadata for uniforms,
+/// resources and stage signatures; d3dcompiler_47.dll is required for reflection.
+/// Bytecode must target a shader model supported by the selected feature level.
+/// Different stages may mix HLSL source and DXBC. DXIL is not supported.
+/// \li Metal (macOS and iOS): MSL source text or a precompiled metallib.
+/// A metallib is recognized by its binary header and must be built for the
+/// running platform (macOS, iOS device and iOS simulator differ). The entry
+/// point is the function named main0 of the matching stage, or the only
+/// function of that stage. Geometry shaders are not supported.
 ///
-/// Shaders are written in GLSL, which is a C-like
-/// language dedicated to OpenGL shaders. You'll probably
-/// need to learn its basics before writing your own shaders
-/// for SFML.
+/// For binary data passed to loadFromMemory, construct the std::string_view
+/// with an explicit byte length so embedded zero bytes are preserved.
+/// SPIR-V, DXBC and metallib are intermediate bytecode; driver compilation may
+/// still occur. Vulkan and Metal driver pipeline caches can be imported and
+/// exported through sf::loadPipelineCacheFromMemory and sf::getPipelineCacheData.
+/// These caches supplement shader bytecode and are shared by all shaders on the
+/// device. Direct3D 11 driver caches are managed by the OS/driver.
 ///
 /// Like any C/C++ program, a GLSL shader has its own variables
 /// called _uniforms_ that you can set from your C++ application.

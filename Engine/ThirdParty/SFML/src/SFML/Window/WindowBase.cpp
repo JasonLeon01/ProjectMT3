@@ -84,21 +84,11 @@ WindowBase& WindowBase::operator=(WindowBase&&) noexcept = default;
 ////////////////////////////////////////////////////////////
 void WindowBase::create(VideoMode mode, const String& title, std::uint32_t style, State state)
 {
-    // Recreate the window implementation
-    m_impl = priv::WindowImpl::create(mode,
-                                      title,
-                                      style,
-                                      state,
-                                      ContextSettings{/* depthBits */ 0,
-                                                      /* stencilBits */ 0,
-                                                      /* antiAliasingLevel */ 0,
-                                                      /* majorVersion */ 0,
-                                                      /* minorVersion */ 0,
-                                                      /* attributeFlags */ 0xFFFFFFFF,
-                                                      /* sRgbCapable */ false});
+    close();
+    m_impl = priv::WindowImpl::create(mode, title, style, state, ContextSettings{});
 
-    // Perform common initializations
-    initialize();
+    if (m_impl)
+        initialize();
 }
 
 
@@ -118,8 +108,8 @@ void WindowBase::create(WindowHandle handle)
     // Recreate the window implementation
     m_impl = priv::WindowImpl::create(handle);
 
-    // Perform common initializations
-    initialize();
+    if (m_impl)
+        initialize();
 }
 
 
@@ -214,17 +204,7 @@ void WindowBase::setSize(Vector2u size)
         m_impl->setSize(clampedSize);
 
         // Cache the new size
-#if defined(SFML_HARMONY_2IN1)
-        // Harmony window commands are acknowledged with the actual client
-        // size after platform constraints have been applied. Never overwrite
-        // that confirmed value with the original request.
-        const Vector2u actualSize = m_impl->getSize();
-        if (actualSize == m_size)
-            return;
-        m_size = actualSize;
-#else
         m_size = clampedSize;
-#endif
 
         // Notify the derived class
         onResize();
@@ -353,13 +333,6 @@ bool WindowBase::hasFocus() const
 WindowHandle WindowBase::getNativeHandle() const
 {
     return m_impl ? m_impl->getNativeHandle() : WindowHandle{};
-}
-
-
-////////////////////////////////////////////////////////////
-bool WindowBase::createVulkanSurface(const VkInstance& instance, VkSurfaceKHR& surface, const VkAllocationCallbacks* allocator)
-{
-    return m_impl ? m_impl->createVulkanSurface(instance, surface, allocator) : false;
 }
 
 

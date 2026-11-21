@@ -33,8 +33,7 @@
 
 #ifdef SFML_OPENGL_ES
 
-// OpenGL ES 2.0 is SFML's required baseline. All rendering entry points
-// below are core in ES 2.0 unless explicitly marked optional.
+// OpenGL ES 3.0 is the graphics backend baseline.
 #define GLEXT_multitexture    SF_GLAD_GL_ES_VERSION_2_0
 #define GLEXT_glActiveTexture glActiveTexture
 #define GLEXT_GL_TEXTURE0     GL_TEXTURE0
@@ -134,19 +133,20 @@
 
 #define GLEXT_framebuffer_sRGB false
 
-#define GLEXT_blend_minmax SF_GLAD_GL_EXT_blend_minmax
-#define GLEXT_GL_MIN       GL_MIN_EXT
-#define GLEXT_GL_MAX       GL_MAX_EXT
+#define GLEXT_blend_minmax SF_GLAD_GL_ES_VERSION_3_0
+#define GLEXT_GL_MIN       GL_MIN
+#define GLEXT_GL_MAX       GL_MAX
 
-#define GLEXT_blend_minmax_dependencies SF_GLAD_GL_EXT_blend_minmax, glBlendEquation
+#define GLEXT_blend_minmax_dependencies SF_GLAD_GL_ES_VERSION_3_0, glBlendEquation
 
 #define GLEXT_blend_equation (GLEXT_blend_minmax || GLEXT_blend_subtract)
 
 #else
 
 // OpenGL 2.0 is SFML's required desktop baseline.
-#define GLEXT_GL_DEPTH_COMPONENT GL_DEPTH_COMPONENT
-#define GLEXT_GL_CLAMP           GL_CLAMP
+#define GLEXT_GL_DEPTH_COMPONENT    GL_DEPTH_COMPONENT
+#define GLEXT_glClientActiveTexture glClientActiveTexture
+#define GLEXT_GL_CLAMP              GL_CLAMP
 
 // The following extensions are listed chronologically
 // Extension macro first, followed by tokens then
@@ -155,15 +155,15 @@
 // The following extensions are optional.
 
 // Core in the required OpenGL 2.0 baseline
-#define GLEXT_texture_edge_clamp true
-#define GLEXT_GL_CLAMP_TO_EDGE   GL_CLAMP_TO_EDGE
+#define GLEXT_texture_edge_clamp    true
+#define GLEXT_GL_CLAMP_TO_EDGE      GL_CLAMP_TO_EDGE
 
 // Core in the required OpenGL 2.0 baseline
-#define GLEXT_blend_minmax       SF_GLAD_GL_VERSION_2_0
-#define GLEXT_glBlendEquation    glBlendEquation
-#define GLEXT_GL_FUNC_ADD        GL_FUNC_ADD
-#define GLEXT_GL_MIN             GL_MIN
-#define GLEXT_GL_MAX             GL_MAX
+#define GLEXT_blend_minmax          SF_GLAD_GL_VERSION_2_0
+#define GLEXT_glBlendEquation       glBlendEquation
+#define GLEXT_GL_FUNC_ADD           GL_FUNC_ADD
+#define GLEXT_GL_MIN                GL_MIN
+#define GLEXT_GL_MAX                GL_MAX
 
 #define GLEXT_blend_minmax_dependencies SF_GLAD_GL_VERSION_2_0, glBlendEquation
 
@@ -257,8 +257,9 @@
         glFramebufferRenderbuffer, glGenerateMipmap
 
 // Core since 3.0 - EXT_packed_depth_stencil
-#define GLEXT_packed_depth_stencil (SF_GLAD_GL_VERSION_3_0 || SF_GLAD_GL_EXT_packed_depth_stencil)
-#define GLEXT_GL_DEPTH24_STENCIL8  GL_DEPTH24_STENCIL8
+#define GLEXT_packed_depth_stencil \
+    (SF_GLAD_GL_VERSION_3_0 || SF_GLAD_GL_ARB_framebuffer_object || SF_GLAD_GL_EXT_packed_depth_stencil)
+#define GLEXT_GL_DEPTH24_STENCIL8 GL_DEPTH24_STENCIL8
 
 // Core since 3.0 - EXT_framebuffer_blit
 #define GLEXT_framebuffer_blit \

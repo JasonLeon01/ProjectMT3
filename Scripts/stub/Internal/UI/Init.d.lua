@@ -2,9 +2,10 @@
 ---@meta Internal.UI.Init
 
 ---@class Internal.UIBase.GeneratedControls.Init
----@field Background  Engine.Image
----@field ProgressBar Engine.ProgressBar
----@field Root        Engine.Canvas
+---@field Background    Engine.Image
+---@field OperationText Engine.PlainText
+---@field ProgressBar   Engine.ProgressBar
+---@field Root          Engine.Canvas
 
 ---@class Internal.UIBase.GeneratedAssets.Init
 

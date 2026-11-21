@@ -1,5 +1,6 @@
 #include "Network/bind_TcpListener.hpp"
 
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
 #include <algorithm>
 #include <array>
 #include <string_view>
@@ -96,3 +97,4 @@ void bind_TcpListener(lua_glue::StateView lua) {
         docs[7]
     );
 }
+#endif

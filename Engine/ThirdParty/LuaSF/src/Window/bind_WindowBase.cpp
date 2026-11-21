@@ -11,7 +11,7 @@
 #include <utility>
 #include <vector>
 
-namespace { constexpr std::array<std::string_view, 29> docs = {
+namespace { constexpr std::array<std::string_view, 31> docs = {
     "\\brief Window that serves as a base for other windows",
     "\\brief Default constructor\n\nThis constructor doesn't actually create the window,\nuse the other constructors or call `create()` to do so.",
     "\\brief Construct a new window\n\nThis constructor creates the window with the size and pixel\ndepth defined in `mode`. An optional style can be passed to\ncustomize the look and behavior of the window (borders,\ntitle bar, resizable, closable, ...). An optional state can\nbe provided. If `state` is `State::Fullscreen`, then `mode`\nmust be a valid video mode.\n\n\\param mode  Video mode to use (defines the width, height and depth of the rendering area of the window)\n\\param title Title of the window\n\\param style %Window style, a bitwise OR combination of `sf::Style` enumerators\n\\param state %Window state",
@@ -41,10 +41,13 @@ namespace { constexpr std::array<std::string_view, 29> docs = {
     "\\brief Request the current window to be made the active\nforeground window\n\nAt any given time, only one window may have the input focus\nto receive input events such as keystrokes or mouse events.\nIf a window requests focus, it only hints to the operating\nsystem, that it would like to be focused. The operating system\nis free to deny the request.\nThis is not to be confused with `setActive()`.\n\n\\see `hasFocus`",
     "\\brief Check whether the window has the input focus\n\nAt any given time, only one window may have the input focus\nto receive input events such as keystrokes or most mouse\nevents.\n\n\\return `true` if window has focus, `false` otherwise\n\\see `requestFocus`",
     "\\brief Get the OS-specific handle of the window\n\nThe type of the returned handle is `sf::WindowHandle`,\nwhich is a type alias to the handle type defined by the OS.\nYou shouldn't need to use this function, unless you have\nvery specific stuff to implement that SFML doesn't support,\nor implement a temporary workaround until a bug is fixed.\n\n\\return System handle of the window",
+    "\\brief Function called after the window has been created\n\nThis function is called so that derived classes can\nperform their own specific initialization as soon as\nthe window is created.",
+    "\\brief Function called after the window has been resized\n\nThis function is called so that derived classes can\nperform custom actions when the size of the window changes.",
 }; }
 
 void bind_WindowBase(lua_glue::StateView lua) {
     lua_glue::Table sf = lua_sf::sf_table(lua);
+    // Skipped namespace priv by generator policy.
     // Skipped namespace priv by generator policy.
     auto type_sf__WindowBase = lua_glue::BindClass<sf::WindowBase>(sf, "WindowBase");
     lua_glue::Table table_sf__WindowBase = sf["WindowBase"].get<lua_glue::Table>();
@@ -293,5 +296,20 @@ void bind_WindowBase(lua_glue::StateView lua) {
         },
         docs[28]
     );
-    // Skipped sf::WindowBase::createVulkanSurface(const VkInstance &, VkSurfaceKHR &, const VkAllocationCallbacks *): unsupported parameter type const VkInstance&.
+    LUASF_STUB_DOC(docs[29]);
+    LUASF_STUB_FUNCTION("sf.WindowBase", "onCreate", "fun(self: sf.WindowBase)");
+    lua_glue::BindCallable(type_sf__WindowBase, "onCreate",
+        [](sf::WindowBase& self) {
+            self.onCreate();
+        },
+        docs[29]
+    );
+    LUASF_STUB_DOC(docs[30]);
+    LUASF_STUB_FUNCTION("sf.WindowBase", "onResize", "fun(self: sf.WindowBase)");
+    lua_glue::BindCallable(type_sf__WindowBase, "onResize",
+        [](sf::WindowBase& self) {
+            self.onResize();
+        },
+        docs[30]
+    );
 }

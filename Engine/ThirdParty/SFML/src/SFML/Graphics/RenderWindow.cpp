@@ -25,13 +25,15 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/GLCheck.hpp>
-#include <SFML/Graphics/GLExtensions.hpp>
+#include <SFML/Graphics/GraphicsDevice.hpp>
 #include <SFML/Graphics/Image.hpp>
-#include <SFML/Graphics/RenderTextureImplFBO.hpp>
+#include <SFML/Graphics/RHI/Access.hpp>
+#include <SFML/Graphics/RenderTargetBackend.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <SFML/Window/VideoMode.hpp>
+#include <SFML/Window/WindowImpl.hpp>
+#include <SFML/Window/WindowSurface.hpp>
 
 
 namespace sf
@@ -40,7 +42,7 @@ namespace sf
 RenderWindow::RenderWindow(VideoMode mode, const String& title, std::uint32_t style, State state, const ContextSettings& settings)
 {
     // Don't call the base class constructor because it contains virtual function calls
-    Window::create(mode, title, style, state, settings);
+    create(mode, title, style, state, settings);
 }
 
 
@@ -48,7 +50,7 @@ RenderWindow::RenderWindow(VideoMode mode, const String& title, std::uint32_t st
 RenderWindow::RenderWindow(VideoMode mode, const String& title, State state, const ContextSettings& settings)
 {
     // Don't call the base class constructor because it contains virtual function calls
-    Window::create(mode, title, sf::Style::Default, state, settings);
+    create(mode, title, sf::Style::Default, state, settings);
 }
 
 
@@ -56,7 +58,46 @@ RenderWindow::RenderWindow(VideoMode mode, const String& title, State state, con
 RenderWindow::RenderWindow(WindowHandle handle, const ContextSettings& settings)
 {
     // Don't call the base class constructor because it contains virtual function calls
-    Window::create(handle, settings);
+    create(handle, settings);
+}
+
+
+////////////////////////////////////////////////////////////
+void RenderWindow::create(VideoMode mode, const String& title, std::uint32_t style, State state, const ContextSettings& settings)
+{
+    (void)priv::withGraphicsDevice(settings,
+                                   [&](const priv::GraphicsDevice&, const ContextSettings& effective)
+                                   {
+                                       Window::create(mode, title, style, state, effective);
+                                       return isOpen();
+                                   });
+}
+
+void RenderWindow::create(WindowHandle handle, const ContextSettings& settings)
+{
+    (void)priv::withGraphicsDevice(settings,
+                                   [&](const priv::GraphicsDevice&, const ContextSettings& effective)
+                                   {
+                                       Window::create(handle, effective);
+                                       return isOpen();
+                                   });
+}
+
+void RenderWindow::close()
+{
+    m_backend.reset();
+    Window::close();
+}
+
+std::unique_ptr<priv::WindowSurface> RenderWindow::createSurface(const ContextSettings&  settings,
+                                                                 const priv::WindowImpl& owner,
+                                                                 unsigned int            bitsPerPixel)
+{
+    const auto* device = priv::getGraphicsDevice();
+    if (!device)
+        return {};
+    auto surface = static_cast<priv::DeviceResource&>(*device->device).createSurface(owner, bitsPerPixel, settings);
+    return surface ? std::make_unique<priv::GraphicsWindowSurface>(std::move(surface)) : nullptr;
 }
 
 
@@ -84,36 +125,15 @@ bool RenderWindow::isSrgb() const
 ////////////////////////////////////////////////////////////
 bool RenderWindow::setActive(bool active)
 {
-    bool result = Window::setActive(active);
-
-    // Update RenderTarget tracking
-    if (result)
-        result = RenderTarget::setActive(active);
-
-    // If FBOs are available, make sure none are bound when we
-    // try to draw to the default framebuffer of the RenderWindow
-    if (active && result && priv::RenderTextureImplFBO::isAvailable())
-    {
-        glCheck(GLEXT_glBindFramebuffer(GLEXT_GL_FRAMEBUFFER, m_defaultFrameBuffer));
-
-        return true;
-    }
-
-    return result;
+    return Window::setActive(active) && RenderTarget::setActive(active);
 }
 
 
 ////////////////////////////////////////////////////////////
 void RenderWindow::onCreate()
 {
-    if (priv::RenderTextureImplFBO::isAvailable())
-    {
-        // Retrieve the framebuffer ID we have to bind when targeting the window for rendering
-        // We assume that this window's context is still active at this point
-        glCheck(glGetIntegerv(GLEXT_GL_FRAMEBUFFER_BINDING, reinterpret_cast<GLint*>(&m_defaultFrameBuffer)));
-    }
-
-    // Just initialize the render target part
+    if (auto* surface = priv::resourceCast<priv::GraphicsWindowSurface>(getSurface()))
+        m_backend = std::static_pointer_cast<priv::RenderTargetBackend>(surface->surface->getRenderTarget());
     RenderTarget::initialize();
 }
 
@@ -121,7 +141,8 @@ void RenderWindow::onCreate()
 ////////////////////////////////////////////////////////////
 void RenderWindow::onResize()
 {
-    // Update the current view (recompute the viewport, which is stored in relative coordinates)
+    if (auto* surface = priv::resourceCast<priv::GraphicsWindowSurface>(getSurface()))
+        surface->surface->resize(getSize());
     setView(getView());
 }
 

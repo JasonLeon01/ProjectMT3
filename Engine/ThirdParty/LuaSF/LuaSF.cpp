@@ -45,6 +45,7 @@ extern "C" {
 #include "Graphics/bind_BlendMode.hpp"
 #include "Graphics/bind_Color.hpp"
 #include "Graphics/bind_CoordinateType.hpp"
+#include "Graphics/bind_GraphicsBackend.hpp"
 #include "Graphics/bind_Image.hpp"
 #include "Graphics/bind_PrimitiveType.hpp"
 #include "Graphics/bind_Rect.hpp"
@@ -145,6 +146,7 @@ extern "C" LUASF_API int LuaSF_register(lua_State* state)
     bind_BlendMode(lua);
     bind_Color(lua);
     bind_CoordinateType(lua);
+    bind_GraphicsBackend(lua);
     bind_Image(lua);
     bind_PrimitiveType(lua);
     bind_Rect(lua);
@@ -193,7 +195,9 @@ extern "C" LUASF_API int LuaSF_register(lua_State* state)
     bind_Sftp(lua);
     bind_Socket(lua);
     bind_SocketSelector(lua);
+#if !defined(SFML_SYSTEM_EMSCRIPTEN)
     bind_TcpListener(lua);
+#endif
     bind_TcpSocket(lua);
     bind_UdpSocket(lua);
 

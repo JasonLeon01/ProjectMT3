@@ -29,6 +29,7 @@
 #include <SFML/Window/VulkanImpl.hpp>
 
 #include <dlfcn.h>
+#include <mutex>
 #include <string_view>
 #include <vector>
 
@@ -43,12 +44,6 @@ namespace
 {
 struct VulkanLibraryWrapper
 {
-    ~VulkanLibraryWrapper()
-    {
-        if (library)
-            dlclose(library);
-    }
-
     // Try to load the library and all the required entry points
     bool loadLibrary()
     {
@@ -108,53 +103,52 @@ namespace sf::priv
 ////////////////////////////////////////////////////////////
 bool VulkanImpl::isAvailable(bool requireGraphics)
 {
-    static bool checked           = false;
-    static bool computeAvailable  = false;
-    static bool graphicsAvailable = false;
+    static std::once_flag checked;
+    static bool           computeAvailable{};
+    static bool           graphicsAvailable{};
 
-    if (!checked)
-    {
-        checked = true;
+    std::call_once(checked,
+                   []
+                   {
+                       // Check if the library is available
+                       computeAvailable = wrapper.loadLibrary();
 
-        // Check if the library is available
-        computeAvailable = wrapper.loadLibrary();
+                       // To check for instance extensions we don't need to differentiate between graphics and compute
+                       graphicsAvailable = computeAvailable;
 
-        // To check for instance extensions we don't need to differentiate between graphics and compute
-        graphicsAvailable = computeAvailable;
+                       if (graphicsAvailable)
+                       {
+                           // Retrieve the available instance extensions
+                           std::vector<VkExtensionProperties> extensionProperties;
 
-        if (graphicsAvailable)
-        {
-            // Retrieve the available instance extensions
-            std::vector<VkExtensionProperties> extensionProperties;
+                           std::uint32_t extensionCount = 0;
 
-            std::uint32_t extensionCount = 0;
+                           wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
 
-            wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+                           extensionProperties.resize(extensionCount);
 
-            extensionProperties.resize(extensionCount);
+                           wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionProperties.data());
 
-            wrapper.vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, extensionProperties.data());
+                           // Check if the necessary extensions are available
+                           bool hasVkKhrSurface         = false;
+                           bool hasVkKhrPlatformSurface = false;
 
-            // Check if the necessary extensions are available
-            bool hasVkKhrSurface         = false;
-            bool hasVkKhrPlatformSurface = false;
+                           for (const VkExtensionProperties& properties : extensionProperties)
+                           {
+                               if (std::string_view(properties.extensionName) == VK_KHR_SURFACE_EXTENSION_NAME)
+                               {
+                                   hasVkKhrSurface = true;
+                               }
+                               else if (std::string_view(properties.extensionName) == VK_KHR_XLIB_SURFACE_EXTENSION_NAME)
+                               {
+                                   hasVkKhrPlatformSurface = true;
+                               }
+                           }
 
-            for (const VkExtensionProperties& properties : extensionProperties)
-            {
-                if (std::string_view(properties.extensionName) == VK_KHR_SURFACE_EXTENSION_NAME)
-                {
-                    hasVkKhrSurface = true;
-                }
-                else if (std::string_view(properties.extensionName) == VK_KHR_XLIB_SURFACE_EXTENSION_NAME)
-                {
-                    hasVkKhrPlatformSurface = true;
-                }
-            }
-
-            if (!hasVkKhrSurface || !hasVkKhrPlatformSurface)
-                graphicsAvailable = false;
-        }
-    }
+                           if (!hasVkKhrSurface || !hasVkKhrPlatformSurface)
+                               graphicsAvailable = false;
+                       }
+                   });
 
     if (requireGraphics)
         return graphicsAvailable;

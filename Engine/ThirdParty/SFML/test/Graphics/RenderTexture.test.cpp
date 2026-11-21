@@ -1,3 +1,4 @@
+#include <SFML/Graphics/GraphicsBackend.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 
 // Other 1st party headers
@@ -5,6 +6,7 @@
 
 #include <catch2/catch_test_macros.hpp>
 
+#include <GraphicsUtil.hpp>
 #include <WindowUtil.hpp>
 #include <type_traits>
 
@@ -46,7 +48,7 @@ TEST_CASE("[Graphics] sf::RenderTexture", runDisplayTests())
             CHECK(!texture.isSmooth());
             CHECK(!texture.isSrgb());
             CHECK(!texture.isRepeated());
-            CHECK(texture.getNativeHandle() != 0);
+            CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }
     }
 
@@ -69,7 +71,7 @@ TEST_CASE("[Graphics] sf::RenderTexture", runDisplayTests())
         CHECK(!texture.isSmooth());
         CHECK(!texture.isSrgb());
         CHECK(!texture.isRepeated());
-        CHECK(texture.getNativeHandle() != 0);
+        CHECK((texture.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
     }
 
     SECTION("sRGB capability matches the target texture")

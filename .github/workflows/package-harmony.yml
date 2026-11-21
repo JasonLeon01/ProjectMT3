@@ -162,7 +162,7 @@ jobs:
         with:
           name: ProjectMT3-hos-arm64-v8a-${{ needs.check.outputs.project_sha }}
           path: |
-            ${{ runner.temp }}/projectmt3-harmony-package/*-harmony-mobile-signed.hap
+            ${{ runner.temp }}/projectmt3-harmony-package/*-harmony-signed.hap
             ${{ runner.temp }}/projectmt3-harmony-package/build-info.json
           if-no-files-found: error
           compression-level: 0

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shared by Android, HarmonyOS, macOS and iOS; writable paths are CI-local.
+# Shared by Android, HarmonyOS, macOS, iOS and WebGL; writable paths are CI-local.
 set -euo pipefail
 
 require_environment() {
@@ -15,7 +15,7 @@ require_environment() {
 cleanup_package_work() {
     local platform=$1 work keychain status=0 file marker
     [[ "${GITHUB_ACTIONS:-}" == true && -n "${RUNNER_TEMP:-}" ]]
-    case "$platform" in android|harmony|macos|ios) ;; *) return 1 ;; esac
+    case "$platform" in android|harmony|macos|ios|webgl) ;; *) return 1 ;; esac
     work="$RUNNER_TEMP/projectmt3-$platform-work"
     [[ ! -L "$work" ]]
     # Also called by the workflow's always() step after shell interruption.

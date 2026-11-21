@@ -38,8 +38,8 @@ function Scene:onCreate()
             function (reason)
                 self:_onSaveLoadClose(reason)
             end,
-            function (inst)
-                self:_onSaveLoadLoaded(inst)
+            function (inst, cue)
+                self:_onSaveLoadLoaded(inst, cue)
             end
         )
         window:mount(assert(self:getUIManager()))
@@ -71,13 +71,16 @@ function Scene:onCreate()
 end
 
 function Scene:onQuit()
+    if self._mapEntryTask ~= nil then
+        asyncio.cancel_task(self._mapEntryTask)
+        self._mapEntryTask = nil
+    end
     ManagerFunctions.stopMusic("BGM")
     self._titleBGM = nil
 end
 
 function Scene:onDestroy()
-    ManagerFunctions.stopMusic("BGM")
-    self._titleBGM = nil
+    self:onQuit()
     self._windowSaveLoad:dispose()
     self._configWindow:dispose()
     self._ui:dispose()
@@ -109,14 +112,20 @@ function Scene:_onSaveLoadClose(reason)
 end
 
 ---@param inst Source.GameInstance.GameInstance
+---@param cue sf.Sound | nil
 ---@diagnostic disable-next-line: unused
-function Scene:_onSaveLoadLoaded(inst)
+function Scene:_onSaveLoadLoaded(inst, cue)
+    if self._mapEntryTask ~= nil then return end
+    if PLATFORM == "web" and cue ~= nil then cue:stop() end
     local SceneMap = require("Source.Scenes.SceneMap")
 
     ManagerFunctions.stopMusic("BGM")
     local nextScene = SceneMap.new()
     nextScene:setInst(inst)
-    SceneManager.setScene(nextScene)
+    self._mapEntryTask = nextScene:enterWhenReady(function ()
+        self._mapEntryTask = nil
+        SceneManager.setScene(nextScene)
+    end)
 end
 
 function Scene:toggleConfig()

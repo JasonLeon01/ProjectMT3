@@ -28,33 +28,9 @@ TEST_CASE("[Window] sf::Context", runDisplayTests())
     SECTION("Construction")
     {
         const sf::Context context;
-        CHECK(context.getSettings().majorVersion > 0);
+        CHECK(!std::holds_alternative<std::monostate>(context.getSettings().backend));
         CHECK(sf::Context::getActiveContext() == &context);
         CHECK(sf::Context::getActiveContextId() != 0);
-    }
-
-    SECTION("OpenGL 2 minimum")
-    {
-        const sf::Context context(sf::ContextSettings{/* depthBits */ 0,
-                                                      /* stencilBits */ 0,
-                                                      /* antiAliasingLevel */ 0,
-                                                      /* majorVersion */ 1,
-                                                      /* minorVersion */ 1},
-                                  {1, 1});
-
-        const auto& settings = context.getSettings();
-        CHECK(settings.majorVersion >= 2);
-
-        CHECK(sf::Context::getFunction("glCreateShader"));
-        CHECK(sf::Context::getFunction("glCreateProgram"));
-        CHECK(sf::Context::getFunction("glUseProgram"));
-        CHECK(sf::Context::getFunction("glBindAttribLocation"));
-        CHECK(sf::Context::getFunction("glUniform4fv"));
-        CHECK(sf::Context::getFunction("glUniformMatrix4fv"));
-        CHECK(sf::Context::getFunction("glActiveTexture"));
-        CHECK(sf::Context::getFunction("glVertexAttribPointer"));
-        CHECK(sf::Context::getFunction("glEnableVertexAttribArray"));
-        CHECK(sf::Context::getFunction("glGetVertexAttribPointerv"));
     }
 
     SECTION("Move semantics")
@@ -65,7 +41,7 @@ TEST_CASE("[Window] sf::Context", runDisplayTests())
             {
                 sf::Context       movedContext;
                 const sf::Context context(std::move(movedContext));
-                CHECK(context.getSettings().majorVersion > 0);
+                CHECK(!std::holds_alternative<std::monostate>(context.getSettings().backend));
                 CHECK(sf::Context::getActiveContext() == &context);
                 CHECK(sf::Context::getActiveContextId() != 0);
             }
@@ -78,7 +54,7 @@ TEST_CASE("[Window] sf::Context", runDisplayTests())
                 CHECK(sf::Context::getActiveContextId() == 0);
 
                 const sf::Context context(std::move(movedContext));
-                CHECK(context.getSettings().majorVersion > 0);
+                CHECK(!std::holds_alternative<std::monostate>(context.getSettings().backend));
                 CHECK(sf::Context::getActiveContext() == nullptr);
                 CHECK(sf::Context::getActiveContextId() == 0);
             }
@@ -95,7 +71,7 @@ TEST_CASE("[Window] sf::Context", runDisplayTests())
                 CHECK(sf::Context::getActiveContextId() != 0);
 
                 context = std::move(movedContext);
-                CHECK(context.getSettings().majorVersion > 0);
+                CHECK(!std::holds_alternative<std::monostate>(context.getSettings().backend));
                 CHECK(sf::Context::getActiveContext() == &context);
                 CHECK(sf::Context::getActiveContextId() != 0);
             }
@@ -109,7 +85,7 @@ TEST_CASE("[Window] sf::Context", runDisplayTests())
 
                 sf::Context context;
                 context = std::move(movedContext);
-                CHECK(context.getSettings().majorVersion > 0);
+                CHECK(!std::holds_alternative<std::monostate>(context.getSettings().backend));
                 CHECK(sf::Context::getActiveContext() == nullptr);
                 CHECK(sf::Context::getActiveContextId() == 0);
             }
@@ -155,7 +131,7 @@ TEST_CASE("[Window] sf::Context", runDisplayTests())
 
         {
             const sf::Context context;
-            CHECK(context.getSettings().majorVersion > 0);
+            CHECK(!std::holds_alternative<std::monostate>(context.getSettings().backend));
             CHECK(sf::Context::getActiveContext() == &context);
             CHECK(sf::Context::getActiveContextId() != 0);
         }

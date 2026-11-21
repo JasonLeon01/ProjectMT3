@@ -6,6 +6,234 @@
 Welcome to SFML 3.1!  
 This release brings major improvements to text layout, networking, audio device management, and more.
 
+## SFML-ME graphics backends
+
+Configure the SFML build with `SFML_BUILD_OPENGL_BACKEND` and
+`SFML_BUILD_VULKAN_BACKEND`, and `SFML_BUILD_DIRECTX_BACKEND`. DirectX uses
+Direct3D 11 and is enabled by default on Windows only. When the OpenGL backend is enabled,
+`SFML_OPENGL_ES` selects GLES instead of desktop OpenGL. The Window and
+Graphics targets propagate `SFML_RENDER_OPENGL`, `SFML_RENDER_OPENGLES`,
+and `SFML_RENDER_VULKAN` for the backends present in that build. The Graphics
+target additionally propagates `SFML_RENDER_DIRECTX` when DirectX is enabled.
+
+Choose a backend before the first graphics resource or capability query
+that uses a GPU. The following call requests Vulkan 1.3.
+
+~~~cpp
+if (!sf::setGraphicsBackend(sf::GraphicsBackend::Vulkan, sf::VulkanSettings{1, 3}))
+    return 1;
+
+sf::RenderWindow window(sf::VideoMode({800, 600}), "Vulkan");
+if (!window.isOpen())
+    return 1;
+~~~
+
+On Windows, automatic selection tries DirectX, then the compiled OpenGL
+variant, then Vulkan. On macOS and iOS it tries Metal first. Other platforms
+retain OpenGL/GLES before Vulkan.
+The first successful initialization fixes the device for the process.
+An explicit API version is a minimum requirement for that request.
+If the driver supplies a lower version or an incompatible profile,
+initialization fails. The built-in minimums are desktop OpenGL 2.0,
+OpenGL ES 3.0, Vulkan 1.0, and Direct3D feature level 10_0.
+
+Use `sf::setGraphicsBackend(sf::GraphicsBackend::DirectX, sf::DirectXSettings{11, 0})`
+to require feature level 11_0 before creating resources. The supported feature
+levels are 10_0, 10_1, 11_0, 11_1, 12_0 and 12_1. These are hardware capability
+requirements, not API versions: even 12_0 and 12_1 use the Direct3D 11 API.
+The device chooses the highest supported level satisfying the request.
+Explicit requests never fall back to another backend or a lower feature level.
+Windows retains its Windows 7 API baseline. WARP software rendering is used
+only by the test harness, not by automatic selection in applications.
+
+`DirectXSettings` is an additional alternative in `ContextSettings::backend`.
+Recompile applications against the updated headers and libraries. Existing
+rendering, shader loading and uniform function signatures are unchanged.
+GL object handles return zero on DirectX, and GL-specific binding/state
+operations are unavailable, as with Vulkan. `sf::Window` and `sf::Context`
+continue to provide native OpenGL contexts; use `sf::RenderWindow` for DirectX.
+Align single-pixel points and lines to pixel centers, for example
+`{x + 0.5f, y + 0.5f}`. Pixels exactly on primitive edges follow the selected
+API's rasterization rules and can differ between backends.
+
+Move API settings into `ContextSettings::backend`. The depth, stencil,
+MSAA, and sRGB fields still configure individual targets. For example,
+`settings.backend = sf::OpenGLSettings{4, 1, sf::OpenGLProfile::Core}`
+requests a Core context. `Window::getSettings()` reports the created
+settings. Use `RenderWindow` for SFML Vulkan rendering or
+`WindowBase::getNativeHandle()` for external Vulkan WSI.
+
+Desktop Compatibility shaders keep the existing GLSL interface. Core and
+GLES shaders use SFML's `sf_Vertex`, `sf_Color`, and `sf_MultiTexCoord0`
+attributes, along with the `sf_ModelViewProjectionMatrix` and
+`sf_TextureMatrix` uniforms. A standalone custom stage can pair with
+the built-in stage using `sf_FrontColor` and `sf_TexCoord0` varyings.
+
+With Vulkan, the existing `Shader` loaders accept binary SPIR-V for the
+selected API version. Use `main` as the entry point. Vertex inputs are
+position (location 0, `vec2`), color (location 1, `vec4`), and texture
+coordinates (location 2, `vec2`). The default stages exchange color and
+normalized texture coordinates at locations 0 and 1. Set 0 provides
+the built-in draw uniform block at binding 0 (`mat4 transform` and
+`vec4 textureTransform` in std140 layout, optionally followed by
+`mat4 modelView` and `mat4 projection`, the separate model-view and
+Vulkan clip-space projection matrices whose product is `transform`) and the
+current texture at binding 1. Use set 1 for user uniform buffers and combined
+2D samplers. Samplers that are not assigned through `setUniform` sample the
+current texture, like GLSL samplers left at texture unit 0.
+Keep SPIR-V variable names to bind values through `setUniform` and
+`setUniformArray`.
+
+With DirectX, the existing `Shader` loaders accept self-contained HLSL source
+with `main` as the entry point, or precompiled DXBC bytecode (`.cso`). DXBC is
+detected by its header rather than the filename and bypasses `D3DCompile`.
+Source and bytecode can be mixed across stages. Retain reflection metadata
+for uniforms, resources and stage signatures; DXIL is not supported.
+GLSL is not translated. Source compilation uses Shader Model 4.0 at feature
+level 10_0, 4.1 at 10_1, and 5.0 at 11_0 or higher. Precompiled bytecode must
+target a shader model supported by the selected feature level.
+Loading custom shaders requires `d3dcompiler_47.dll`; deploy the appropriate
+Windows SDK redistributable with applications on systems that do not provide
+it. DXBC loading uses that DLL for reflection only. Built-in shaders are
+precompiled and do not require that DLL. For SPIR-V or DXBC in memory, pass a
+`std::string_view` with an explicit byte length to preserve embedded zeros.
+
+SPIR-V and DXBC are intermediate bytecode, not driver pipeline caches. With
+Vulkan, use `sf::loadPipelineCacheFromMemory(data, size)` to merge a previously
+exported driver cache into the device cache before drawing. Use
+`sf::getPipelineCacheData()` after drawing or prewarming the required
+shader/render-state combinations to obtain an optional byte vector for the
+next run. These functions initialize the selected backend if necessary, so
+call `sf::setGraphicsBackend` first. The cache covers all custom and built-in
+shaders; SPIR-V is still required to create shader modules and pipelines.
+The application owns compilation/prewarming policy, file I/O, integrity checks
+and invalidation. Pass intact data from a previous export. Invalid or
+incompatible version-one headers (vendor, device, cache UUID) are rejected;
+they do not clear the existing cache. Driver/hardware changes can invalidate
+caches, and cache hits do not guarantee that all driver work is skipped.
+On other backends, import returns `false` and export returns `std::nullopt`.
+Direct3D 11 driver caching is managed by the OS/driver when supported; SFML
+cannot import or export that cache through the D3D11 API.
+
+Vertex inputs are `float2 POSITION`, `float4 COLOR0`, and `float2 TEXCOORD0`.
+The built-in stages exchange `float4 SV_POSITION`, `float4 COLOR0`, and
+`float2 TEXCOORD0`, in that order. Declare this complete input signature when
+using interpolated data with a built-in stage, even if some fields are unused;
+Direct3D also requires the semantic register locations to match. A fragment
+shader returns `SV_TARGET`. Missing vertex or
+fragment stages are supplied by SFML, including geometry-only shader loads.
+The following block is reserved at `b0`; user constant buffers start at `b1`.
+
+~~~hlsl
+cbuffer SFMLDraw : register(b0)
+{
+    column_major float4x4 sf_ModelViewProjectionMatrix;
+    float4 sf_TextureTransform;
+    column_major float4x4 sf_ModelViewMatrix;  // optional
+    column_major float4x4 sf_ProjectionMatrix; // optional
+};
+~~~
+
+The matrix maps SFML vertex positions to clip space. The two optional trailing
+matrices, declared together, are its model-view (drawable transform) and
+projection (view) factors, as in GLSL. Normalize texture
+coordinates with `uv * sf_TextureTransform.xy + sf_TextureTransform.zw`.
+Bind a `Texture2D` and its `SamplerState` at matching `tN`/`sN` registers
+(`N < 16`); pass the texture variable's name to the existing `setUniform`
+overloads. Textures that are not assigned through `setUniform`, such as
+`sf_Texture`, sample the current drawing texture, like GLSL samplers left at
+texture unit 0. Constants
+are reflected by name across all stages, including array padding and row- or
+column-major matrices. `sf::Glsl` value types remain the CPU-side uniform types.
+
+### Metal on macOS and iOS
+
+`SFML_BUILD_METAL_BACKEND` is enabled by default on macOS and iOS and
+propagates `SFML_RENDER_METAL` from the Graphics target. OpenGL stays
+available on Apple platforms through `SFML_BUILD_OPENGL_BACKEND`; either
+backend may be disabled, but at least one of them is required. Automatic
+selection tries Metal first, then OpenGL/GLES. OpenGL requests below the
+built-in minimums (desktop OpenGL 2.0, OpenGL ES 3.0) are rejected.
+
+Metal has no version setting: the available Metal features follow the
+deployment target. SFML now requires macOS 13.0 or iOS 16.0
+(`CMAKE_OSX_DEPLOYMENT_TARGET`, checked when configuring and when compiling
+the Metal backend). Select Metal explicitly with
+`sf::setGraphicsBackend(sf::GraphicsBackend::Metal)` or
+`settings.backend = sf::MetalSettings{}`. As with DirectX and Vulkan, GL
+handles return zero and GL state functions are unavailable; use
+`sf::RenderWindow` to present. `setVerticalSyncEnabled` maps to
+`CAMetalLayer.displaySyncEnabled` on macOS; iOS always synchronizes with the
+display.
+
+The existing `Shader` loaders accept MSL source text or a precompiled
+metallib. A metallib is detected by its `MTLB` header rather than the
+filename, and must be built for the running platform: macOS, iOS devices and
+the iOS simulator need separate libraries. The entry point is the function
+named `main0` of the matching stage (the name SPIRV-Cross generates), or the
+only function of that stage in the library. Geometry shaders are not
+supported. For a metallib in memory, pass a `std::string_view` with an explicit
+byte length.
+
+Vertex attributes 0, 1 and 2 are the `float2` position, `float4` color and
+`float2` texture coordinates, read with `[[stage_in]]` from vertex buffer 30.
+`buffer(0)` is reserved in both stages for the draw parameters, and user
+buffers start at `buffer(1)`:
+
+~~~cpp
+struct SFMLDraw
+{
+    float4x4 sf_ModelViewProjectionMatrix;
+    float4 sf_TextureTransform;
+    float4x4 sf_ModelViewMatrix;  // optional
+    float4x4 sf_ProjectionMatrix; // optional
+};
+~~~
+
+The two optional trailing matrices, declared together, are the model-view
+(drawable transform) and projection (view) factors of
+`sf_ModelViewProjectionMatrix`, as in GLSL. Normalize texture coordinates with
+`uv * sf_TextureTransform.xy + sf_TextureTransform.zw`. The built-in stages
+exchange `float4 color [[user(sf_color)]]` and
+`float2 texCoord [[user(sf_texcoord)]]`; use these names when pairing a custom
+stage with a built-in one. A custom vertex shader used to draw points must
+write a `[[point_size]]` output. Bind textures and their samplers at matching
+`texture(N)`/`sampler(N)` indices (`N < 16`) and pass the texture parameter's
+name to `setUniform`. Textures that are not assigned through `setUniform`,
+such as `sf_Texture`, sample the current drawing texture, like GLSL samplers
+left at texture unit 0.
+Uniforms are the members of the structs bound at `buffer(1)` and above (or the
+buffer parameter itself for a single value), set by member name with the usual
+`setUniform` and `setUniformArray` overloads, including arrays, `bool`
+vectors and `float3x3`/`float4x4` matrices.
+
+With Vulkan, DirectX and Metal, normalized texture coordinates of a
+`RenderTexture` grow downward like those of any other texture. OpenGL stores
+render textures upside down, so there its normalized coordinates grow upward.
+Sampling is unaffected, but shaders that offset coordinates asymmetrically
+along v (for example a kernel that is not symmetric vertically) can produce
+slightly different results between OpenGL and the other backends.
+
+With Metal, `sf::getPipelineCacheData()` serializes an `MTLBinaryArchive` with
+the render pipelines created since the device was initialized, and
+`sf::loadPipelineCacheFromMemory(data, size)` adds a previously exported
+archive that subsequent pipeline creation looks up first. Several archives can
+be loaded. Archives are specific to the GPU and OS version; invalid data is
+rejected without affecting the existing caches, and a stale archive simply
+misses. The archive data is staged in the temporary directory while loaded.
+
+The `stencil` example accepts `--backend directx`, `--backend metal`,
+`--backend opengl`, or `--backend vulkan`; omitting the option uses the
+automatic priority.
+The `shader` example accepts `--backend opengl`, `--backend metal`,
+`--backend directx`, or `--backend vulkan`; without the option it prefers
+Metal when it is built and OpenGL otherwise. The other backends load
+translations of the GLSL resources: MSL (`*.metal`), HLSL (`*.hlsl`) and
+SPIR-V (`vulkan/*.spv`, compiled from the GLSL 4.50 sources next to them with
+`glslang -V --target-env vulkan1.0`). Metal draws the billboards as point
+sprites because it has no geometry shaders. The `island` example explicitly
+selects OpenGL for its desktop GLSL resources.
+
 ## Dependencies
 
 We've introduced a bunch of new dependencies to cover all the improvements:

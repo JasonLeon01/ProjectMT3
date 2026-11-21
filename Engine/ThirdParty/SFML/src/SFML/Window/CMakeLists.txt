@@ -11,10 +11,10 @@ set(SRC
     ${SRCROOT}/Cursor.cpp
     ${INCROOT}/Cursor.hpp
     ${SRCROOT}/CursorImpl.hpp
-    ${SRCROOT}/EglFunctionLoader.hpp
     ${INCROOT}/Export.hpp
-    ${SRCROOT}/GlContext.cpp
     ${SRCROOT}/GlContext.hpp
+    ${SRCROOT}/GlSettings.hpp
+    ${SRCROOT}/WindowSurface.hpp
     ${SRCROOT}/GlResource.cpp
     ${INCROOT}/GlResource.hpp
     ${INCROOT}/ContextSettings.hpp
@@ -55,8 +55,41 @@ set(SRC
 )
 source_group("" FILES ${SRC})
 
+if(SFML_BUILD_OPENGL_BACKEND)
+    list(APPEND SRC ${SRCROOT}/GlContext.cpp)
+else()
+    list(APPEND SRC ${SRCROOT}/GlContextStub.cpp)
+endif()
+
+if(SFML_BUILD_VULKAN_BACKEND)
+    if(SFML_OS_WINDOWS)
+        list(APPEND SRC ${SRCROOT}/Win32/VulkanImplWin32.cpp)
+    elseif(SFML_OS_HARMONY)
+        list(APPEND SRC ${SRCROOT}/Harmony/VulkanImplHarmony.cpp)
+    elseif(SFML_OS_ANDROID)
+        list(APPEND SRC ${SRCROOT}/Android/VulkanImplAndroid.cpp)
+    else()
+        list(APPEND SRC ${SRCROOT}/Unix/VulkanImplX11.cpp)
+    endif()
+endif()
+
 # add platform specific sources
-if(SFML_OS_WINDOWS)
+if(SFML_OS_EMSCRIPTEN)
+    set(PLATFORM_SRC
+        ${SRCROOT}/Emscripten/WebContext.cpp
+        ${SRCROOT}/Emscripten/WebContext.hpp
+        ${SRCROOT}/Emscripten/WindowImplWeb.cpp
+        ${SRCROOT}/Emscripten/WindowImplWeb.hpp
+        ${SRCROOT}/Emscripten/InputImpl.cpp
+        ${SRCROOT}/Emscripten/Input.hpp
+        ${SRCROOT}/Emscripten/Platform.cpp
+        ${SRCROOT}/Emscripten/CursorImpl.hpp
+        ${SRCROOT}/Emscripten/JoystickImpl.hpp
+        ${SRCROOT}/Emscripten/JoystickImpl.cpp
+        ${SRCROOT}/Emscripten/SensorImpl.hpp
+        ${SRCROOT}/Emscripten/ClipboardImpl.hpp
+    )
+elseif(SFML_OS_WINDOWS)
     set(PLATFORM_SRC
         ${SRCROOT}/Win32/CursorImpl.hpp
         ${SRCROOT}/Win32/CursorImpl.cpp
@@ -69,18 +102,17 @@ if(SFML_OS_WINDOWS)
         ${SRCROOT}/Win32/SensorImpl.cpp
         ${SRCROOT}/Win32/Utils.hpp
         ${SRCROOT}/Win32/VideoModeImpl.cpp
-        ${SRCROOT}/Win32/VulkanImplWin32.cpp
         ${SRCROOT}/Win32/WindowImplWin32.cpp
         ${SRCROOT}/Win32/WindowImplWin32.hpp
     )
-    if(SFML_OPENGL_ES)
+    if(SFML_BUILD_OPENGL_BACKEND AND SFML_OPENGL_ES)
         list(APPEND PLATFORM_SRC
             ${SRCROOT}/EGLCheck.cpp
             ${SRCROOT}/EGLCheck.hpp
             ${SRCROOT}/EglContext.cpp
             ${SRCROOT}/EglContext.hpp
         )
-    else()
+    elseif(SFML_BUILD_OPENGL_BACKEND)
         list(APPEND PLATFORM_SRC
             ${SRCROOT}/Win32/WglContext.cpp
             ${SRCROOT}/Win32/WglContext.hpp
@@ -125,18 +157,17 @@ elseif(SFML_OS_LINUX OR SFML_OS_FREEBSD OR SFML_OS_OPENBSD OR SFML_OS_NETBSD)
             ${SRCROOT}/Unix/Display.hpp
             ${SRCROOT}/Unix/Utils.hpp
             ${SRCROOT}/Unix/VideoModeImpl.cpp
-            ${SRCROOT}/Unix/VulkanImplX11.cpp
             ${SRCROOT}/Unix/WindowImplX11.cpp
             ${SRCROOT}/Unix/WindowImplX11.hpp
         )
-        if(SFML_OPENGL_ES)
+        if(SFML_BUILD_OPENGL_BACKEND AND SFML_OPENGL_ES)
             list(APPEND PLATFORM_SRC
                 ${SRCROOT}/EGLCheck.cpp
                 ${SRCROOT}/EGLCheck.hpp
                 ${SRCROOT}/EglContext.cpp
                 ${SRCROOT}/EglContext.hpp
             )
-        else()
+        elseif(SFML_BUILD_OPENGL_BACKEND)
              list(APPEND PLATFORM_SRC
                 ${SRCROOT}/Unix/GlxContext.cpp
                 ${SRCROOT}/Unix/GlxContext.hpp
@@ -192,8 +223,6 @@ elseif(SFML_OS_MACOS)
         ${SRCROOT}/macOS/SFApplication.m
         ${SRCROOT}/macOS/SFApplicationDelegate.h
         ${SRCROOT}/macOS/SFApplicationDelegate.m
-        ${SRCROOT}/macOS/SFContext.hpp
-        ${SRCROOT}/macOS/SFContext.mm
         ${SRCROOT}/macOS/SFKeyboardModifiersHelper.h
         ${SRCROOT}/macOS/SFKeyboardModifiersHelper.mm
         ${SRCROOT}/macOS/SFOpenGLView.h
@@ -217,6 +246,12 @@ elseif(SFML_OS_MACOS)
         ${SRCROOT}/macOS/AutoreleasePoolWrapper.hpp
         ${SRCROOT}/macOS/AutoreleasePoolWrapper.mm
     )
+    if(SFML_BUILD_OPENGL_BACKEND)
+        list(APPEND PLATFORM_SRC
+            ${SRCROOT}/macOS/SFContext.hpp
+            ${SRCROOT}/macOS/SFContext.mm
+        )
+    endif()
     source_group("mac" FILES ${PLATFORM_SRC})
 elseif(SFML_OS_IOS)
     enable_language(OBJCXX)
@@ -225,8 +260,6 @@ elseif(SFML_OS_IOS)
         ${SRCROOT}/iOS/CursorImpl.cpp
         ${SRCROOT}/iOS/ClipboardImpl.mm
         ${SRCROOT}/iOS/ClipboardImpl.hpp
-        ${SRCROOT}/iOS/EaglContext.mm
-        ${SRCROOT}/iOS/EaglContext.hpp
         ${SRCROOT}/iOS/InputImpl.mm
         ${SRCROOT}/iOS/JoystickImpl.mm
         ${SRCROOT}/iOS/JoystickImpl.hpp
@@ -247,13 +280,15 @@ elseif(SFML_OS_IOS)
         ${SRCROOT}/iOS/SFMain.mm
     )
     set_property(SOURCE ${SRCROOT}/iOS/JoystickImpl.mm APPEND PROPERTY COMPILE_OPTIONS -fobjc-arc)
+    if(SFML_BUILD_OPENGL_BACKEND)
+        list(APPEND PLATFORM_SRC
+            ${SRCROOT}/iOS/EaglContext.mm
+            ${SRCROOT}/iOS/EaglContext.hpp
+        )
+    endif()
     source_group("ios" FILES ${PLATFORM_SRC})
 elseif(SFML_OS_ANDROID)
     set(PLATFORM_SRC
-        ${SRCROOT}/EGLCheck.cpp
-        ${SRCROOT}/EGLCheck.hpp
-        ${SRCROOT}/EglContext.cpp
-        ${SRCROOT}/EglContext.hpp
         ${SRCROOT}/Android/CursorImpl.hpp
         ${SRCROOT}/Android/CursorImpl.cpp
         ${SRCROOT}/Android/ClipboardImpl.hpp
@@ -270,13 +305,17 @@ elseif(SFML_OS_ANDROID)
         ${SRCROOT}/Android/SensorImpl.cpp
     )
     source_group("android" FILES ${PLATFORM_SRC})
+    if(SFML_BUILD_OPENGL_BACKEND)
+        list(APPEND PLATFORM_SRC
+            ${SRCROOT}/EGLCheck.cpp
+            ${SRCROOT}/EGLCheck.hpp
+            ${SRCROOT}/EglContext.cpp
+            ${SRCROOT}/EglContext.hpp
+        )
+    endif()
 elseif(SFML_OS_HARMONY)
     set(PLATFORM_SRC
-        ${SRCROOT}/EGLCheck.cpp
-        ${SRCROOT}/EGLCheck.hpp
         ${SRCROOT}/Harmony/CancelableInitialization.hpp
-        ${SRCROOT}/Harmony/EglContextHarmony.cpp
-        ${SRCROOT}/Harmony/EglContextHarmony.hpp
         ${SRCROOT}/Harmony/EventQueue.hpp
         ${SRCROOT}/Harmony/FullscreenModeCache.hpp
         ${SRCROOT}/Harmony/NativeApp.cpp
@@ -296,27 +335,28 @@ elseif(SFML_OS_HARMONY)
         ${SRCROOT}/Harmony/VideoModeImpl.cpp
         ${SRCROOT}/Harmony/WindowImplHarmony.cpp
         ${SRCROOT}/Harmony/WindowImplHarmony.hpp
-        ${SRCROOT}/Harmony/VulkanImplHarmony.cpp
     )
+    if(SFML_BUILD_OPENGL_BACKEND)
+        list(APPEND PLATFORM_SRC ${SRCROOT}/EglContext.cpp ${SRCROOT}/EglContext.hpp
+                                 ${SRCROOT}/EGLCheck.cpp ${SRCROOT}/EGLCheck.hpp)
+    endif()
     source_group("harmony" FILES ${PLATFORM_SRC})
 endif()
 
-# define the sfml-window target
+# Desktop GLES installations expose the client library and headers to consumers.
+set(SFML_DESKTOP_GLES OFF)
 set(WINDOW_LIBRARY_OPTIONS)
-if((SFML_OPENGL_ES AND NOT SFML_OS_IOS) OR SFML_OS_HARMONY)
-    list(APPEND WINDOW_LIBRARY_OPTIONS INSTALL_SHARED_DEPENDENCIES)
+if(SFML_BUILD_OPENGL_BACKEND AND SFML_OPENGL_ES AND
+   (SFML_OS_WINDOWS OR SFML_OS_LINUX OR SFML_OS_FREEBSD OR SFML_OS_OPENBSD OR SFML_OS_NETBSD))
+    set(SFML_DESKTOP_GLES ON)
+    set(WINDOW_LIBRARY_OPTIONS INSTALL_SHARED_DEPENDENCIES)
 endif()
 
+# define the sfml-window target
 sfml_add_library(Window
                  SOURCES ${SRC} ${PLATFORM_SRC}
                  DEPENDENCIES "Dependencies.cmake.in"
                  ${WINDOW_LIBRARY_OPTIONS})
-unset(WINDOW_LIBRARY_OPTIONS)
-
-if(SFML_OPENGL_ES)
-    target_compile_definitions(sfml-window PUBLIC SFML_OPENGL_ES)
-endif()
-
 # DRM libraries
 if(SFML_OS_LINUX OR SFML_OS_FREEBSD OR SFML_OS_OPENBSD OR SFML_OS_NETBSD)
     if(SFML_USE_DRM)
@@ -329,13 +369,13 @@ if(SFML_OS_LINUX OR SFML_OS_FREEBSD OR SFML_OS_OPENBSD OR SFML_OS_NETBSD)
     endif()
 endif()
 target_link_libraries(sfml-window PUBLIC SFML::System)
-
-# glad sources, must be public for android as the system module includes EglContext.hpp  which includes glad
-set(GLAD_INCLUDE_PATH "${PROJECT_SOURCE_DIR}/extlibs/headers/glad/include")
-if (SFML_OS_ANDROID)
-    target_include_directories(sfml-window SYSTEM PUBLIC $<BUILD_INTERFACE:${GLAD_INCLUDE_PATH}>)
+if(SFML_OS_EMSCRIPTEN)
+    target_link_options(sfml-window PUBLIC -sMIN_WEBGL_VERSION=2 -sMAX_WEBGL_VERSION=2 -sGL_ENABLE_GET_PROC_ADDRESS=1)
 endif()
-target_include_directories(sfml-window SYSTEM PRIVATE ${GLAD_INCLUDE_PATH})
+
+if(SFML_BUILD_OPENGL_BACKEND)
+    target_include_directories(sfml-window SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/glad/include")
+endif()
 
 # When static linking on macOS, we need to add this flag for objective C to work
 # https://developer.apple.com/library/archive/qa/qa1490/_index.html
@@ -344,36 +384,45 @@ if((NOT BUILD_SHARED_LIBS) AND SFML_OS_MACOS)
 endif()
 
 # Vulkan headers
-target_include_directories(sfml-window SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/vulkan")
-
-# CMake 3.11 and later prefer to choose GLVND, but we choose legacy OpenGL for backward compatibility
-# (unless the OpenGL_GL_PREFERENCE was explicitly set)
-# See CMP0072 for more details (cmake --help-policy CMP0072)
-if(NOT OpenGL_GL_PREFERENCE)
-    set(OpenGL_GL_PREFERENCE "LEGACY")
+if(NOT SFML_OS_HARMONY)
+    target_include_directories(sfml-window SYSTEM PRIVATE "${PROJECT_SOURCE_DIR}/extlibs/headers/vulkan")
 endif()
 
-if(SFML_OS_IOS)
-    target_link_libraries(sfml-window PRIVATE "-framework OpenGLES")
-elseif(SFML_OS_HARMONY)
-    # Harmony always creates its rendering surface through EGL. MOBILE is
-    # forced to GLES; 2IN1 defaults to the platform's desktop GL dispatch but
-    # can opt into the same GLES path at configure time.
-    find_package(EGL REQUIRED)
+if(SFML_BUILD_VULKAN_BACKEND)
+    target_compile_definitions(sfml-window PUBLIC SFML_RENDER_VULKAN)
+    if(CMAKE_DL_LIBS)
+        target_link_libraries(sfml-window PRIVATE ${CMAKE_DL_LIBS})
+    endif()
+endif()
+
+if(SFML_BUILD_OPENGL_BACKEND)
+    target_compile_definitions(sfml-window PRIVATE SFML_RENDER_GL)
     if(SFML_OPENGL_ES)
+        target_compile_definitions(sfml-window PUBLIC SFML_RENDER_OPENGLES SFML_OPENGL_ES GL_GLEXT_PROTOTYPES)
+    else()
+        target_compile_definitions(sfml-window PUBLIC SFML_RENDER_OPENGL)
+    endif()
+
+    if(SFML_OS_IOS)
+        target_link_libraries(sfml-window PUBLIC "-framework OpenGLES")
+    elseif(SFML_OS_ANDROID OR SFML_OS_HARMONY)
+        target_link_libraries(sfml-window PRIVATE EGL PUBLIC GLESv3)
+    elseif(SFML_DESKTOP_GLES)
+        find_package(EGL REQUIRED)
         find_package(GLES REQUIRED)
         target_link_libraries(sfml-window PRIVATE EGL::EGL ${CMAKE_DL_LIBS} PUBLIC GLES::GLES)
+    elseif(SFML_USE_DRM OR SFML_OS_EMSCRIPTEN)
+        if(CMAKE_DL_LIBS)
+            target_link_libraries(sfml-window PRIVATE ${CMAKE_DL_LIBS})
+        endif()
     else()
-        find_package(GLv4 REQUIRED)
-        target_link_libraries(sfml-window PRIVATE EGL::EGL ${CMAKE_DL_LIBS} PUBLIC GLv4::GLv4)
+        # Prefer legacy OpenGL for compatibility unless explicitly overridden.
+        if(NOT OpenGL_GL_PREFERENCE)
+            set(OpenGL_GL_PREFERENCE "LEGACY")
+        endif()
+        find_package(OpenGL REQUIRED COMPONENTS OpenGL)
+        target_link_libraries(sfml-window PRIVATE OpenGL::GL)
     endif()
-elseif(SFML_OPENGL_ES)
-    find_package(EGL REQUIRED)
-    find_package(GLES REQUIRED)
-    target_link_libraries(sfml-window PRIVATE EGL::EGL ${CMAKE_DL_LIBS} PUBLIC GLES::GLES)
-else()
-    find_package(OpenGL REQUIRED COMPONENTS OpenGL)
-    target_link_libraries(sfml-window PRIVATE OpenGL::GL)
 endif()
 
 if(SFML_OS_WINDOWS AND NOT SFML_COMPILER_MSVC)
@@ -392,27 +441,14 @@ elseif(SFML_OS_WINDOWS)
 elseif(SFML_OS_FREEBSD)
     target_link_libraries(sfml-window PRIVATE usbhid)
 elseif(SFML_OS_MACOS)
-    target_link_libraries(sfml-window PRIVATE "-framework Foundation" "-framework AppKit" "-framework GameController" "-framework IOKit" "-framework Carbon")
+    target_link_libraries(sfml-window PRIVATE "-framework Foundation" "-framework AppKit" "-framework GameController" "-framework IOKit" "-framework Carbon" "-framework QuartzCore")
 elseif(SFML_OS_IOS)
     target_link_libraries(sfml-window PUBLIC "-framework Foundation" "-framework UIKit" "-framework CoreGraphics" "-framework QuartzCore" "-framework CoreMotion" "-framework GameController")
 elseif(SFML_OS_ANDROID)
     target_link_libraries(sfml-window PRIVATE android)
 elseif(SFML_OS_HARMONY)
-    target_link_libraries(sfml-window PRIVATE
-                          ace_ndk.z
-                          deviceinfo_ndk.z
-                          native_window
-                          ohgame_controller.z
-                          ohsensor
-                          ohinputmethod
-                          pasteboard
-                          udmf)
-    if(SFML_HARMONY_DEVICE_FORM STREQUAL "2IN1")
-        target_link_libraries(sfml-window PRIVATE
-                              native_window_manager
-                              native_display_manager
-                              ohinput)
-    endif()
+    target_link_libraries(sfml-window PRIVATE ace_ndk.z deviceinfo_ndk.z native_window ohgame_controller.z
+                          ohsensor ohinputmethod pasteboard udmf native_window_manager native_display_manager ohinput)
 endif()
 
 # on some platforms (e.g. Raspberry Pi 3 armhf), GCC requires linking libatomic to use <atomic> features

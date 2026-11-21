@@ -27,7 +27,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Window/InputImpl.hpp>
-#include <SFML/Window/VideoMode.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/Window/macOS/AutoreleasePoolWrapper.hpp>
 #include <SFML/Window/macOS/HIDInputManager.hpp>
@@ -176,12 +175,11 @@ bool isMouseButtonPressed(Mouse::Button button)
 Vector2i getMousePosition()
 {
     const AutoreleasePool pool;
-    // Reverse Y axis to match SFML coord.
-    NSPoint pos = [NSEvent mouseLocation];
-    pos.y       = sf::VideoMode::getDesktopMode().size.y - pos.y;
-
-    const int scale = static_cast<int>([[NSScreen mainScreen] backingScaleFactor]);
-    return Vector2i(static_cast<int>(pos.x), static_cast<int>(pos.y)) * scale;
+    // The global desktop origin and scale belong to the primary screen, independent of the key window.
+    NSScreen* const primary = [[NSScreen screens] firstObject];
+    const NSPoint   pos     = [NSEvent mouseLocation];
+    const CGFloat   scale   = [primary backingScaleFactor];
+    return Vector2i(Vector2(pos.x, NSMaxY([primary frame]) - pos.y) * scale);
 }
 
 
@@ -198,8 +196,7 @@ Vector2i getMousePosition(const sf::WindowBase& relativeTo)
     // Use -cursorPositionFromEvent: with nil.
     const NSPoint pos = [view cursorPositionFromEvent:nil];
 
-    const int scale = static_cast<int>([view displayScaleFactor]);
-    return Vector2i(static_cast<int>(pos.x), static_cast<int>(pos.y)) * scale;
+    return Vector2i(Vector2(pos.x, pos.y) * [view displayScaleFactor]);
 }
 
 
@@ -208,7 +205,7 @@ void setMousePosition(Vector2i position)
 {
     const AutoreleasePool pool;
     // Here we don't need to reverse the coordinates.
-    const int     scale = static_cast<int>([[NSScreen mainScreen] backingScaleFactor]);
+    const CGFloat scale = [[[NSScreen screens] firstObject] backingScaleFactor];
     const CGPoint pos   = CGPointMake(position.x / scale, position.y / scale);
 
     // Place the cursor.
@@ -227,10 +224,9 @@ void setMousePosition(Vector2i position, const WindowBase& relativeTo)
         return;
 
     // Let SFOpenGLView compute the position in global coordinate
-    const int scale = static_cast<int>([view displayScaleFactor]);
-    NSPoint   p     = NSMakePoint(position.x / scale, position.y / scale);
-    p               = [view computeGlobalPositionOfRelativePoint:p];
-    setMousePosition(sf::Vector2i(static_cast<int>(p.x), static_cast<int>(p.y)) * scale);
+    const CGFloat scale = [view displayScaleFactor];
+    const NSPoint point = NSMakePoint(position.x / scale, position.y / scale);
+    CGWarpMouseCursorPosition([view computeGlobalPositionOfRelativePoint:point]);
 }
 
 

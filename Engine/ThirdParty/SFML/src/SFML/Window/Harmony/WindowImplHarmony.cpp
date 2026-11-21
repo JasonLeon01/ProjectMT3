@@ -25,16 +25,13 @@
 #include <SFML/Window/Harmony/NativeAppImpl.hpp>
 #include <SFML/Window/Harmony/WindowImplHarmony.hpp>
 
+#include <SFML/System/Err.hpp>
 #include <SFML/System/Exception.hpp>
+#include <SFML/System/String.hpp>
 
 #include <limits>
 #include <ostream>
 #include <utility>
-
-#ifdef SFML_HARMONY_2IN1
-#include <SFML/System/Err.hpp>
-#include <SFML/System/String.hpp>
-
 #include <window_manager/oh_window.h>
 
 
@@ -46,7 +43,6 @@ std::string toUtf8(const sf::String& value)
     return {reinterpret_cast<const char*>(utf8.data()), utf8.size()};
 }
 } // namespace
-#endif
 
 
 namespace sf::priv
@@ -61,53 +57,49 @@ WindowImplHarmony::WindowImplHarmony(VideoMode mode, const String& title, std::u
 {
     initialize(nullptr);
 
-    const bool          fullscreen = state == State::Fullscreen;
-    Harmony::HostState& host       = Harmony::getHostState();
-#ifdef SFML_HARMONY_MOBILE
+    const bool                       fullscreen = state == State::Fullscreen;
+    Harmony::HostState&              host       = Harmony::getHostState();
     sf::priv::Harmony::HostCallbacks callbacks;
-#endif
     {
         const std::lock_guard lock(host.mutex);
         host.windowConfigurationSet = true;
         host.fullscreen             = fullscreen;
         host.keepScreenOn           = true;
-#ifdef SFML_HARMONY_MOBILE
-        callbacks = host.callbacks;
-#endif
+        callbacks                   = host.callbacks;
     }
 
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type         = Harmony::WindowCommandType::Configure;
-    command.size         = mode.size;
-    command.title        = toUtf8(title);
-    command.style        = style;
-    command.fullscreen   = fullscreen;
-    command.visible      = true;
-    command.keepScreenOn = true;
-    if (!Harmony::requestWindowCommand(std::move(command)))
+    if (Harmony::usesDesktopWindow())
     {
+        Harmony::WindowCommand command;
+        command.type         = Harmony::WindowCommandType::Configure;
+        command.size         = mode.size;
+        command.title        = toUtf8(title);
+        command.style        = style;
+        command.fullscreen   = fullscreen;
+        command.visible      = true;
+        command.keepScreenOn = true;
+        if (!Harmony::requestWindowCommand(std::move(command)))
         {
-            const std::lock_guard lock(host.mutex);
-            host.windowConfigurationSet = false;
-            host.fullscreen             = false;
-            host.keepScreenOn           = false;
+            {
+                const std::lock_guard lock(host.mutex);
+                host.windowConfigurationSet = false;
+                host.fullscreen             = false;
+                host.keepScreenOn           = false;
+            }
+            Harmony::releaseWindow();
+            m_claimed = false;
+            throw Exception("The Harmony 2-in-1 host failed to configure the Stage window");
         }
-        Harmony::releaseWindow();
-        m_claimed = false;
-        throw Exception("The Harmony 2-in-1 host failed to configure the Stage window");
     }
-#else
-    (void)mode;
-    (void)title;
-    (void)style;
-    // Android's native entry point keeps the display awake for the lifetime
-    // of the mobile window and applies immersive mode for fullscreen windows.
-    // Ask the Stage host to provide the same behavior without blocking this
-    // application thread on ArkUI work.
-    if (callbacks.configureWindow)
-        callbacks.configureWindow(fullscreen, true, callbacks.userData);
-#endif
+    else
+    {
+        // Android's native entry point keeps the display awake for the lifetime
+        // of the mobile window and applies immersive mode for fullscreen windows.
+        // Ask the Stage host to provide the same behavior without blocking this
+        // application thread on ArkUI work.
+        if (callbacks.configureWindow)
+            callbacks.configureWindow(fullscreen, true, callbacks.userData);
+    }
 }
 
 
@@ -116,10 +108,11 @@ WindowImplHarmony::~WindowImplHarmony()
     if (!m_claimed)
         return;
 
-#ifdef SFML_HARMONY_2IN1
-    if (m_cursorGrabDesired || m_cursorGrabActual)
-        setMouseCursorGrabbed(false);
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        if (m_cursorGrabDesired || m_cursorGrabActual)
+            setMouseCursorGrabbed(false);
+    }
 
     sf::priv::Harmony::HostCallbacks callbacks;
     {
@@ -134,19 +127,22 @@ WindowImplHarmony::~WindowImplHarmony()
         }
     }
 
-#ifdef SFML_HARMONY_2IN1
-    if (callbacks.executeWindowCommand)
+    if (Harmony::usesDesktopWindow())
     {
-        Harmony::WindowCommand command;
-        command.type         = Harmony::WindowCommandType::Restore;
-        command.fullscreen   = false;
-        command.keepScreenOn = false;
-        (void)Harmony::requestWindowCommand(std::move(command));
+        if (callbacks.executeWindowCommand)
+        {
+            Harmony::WindowCommand command;
+            command.type         = Harmony::WindowCommandType::Restore;
+            command.fullscreen   = false;
+            command.keepScreenOn = false;
+            (void)Harmony::requestWindowCommand(std::move(command));
+        }
     }
-#else
-    if (callbacks.configureWindow)
-        callbacks.configureWindow(false, false, callbacks.userData);
-#endif
+    else
+    {
+        if (callbacks.configureWindow)
+            callbacks.configureWindow(false, false, callbacks.userData);
+    }
     Harmony::releaseWindow();
 }
 
@@ -154,11 +150,7 @@ WindowImplHarmony::~WindowImplHarmony()
 void WindowImplHarmony::initialize(WindowHandle requestedHandle)
 {
     if (!Harmony::claimWindow())
-#ifdef SFML_HARMONY_2IN1
-        throw Exception("Only one owning SFML window is supported by the Harmony 2-in-1 backend");
-#else
-        throw Exception("Only one owning SFML window is supported by the Harmony mobile backend");
-#endif
+        throw Exception("Only one owning SFML window is supported by the Harmony host");
 
     m_claimed          = true;
     const auto surface = Harmony::getSurfaceSnapshot();
@@ -190,120 +182,108 @@ WindowHandle WindowImplHarmony::getNativeHandle() const
 
 Vector2i WindowImplHarmony::getPosition() const
 {
-#ifdef SFML_HARMONY_2IN1
-    return Harmony::getWindowState().position;
-#else
+    if (Harmony::usesDesktopWindow())
+        return Harmony::getWindowState().position;
     return {};
-#endif
 }
 
 
 void WindowImplHarmony::setPosition(Vector2i position)
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type     = Harmony::WindowCommandType::SetPosition;
-    command.position = position;
-    (void)Harmony::requestWindowCommand(std::move(command));
-#else
-    (void)position;
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type     = Harmony::WindowCommandType::SetPosition;
+        command.position = position;
+        (void)Harmony::requestWindowCommand(std::move(command));
+    }
 }
 
 
 Vector2u WindowImplHarmony::getSize() const
 {
-#ifdef SFML_HARMONY_2IN1
-    return Harmony::getWindowState().clientSize;
-#else
+    if (Harmony::usesDesktopWindow())
+        return Harmony::getWindowState().clientSize;
     return Harmony::getSurfaceSnapshot().size;
-#endif
 }
 
 
 void WindowImplHarmony::setSize(Vector2u size)
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type = Harmony::WindowCommandType::SetSize;
-    command.size = size;
-    (void)Harmony::requestWindowCommand(std::move(command));
-#else
-    (void)size;
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type = Harmony::WindowCommandType::SetSize;
+        command.size = size;
+        (void)Harmony::requestWindowCommand(std::move(command));
+    }
 }
 
 
 void WindowImplHarmony::setMinimumSize(const std::optional<Vector2u>& minimumSize)
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type      = Harmony::WindowCommandType::SetMinimumSize;
-    command.sizeLimit = minimumSize;
-    if (Harmony::requestWindowCommand(std::move(command)))
-        WindowImpl::setMinimumSize(minimumSize);
-#else
-    (void)minimumSize;
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type      = Harmony::WindowCommandType::SetMinimumSize;
+        command.sizeLimit = minimumSize;
+        if (Harmony::requestWindowCommand(std::move(command)))
+            WindowImpl::setMinimumSize(minimumSize);
+    }
 }
 
 
 void WindowImplHarmony::setMaximumSize(const std::optional<Vector2u>& maximumSize)
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type      = Harmony::WindowCommandType::SetMaximumSize;
-    command.sizeLimit = maximumSize;
-    if (Harmony::requestWindowCommand(std::move(command)))
-        WindowImpl::setMaximumSize(maximumSize);
-#else
-    (void)maximumSize;
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type      = Harmony::WindowCommandType::SetMaximumSize;
+        command.sizeLimit = maximumSize;
+        if (Harmony::requestWindowCommand(std::move(command)))
+            WindowImpl::setMaximumSize(maximumSize);
+    }
 }
 
 
 void WindowImplHarmony::setTitle(const String& title)
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type  = Harmony::WindowCommandType::SetTitle;
-    command.title = toUtf8(title);
-    (void)Harmony::requestWindowCommand(std::move(command));
-#else
-    (void)title;
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type  = Harmony::WindowCommandType::SetTitle;
+        command.title = toUtf8(title);
+        (void)Harmony::requestWindowCommand(std::move(command));
+    }
 }
 
 
 void WindowImplHarmony::setIcon(Vector2u size, const std::uint8_t* pixels)
 {
-#ifdef SFML_HARMONY_2IN1
-    const auto pixelCount = static_cast<std::uint64_t>(size.x) * size.y * 4u;
-    if (!pixels || !size.x || !size.y || pixelCount > std::numeric_limits<std::size_t>::max())
-        return;
+    if (Harmony::usesDesktopWindow())
+    {
+        const auto pixelCount = static_cast<std::uint64_t>(size.x) * size.y * 4u;
+        if (!pixels || !size.x || !size.y || pixelCount > std::numeric_limits<std::size_t>::max())
+            return;
 
-    Harmony::WindowCommand command;
-    command.type     = Harmony::WindowCommandType::SetIcon;
-    command.iconSize = size;
-    command.iconPixels.assign(pixels, pixels + static_cast<std::size_t>(pixelCount));
-    (void)Harmony::requestWindowCommand(std::move(command));
-#else
-    (void)size;
-    (void)pixels;
-#endif
+        Harmony::WindowCommand command;
+        command.type     = Harmony::WindowCommandType::SetIcon;
+        command.iconSize = size;
+        command.iconPixels.assign(pixels, pixels + static_cast<std::size_t>(pixelCount));
+        (void)Harmony::requestWindowCommand(std::move(command));
+    }
 }
 
 
 void WindowImplHarmony::setVisible(bool visible)
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type    = Harmony::WindowCommandType::SetVisible;
-    command.visible = visible;
-    (void)Harmony::requestWindowCommand(std::move(command));
-#else
-    (void)visible;
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type    = Harmony::WindowCommandType::SetVisible;
+        command.visible = visible;
+        (void)Harmony::requestWindowCommand(std::move(command));
+    }
 }
 
 
@@ -322,30 +302,32 @@ void WindowImplHarmony::setMouseCursorVisible(bool visible)
 
 void WindowImplHarmony::setMouseCursorGrabbed(bool grabbed)
 {
-#ifdef SFML_HARMONY_2IN1
-    m_cursorGrabDesired = grabbed;
-    if ((grabbed && (!m_hasFocus || m_cursorGrabActual)) || (!grabbed && !m_cursorGrabActual))
-        return;
-
-    auto&        host = Harmony::getHostState();
-    std::int32_t windowId{};
+    if (Harmony::usesDesktopWindow())
     {
-        const std::lock_guard lock(host.mutex);
-        windowId = host.windowId;
-    }
-    if (windowId <= 0)
-        return;
+        m_cursorGrabDesired = grabbed;
+        if ((grabbed && (!m_hasFocus || m_cursorGrabActual)) || (!grabbed && !m_cursorGrabActual))
+            return;
 
-    const auto result = grabbed ? OH_WindowManager_LockCursor(windowId, true) : OH_WindowManager_UnlockCursor(windowId);
-    if (result == OK)
-        m_cursorGrabActual = grabbed;
+        auto&        host = Harmony::getHostState();
+        std::int32_t windowId{};
+        {
+            const std::lock_guard lock(host.mutex);
+            windowId = host.windowId;
+        }
+        if (windowId <= 0)
+            return;
+
+        const auto result = grabbed ? OH_WindowManager_LockCursor(windowId, true) : OH_WindowManager_UnlockCursor(windowId);
+        if (result == OK)
+            m_cursorGrabActual = grabbed;
+        else
+            err() << "Failed to " << (grabbed ? "lock" : "unlock") << " the Harmony cursor (error " << result << ')'
+                  << std::endl;
+    }
     else
-        err() << "Failed to " << (grabbed ? "lock" : "unlock") << " the Harmony cursor (error " << result << ')'
-              << std::endl;
-#else
-    (void)grabbed;
-    // Pointer confinement is unavailable to ordinary mobile applications.
-#endif
+    {
+        // Pointer confinement is unavailable to ordinary mobile applications.
+    }
 }
 
 
@@ -380,13 +362,16 @@ void WindowImplHarmony::setKeyRepeatEnabled(bool enabled)
 
 void WindowImplHarmony::requestFocus()
 {
-#ifdef SFML_HARMONY_2IN1
-    Harmony::WindowCommand command;
-    command.type = Harmony::WindowCommandType::RequestFocus;
-    (void)Harmony::requestWindowCommand(std::move(command));
-#else
-    // ArkUI owns focus traversal. XComponent focus must be requested by the host.
-#endif
+    if (Harmony::usesDesktopWindow())
+    {
+        Harmony::WindowCommand command;
+        command.type = Harmony::WindowCommandType::RequestFocus;
+        (void)Harmony::requestWindowCommand(std::move(command));
+    }
+    else
+    {
+        // ArkUI owns focus traversal. XComponent focus must be requested by the host.
+    }
 }
 
 
@@ -413,11 +398,12 @@ void WindowImplHarmony::processEvents()
         else if (event.is<Event::FocusLost>())
         {
             m_hasFocus = false;
-#ifdef SFML_HARMONY_2IN1
-            // Harmony automatically releases confinement as focus leaves the
-            // window. Preserve the desired state so it can be restored later.
-            m_cursorGrabActual = false;
-#endif
+            if (Harmony::usesDesktopWindow())
+            {
+                // Harmony automatically releases confinement as focus leaves the
+                // window. Preserve the desired state so it can be restored later.
+                m_cursorGrabActual = false;
+            }
         }
 
         pushEvent(event);

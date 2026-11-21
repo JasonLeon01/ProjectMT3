@@ -34,6 +34,10 @@
 struct HWND__; // NOLINT(bugprone-reserved-identifier)
 #endif
 
+#ifdef SFML_SYSTEM_HARMONY
+struct NativeWindow;
+#endif
+
 namespace sf
 {
 #if defined(SFML_SYSTEM_WINDOWS)
@@ -64,8 +68,13 @@ using WindowHandle = void*;
 
 #elif defined(SFML_SYSTEM_HARMONY)
 
-// Window handle is OHNativeWindow* (void*) on OpenHarmony/HarmonyOS
-using WindowHandle = void*;
+// NativeWindow is the underlying type of OHNativeWindow.
+using WindowHandle = ::NativeWindow*;
+
+#elif defined(SFML_SYSTEM_EMSCRIPTEN)
+
+// CSS selector identifying the single host canvas.
+using WindowHandle = const char*;
 
 #elif defined(SFML_DOXYGEN)
 
@@ -90,7 +99,8 @@ using WindowHandle = "platform-specific";
 /// macOS           | either \p NSWindow* or \p NSView*, disguised as \p void*
 /// iOS             | \p UIWindow*
 /// Android         | \p ANativeWindow*
-/// OpenHarmony     | \p OHNativeWindow*
+/// OpenHarmony     | OHNativeWindow*
+/// Web             | CSS selector of the host canvas (\p const \p char*)
 ///
 /// \par macOS Specification
 ///

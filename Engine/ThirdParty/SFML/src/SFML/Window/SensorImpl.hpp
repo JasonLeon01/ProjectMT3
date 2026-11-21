@@ -31,7 +31,9 @@
 
 #include <SFML/Window/Sensor.hpp>
 
-#if defined(SFML_SYSTEM_WINDOWS)
+#if defined(SFML_SYSTEM_EMSCRIPTEN)
+#include <SFML/Window/Emscripten/SensorImpl.hpp>
+#elif defined(SFML_SYSTEM_WINDOWS)
 
 #include <SFML/Window/Win32/SensorImpl.hpp>
 

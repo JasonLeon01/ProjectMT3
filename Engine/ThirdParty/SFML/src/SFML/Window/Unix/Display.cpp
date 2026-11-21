@@ -54,26 +54,32 @@ std::recursive_mutex   mutex;
 namespace sf::priv
 {
 ////////////////////////////////////////////////////////////
-std::shared_ptr<Display> openDisplay()
+std::shared_ptr<Display> tryOpenDisplay()
 {
     const std::lock_guard lock(UnixDisplayImpl::mutex);
-
-    auto sharedDisplay = UnixDisplayImpl::weakSharedDisplay.lock();
+    auto                  sharedDisplay = UnixDisplayImpl::weakSharedDisplay.lock();
     if (!sharedDisplay)
     {
-        sharedDisplay.reset(XOpenDisplay(nullptr), XCloseDisplay);
-        UnixDisplayImpl::weakSharedDisplay = sharedDisplay;
-
-        // Opening display failed: The best we can do at the moment is to output a meaningful error message
-        // and cause an abnormal program termination
-        if (!sharedDisplay)
+        if (auto* display = XOpenDisplay(nullptr))
         {
-            err() << "Failed to open X11 display; make sure the DISPLAY environment variable is set correctly" << std::endl;
-            std::abort();
+            sharedDisplay.reset(display, XCloseDisplay);
+            UnixDisplayImpl::weakSharedDisplay = sharedDisplay;
         }
     }
-
     return sharedDisplay;
+}
+
+
+////////////////////////////////////////////////////////////
+std::shared_ptr<Display> openDisplay()
+{
+    auto display = tryOpenDisplay();
+    if (!display)
+    {
+        err() << "Failed to open X11 display; make sure the DISPLAY environment variable is set correctly" << std::endl;
+        std::abort();
+    }
+    return display;
 }
 
 

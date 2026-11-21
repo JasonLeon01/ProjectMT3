@@ -28,7 +28,9 @@
 #include <SFML/System/Sleep.hpp>
 #include <SFML/System/Time.hpp>
 
-#if defined(SFML_SYSTEM_WINDOWS)
+#ifdef SFML_SYSTEM_EMSCRIPTEN
+#include <SFML/System/Emscripten/Browser.hpp>
+#elif defined(SFML_SYSTEM_WINDOWS)
 #include <SFML/System/Win32/SleepImpl.hpp>
 #else
 #include <SFML/System/Unix/SleepImpl.hpp>

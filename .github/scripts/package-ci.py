@@ -45,7 +45,7 @@ def clean(project, output):
     require(project == Path(os.environ["GITHUB_WORKSPACE"]).resolve(), "Unexpected checkout")
     temporary = Path(os.environ["RUNNER_TEMP"]).resolve()
     require(output.is_relative_to(temporary) and output != temporary, "Output must be inside RUNNER_TEMP")
-    for target in [*(project / name for name in ("build", "bin", "Intermediate", "Cache", "EditorCache")), output]:
+    for target in [*(project / name for name in ("build", "build-web", "bin", "Intermediate", "Cache", "EditorCache")), output]:
         require(not target.is_symlink(), f"Refusing to clean a symlink: {target}")
         if target.exists():
             shutil.rmtree(target)
@@ -179,8 +179,8 @@ def validate_hap(hap, project):
     require(hap.is_file() and not hap.is_symlink(), "Signed HAP is missing or is a symlink")
     version = json.loads((project / "Main.proj").read_text(encoding="utf-8"))["packaging"]["version"]
     require(isinstance(version, str), "Invalid project package version")
-    match = re.fullmatch(rf"ProjectMT3-{re.escape(version)}\.(20\d{{8}})-harmony-mobile-signed\.hap", hap.name)
-    require(match is not None, "Expected one ProjectMT3 Mobile signed dev HAP")
+    match = re.fullmatch(rf"ProjectMT3-{re.escape(version)}\.(20\d{{8}})-harmony-signed\.hap", hap.name)
+    require(match is not None, "Expected one ProjectMT3 signed dev HAP")
     built_at = datetime.datetime.strptime(match[1], "%Y%m%d%H")
     with zipfile.ZipFile(hap) as archive, tempfile.TemporaryDirectory(dir=os.environ.get("RUNNER_TEMP")) as temporary:
         names = inspect_zip(archive, "HAP")
@@ -193,7 +193,7 @@ def validate_hap(hap, project):
         require(app.get("buildMode") == "release" and app.get("debug") is False, "HAP must use the Release build")
         require(module.get("name") == "entry" and module.get("type") == "entry"
                 and module.get("mainElement") == "EntryAbility"
-                and sorted(module.get("deviceTypes", [])) == ["phone", "tablet"], "Invalid Mobile HAP module")
+                and sorted(module.get("deviceTypes", [])) == ["2in1", "phone", "tablet"], "Invalid HarmonyOS device types or entry module")
         native = "libs/arm64-v8a/libentry.so"
         require(native in names, "HAP native entry is missing")
         with archive.open(native) as stream:
@@ -223,7 +223,7 @@ def validate_hap(hap, project):
                 with runtime.open(name) as source, target.open("wb") as destination:
                     shutil.copyfileobj(source, destination)
                 print(f"Validated {group}: {inspect_ldpak(target, group, reject_signing=True)} files")
-    print("Validated Mobile HAP identity, runtime checksum and packed encrypted resources")
+    print("Validated HAP identity, runtime checksum and packed encrypted resources")
 
 
 def validate_standalone(project, output):

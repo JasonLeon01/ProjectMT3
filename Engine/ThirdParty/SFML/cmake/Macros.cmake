@@ -146,7 +146,7 @@ macro(sfml_add_library module)
     endif()
 
     # set the version and soversion of the target (for compatible systems -- mostly Linuxes)
-    # except for mobile package platforms which require unsuffixed shared objects
+    # except for Android which strips soversion suffixes
     if(NOT SFML_OS_ANDROID AND NOT SFML_OS_HARMONY)
         set_target_properties(${target} PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
         set_target_properties(${target} PROPERTIES VERSION ${PROJECT_VERSION})
@@ -221,7 +221,7 @@ macro(sfml_add_library module)
 
     if(SFML_OS_ANDROID)
         # Always use position-independent code on Android, even when linking statically.
-        # This is needed because all C++ code is placed in a shared library on Android.
+        # This is needed because all c++ code is placed in a shared library on Android.
         set_target_properties(${target} PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
         # Google Play requires all new apps to support 16 KB page sizes.
@@ -266,10 +266,10 @@ macro(sfml_add_library module)
     if(THIS_DEPENDENCIES AND (NOT BUILD_SHARED_LIBS OR THIS_INSTALL_SHARED_DEPENDENCIES))
         include(CMakePackageConfigHelpers)
 
-        configure_package_config_file("${THIS_DEPENDENCIES}" "${CMAKE_CURRENT_BINARY_DIR}/SFML${module}Dependencies.cmake"
+        configure_package_config_file("${THIS_DEPENDENCIES}" "${CMAKE_CURRENT_BINARY_DIR}/SFML${module}${config_name}Dependencies.cmake"
             INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/SFML")
 
-        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/SFML${module}Dependencies.cmake"
+        install(FILES "${CMAKE_CURRENT_BINARY_DIR}/SFML${module}${config_name}Dependencies.cmake"
                 DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/SFML
                 COMPONENT devel)
     endif()
@@ -460,6 +460,12 @@ function(sfml_add_test target SOURCES DEPENDS)
     # Required to actually run the tests
     if(SFML_OS_IOS)
         sfml_set_common_ios_properties(${target})
+        # iOS 27 terminates apps that do not declare the scene lifecycle
+        set_target_properties(${target} PROPERTIES MACOSX_BUNDLE_INFO_PLIST ${PROJECT_SOURCE_DIR}/test/iOSInfo.plist.in)
+        target_sources(${target} PRIVATE ${PROJECT_SOURCE_DIR}/test/iOSSceneDelegate.mm)
+        set_source_files_properties(${PROJECT_SOURCE_DIR}/test/iOSSceneDelegate.mm
+                                    TARGET_DIRECTORY ${target}
+                                    PROPERTIES COMPILE_OPTIONS "-fobjc-arc")
     endif()
 
     # Enable support for UTF-8 characters in source code

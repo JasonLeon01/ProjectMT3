@@ -27,6 +27,7 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/iOS/SFAppDelegate.hpp>
+#include <SFML/Window/iOS/SFView.hpp>
 #include <SFML/Window/iOS/SFViewController.hpp>
 
 
@@ -36,11 +37,13 @@
 - (void)viewWillTransitionToSize:(CGSize)size
        withTransitionCoordinator:(nonnull id<UIViewControllerTransitionCoordinator>)coordinator
 {
-    if ([SFAppDelegate getInstance].sfWindow)
+    auto* const window = [SFAppDelegate getInstance].sfWindow;
+    // A transition from a closed view must not resize a replacement window.
+    if (window && window->getGlView() == self.view)
     {
-        const double backingScale = [SFAppDelegate getInstance].backingScaleFactor;
-        [SFAppDelegate getInstance].sfWindow->forwardEvent(sf::Event::Resized{
-            {static_cast<unsigned int>(size.width * backingScale), static_cast<unsigned int>(size.height * backingScale)}});
+        const auto backingScale = static_cast<double>(self.view.contentScaleFactor);
+        window->forwardEvent(sf::Event::Resized{{static_cast<unsigned int>(size.width * backingScale),
+                                                 static_cast<unsigned int>(size.height * backingScale)}});
     }
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
 }

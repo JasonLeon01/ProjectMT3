@@ -44,7 +44,7 @@ AudioResource::AudioResource() :
             static std::mutex                       mutex;
             static std::weak_ptr<priv::AudioDevice> weakAudioDevice;
 
-            const std::lock_guard lock(mutex);
+            const std::scoped_lock lock(mutex);
 
             auto audioDevice = weakAudioDevice.lock();
 

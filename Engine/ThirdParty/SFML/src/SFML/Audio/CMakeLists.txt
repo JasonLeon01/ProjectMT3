@@ -198,7 +198,9 @@ else()
     endif()
 endif()
 
-find_package(Threads REQUIRED)
+if(NOT SFML_OS_EMSCRIPTEN)
+    find_package(Threads REQUIRED)
+endif()
 
 # define the sfml-audio target
 sfml_add_library(Audio
@@ -231,7 +233,10 @@ target_compile_definitions(sfml-audio PRIVATE SFML_IS_BIG_ENDIAN=$<STREQUAL:${CM
 # setup dependencies
 target_link_libraries(sfml-audio
                       PUBLIC SFML::System
-                      PRIVATE Vorbis::vorbis Vorbis::vorbisfile Vorbis::vorbisenc FLAC::FLAC Threads::Threads)
+                      PRIVATE Vorbis::vorbis Vorbis::vorbisfile Vorbis::vorbisenc FLAC::FLAC)
+if(NOT SFML_OS_EMSCRIPTEN)
+    target_link_libraries(sfml-audio PRIVATE Threads::Threads)
+endif()
 if(SFML_OS_IOS)
     target_link_libraries(sfml-audio PRIVATE "-framework Foundation" "-framework CoreFoundation" "-framework CoreAudio" "-framework AudioToolbox" "-framework AVFoundation")
 endif()

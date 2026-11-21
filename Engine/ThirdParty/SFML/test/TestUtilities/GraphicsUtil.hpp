@@ -5,6 +5,8 @@
 
 #pragma once
 
+#include <SFML/Graphics/GraphicsBackend.hpp>
+
 #include <catch2/matchers/catch_matchers_templated.hpp>
 
 #include <SystemUtil.hpp>
@@ -104,4 +106,10 @@ template <typename T>
 auto equalsApprox(const sf::Rect<T>& value, T delta) -> EqualsApproxRectMatcher<T>
 {
     return EqualsApproxRectMatcher<T>{value, delta};
+}
+
+inline bool hasOpenGLGraphicsBackend()
+{
+    const auto backend = sf::getGraphicsBackend();
+    return backend == sf::GraphicsBackend::OpenGL || backend == sf::GraphicsBackend::OpenGLES;
 }

@@ -96,6 +96,16 @@ class WindowImplCocoa;
 - (sf::WindowHandle)getNativeHandle;
 
 ////////////////////////////////////////////////////////////
+/// \brief Get the CAMetalLayer of the rendering view
+///
+/// The layer is created on first use.
+///
+/// \return The CAMetalLayer, disguised as void*
+///
+////////////////////////////////////////////////////////////
+- (void*)metalLayer;
+
+////////////////////////////////////////////////////////////
 /// \brief Determine where the mouse is
 ///
 /// \return true when the mouse is inside the OpenGL view, false otherwise

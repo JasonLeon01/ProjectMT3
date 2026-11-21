@@ -222,8 +222,8 @@ struct Text::ShaperImpl
             std::mutex                             mutex;
             std::vector<std::weak_ptr<ShaperImpl>> cache;
         };
-        static ShaperCache    shaperCache;
-        const std::lock_guard lock(shaperCache.mutex);
+        static ShaperCache     shaperCache;
+        const std::scoped_lock lock(shaperCache.mutex);
 
         std::shared_ptr<ShaperImpl> result;
 
@@ -289,8 +289,8 @@ struct Text::ShaperImpl
             direction = HB_DIRECTION_BTT;
         }
 
-        const std::lock_guard lock(mutex);
-        auto*                 buffer = shapingBuffer.get();
+        const std::scoped_lock lock(mutex);
+        auto*                  buffer = shapingBuffer.get();
 
         // Clear out and add the input to the buffer
         hb_buffer_clear_contents(buffer);

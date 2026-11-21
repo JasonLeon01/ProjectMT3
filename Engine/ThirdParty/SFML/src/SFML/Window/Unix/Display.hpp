@@ -45,6 +45,9 @@ namespace sf::priv
 ////////////////////////////////////////////////////////////
 std::shared_ptr<Display> openDisplay();
 
+// Probe for a display when a graphics backend may be unavailable.
+std::shared_ptr<Display> tryOpenDisplay();
+
 ////////////////////////////////////////////////////////////
 /// \brief Get the shared XIM context for the Display
 ///

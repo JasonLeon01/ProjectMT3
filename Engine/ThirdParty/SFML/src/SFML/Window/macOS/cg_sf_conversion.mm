@@ -26,7 +26,6 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#import <SFML/Window/macOS/Scaling.h>
 #include <SFML/Window/macOS/cg_sf_conversion.hpp>
 
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -58,19 +57,7 @@ unsigned int modeBitsPerPixel(CGDisplayModeRef mode)
 ////////////////////////////////////////////////////////////
 VideoMode convertCGModeToSFMode(CGDisplayModeRef cgmode)
 {
-    // The main documentation says the sizes returned by
-    // CGDisplayModeGetWidth and CGDisplayModeGetHeight
-    // are expressed in pixels. However, some additional
-    // documentation [1] states they actually return
-    // values in points starting with 10.8.
-    //
-    // We therefore needs to use the scaling factor to
-    // convert the dimensions properly.
-    //
-    // [1]: "APIs for Supporting High Resolution" > "Additions and Changes for OS X v10.8"
-    // https://developer.apple.com/library/mac/documentation/GraphicsAnimation/Conceptual/HighResolutionOSX/APIs/APIs.html#//apple_ref/doc/uid/TP40012302-CH5-SW27
-    auto size = Vector2u(Vector2(CGDisplayModeGetPixelWidth(cgmode), CGDisplayModeGetPixelHeight(cgmode)));
-    scaleInXY(size, nil);
+    const auto size = Vector2u(Vector2(CGDisplayModeGetPixelWidth(cgmode), CGDisplayModeGetPixelHeight(cgmode)));
     return VideoMode(size, modeBitsPerPixel(cgmode));
 }
 

@@ -1,8 +1,11 @@
+#include <SFML/Graphics/GraphicsBackend.hpp>
 #include <SFML/Graphics/Shader.hpp>
 
 #include <SFML/Window/Context.hpp>
 
+#if defined(SFML_RENDER_OPENGL)
 #include <SFML/OpenGL.hpp>
+#endif
 
 // Other 1st party headers
 #include <SFML/System/Exception.hpp>
@@ -10,38 +13,19 @@
 
 #include <catch2/catch_test_macros.hpp>
 
-#include <memory>
+#include <WindowUtil.hpp>
 #include <type_traits>
 
 namespace
 {
-constexpr unsigned int currentProgramParameter = 0x8B8D; // GL_CURRENT_PROGRAM
-
-#if defined(SFML_SYSTEM_WINDOWS)
-using GlGetInteger = void(APIENTRY*)(GLenum, GLint*);
-#else
-using GlGetInteger = void (*)(GLenum, GLint*);
-#endif
-
 constexpr auto vertexSource = R"(
 uniform vec2 storm_position;
 uniform float storm_total_radius;
 uniform float storm_inner_radius;
 
-attribute vec4 sf_Vertex;
-attribute vec4 sf_Color;
-attribute vec4 sf_MultiTexCoord0;
-
-uniform mat4 sf_ModelViewMatrix;
-uniform mat4 sf_ProjectionMatrix;
-uniform mat4 sf_TextureMatrix;
-
-varying vec4 sf_FrontColor;
-varying vec4 sf_TexCoord0;
-
 void main()
 {
-    vec4 vertex = sf_ModelViewMatrix * sf_Vertex;
+    vec4 vertex = gl_ModelViewMatrix * gl_Vertex;
     vec2 offset = vertex.xy - storm_position;
     float len = length(offset);
     if (len < storm_total_radius)
@@ -50,9 +34,9 @@ void main()
         vertex.xy = storm_position + normalize(offset) * push_distance;
     }
 
-    gl_Position = sf_ProjectionMatrix * vertex;
-    sf_TexCoord0 = sf_TextureMatrix * sf_MultiTexCoord0;
-    sf_FrontColor = sf_Color;
+    gl_Position = gl_ProjectionMatrix * vertex;
+    gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
+    gl_FrontColor = gl_Color;
 }
 )";
 
@@ -73,7 +57,6 @@ layout (triangle_strip, max_vertices = 4) out;
 
 // Output texture coordinates
 out vec2 tex_coord;
-out vec4 sf_FrontColor;
 
 // Main entry point
 void main()
@@ -87,8 +70,6 @@ void main()
     // Iterate over all vertices
     for (int i = 0; i < gl_in.length(); ++i)
     {
-        sf_FrontColor = vec4(1.0);
-
         // Retrieve the passed vertex position
         vec2 pos = gl_in[i].gl_Position.xy;
 
@@ -119,43 +100,32 @@ void main()
 )";
 
 constexpr auto fragmentSource = R"(
-#ifdef GL_ES
-precision mediump float;
-#endif
-
 uniform sampler2D texture;
 uniform float blink_alpha;
 
-varying vec4 sf_FrontColor;
-
 void main()
 {
-    vec4 pixel = sf_FrontColor;
+    vec4 pixel = gl_Color;
     pixel.a = blink_alpha;
     gl_FragColor = pixel;
 }
 )";
 
-#ifdef SFML_RUN_DISPLAY_TESTS
-constexpr bool skipShaderFullTest = false;
-#else
-constexpr bool skipShaderFullTest = true;
-#endif
-
-std::string skipShaderFullTests()
-{
-    if constexpr (skipShaderFullTest)
-        // https://github.com/catchorg/Catch2/blob/devel/docs/test-cases-and-sections.md#special-tags
-        // This tag tells Catch2 to not run a given TEST_CASE
-        return "[.shaderFull]";
-    else
-        return "";
-}
-
 } // namespace
 
-TEST_CASE("[Graphics] sf::Shader", skipShaderFullTests())
+TEST_CASE("[Graphics] sf::Shader", runDisplayTests())
 {
+    REQUIRE(sf::Shader::isAvailable());
+    if (sf::getGraphicsBackend() != sf::GraphicsBackend::OpenGL)
+        SKIP("These fixtures use desktop compatibility GLSL");
+
+    {
+        const sf::Context context;
+        const auto*       gl = std::get_if<sf::OpenGLSettings>(&context.getSettings().backend);
+        if (!gl || gl->profile != sf::OpenGLProfile::Compatibility)
+            SKIP("These fixtures use desktop compatibility GLSL");
+    }
+
     SECTION("Type traits")
     {
         STATIC_CHECK(!std::is_copy_constructible_v<sf::Shader>);
@@ -372,6 +342,7 @@ TEST_CASE("[Graphics] sf::Shader", skipShaderFullTests())
         }
     }
 
+#if defined(SFML_RENDER_OPENGL)
     SECTION("Restore a program deleted while bound")
     {
         sf::Context context;
@@ -380,17 +351,23 @@ TEST_CASE("[Graphics] sf::Shader", skipShaderFullTests())
 
         sf::Shader shader{std::string_view(vertexSource), std::string_view(fragmentSource)};
 
+#if defined(SFML_SYSTEM_WINDOWS)
+        using GlGetInteger = void(APIENTRY*)(GLenum, GLint*);
+#else
+        using GlGetInteger = void (*)(GLenum, GLint*);
+#endif
         const auto glGetInteger = reinterpret_cast<GlGetInteger>(sf::Context::getFunction("glGetIntegerv"));
         REQUIRE(glGetInteger);
 
         unsigned int deletedProgram = 0;
         {
-            auto boundShader = std::make_unique<sf::Shader>(std::string_view(vertexSource), std::string_view(fragmentSource));
-            deletedProgram = boundShader->getNativeHandle();
-            sf::Shader::bind(boundShader.get());
+            const sf::Shader boundShader{std::string_view(vertexSource), std::string_view(fragmentSource)};
+            deletedProgram = boundShader.getNativeHandle();
+            sf::Shader::bind(&boundShader);
         }
 
-        GLint currentProgram = 0;
+        constexpr GLenum currentProgramParameter = 0x8B8D; // GL_CURRENT_PROGRAM
+        GLint            currentProgram          = 0;
         glGetInteger(currentProgramParameter, &currentProgram);
         REQUIRE(static_cast<unsigned int>(currentProgram) == deletedProgram);
 
@@ -401,6 +378,7 @@ TEST_CASE("[Graphics] sf::Shader", skipShaderFullTests())
 
         sf::Shader::bind(nullptr);
     }
+#endif
 
     SECTION("loadFromFile()")
     {

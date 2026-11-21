@@ -31,7 +31,7 @@ namespace sf
 /// \ingroup graphics
 /// \brief Types of texture coordinates that can be used for rendering
 ///
-/// \see `sf::RenderStates::coordinateType`
+/// \see `sf::Texture::bind`
 ///
 ////////////////////////////////////////////////////////////
 enum class CoordinateType
