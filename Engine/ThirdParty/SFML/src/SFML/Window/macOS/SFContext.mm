@@ -223,8 +223,20 @@ void SFContext::createContext(SFContext* shared, unsigned int bitsPerPixel, cons
     attrs.push_back(NSOpenGLPFAOpenGLProfile);
     if (useCore)
     {
-        const bool needs41 = m_settings.majorVersion > 3 || m_settings.minorVersion > 2;
-        attrs.push_back(needs41 ? NSOpenGLProfileVersion4_1Core : NSOpenGLProfileVersion3_2Core);
+        const bool                   needs41 = m_settings.majorVersion > 3 || m_settings.minorVersion > 2;
+        NSOpenGLPixelFormatAttribute profile = needs41 ? NSOpenGLProfileVersion4_1Core : NSOpenGLProfileVersion3_2Core;
+        if (shared && shared->m_context && shared->m_settings.supports(m_settings))
+        {
+            // A 3.2 pixel format can report GL 4.1. Cocoa only shares objects between
+            // contexts created with the same native profile token.
+            GLint sharedProfile{};
+            [[shared->m_context pixelFormat] getValues:&sharedProfile
+                                          forAttribute:NSOpenGLPFAOpenGLProfile
+                                      forVirtualScreen:[shared->m_context currentVirtualScreen]];
+            if (sharedProfile == NSOpenGLProfileVersion3_2Core || sharedProfile == NSOpenGLProfileVersion4_1Core)
+                profile = static_cast<NSOpenGLPixelFormatAttribute>(sharedProfile);
+        }
+        attrs.push_back(profile);
     }
     else
     {

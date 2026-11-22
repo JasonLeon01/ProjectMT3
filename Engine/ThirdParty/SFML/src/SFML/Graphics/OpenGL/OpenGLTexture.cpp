@@ -358,17 +358,9 @@ bool OpenGLTexture::copy(const rhi::Texture& source, Vector2u dest)
         return false;
 
 
-    {
-        const TextureContextLock lock;
-
-        // Make sure that extensions are initialized
-        priv::ensureExtensionsInit();
-    }
-
+    const TextureContextLock lock;
     if (GLEXT_framebuffer_object && GLEXT_framebuffer_blit)
     {
-        const TextureContextLock lock;
-
         // Save the current bindings so we can restore them after we are done
         GLint readFramebuffer = 0;
         GLint drawFramebuffer = 0;

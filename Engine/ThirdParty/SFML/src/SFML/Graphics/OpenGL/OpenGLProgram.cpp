@@ -25,9 +25,9 @@
 #include <SFML/Graphics/GLCheck.hpp>
 #include <SFML/Graphics/GLExtensions.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLBuffer.hpp>
+#include <SFML/Graphics/OpenGL/OpenGLContextState.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLProgram.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLResource.hpp>
-#include <SFML/Graphics/OpenGL/OpenGLVertexArray.hpp>
 #include <SFML/Graphics/ShaderUniformType.hpp>
 
 #include <SFML/System/Err.hpp>
@@ -320,6 +320,16 @@ bool OpenGLProgram::compile(std::string_view          vertex,
     m_currentTexture = -1;
     m_textures.clear();
     m_uniforms.clear();
+    if (programmable)
+    {
+        m_locations = {glCheck(glGetUniformLocation(program, "sf_ModelViewMatrix")),
+                       glCheck(glGetUniformLocation(program, "sf_ProjectionMatrix")),
+                       glCheck(glGetUniformLocation(program, "sf_ModelViewProjectionMatrix")),
+                       glCheck(glGetUniformLocation(program, "sf_TextureMatrix")),
+                       glCheck(glGetUniformLocation(program, "sf_TextureEnabled")),
+                       glCheck(glGetUniformLocation(program, "sf_Texture")),
+                       glCheck(glGetUniformLocation(program, "sf_TargetSize"))};
+    }
     glCheck(glFlush());
     return true;
 }
@@ -405,34 +415,31 @@ bool OpenGLProgram::bindVertexBuffers(const std::vector<rhi::VertexBufferBinding
     const auto divisor = glVertexAttribDivisor ? glVertexAttribDivisor : glVertexAttribDivisorARB;
     if (!validateVertexBindings(m_options, buffers, first, count, instances) || !divisor)
         return false;
-    GLint maximum{};
-    glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maximum);
-    return std::all_of(m_options.vertexAttributes.begin(),
-                       m_options.vertexAttributes.end(),
-                       [&](const auto& attribute)
-                       {
-                           if (attribute.binding >= buffers.size() ||
-                               attribute.location >= static_cast<unsigned int>(maximum) || !attribute.components ||
-                               attribute.components > 4)
-                               return false;
-                           const auto& input  = buffers[attribute.binding];
-                           const auto& layout = m_options.vertexBindings[attribute.binding];
-                           const auto* buffer = input.buffer ? resourceCast<const OpenGLBuffer>(input.buffer.get()) : nullptr;
-                           if (!buffer || !layout.stride ||
-                               layout.stride > static_cast<std::size_t>(std::numeric_limits<GLsizei>::max()) ||
-                               attribute.offset + attribute.components * sizeof(float) > layout.stride)
-                               return false;
-                           glBindBuffer(GL_ARRAY_BUFFER, buffer->nativeHandle());
-                           glEnableVertexAttribArray(attribute.location);
-                           glVertexAttribPointer(attribute.location,
-                                                 static_cast<GLint>(attribute.components),
-                                                 GL_FLOAT,
-                                                 GL_FALSE,
-                                                 static_cast<GLsizei>(layout.stride),
-                                                 reinterpret_cast<const void*>(input.offset + attribute.offset));
-                           divisor(attribute.location, layout.stepRate);
-                           return true;
-                       });
+    const auto maximum = OpenGLContextState::get().maximumVertexAttributes();
+    if (std::any_of(m_options.vertexAttributes.begin(),
+                    m_options.vertexAttributes.end(),
+                    [maximum](const auto& attribute) { return attribute.location >= maximum; }) ||
+        std::any_of(buffers.begin(),
+                    buffers.end(),
+                    [](const auto& input) { return !resourceCast<const OpenGLBuffer>(input.buffer.get()); }))
+        return false;
+
+    for (const auto& attribute : m_options.vertexAttributes)
+    {
+        const auto& input  = buffers[attribute.binding];
+        const auto& layout = m_options.vertexBindings[attribute.binding];
+        const auto& buffer = static_cast<const OpenGLBuffer&>(*input.buffer);
+        glCheck(glBindBuffer(GL_ARRAY_BUFFER, buffer.nativeHandle()));
+        glCheck(glEnableVertexAttribArray(attribute.location));
+        glCheck(glVertexAttribPointer(attribute.location,
+                                      static_cast<GLint>(attribute.components),
+                                      GL_FLOAT,
+                                      GL_FALSE,
+                                      static_cast<GLsizei>(layout.stride),
+                                      reinterpret_cast<const void*>(input.offset + attribute.offset)));
+        glCheck(divisor(attribute.location, layout.stepRate));
+    }
+    return true;
 }
 bool OpenGLProgram::transformVertices(const std::vector<rhi::VertexBufferBinding>& buffers,
                                       std::size_t                                  count,
@@ -457,8 +464,7 @@ bool OpenGLProgram::transformVertices(const std::vector<rhi::VertexBufferBinding
     glGetIntegerv(GL_CURRENT_PROGRAM, &oldProgram);
     glGetIntegeri_v(GL_TRANSFORM_FEEDBACK_BUFFER_BINDING, 0, &oldFeedback);
     const bool discard = glIsEnabled(GL_RASTERIZER_DISCARD) != GL_FALSE;
-    const auto array   = OpenGLVertexArray::acquire();
-    glBindVertexArray(array->handle);
+    OpenGLContextState::get().bindCustomLayout();
     const bool valid = bindVertexBuffers(buffers, 0, count, 1);
     if (valid)
     {
@@ -503,22 +509,14 @@ void OpenGLProgram::bindTextures() const
 
 int OpenGLProgram::getUniformLocation(const std::string& name)
 {
-    std::string lookup = name;
-    for (const auto& alias : m_options.uniformAliases)
-        if (alias.name == name)
-        {
-            lookup = alias.translatedName;
-            break;
-        }
-    // Check the cache
     if (const auto it = m_uniforms.find(name); it != m_uniforms.end())
-    {
-        // Already in cache, return it
         return it->second;
-    }
 
-    // Not in cache, request the location from OpenGL
-    const int location = glGetUniformLocation(m_shaderProgram, lookup.c_str());
+    const auto  alias    = std::find_if(m_options.uniformAliases.begin(),
+                                    m_options.uniformAliases.end(),
+                                    [&](const auto& entry) { return entry.name == name; });
+    const auto& lookup   = alias == m_options.uniformAliases.end() ? name : alias->translatedName;
+    const int   location = glGetUniformLocation(m_shaderProgram, lookup.c_str());
     m_uniforms.try_emplace(name, location);
 
     if (location == -1)
@@ -544,7 +542,7 @@ bool OpenGLProgram::geometryAvailable()
 #endif
 }
 
-void OpenGLProgram::setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
+void OpenGLProgram::updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
 {
     if (!m_shaderProgram)
         return;
@@ -564,6 +562,63 @@ void OpenGLProgram::setSampler(const std::string& name, std::shared_ptr<rhi::Tex
         return;
     m_textures[location] = std::move(texture);
 }
+void OpenGLProgram::bindForDraw(const rhi::TargetState& target, const rhi::DrawSettings& states, DrawUniformCache* cache) const
+{
+    glCheck(glUseProgram(m_shaderProgram));
+    if (!m_textures.empty())
+        bindTextures();
+    if (m_currentTexture != -1)
+        glCheck(glUniform1i(m_currentTexture, 0));
+
+    // User programs are also writable through native handles and the public shader API.
+    // Only the target's private default program supplies a cache.
+    const bool initialize        = !cache || !cache->initialized;
+    const bool modelChanged      = initialize || cache->modelView != states.transform;
+    const bool projectionChanged = initialize || cache->projection != target.projection;
+    if (m_locations.modelView >= 0 && modelChanged)
+        glCheck(glUniformMatrix4fv(m_locations.modelView, 1, GL_FALSE, states.transform.getMatrix()));
+    if (m_locations.projection >= 0 && projectionChanged)
+        glCheck(glUniformMatrix4fv(m_locations.projection, 1, GL_FALSE, target.projection.getMatrix()));
+    if (m_locations.transform >= 0 && (modelChanged || projectionChanged))
+        glCheck(glUniformMatrix4fv(m_locations.transform, 1, GL_FALSE, (target.projection * states.transform).getMatrix()));
+    if (m_locations.textureMatrix >= 0)
+    {
+        const auto matrix = states.texture ? states.texture->coordinateMatrix(states.coordinateType)
+                                           : std::array<float, 16>{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+        if (initialize || cache->textureMatrix != matrix)
+        {
+            glCheck(glUniformMatrix4fv(m_locations.textureMatrix, 1, GL_FALSE, matrix.data()));
+            if (cache)
+                cache->textureMatrix = matrix;
+        }
+    }
+    const bool textured = states.texture != nullptr;
+    if (m_locations.textured >= 0 && (initialize || cache->textured != textured))
+        glCheck(glUniform1i(m_locations.textured, textured ? GL_TRUE : GL_FALSE));
+    if (m_locations.texture >= 0 && initialize)
+        glCheck(glUniform1i(m_locations.texture, 0));
+    if (m_locations.targetSize >= 0 && (initialize || cache->size != target.size))
+    {
+        const auto width  = static_cast<float>(target.size.x);
+        const auto height = static_cast<float>(target.size.y);
+        glCheck(glUniform4f(m_locations.targetSize,
+                            width,
+                            height,
+                            target.size.x ? 1.f / width : 0.f,
+                            target.size.y ? 1.f / height : 0.f));
+    }
+    if (cache)
+    {
+        if (modelChanged)
+            cache->modelView = states.transform;
+        if (projectionChanged)
+            cache->projection = target.projection;
+        cache->size        = target.size;
+        cache->textured    = textured;
+        cache->initialized = true;
+    }
+}
+
 void OpenGLProgram::bind(const rhi::ShaderProgram* value)
 {
     const TransientContextLock lock;

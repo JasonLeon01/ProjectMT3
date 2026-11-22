@@ -63,8 +63,12 @@ public:
     bool               setActive(bool active) override;
     void               viewChanged() override;
 
-    [[nodiscard]] bool                                resize(Vector2u size);
-    void                                              finish() override;
+    [[nodiscard]] bool resize(Vector2u size);
+    void               finish() override;
+    void               display() override
+    {
+        finish();
+    }
     [[nodiscard]] const ContextSettings&              settings() const override;
     [[nodiscard]] const std::shared_ptr<VulkanImage>& image() const;
     [[nodiscard]] static unsigned int                 getMaximumAntiAliasingLevel(const VulkanDevice& device);

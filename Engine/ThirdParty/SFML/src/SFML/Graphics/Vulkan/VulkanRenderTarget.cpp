@@ -332,7 +332,6 @@ void VulkanRenderTarget::finish()
     {
         m_device->transition(*image(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
         m_device->retain(image());
-        (void)m_device->flush();
     }
 }
 
@@ -342,6 +341,10 @@ VkCommandBuffer VulkanRenderTarget::beginPass()
     if (!command)
         return VK_NULL_HANDLE;
 
+    if (m_device->rendering(m_attachments->framebuffer))
+        return command;
+
+    m_device->endRenderPass();
     m_device->transition(*m_attachments->color, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
     if (m_attachments->multisample)
         m_device->transition(*m_attachments->multisample, VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL);
@@ -353,7 +356,7 @@ VkCommandBuffer VulkanRenderTarget::beginPass()
     pass.renderPass        = m_attachments->pass;
     pass.framebuffer       = m_attachments->framebuffer;
     pass.renderArea.extent = {image()->size.x, image()->size.y};
-    m_device->context()->vk.CmdBeginRenderPass(command, &pass, VK_SUBPASS_CONTENTS_INLINE);
+    m_device->beginRenderPass(pass);
     m_device->retain(m_attachments);
     return command;
 }
@@ -387,7 +390,6 @@ void VulkanRenderTarget::clear(const rhi::TargetState& target, std::optional<Col
         const VkClearRect rect{area, 0, 1};
         const auto&       vk = m_device->context()->vk;
         vk.CmdClearAttachments(command, count, attachments.data(), 1, &rect);
-        vk.CmdEndRenderPass(command);
     }
 }
 
@@ -526,7 +528,6 @@ bool VulkanRenderTarget::draw(
                    static_cast<std::uint32_t>(instances),
                    static_cast<std::uint32_t>(first),
                    0);
-        vk.CmdEndRenderPass(command);
         m_device->retain(program);
         return true;
     }

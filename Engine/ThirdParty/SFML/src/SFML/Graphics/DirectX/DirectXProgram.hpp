@@ -70,7 +70,7 @@ public:
                                                                   std::size_t                                  count,
                                                                   const rhi::Buffer&                           output);
     void setUniform(const std::string& name, ShaderUniformType type, const void* values, std::size_t count) override;
-    void setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
+    void updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
     [[nodiscard]] bool bind(DirectXDevice&               device,
                             const DirectXDrawParameters& parameters,
                             const rhi::Texture*          texture,

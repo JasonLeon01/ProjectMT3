@@ -28,6 +28,7 @@
 #include <SFML/Graphics/GLExtensions.hpp>
 
 #include <SFML/Window/Context.hpp>
+#include <SFML/Window/GlContext.hpp>
 
 #include <SFML/System/Exception.hpp>
 
@@ -40,8 +41,7 @@
 #undef SF_GLAD_GL_IMPLEMENTATION
 #endif
 
-#include <mutex>
-#include <string>
+#include <memory>
 #include <type_traits>
 
 namespace
@@ -84,51 +84,35 @@ void extensionSanityCheck()
 namespace sf::priv
 {
 ////////////////////////////////////////////////////////////
+GladGLContext& getGlDispatch()
+{
+    // The window module tracks the native context per thread. Its slot survives
+    // switching targets and follows the context when it moves between threads.
+    auto* storage = GlContext::getActiveContextGraphicsData();
+    if (!storage)
+        throw Exception("Cannot initialize OpenGL entry points without an active context");
+    if (*storage)
+        return *static_cast<GladGLContext*>(storage->get());
+
+    auto dispatch = std::make_shared<GladGLContext>();
+#ifdef SFML_OPENGL_ES
+    const int     loadedVersion = gladLoadGLES2Context(dispatch.get(), Context::getFunction);
+    constexpr int minimumMajor  = 3;
+#else
+    const int     loadedVersion = gladLoadGLContext(dispatch.get(), Context::getFunction);
+    constexpr int minimumMajor  = 2;
+#endif
+    if (!loadedVersion || GLAD_VERSION_MAJOR(loadedVersion) < minimumMajor)
+        throw Exception("Failed to load the OpenGL entry points required by sfml-graphics");
+
+    *storage = dispatch;
+    extensionSanityCheck();
+    return *dispatch;
+}
+
 void ensureExtensionsInit()
 {
-    static std::mutex      mutex;
-    const std::scoped_lock lock(mutex);
-
-    if (Context::getActiveContextId() == 0)
-        throw Exception("Cannot initialize OpenGL entry points without an active context");
-
-    const auto getString = reinterpret_cast<PFNGLGETSTRINGPROC>(Context::getFunction("glGetString"));
-    if (!getString)
-        throw Exception("Cannot query the active OpenGL context version");
-
-    const auto* version = reinterpret_cast<const char*>(getString(GL_VERSION));
-    if (!version)
-        throw Exception("Cannot query the active OpenGL context version");
-
-    static std::string loadedContextVersion;
-
-    if (loadedContextVersion != version)
-    {
-        int loadedVersion = 0;
-#ifdef SFML_OPENGL_ES
-        loadedVersion = gladLoadGLES2(Context::getFunction);
-#else
-        loadedVersion = gladLoadGL(Context::getFunction);
-#endif
-
-#ifdef SFML_OPENGL_ES
-        constexpr int minimumMajor = 3;
-#else
-        constexpr int minimumMajor = 2;
-#endif
-        if (!loadedVersion || GLAD_VERSION_MAJOR(loadedVersion) < minimumMajor)
-            throw Exception("Failed to load the OpenGL entry points required by sfml-graphics");
-
-        loadedContextVersion = version;
-
-        // Some GL implementations don't fully follow extension specifications
-        // and advertise support for extensions although not providing the
-        // entry points specified for the corresponding extension.
-        // In order to protect ourselves from such implementations, we perform
-        // a sanity check to ensure an extension is _really_ supported, even
-        // from an entry point perspective.
-        extensionSanityCheck();
-    }
+    (void)getGlDispatch();
 }
 
 } // namespace sf::priv

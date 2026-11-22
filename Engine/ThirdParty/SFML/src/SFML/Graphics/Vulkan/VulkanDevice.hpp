@@ -126,14 +126,20 @@ public:
     [[nodiscard]] std::unique_lock<std::recursive_mutex> lock() const;
     [[nodiscard]] const std::shared_ptr<VulkanContext>&  context() const;
     [[nodiscard]] bool                                   isLost() const;
+    void                                                 markLost();
 
     [[nodiscard]] bool                                     loadPipelineCache(const void* data, std::size_t size);
     [[nodiscard]] std::optional<std::vector<std::uint8_t>> getPipelineCacheData() const;
 
     // Record commands and change resources while holding the device lock.
     [[nodiscard]] VkCommandBuffer commands();
-    [[nodiscard]] bool            flush(VkSemaphore wait = VK_NULL_HANDLE, VkSemaphore signal = VK_NULL_HANDLE);
-    void                          retain(std::shared_ptr<void> object);
+    [[nodiscard]] VkSemaphore     acquireSemaphore() const;
+    [[nodiscard]] std::uint64_t   recordingId() const;
+    [[nodiscard]] bool            rendering(VkFramebuffer framebuffer) const;
+    void                          beginRenderPass(const VkRenderPassBeginInfo& pass);
+    void                          endRenderPass();
+    [[nodiscard]] bool flush(bool waitForCompletion, VkSemaphore wait = VK_NULL_HANDLE, VkSemaphore signal = VK_NULL_HANDLE);
+    void retain(std::shared_ptr<void> object);
 
     [[nodiscard]] std::shared_ptr<VulkanBuffer> makeBuffer(std::size_t bytes) const
     {

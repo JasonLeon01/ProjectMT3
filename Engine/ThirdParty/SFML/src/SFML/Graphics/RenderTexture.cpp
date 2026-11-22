@@ -152,10 +152,8 @@ void RenderTexture::display()
 {
     if (m_backend)
     {
-        m_backend->finish();
+        m_backend->display();
         m_texture.invalidateMipmap();
-        if (const auto device = rhi::getDevice())
-            (void)device->submit(false);
     }
 }
 

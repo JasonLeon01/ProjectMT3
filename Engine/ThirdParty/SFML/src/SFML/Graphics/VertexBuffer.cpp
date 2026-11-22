@@ -110,8 +110,11 @@ bool VertexBuffer::update(const Vertex* vertices, std::size_t vertexCount, unsig
         return false;
     if (!offset && vertexCount >= m_size)
     {
-        const auto device = rhi::getDevice();
-        auto replacement  = device->createBuffer(vertexCount * sizeof(Vertex), static_cast<rhi::BufferUsage>(m_usage));
+        const auto usage = static_cast<rhi::BufferUsage>(m_usage);
+        if (vertexCount == m_size && static_cast<priv::BufferResource&>(*m_resource).discardAndUpload(vertices, usage))
+            return true;
+        const auto device      = rhi::getDevice();
+        auto       replacement = device->createBuffer(vertexCount * sizeof(Vertex), usage);
         if (!replacement || !replacement->upload(vertices, vertexCount * sizeof(Vertex)))
             return false;
         m_resource = std::move(replacement);

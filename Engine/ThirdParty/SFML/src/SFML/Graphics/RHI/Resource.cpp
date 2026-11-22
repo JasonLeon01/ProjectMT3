@@ -153,6 +153,27 @@ private:
 };
 } // namespace
 #endif
+class OpenGLProgram;
+class VulkanProgram;
+class MetalProgram;
+class DirectXProgram;
+
+ProgramResource* ProgramResource::from(rhi::ShaderProgram& program)
+{
+    const auto* const type = program.implementationType();
+    if (type == resourceType<OpenGLProgram>() || type == resourceType<VulkanProgram>() ||
+        type == resourceType<MetalProgram>() || type == resourceType<DirectXProgram>())
+        return static_cast<ProgramResource*>(&program);
+    return nullptr;
+}
+
+void RenderTargetBackend::display()
+{
+    finish();
+    if (const auto device = rhi::getDevice())
+        (void)device->submit(false);
+}
+
 void RenderTargetBackend::pushGLStates(const rhi::TargetState&)
 {
     err() << "OpenGL state operations require an OpenGL render target" << std::endl;

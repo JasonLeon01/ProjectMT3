@@ -650,7 +650,7 @@ void MetalProgram::setUniform(const std::string& name, ShaderUniformType type, c
         err() << "Metal uniform not found: " << name << std::endl;
 }
 
-void MetalProgram::setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
+void MetalProgram::updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
 {
     const std::lock_guard guard(m_impl->mutex);
     bool                  found = false;

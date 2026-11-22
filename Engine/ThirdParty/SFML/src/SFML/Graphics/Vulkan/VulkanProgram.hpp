@@ -71,6 +71,7 @@ public:
     {
         std::array<VkDescriptorSet, 3> sets{};
         std::uint32_t                  count{};
+        std::uint32_t                  dynamicOffset{};
     };
 
     [[nodiscard]] static std::shared_ptr<VulkanProgram> create(
@@ -97,7 +98,7 @@ public:
                                                                   std::size_t                                  count,
                                                                   const rhi::Buffer&                           output);
     void setUniform(const std::string& name, ShaderUniformType type, const void* values, std::size_t count) override;
-    void setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
+    void updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
 
     [[nodiscard]] VkPipeline  getPipeline(const VulkanPipelineState& state, VkRenderPass pass);
     [[nodiscard]] Descriptors prepareDescriptors(

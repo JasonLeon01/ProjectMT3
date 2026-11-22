@@ -460,6 +460,8 @@ struct GlContext::Impl
     // Member data
     ////////////////////////////////////////////////////////////
     std::shared_ptr<UnsharedGlObjects> unsharedGlObjects; //!< The current object's handle to unshared objects
+    std::shared_ptr<void>              graphicsData;
+    std::shared_ptr<void>              renderData;
     const std::uint64_t                id{
         []
         {
@@ -677,6 +679,19 @@ std::uint64_t GlContext::getActiveContextId()
 
 
 ////////////////////////////////////////////////////////////
+std::shared_ptr<void>* GlContext::getActiveContextGraphicsData()
+{
+    const auto* context = getActiveContext();
+    return context ? &context->m_impl->graphicsData : nullptr;
+}
+
+std::shared_ptr<void>& GlContext::getActiveContextRenderData()
+{
+    assert(getActiveContext());
+    return getActiveContext()->m_impl->renderData;
+}
+
+////////////////////////////////////////////////////////////
 GlContext::~GlContext()
 {
     auto& currentContext = GlContextImpl::CurrentContext::get();
@@ -820,7 +835,8 @@ void GlContext::cleanupUnsharedResources()
         contextToRestore = nullptr;
 
     // Make this context active so resources can be freed
-    setActive(true);
+    if (!setActive(true))
+        m_impl->graphicsData.reset();
 
     {
         const std::scoped_lock lock(Impl::registry().mutex);
@@ -838,6 +854,9 @@ void GlContext::cleanupUnsharedResources()
             }
         }
     }
+
+    m_impl->renderData.reset();
+    m_impl->graphicsData.reset();
 
     // Make the originally active context active again
     if (contextToRestore)

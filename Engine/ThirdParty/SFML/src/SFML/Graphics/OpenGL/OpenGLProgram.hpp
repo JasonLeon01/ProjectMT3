@@ -60,16 +60,39 @@ public:
                                                                   const rhi::Buffer&                           output);
 
     void setUniform(const std::string& name, rhi::UniformType type, const void* values, std::size_t count) override;
-    void setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
+    void updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
     [[nodiscard]] unsigned int nativeHandle() const override
     {
         return m_shaderProgram;
     }
+    struct DrawUniformCache
+    {
+        Transform             modelView;
+        Transform             projection;
+        std::array<float, 16> textureMatrix{};
+        Vector2u              size;
+        bool                  textured{};
+        bool                  initialized{};
+    };
+
+    void bindForDraw(const rhi::TargetState& target, const rhi::DrawSettings& states, DrawUniformCache* cache) const;
     static void bind(const rhi::ShaderProgram* value);
     static bool geometryAvailable();
 
 private:
-    rhi::ShaderOptions m_options;
+    struct DrawUniformLocations
+    {
+        int modelView{-1};
+        int projection{-1};
+        int transform{-1};
+        int textureMatrix{-1};
+        int textured{-1};
+        int texture{-1};
+        int targetSize{-1};
+    };
+
+    DrawUniformLocations m_locations;
+    rhi::ShaderOptions   m_options;
     struct UniformBinder;
     int                                                    getUniformLocation(const std::string& name);
     void                                                   bindTextures() const;

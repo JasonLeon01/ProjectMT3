@@ -26,9 +26,9 @@
 #include <SFML/Graphics/GLExtensions.hpp>
 #include <SFML/Graphics/GraphicsDevice.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLBuffer.hpp>
+#include <SFML/Graphics/OpenGL/OpenGLContextState.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLProgram.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLRenderTarget.hpp>
-#include <SFML/Graphics/OpenGL/OpenGLResource.hpp>
 #include <SFML/Graphics/OpenGL/OpenGLTexture.hpp>
 #include <SFML/Graphics/RenderTextureImplDefault.hpp>
 #include <SFML/Graphics/RenderTextureImplFBO.hpp>
@@ -39,11 +39,9 @@
 #include <SFML/System/Err.hpp>
 
 #include <algorithm>
-#include <iterator>
+#include <atomic>
 #include <limits>
-#include <mutex>
 #include <ostream>
-#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -57,37 +55,10 @@ namespace
 // A nested named namespace is used here to allow unity builds of SFML.
 namespace OpenGLRenderTargetImpl
 {
-// Mutex to protect ID generation and our context-RenderTarget-map
-std::recursive_mutex& getMutex()
-{
-    static std::recursive_mutex mutex;
-    return mutex;
-}
-
-// Unique identifier, used for identifying RenderTargets when
-// tracking the currently active RenderTarget within a given context
 std::uint64_t getUniqueId()
 {
-    const std::scoped_lock lock(getMutex());
-    static std::uint64_t   id = 1; // start at 1, zero is "no RenderTarget"
-    return id++;
-}
-
-// Map to help us detect whether a different RenderTarget
-// has been activated within a single context
-using ContextRenderTargetMap = std::unordered_map<std::uint64_t, std::uint64_t>;
-ContextRenderTargetMap& getContextRenderTargetMap()
-{
-    static ContextRenderTargetMap contextRenderTargetMap;
-    return contextRenderTargetMap;
-}
-
-// Check if a RenderTarget with the given ID is active in the current context
-bool isActive(std::uint64_t id)
-{
-    const std::scoped_lock lock(getMutex());
-    const auto             it = getContextRenderTargetMap().find(sf::Context::getActiveContextId());
-    return (it != getContextRenderTargetMap().end()) && (it->second == id);
+    static std::atomic<std::uint64_t> nextId{1}; // Zero means no active render target.
+    return nextId.fetch_add(1, std::memory_order_relaxed);
 }
 
 // Convert an sf::BlendMode::Factor constant to the corresponding OpenGL constant.
@@ -248,8 +219,9 @@ struct OpenGLRenderTarget::ProgrammableState
 #endif
     };
 
-    std::vector<State>             states;
-    std::unique_ptr<OpenGLProgram> defaultShader;
+    std::vector<State>              states;
+    std::unique_ptr<OpenGLProgram>  defaultShader;
+    OpenGLProgram::DrawUniformCache defaultUniforms;
 };
 
 OpenGLRenderTarget::OpenGLRenderTarget(bool programmable) :
@@ -277,6 +249,7 @@ void OpenGLRenderTarget::clear(const rhi::TargetState& target, std::optional<Col
 #ifndef SFML_OPENGL_ES
     if (GLEXT_framebuffer_sRGB)
     {
+        m_cache.lastSrgb = target.sRgb;
         if (target.sRgb)
             glCheck(glEnable(GL_FRAMEBUFFER_SRGB));
         else
@@ -427,11 +400,13 @@ void OpenGLRenderTarget::draw(const rhi::TargetState&  target,
 
 bool OpenGLRenderTarget::isActive() const
 {
-    return !m_windowResized && OpenGLRenderTargetImpl::isActive(m_id);
+    return !m_windowResized && m_cache.contextId && m_cache.contextId == Context::getActiveContextId() &&
+           OpenGLContextState::get().activeTarget == m_id;
 }
 
 bool OpenGLRenderTarget::setActive(bool active)
 {
+    auto* previous = !active && Context::getActiveContextId() ? &OpenGLContextState::get() : nullptr;
     if (m_attachment && !m_attachment->activate(active))
         return false;
     // EGL may resize the drawable only when it is rebound, even if this context
@@ -444,44 +419,24 @@ bool OpenGLRenderTarget::setActive(bool active)
         m_windowResized = false;
     if (active && m_window && RenderTextureImplFBO::isAvailable())
         glCheck(GLEXT_glBindFramebuffer(GLEXT_GL_FRAMEBUFFER, m_framebuffer));
-    // Mark this RenderTarget as active or no longer active in the tracking map
-    const std::scoped_lock lock(OpenGLRenderTargetImpl::getMutex());
+    if (!active)
+    {
+        if (previous)
+            previous->activeTarget = 0;
+        m_cache.enable = false;
+        return true;
+    }
 
-    const std::uint64_t contextId = Context::getActiveContextId();
+    const auto contextId = Context::getActiveContextId();
     if (!contextId)
-    {
+        return false;
+    auto& context = OpenGLContextState::get();
+    if (m_cache.contextId != contextId || !context.activeTarget)
+        m_cache.glStatesSet = false;
+    if (m_cache.contextId != contextId || context.activeTarget != m_id)
         m_cache.enable = false;
-        return !active;
-    }
-
-    using OpenGLRenderTargetImpl::getContextRenderTargetMap;
-    auto&      contextRenderTargetMap = getContextRenderTargetMap();
-    const auto it                     = contextRenderTargetMap.find(contextId);
-
-    if (active)
-    {
-        if (it == contextRenderTargetMap.end())
-        {
-            contextRenderTargetMap[contextId] = m_id;
-
-            m_cache.glStatesSet = false;
-            m_cache.enable      = false;
-        }
-        else if (it->second != m_id)
-        {
-            it->second = m_id;
-
-            m_cache.enable = false;
-        }
-    }
-    else
-    {
-        if (it != contextRenderTargetMap.end())
-            contextRenderTargetMap.erase(it);
-
-        m_cache.enable = false;
-    }
-
+    m_cache.contextId    = contextId;
+    context.activeTarget = m_id;
     return true;
 }
 
@@ -758,6 +713,12 @@ void OpenGLRenderTarget::resetGLStates(const rhi::TargetState&)
 
 void OpenGLRenderTarget::applyCurrentView(const rhi::TargetState& target)
 {
+    // Direct RHI commands can provide a new view without calling RenderTarget::setView.
+    const auto& previous = m_cache.lastView;
+    if (m_cache.enable && !m_cache.viewChanged && previous.size == target.size && previous.viewport == target.viewport &&
+        previous.scissor == target.scissor && (m_modern || previous.projection == target.projection))
+        return;
+
     // Set the viewport
     const IntRect viewport    = target.viewport;
     const int     viewportTop = static_cast<int>(target.size.y) - (viewport.position.y + viewport.size.y);
@@ -792,6 +753,7 @@ void OpenGLRenderTarget::applyCurrentView(const rhi::TargetState& target)
         glCheck(glMatrixMode(GL_MODELVIEW));
     }
 
+    m_cache.lastView    = target;
     m_cache.viewChanged = false;
 }
 
@@ -916,8 +878,9 @@ void OpenGLRenderTarget::setupDraw(const rhi::TargetState& target, bool useVerte
 #ifndef SFML_OPENGL_ES
     // Enable or disable sRGB encoding
     // This is needed for drivers that do not check the format of the surface drawn to before applying sRGB conversion
-    if (!m_cache.enable)
+    if (!m_cache.enable || m_cache.lastSrgb != target.sRgb)
     {
+        m_cache.lastSrgb = target.sRgb;
         if (target.sRgb)
             glCheck(glEnable(GL_FRAMEBUFFER_SRGB));
         else if (GLEXT_framebuffer_sRGB)
@@ -998,7 +961,13 @@ void OpenGLRenderTarget::drawPrimitives(PrimitiveType type, std::size_t firstVer
 void OpenGLRenderTarget::cleanupDraw(const rhi::DrawSettings& states)
 {
     // Unbind the shader, if any
-    if (m_modern || states.shader)
+    if (m_modern)
+    {
+        glCheck(glUseProgram(0));
+        // Keep the streaming layout private when raw GL rendering resumes.
+        glCheck(glBindVertexArray(0));
+    }
+    else if (states.shader)
         OpenGLProgram::bind(nullptr);
 
     // If the texture we used to draw belonged to a RenderTexture, then forcibly unbind that texture.
@@ -1024,30 +993,24 @@ bool OpenGLRenderTarget::drawVertices(
     PrimitiveType                                type,
     const rhi::DrawSettings&                     states)
 {
-    if (!m_modern || !states.shader || !instances || !setActive(true) || !glDrawArraysInstanced ||
+    if (!m_modern || !states.shader || !instances || (!isActive() && !setActive(true)) || !glDrawArraysInstanced ||
         count > static_cast<std::size_t>(std::numeric_limits<GLsizei>::max()) ||
         first > static_cast<std::size_t>(std::numeric_limits<GLint>::max()) ||
         instances > static_cast<std::size_t>(std::numeric_limits<GLsizei>::max()))
         return false;
-    const auto* program = resourceCast<const OpenGLProgram>(states.shader.get());
-    if (!program || !validateVertexBindings(program->getOptions(), buffers, first, count, instances))
+    if (!drawProgrammable(target, nullptr, 0, first, count, type, states, &buffers, instances))
         return false;
-    for (const auto& binding : buffers)
-        if (!resourceCast<const OpenGLBuffer>(binding.buffer.get()))
-            return false;
-    drawProgrammable(target, nullptr, 0, first, count, type, states, &buffers, instances);
     colorWritten();
     return true;
 }
 bool OpenGLRenderTarget::prewarm(const rhi::TargetState& target, const rhi::DrawSettings& states)
 {
-    if (!m_modern || !setActive(true))
+    if (!m_modern || (!isActive() && !setActive(true)))
         return false;
-    drawProgrammable(target, nullptr, 0, 0, 0, PrimitiveType::Triangles, states);
-    return m_modern->defaultShader != nullptr;
+    return drawProgrammable(target, nullptr, 0, 0, 0, PrimitiveType::Triangles, states);
 }
 
-void OpenGLRenderTarget::drawProgrammable(
+bool OpenGLRenderTarget::drawProgrammable(
     const rhi::TargetState&                      target,
     const Vertex*                                vertices,
     unsigned int                                 buffer,
@@ -1058,128 +1021,61 @@ void OpenGLRenderTarget::drawProgrammable(
     const std::vector<rhi::VertexBufferBinding>* bindings,
     std::size_t                                  instances)
 {
-    struct VertexObjects
-    {
-        GLuint array{};
-        GLuint stream{};
-
-        ~VertexObjects()
-        {
-            glCheck(glDeleteVertexArrays(1, &array));
-            glCheck(glDeleteBuffers(1, &stream));
-        }
-    };
-
-    // VAOs are context-local. Share the streaming objects between all targets
-    // using a given context and delete them while that context is current.
-    const auto objects = []
-    {
-        static std::mutex                                                      mutex;
-        static std::unordered_map<std::uint64_t, std::weak_ptr<VertexObjects>> cache;
-        const std::scoped_lock                                                 lock(mutex);
-        const auto                                                             context = Context::getActiveContextId();
-        if (const auto it = cache.find(context); it != cache.end())
-            if (auto value = it->second.lock())
-                return value;
-
-        for (auto it = cache.begin(); it != cache.end();)
-            it = it->second.expired() ? cache.erase(it) : std::next(it);
-
-        auto value = std::make_shared<VertexObjects>();
-        glCheck(glGenVertexArrays(1, &value->array));
-        glCheck(glGenBuffers(1, &value->stream));
-        OpenGLResource::registerUnsharedGlObject(value);
-        cache[context] = value;
-        return value;
-    };
-
     setupDraw(target, false, states);
-    if (!m_modern->defaultShader)
+    if (!states.shader && !m_modern->defaultShader)
     {
         m_modern->defaultShader = std::make_unique<OpenGLProgram>(std::shared_ptr<void>{}, true);
         if (!m_modern->defaultShader->loadDefault())
         {
             m_modern->defaultShader.reset();
             cleanupDraw(states);
-            return;
+            return false;
         }
     }
-
-    const auto vertexObjects = objects();
-    glCheck(glBindVertexArray(vertexObjects->array));
-    glCheck(glBindBuffer(GL_ARRAY_BUFFER, vertices || !buffer ? vertexObjects->stream : buffer));
-    if (vertices)
-        glCheck(glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(Vertex) * count), vertices, GL_STREAM_DRAW));
 
     const auto* shader = states.shader ? resourceCast<const OpenGLProgram>(states.shader.get())
                                        : m_modern->defaultShader.get();
+    if (!shader || !shader->nativeHandle())
+    {
+        cleanupDraw(states);
+        return false;
+    }
+    auto& context = OpenGLContextState::get();
     if (bindings)
     {
-        if (!shader || !shader->bindVertexBuffers(*bindings, first, count, instances))
+        context.bindCustomLayout();
+        if (!shader->bindVertexBuffers(*bindings, first, count, instances))
         {
             cleanupDraw(states);
-            return;
+            return false;
         }
     }
+    else if (buffer)
+        context.bindVertexBuffer(buffer);
     else
     {
-        glCheck(glVertexAttribPointer(0,
-                                      2,
-                                      GL_FLOAT,
-                                      GL_FALSE,
-                                      sizeof(Vertex),
-                                      reinterpret_cast<const void*>(offsetof(Vertex, position))));
-        glCheck(glVertexAttribPointer(1,
-                                      4,
-                                      GL_UNSIGNED_BYTE,
-                                      GL_TRUE,
-                                      sizeof(Vertex),
-                                      reinterpret_cast<const void*>(offsetof(Vertex, color))));
-        glCheck(glVertexAttribPointer(2,
-                                      2,
-                                      GL_FLOAT,
-                                      GL_FALSE,
-                                      sizeof(Vertex),
-                                      reinterpret_cast<const void*>(offsetof(Vertex, texCoords))));
-        for (GLuint index = 0; index < 3; ++index)
-            glCheck(glEnableVertexAttribArray(index));
-    }
-    OpenGLProgram::bind(shader);
-    const auto program = shader ? shader->nativeHandle() : 0;
-    if (program)
-    {
-        const auto parameters    = prepareDraw(target, states);
-        const auto textureMatrix = states.texture ? states.texture->coordinateMatrix(states.coordinateType)
-                                                  : std::array<float, 16>{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
-        glCheck(
-            glUniformMatrix4fv(glGetUniformLocation(program, "sf_ModelViewMatrix"), 1, GL_FALSE, parameters.modelView.data()));
-        glCheck(
-            glUniformMatrix4fv(glGetUniformLocation(program, "sf_ProjectionMatrix"), 1, GL_FALSE, parameters.projection.data()));
-        glCheck(glUniformMatrix4fv(glGetUniformLocation(program, "sf_ModelViewProjectionMatrix"),
-                                   1,
-                                   GL_FALSE,
-                                   parameters.transform.data()));
-        glCheck(glUniformMatrix4fv(glGetUniformLocation(program, "sf_TextureMatrix"), 1, GL_FALSE, textureMatrix.data()));
-        glCheck(glUniform1i(glGetUniformLocation(program, "sf_TextureEnabled"), states.texture ? GL_TRUE : GL_FALSE));
-        glCheck(glUniform1i(glGetUniformLocation(program, "sf_Texture"), 0));
-        glUniform4fv(glGetUniformLocation(program, "sf_TargetSize"), 1, parameters.targetSize.data());
-        if (count)
-        {
-            if (bindings)
-            {
-                static constexpr std::array<GLenum, 6>
-                    modes{GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN};
-                glDrawArraysInstanced(modes[static_cast<std::size_t>(type)],
-                                      static_cast<GLint>(first),
-                                      static_cast<GLsizei>(count),
-                                      static_cast<GLsizei>(instances));
-            }
-            else
-                drawPrimitives(type, first, count);
-        }
+        context.bindStream();
+        if (vertices)
+            glCheck(glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(Vertex) * count), vertices, GL_STREAM_DRAW));
     }
 
-    if (bindings && shader)
+    shader->bindForDraw(target, states, states.shader ? nullptr : &m_modern->defaultUniforms);
+    if (count)
+    {
+        if (bindings)
+        {
+            static constexpr std::array<GLenum, 6>
+                modes{GL_POINTS, GL_LINES, GL_LINE_STRIP, GL_TRIANGLES, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN};
+            glDrawArraysInstanced(modes[static_cast<std::size_t>(type)],
+                                  static_cast<GLint>(first),
+                                  static_cast<GLsizei>(count),
+                                  static_cast<GLsizei>(instances));
+        }
+        else
+            drawPrimitives(type, first, count);
+    }
+
+    if (bindings)
     {
         const auto divisor = glVertexAttribDivisor ? glVertexAttribDivisor : glVertexAttribDivisorARB;
         for (const auto& attribute : shader->getOptions().vertexAttributes)
@@ -1189,6 +1085,7 @@ void OpenGLRenderTarget::drawProgrammable(
         }
     }
     cleanupDraw(states);
+    return true;
 }
 
 std::shared_ptr<OpenGLRenderTarget> OpenGLRenderTarget::create(std::shared_ptr<OpenGLTexture> texture,

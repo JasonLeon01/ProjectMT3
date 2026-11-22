@@ -31,6 +31,7 @@
 
 #include <algorithm>
 #include <limits>
+#include <map>
 #include <ostream>
 #include <spirv_reflect.h>
 #include <tuple>
@@ -282,26 +283,49 @@ VkShaderModule makeModule(const VulkanContext&      context,
     return shader;
 }
 
-bool operator==(const VulkanPipelineState& lhs, const VulkanPipelineState& rhs)
+auto pipelineKey(const VulkanPipelineState& state)
 {
-    return std::tie(lhs.colorFormat,
-                    lhs.depthFormat,
-                    lhs.samples,
-                    lhs.primitive,
-                    lhs.blend,
-                    lhs.comparison,
-                    lhs.stencilOp,
-                    lhs.stencilOnly,
-                    lhs.present) ==
-           std::tie(rhs.colorFormat,
-                    rhs.depthFormat,
-                    rhs.samples,
-                    rhs.primitive,
-                    rhs.blend,
-                    rhs.comparison,
-                    rhs.stencilOp,
-                    rhs.stencilOnly,
-                    rhs.present);
+    return std::tie(state.colorFormat,
+                    state.depthFormat,
+                    state.samples,
+                    state.primitive,
+                    state.blend.colorSrcFactor,
+                    state.blend.colorDstFactor,
+                    state.blend.colorEquation,
+                    state.blend.alphaSrcFactor,
+                    state.blend.alphaDstFactor,
+                    state.blend.alphaEquation,
+                    state.comparison,
+                    state.stencilOp,
+                    state.stencilOnly,
+                    state.present);
+}
+
+struct PipelineLess
+{
+    bool operator()(const VulkanPipelineState& lhs, const VulkanPipelineState& rhs) const
+    {
+        return pipelineKey(lhs) < pipelineKey(rhs);
+    }
+};
+
+bool sameSample(const VkDescriptorImageInfo& lhs, const VkDescriptorImageInfo& rhs)
+{
+    return lhs.sampler == rhs.sampler && lhs.imageView == rhs.imageView;
+}
+
+VkDescriptorImageInfo sampleImage(VulkanDevice& device, const VulkanSample& sample, const VulkanImage* attachment)
+{
+    const auto& image = sample.image ? sample.image : device.whiteTexture();
+    if (!image || image.get() == attachment)
+        return {};
+
+    const VkSampler sampler = device.sampler(sample.smooth, sample.repeated, sample.mipmapped);
+    if (!sampler)
+        return {};
+    device.transition(*image, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    device.retain(image);
+    return {sampler, image->view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL};
 }
 
 VkDescriptorSetLayout createLayout(const VulkanContext& context, const VkDescriptorSetLayoutBinding* bindings, std::uint32_t count)
@@ -324,19 +348,43 @@ struct VulkanProgram::Impl
     {
     }
 
-    std::shared_ptr<VulkanContext>                          context;
-    std::vector<VkPipelineShaderStageCreateInfo>            stages;
-    std::vector<VulkanProgramImpl::Binding>                 bindings;
-    rhi::ShaderOptions                                      options;
-    std::vector<VkVertexInputBindingDescription>            vertexBindings;
-    std::vector<VkVertexInputAttributeDescription>          vertexAttributes;
-    bool                                                    feedback{};
-    VkRenderPass                                            transformPass{};
-    VkFramebuffer                                           transformFramebuffer{};
-    std::array<VkDescriptorSetLayout, 3>                    sets{};
-    VkPipelineLayout                                        layout{};
-    std::vector<std::pair<VulkanPipelineState, VkPipeline>> pipelines;
-    std::mutex                                              uniformsMutex;
+    std::shared_ptr<VulkanContext>                                             context;
+    std::vector<VkPipelineShaderStageCreateInfo>                               stages;
+    std::vector<VulkanProgramImpl::Binding>                                    bindings;
+    rhi::ShaderOptions                                                         options;
+    std::vector<VkVertexInputBindingDescription>                               vertexBindings;
+    std::vector<VkVertexInputAttributeDescription>                             vertexAttributes;
+    bool                                                                       feedback{};
+    VkRenderPass                                                               transformPass{};
+    VkFramebuffer                                                              transformFramebuffer{};
+    std::array<VkDescriptorSetLayout, 3>                                       sets{};
+    VkPipelineLayout                                                           layout{};
+    std::map<VulkanPipelineState, VkPipeline, VulkanProgramImpl::PipelineLess> pipelines;
+    struct DrawSet
+    {
+        std::uint64_t          recording{};
+        VkDescriptorSet        set{};
+        VkDescriptorImageInfo  image{};
+        VkDescriptorBufferInfo buffer{};
+    } drawSet;
+
+    struct UserSet
+    {
+        std::uint64_t                       recording{};
+        VkDescriptorSet                     set{};
+        bool                                uniformsChanged{true};
+        std::vector<VkDescriptorImageInfo>  savedImages;
+        std::vector<VkDescriptorImageInfo>  images;
+        std::vector<VkDescriptorBufferInfo> buffers;
+        std::vector<VkWriteDescriptorSet>   writes;
+    } userSet;
+
+    VkDescriptorSet prepareDrawSet(VulkanDevice&                device,
+                                   const VulkanDrawParameters&  parameters,
+                                   const VkDescriptorImageInfo& image,
+                                   std::uint32_t&               dynamicOffset);
+    VkDescriptorSet prepareUserSet(VulkanDevice& device, const VulkanSample& texture, const VulkanImage* attachment);
+    std::mutex      uniformsMutex;
 };
 
 VulkanProgram::VulkanProgram(std::shared_ptr<VulkanContext> context) :
@@ -435,7 +483,7 @@ std::shared_ptr<VulkanProgram> VulkanProgram::create(
 
     const VkShaderStageFlags flags = VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT |
                                      (geometry.empty() ? 0u : static_cast<VkShaderStageFlags>(VK_SHADER_STAGE_GEOMETRY_BIT));
-    const std::array common{VkDescriptorSetLayoutBinding{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, flags, nullptr},
+    const std::array common{VkDescriptorSetLayoutBinding{0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, 1, flags, nullptr},
                             VkDescriptorSetLayoutBinding{1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, flags, nullptr}};
     impl.sets[0] = createLayout(ctx, common.data(), static_cast<std::uint32_t>(common.size()));
     if (!impl.sets[0])
@@ -576,7 +624,12 @@ bool VulkanProgram::writeUniform(const std::string& name, ShaderUniformType type
                         const auto sourceIndex = element * columns * components + column * components + row;
                         const auto offset = member.rowMajor ? row * member.matrixStride + column * sizeof(std::uint32_t)
                                                             : column * member.matrixStride + row * sizeof(std::uint32_t);
-                        std::memcpy(destination + offset, data + sourceIndex * sizeof(std::uint32_t), sizeof(std::uint32_t));
+                        const auto* source = data + sourceIndex * sizeof(std::uint32_t);
+                        if (std::memcmp(destination + offset, source, sizeof(std::uint32_t)) != 0)
+                        {
+                            std::memcpy(destination + offset, source, sizeof(std::uint32_t));
+                            m_impl->userSet.uniformsChanged = true;
+                        }
                     }
                 }
             }
@@ -587,7 +640,7 @@ bool VulkanProgram::writeUniform(const std::string& name, ShaderUniformType type
     return found;
 }
 
-void VulkanProgram::setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
+void VulkanProgram::updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
 {
     const std::lock_guard lock(m_impl->uniformsMutex);
     const auto            samplerName = translatedName(name);
@@ -609,9 +662,8 @@ void VulkanProgram::setSampler(const std::string& name, std::shared_ptr<rhi::Tex
 VkPipeline VulkanProgram::getPipeline(const VulkanPipelineState& state, VkRenderPass pass)
 {
     using namespace VulkanProgramImpl;
-    for (const auto& pipeline : m_impl->pipelines)
-        if (pipeline.first == state)
-            return pipeline.second;
+    if (const auto it = m_impl->pipelines.find(state); it != m_impl->pipelines.end())
+        return it->second;
 
     constexpr std::array topologies{VK_PRIMITIVE_TOPOLOGY_POINT_LIST,
                                     VK_PRIMITIVE_TOPOLOGY_LINE_LIST,
@@ -747,7 +799,7 @@ VkPipeline VulkanProgram::getPipeline(const VulkanPipelineState& state, VkRender
         return VK_NULL_HANDLE;
     }
 
-    m_impl->pipelines.emplace_back(state, result);
+    m_impl->pipelines.emplace(state, result);
     return result;
 }
 
@@ -761,6 +813,108 @@ VulkanSample VulkanProgram::sample(const rhi::Texture* texture)
                    : VulkanSample{};
 }
 
+VkDescriptorSet VulkanProgram::Impl::prepareDrawSet(VulkanDevice&                device,
+                                                    const VulkanDrawParameters&  parameters,
+                                                    const VkDescriptorImageInfo& image,
+                                                    std::uint32_t&               dynamicOffset)
+{
+    const auto upload = device.stage(&parameters, sizeof(parameters));
+    if (!upload.buffer)
+        return VK_NULL_HANDLE;
+
+    // The binding holds the upper bits for arenas beyond the 32-bit dynamic-offset range.
+    dynamicOffset           = static_cast<std::uint32_t>(upload.offset);
+    const VkDeviceSize base = upload.offset - dynamicOffset;
+    if (drawSet.recording == device.recordingId() && drawSet.buffer.buffer == upload.buffer &&
+        drawSet.buffer.offset == base && VulkanProgramImpl::sameSample(drawSet.image, image))
+        return drawSet.set;
+
+    const VkDescriptorSet set = device.allocateDescriptorSet(sets[0], 0, 1);
+    if (!set)
+        return VK_NULL_HANDLE;
+
+    drawSet = {device.recordingId(), set, image, {upload.buffer, base, sizeof(parameters)}};
+    std::array<VkWriteDescriptorSet, 2> writes{};
+    for (auto& write : writes)
+    {
+        write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        write.dstSet          = set;
+        write.descriptorCount = 1;
+    }
+    writes[0].descriptorType = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC;
+    writes[0].pBufferInfo    = &drawSet.buffer;
+    writes[1].dstBinding     = 1;
+    writes[1].descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    writes[1].pImageInfo     = &drawSet.image;
+    context->vk.UpdateDescriptorSets(context->device, static_cast<std::uint32_t>(writes.size()), writes.data(), 0, nullptr);
+    return set;
+}
+
+VkDescriptorSet VulkanProgram::Impl::prepareUserSet(VulkanDevice& device, const VulkanSample& texture, const VulkanImage* attachment)
+{
+    auto& cache = userSet;
+    cache.images.clear();
+    for (const auto& binding : bindings)
+    {
+        if (binding.layout.descriptorType == VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER)
+        {
+            const auto image = VulkanProgramImpl::sampleImage(device,
+                                                              binding.currentTexture ? texture : sample(binding.texture.get()),
+                                                              attachment);
+            if (!image.imageView)
+                return VK_NULL_HANDLE;
+            cache.images.push_back(image);
+        }
+    }
+
+    if (cache.recording == device.recordingId() && !cache.uniformsChanged &&
+        std::equal(cache.images.begin(),
+                   cache.images.end(),
+                   cache.savedImages.begin(),
+                   cache.savedImages.end(),
+                   VulkanProgramImpl::sameSample))
+        return cache.set;
+
+    const auto buffers = static_cast<std::uint32_t>(bindings.size() - cache.images.size());
+    const VkDescriptorSet set = device.allocateDescriptorSet(sets[1], buffers, static_cast<std::uint32_t>(cache.images.size()));
+    if (!set)
+        return VK_NULL_HANDLE;
+
+    cache.buffers.clear();
+    cache.buffers.reserve(buffers);
+    cache.writes.clear();
+    cache.writes.reserve(bindings.size());
+    auto image = cache.images.begin();
+    for (const auto& binding : bindings)
+    {
+        VkWriteDescriptorSet write{};
+        write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        write.dstSet          = set;
+        write.dstBinding      = binding.layout.binding;
+        write.descriptorCount = 1;
+        write.descriptorType  = binding.layout.descriptorType;
+        if (write.descriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER)
+        {
+            const auto upload = device.stage(binding.data.data(), binding.data.size());
+            if (!upload.buffer)
+                return VK_NULL_HANDLE;
+            cache.buffers.push_back({upload.buffer, upload.offset, binding.data.size()});
+            write.pBufferInfo = &cache.buffers.back();
+        }
+        else
+            write.pImageInfo = &*image++;
+        cache.writes.push_back(write);
+    }
+
+    context->vk
+        .UpdateDescriptorSets(context->device, static_cast<std::uint32_t>(cache.writes.size()), cache.writes.data(), 0, nullptr);
+    cache.set       = set;
+    cache.recording = device.recordingId();
+    cache.savedImages.swap(cache.images);
+    cache.uniformsChanged = false;
+    return set;
+}
+
 VulkanProgram::Descriptors VulkanProgram::prepareDescriptors(
     VulkanDevice&               device,
     const VulkanDrawParameters& parameters,
@@ -769,6 +923,8 @@ VulkanProgram::Descriptors VulkanProgram::prepareDescriptors(
     const VulkanBuffer*         output,
     VkDeviceSize                outputBytes)
 {
+    if (device.context() != m_impl->context)
+        return {};
     const std::lock_guard lock(m_impl->uniformsMutex);
     const int             textureEnabled = texture.image ? 1 : 0;
     (void)writeUniform(translatedName("sf_TextureEnabled"), ShaderUniformType::Int, &textureEnabled, 1);
@@ -786,108 +942,34 @@ VulkanProgram::Descriptors VulkanProgram::prepareDescriptors(
     Descriptors result;
     if ((output != nullptr) != (m_impl->sets[2] != VK_NULL_HANDLE))
         return {};
+    const auto image = VulkanProgramImpl::sampleImage(device, texture, attachment);
+    if (!image.imageView)
+        return {};
     result.count   = output ? 3u : m_impl->sets[1] ? 2u : 1u;
-    result.sets[0] = device.allocateDescriptorSet(m_impl->sets[0], 1, 1);
+    result.sets[0] = m_impl->prepareDrawSet(device, parameters, image, result.dynamicOffset);
     if (!result.sets[0])
         return {};
     if (result.count >= 2)
     {
-        const auto buffers = static_cast<std::uint32_t>(
-            std::count_if(m_impl->bindings.begin(),
-                          m_impl->bindings.end(),
-                          [](const auto& binding)
-                          { return binding.layout.descriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER; }));
-        const auto images = static_cast<std::uint32_t>(m_impl->bindings.size()) - buffers;
-        result.sets[1]    = device.allocateDescriptorSet(m_impl->sets[1], buffers, images);
+        result.sets[1] = m_impl->prepareUserSet(device, texture, attachment);
         if (!result.sets[1])
             return {};
     }
-
-    std::vector<VkDescriptorBufferInfo> buffers;
-    std::vector<VkDescriptorImageInfo>  images;
-    std::vector<VkWriteDescriptorSet>   writes;
-    const auto                          maximumWrites = m_impl->bindings.size() + 2;
-    buffers.reserve(maximumWrites);
-    images.reserve(maximumWrites);
-    writes.reserve(maximumWrites);
-
-    const auto writeBuffer = [&](VkDescriptorSet set, std::uint32_t binding, const void* data, std::size_t size)
-    {
-        const auto upload = device.stage(data, size);
-        if (!upload.buffer)
-            return false;
-
-        buffers.push_back({upload.buffer, upload.offset, size});
-        VkWriteDescriptorSet write{};
-        write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        write.dstSet          = set;
-        write.dstBinding      = binding;
-        write.descriptorCount = 1;
-        write.descriptorType  = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-        write.pBufferInfo     = &buffers.back();
-        writes.push_back(write);
-        return true;
-    };
-
-    const auto writeImage = [&](VkDescriptorSet set, std::uint32_t binding, VulkanSample sample)
-    {
-        if (!sample.image)
-            sample.image = device.whiteTexture();
-        if (!sample.image || sample.image.get() == attachment)
-            return false;
-
-        const VkSampler sampler = device.sampler(sample.smooth, sample.repeated, sample.mipmapped);
-        if (!sampler)
-            return false;
-        device.transition(*sample.image, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
-        device.retain(sample.image);
-        images.push_back({sampler, sample.image->view, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL});
-        VkWriteDescriptorSet write{};
-        write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
-        write.dstSet          = set;
-        write.dstBinding      = binding;
-        write.descriptorCount = 1;
-        write.descriptorType  = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
-        write.pImageInfo      = &images.back();
-        writes.push_back(write);
-        return true;
-    };
-
-    if (!writeBuffer(result.sets[0], 0, &parameters, sizeof(parameters)) || !writeImage(result.sets[0], 1, texture))
-        return {};
-
-    for (const auto& binding : m_impl->bindings)
-    {
-        if (binding.layout.descriptorType == VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER)
-        {
-            if (!writeBuffer(result.sets[1], binding.layout.binding, binding.data.data(), binding.data.size()))
-                return {};
-        }
-        else if (!writeImage(result.sets[1],
-                             binding.layout.binding,
-                             binding.currentTexture ? texture : sample(binding.texture.get())))
-        {
-            return {};
-        }
-    }
-
-    VkDescriptorBufferInfo storage{};
     if (output)
     {
         result.sets[2] = device.allocateDescriptorSet(m_impl->sets[2], 0, 0);
         if (!result.sets[2])
             return {};
-        storage = {output->buffer, 0, outputBytes};
-        VkWriteDescriptorSet write{};
+        const VkDescriptorBufferInfo storage{output->buffer, 0, outputBytes};
+        VkWriteDescriptorSet         write{};
         write.sType           = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
         write.dstSet          = result.sets[2];
         write.descriptorCount = 1;
         write.descriptorType  = VK_DESCRIPTOR_TYPE_STORAGE_BUFFER;
         write.pBufferInfo     = &storage;
-        writes.push_back(write);
+        const auto& ctx       = *m_impl->context;
+        ctx.vk.UpdateDescriptorSets(ctx.device, 1, &write, 0, nullptr);
     }
-    const auto& ctx = *m_impl->context;
-    ctx.vk.UpdateDescriptorSets(ctx.device, static_cast<std::uint32_t>(writes.size()), writes.data(), 0, nullptr);
     return result;
 }
 
@@ -949,6 +1031,7 @@ bool VulkanProgram::transformVertices(VulkanDevice&                             
     const VkPipelineStageFlags writeStage = m_impl->feedback ? VK_PIPELINE_STAGE_TRANSFORM_FEEDBACK_BIT_EXT
                                                              : VK_PIPELINE_STAGE_VERTEX_SHADER_BIT;
     const VkAccessFlags writeAccess = m_impl->feedback ? VK_ACCESS_TRANSFORM_FEEDBACK_WRITE_BIT_EXT : VK_ACCESS_SHADER_WRITE_BIT;
+    device.endRenderPass();
     // A ping-pong destination can still be an input to an earlier draw.
     VkMemoryBarrier before{};
     before.sType         = VK_STRUCTURE_TYPE_MEMORY_BARRIER;
@@ -1000,7 +1083,7 @@ void VulkanProgram::bind(VkCommandBuffer commands, VkPipeline pipeline, const De
                              0,
                              descriptors.count,
                              descriptors.sets.data(),
-                             0,
-                             nullptr);
+                             1,
+                             &descriptors.dynamicOffset);
 }
 } // namespace sf::priv

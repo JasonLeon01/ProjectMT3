@@ -1,6 +1,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/GraphicsBackend.hpp>
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/RHI/Device.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
@@ -389,6 +390,98 @@ fragment float4 main0(constant Colors& colors [[buffer(1)]]) {
     shader.setUniform("shades", sf::Glsl::Vec4(0.f, 0.f, 1.f, 1.f));
     target.display();
     CHECK(target.getTexture().copyToImage().getPixel({8, 8}) == sf::Color::Green);
+}
+
+TEST_CASE("[Graphics] OpenGL shader samplers follow their SFML texture", runDisplayTests())
+{
+    if (!hasOpenGLGraphicsBackend())
+        return;
+
+    const sf::Context context;
+    sf::RenderTexture target({14, 4});
+    const auto        settings = sf::rhi::getDevice()->settings();
+    std::string       source;
+    if (std::holds_alternative<sf::OpenGLESSettings>(settings))
+        source = "#version 300 es\nprecision highp float;\nout vec4 result;\n#define SAMPLE texture\n";
+    else if (std::get<sf::OpenGLSettings>(settings).profile == sf::OpenGLProfile::Core)
+        source = "#version 150\nout vec4 result;\n#define SAMPLE texture\n";
+    else
+        source = "#version 110\n#define result gl_FragColor\n#define SAMPLE texture2D\n";
+    source += "uniform sampler2D sourceTexture; void main() { result = SAMPLE(sourceTexture, vec2(0.5)); }";
+
+    sf::Shader  shader(std::string_view(source), sf::Shader::Type::Fragment);
+    sf::Texture selection(sf::Image({1, 1}, sf::Color::Red));
+    sf::Texture other(sf::Image({1, 1}, sf::Color::Green));
+    shader.setUniform("sourceTexture", selection);
+    const auto         program = sf::rhi::getShader(shader);
+    sf::RectangleShape shape({2, 4});
+    const auto         draw = [&](float x, const sf::RenderStates& states)
+    {
+        shape.setPosition({x, 0});
+        target.draw(shape, states);
+    };
+
+    target.clear(sf::Color::Black);
+    draw(0, &shader);
+    program->setSampler("sourceTexture", sf::rhi::getTexture(other));
+    draw(2, &shader);
+
+    sf::Shader second;
+    sf::rhi::setShader(second, program);
+    second.setUniform("sourceTexture", other);
+    draw(4, &second);
+    draw(6, &shader);
+
+    selection.swap(other);
+    draw(8, &shader);
+    REQUIRE(selection.resize({2, 2}));
+    selection.update(sf::Image({2, 2}, sf::Color::Blue));
+    draw(10, &shader);
+    shader.setUniform("sourceTexture", sf::Shader::CurrentTexture);
+    shape.setTexture(&other);
+    draw(12, &shader);
+    target.display();
+
+    const auto pixels = target.getTexture().copyToImage();
+    CHECK(pixels.getPixel({1, 1}) == sf::Color::Red);
+    CHECK(pixels.getPixel({3, 1}) == sf::Color::Red);
+    CHECK(pixels.getPixel({5, 1}) == sf::Color::Green);
+    CHECK(pixels.getPixel({7, 1}) == sf::Color::Red);
+    CHECK(pixels.getPixel({9, 1}) == sf::Color::Green);
+    CHECK(pixels.getPixel({11, 1}) == sf::Color::Blue);
+    CHECK(pixels.getPixel({13, 1}) == sf::Color::Red);
+}
+
+TEST_CASE("[Graphics] Interleave direct target views with SFML draws", runDisplayTests())
+{
+    sf::RenderTexture image({16, 16});
+    image.clear(sf::Color::Black);
+    const auto target = sf::rhi::getRenderTarget(image);
+    REQUIRE(target);
+    auto state = sf::rhi::getTargetState(image);
+
+    std::array vertices{sf::Vertex{{0, 0}, sf::Color::Red},
+                        sf::Vertex{{16, 0}, sf::Color::Red},
+                        sf::Vertex{{0, 16}, sf::Color::Red},
+                        sf::Vertex{{16, 16}, sf::Color::Red}};
+    target->commands().draw(state, vertices.data(), vertices.size(), sf::PrimitiveType::TriangleStrip);
+    state.viewport = {{8, 0}, {8, 16}};
+    for (auto& vertex : vertices)
+        vertex.color = sf::Color::Green;
+    target->commands().draw(state, vertices.data(), vertices.size(), sf::PrimitiveType::TriangleStrip);
+
+    state.scissor = {{2, 2}, {3, 3}};
+    target->commands().clear(state, sf::Color::Blue);
+    sf::RectangleShape shape({2, 2});
+    shape.setFillColor(sf::Color::Magenta);
+    image.draw(shape);
+    image.display();
+
+    const auto pixels = image.getTexture().copyToImage();
+    CHECK(pixels.getPixel({1, 1}) == sf::Color::Magenta);
+    CHECK(pixels.getPixel({3, 3}) == sf::Color::Blue);
+    CHECK(pixels.getPixel({6, 6}) == sf::Color::Red);
+    CHECK(pixels.getPixel({12, 6}) == sf::Color::Green);
 }
 
 TEST_CASE("[Graphics] Render streamed vertices and glyphs with attachments", runDisplayTests())

@@ -45,6 +45,9 @@ public:
     {
         return *this;
     }
+    // Some backends can publish a resolved attachment to subsequent draws on
+    // the same queue without submitting a separate batch.
+    virtual void display();
     virtual void viewChanged()
     {
     }

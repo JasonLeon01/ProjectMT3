@@ -23,17 +23,36 @@
 ////////////////////////////////////////////////////////////
 
 #pragma once
+
 #include <memory>
+
+#include <cstdint>
+
 namespace sf::priv
 {
-class OpenGLVertexArray
+// The current context owns this state, including its non-shareable vertex arrays.
+class OpenGLContextState
 {
 public:
-    OpenGLVertexArray();
-    ~OpenGLVertexArray();
-    OpenGLVertexArray(const OpenGLVertexArray&)                                   = delete;
-    OpenGLVertexArray&                        operator=(const OpenGLVertexArray&) = delete;
-    static std::shared_ptr<OpenGLVertexArray> acquire();
-    unsigned int                              handle{};
+    OpenGLContextState();
+    ~OpenGLContextState();
+    OpenGLContextState(const OpenGLContextState&)            = delete;
+    OpenGLContextState& operator=(const OpenGLContextState&) = delete;
+
+    static OpenGLContextState& get();
+    void                       bindStream();
+    void                       bindVertexBuffer(unsigned int buffer);
+    void                       bindCustomLayout();
+    [[nodiscard]] unsigned int maximumVertexAttributes();
+
+    std::uint64_t activeTarget{};
+
+private:
+    const std::shared_ptr<void>* m_dispatchSlot;
+    unsigned int                 m_stream{};
+    unsigned int                 m_streamArray{};
+    unsigned int                 m_bufferArray{};
+    unsigned int                 m_customArray{};
+    int                          m_maximumVertexAttributes{};
 };
 } // namespace sf::priv

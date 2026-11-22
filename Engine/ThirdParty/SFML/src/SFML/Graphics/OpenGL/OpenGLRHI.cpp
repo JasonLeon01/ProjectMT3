@@ -126,6 +126,7 @@ public:
     }
     [[nodiscard]] rhi::Capabilities capabilities() const override
     {
+        const OpenGLResource::TransientContextLock lock;
         return {OpenGLTexture::maximumSize(),
                 RenderTextureImplFBO::isAvailable() ? RenderTextureImplFBO::getMaximumAntiAliasingLevel() : 0,
                 true,

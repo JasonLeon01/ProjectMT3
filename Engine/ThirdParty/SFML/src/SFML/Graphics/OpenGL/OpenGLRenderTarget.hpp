@@ -97,7 +97,7 @@ private:
     void setupDraw(const rhi::TargetState& target, bool useVertexCache, const rhi::DrawSettings& states);
     void drawPrimitives(PrimitiveType type, std::size_t first, std::size_t count);
     void cleanupDraw(const rhi::DrawSettings& states);
-    void drawProgrammable(const rhi::TargetState&                      target,
+    bool drawProgrammable(const rhi::TargetState&                      target,
                           const Vertex*                                vertices,
                           unsigned int                                 buffer,
                           std::size_t                                  first,
@@ -116,6 +116,9 @@ private:
     bool                               m_windowResized{};
     struct StatesCache
     {
+        std::uint64_t         contextId{};
+        rhi::TargetState      lastView{};
+        bool                  lastSrgb{};
         bool                  enable{};                //!< Is the cache enabled?
         bool                  glStatesSet{};           //!< Are our internal GL states set yet?
         bool                  viewChanged{};           //!< Has the current view changed since last draw?

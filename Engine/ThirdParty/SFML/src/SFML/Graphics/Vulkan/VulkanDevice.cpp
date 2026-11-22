@@ -160,15 +160,6 @@ struct VulkanDevice::Impl
     {
     }
 
-    std::shared_ptr<VulkanContext>     context;
-    mutable std::recursive_mutex       mutex;
-    VkCommandPool                      commandPool{};
-    VkCommandBuffer                    commandBuffer{};
-    VkFence                            fence{};
-    bool                               recording{};
-    bool                               lost{};
-    std::vector<std::shared_ptr<void>> retained;
-    std::vector<UploadBlock>           uploads;
     struct DescriptorPool
     {
         VkDescriptorPool handle{};
@@ -176,8 +167,51 @@ struct VulkanDevice::Impl
         std::uint32_t    buffers{};
         std::uint32_t    images{};
     };
-    std::vector<DescriptorPool>    descriptorPools;
-    std::size_t                    currentDescriptorPool{};
+    struct Submission
+    {
+        VkCommandPool                      commandPool{};
+        VkCommandBuffer                    commandBuffer{};
+        VkSemaphore                        acquired{};
+        VkFence                            fence{};
+        bool                               pending{};
+        std::vector<std::shared_ptr<void>> retained;
+        std::vector<UploadBlock>           uploads;
+        std::vector<DescriptorPool>        descriptorPools;
+        std::size_t                        currentDescriptorPool{};
+    };
+
+    bool recycle(Submission& slot) const
+    {
+        if (!slot.pending)
+            return true;
+
+        const auto& vk = context->vk;
+        if (vk.WaitForFences(context->device, 1, &slot.fence, VK_TRUE, std::numeric_limits<std::uint64_t>::max()) !=
+                VK_SUCCESS ||
+            vk.ResetCommandPool(context->device, slot.commandPool, 0) != VK_SUCCESS)
+            return false;
+        for (auto& pool : slot.descriptorPools)
+        {
+            if (vk.ResetDescriptorPool(context->device, pool.handle, 0) != VK_SUCCESS)
+                return false;
+            pool.sets = pool.buffers = pool.images = 0;
+        }
+        slot.currentDescriptorPool = 0;
+        slot.retained.clear();
+        for (auto& upload : slot.uploads)
+            upload.used = 0;
+        slot.pending = false;
+        return true;
+    }
+
+    std::shared_ptr<VulkanContext> context;
+    mutable std::recursive_mutex   mutex;
+    std::array<Submission, 2>      slots;
+    std::size_t                    current{};
+    std::uint64_t                  recordingId{};
+    VkFramebuffer                  framebuffer{};
+    bool                           recording{};
+    bool                           lost{};
     std::array<VkSampler, 8>       samplers{};
     std::shared_ptr<VulkanImage>   white;
     std::shared_ptr<VulkanProgram> program;
@@ -501,38 +535,50 @@ bool VulkanDevice::initialize()
     pool.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
     pool.queueFamilyIndex = ctx.graphicsFamily;
     pool.flags            = VK_COMMAND_POOL_CREATE_TRANSIENT_BIT;
-    if (ctx.vk.CreateCommandPool(ctx.device, &pool, nullptr, &m_impl->commandPool) != VK_SUCCESS)
-        return false;
+    for (auto& slot : m_impl->slots)
+    {
+        if (ctx.vk.CreateCommandPool(ctx.device, &pool, nullptr, &slot.commandPool) != VK_SUCCESS)
+            return false;
+        VkCommandBufferAllocateInfo command{};
+        command.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+        command.commandPool        = slot.commandPool;
+        command.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+        command.commandBufferCount = 1;
+        if (ctx.vk.AllocateCommandBuffers(ctx.device, &command, &slot.commandBuffer) != VK_SUCCESS)
+            return false;
 
-    VkCommandBufferAllocateInfo command{};
-    command.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    command.commandPool        = m_impl->commandPool;
-    command.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    command.commandBufferCount = 1;
-    if (ctx.vk.AllocateCommandBuffers(ctx.device, &command, &m_impl->commandBuffer) != VK_SUCCESS)
-        return false;
-
-    VkFenceCreateInfo fence{};
-    fence.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
-    return ctx.vk.CreateFence(ctx.device, &fence, nullptr, &m_impl->fence) == VK_SUCCESS;
+        VkFenceCreateInfo fence{};
+        fence.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+        VkSemaphoreCreateInfo semaphore{};
+        semaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+        if (ctx.vk.CreateFence(ctx.device, &fence, nullptr, &slot.fence) != VK_SUCCESS ||
+            ctx.vk.CreateSemaphore(ctx.device, &semaphore, nullptr, &slot.acquired) != VK_SUCCESS)
+            return false;
+    }
+    return true;
 }
 
 VulkanDevice::~VulkanDevice()
 {
     const auto& ctx = *context();
-    if (m_impl->fence && !m_impl->lost)
-        (void)flush();
+    if (m_impl->recording)
+        (void)flush(false);
 
     ctx.vk.DeviceWaitIdle(ctx.device);
-    for (const auto& pool : m_impl->descriptorPools)
-        ctx.vk.DestroyDescriptorPool(ctx.device, pool.handle, nullptr);
+    for (const auto& slot : m_impl->slots)
+    {
+        for (const auto& pool : slot.descriptorPools)
+            ctx.vk.DestroyDescriptorPool(ctx.device, pool.handle, nullptr);
+        if (slot.acquired)
+            ctx.vk.DestroySemaphore(ctx.device, slot.acquired, nullptr);
+        if (slot.fence)
+            ctx.vk.DestroyFence(ctx.device, slot.fence, nullptr);
+        if (slot.commandPool)
+            ctx.vk.DestroyCommandPool(ctx.device, slot.commandPool, nullptr);
+    }
     for (const VkSampler sampler : m_impl->samplers)
         if (sampler)
             ctx.vk.DestroySampler(ctx.device, sampler, nullptr);
-    if (m_impl->fence)
-        ctx.vk.DestroyFence(ctx.device, m_impl->fence, nullptr);
-    if (m_impl->commandPool)
-        ctx.vk.DestroyCommandPool(ctx.device, m_impl->commandPool, nullptr);
 }
 
 std::unique_lock<std::recursive_mutex> VulkanDevice::lock() const
@@ -548,6 +594,21 @@ const std::shared_ptr<VulkanContext>& VulkanDevice::context() const
 bool VulkanDevice::isLost() const
 {
     return m_impl->lost;
+}
+
+void VulkanDevice::markLost()
+{
+    m_impl->lost        = true;
+    m_impl->recording   = false;
+    m_impl->framebuffer = VK_NULL_HANDLE;
+
+    // A command failure can also be an allocation failure on a live device.
+    // Drain any earlier submissions before releasing their last resource owners.
+    const auto& ctx    = *context();
+    const auto  result = ctx.vk.DeviceWaitIdle(ctx.device);
+    if (result == VK_SUCCESS || result == VK_ERROR_DEVICE_LOST)
+        for (auto& slot : m_impl->slots)
+            slot.retained.clear();
 }
 
 bool VulkanDevice::loadPipelineCache(const void* data, std::size_t size)
@@ -601,70 +662,105 @@ VkCommandBuffer VulkanDevice::commands()
 {
     if (m_impl->lost)
         return VK_NULL_HANDLE;
+    auto& slot = m_impl->slots[m_impl->current];
     if (!m_impl->recording)
     {
         const auto&              ctx = *context();
         VkCommandBufferBeginInfo info{};
         info.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
         info.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
-        if (ctx.vk.BeginCommandBuffer(m_impl->commandBuffer, &info) != VK_SUCCESS)
+        if (!m_impl->recycle(slot) || ctx.vk.BeginCommandBuffer(slot.commandBuffer, &info) != VK_SUCCESS)
         {
-            m_impl->lost = true;
-            err() << "Failed to begin Vulkan commands" << std::endl;
+            markLost();
+            err() << "Failed to recycle or begin Vulkan commands" << std::endl;
             return VK_NULL_HANDLE;
         }
+        ++m_impl->recordingId;
         m_impl->recording = true;
     }
-    return m_impl->commandBuffer;
+    return slot.commandBuffer;
 }
 
-bool VulkanDevice::flush(VkSemaphore wait, VkSemaphore signal)
+VkSemaphore VulkanDevice::acquireSemaphore() const
+{
+    return m_impl->slots[m_impl->current].acquired;
+}
+
+std::uint64_t VulkanDevice::recordingId() const
+{
+    return m_impl->recordingId;
+}
+
+bool VulkanDevice::rendering(VkFramebuffer framebuffer) const
+{
+    return m_impl->framebuffer == framebuffer;
+}
+
+void VulkanDevice::beginRenderPass(const VkRenderPassBeginInfo& pass)
+{
+    context()->vk.CmdBeginRenderPass(m_impl->slots[m_impl->current].commandBuffer, &pass, VK_SUBPASS_CONTENTS_INLINE);
+    m_impl->framebuffer = pass.framebuffer;
+}
+
+void VulkanDevice::endRenderPass()
+{
+    if (m_impl->framebuffer)
+    {
+        context()->vk.CmdEndRenderPass(m_impl->slots[m_impl->current].commandBuffer);
+        m_impl->framebuffer = VK_NULL_HANDLE;
+    }
+}
+
+bool VulkanDevice::flush(bool waitForCompletion, VkSemaphore wait, VkSemaphore signal)
 {
     if (m_impl->lost)
         return false;
-    if (!m_impl->recording)
-        return true;
 
-    const auto&                ctx       = *context();
-    const auto&                vk        = ctx.vk;
-    const VkFence              fence     = m_impl->fence;
-    const VkPipelineStageFlags waitStage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
-    VkSubmitInfo               submit{};
-    submit.sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-    submit.waitSemaphoreCount   = wait ? 1u : 0u;
-    submit.pWaitSemaphores      = &wait;
-    submit.pWaitDstStageMask    = &waitStage;
-    submit.commandBufferCount   = 1;
-    submit.pCommandBuffers      = &m_impl->commandBuffer;
-    submit.signalSemaphoreCount = signal ? 1u : 0u;
-    submit.pSignalSemaphores    = &signal;
-
-    if (vk.EndCommandBuffer(m_impl->commandBuffer) != VK_SUCCESS || vk.ResetFences(ctx.device, 1, &fence) != VK_SUCCESS ||
-        vk.QueueSubmit(ctx.queues[ctx.graphicsFamily], 1, &submit, fence) != VK_SUCCESS ||
-        vk.WaitForFences(ctx.device, 1, &fence, VK_TRUE, std::numeric_limits<std::uint64_t>::max()) != VK_SUCCESS ||
-        vk.ResetCommandPool(ctx.device, m_impl->commandPool, 0) != VK_SUCCESS)
+    if (m_impl->recording)
     {
-        m_impl->lost = true;
-        err() << "Failed to submit or complete Vulkan commands" << std::endl;
-        return false;
+        endRenderPass();
+        auto&                      slot      = m_impl->slots[m_impl->current];
+        const auto&                ctx       = *context();
+        const auto&                vk        = ctx.vk;
+        const VkPipelineStageFlags waitStage = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+        VkSubmitInfo               submit{};
+        submit.sType                = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+        submit.waitSemaphoreCount   = wait ? 1u : 0u;
+        submit.pWaitSemaphores      = &wait;
+        submit.pWaitDstStageMask    = &waitStage;
+        submit.commandBufferCount   = 1;
+        submit.pCommandBuffers      = &slot.commandBuffer;
+        submit.signalSemaphoreCount = signal ? 1u : 0u;
+        submit.pSignalSemaphores    = &signal;
+
+        if (vk.EndCommandBuffer(slot.commandBuffer) != VK_SUCCESS ||
+            vk.ResetFences(ctx.device, 1, &slot.fence) != VK_SUCCESS ||
+            vk.QueueSubmit(ctx.queues[ctx.graphicsFamily], 1, &submit, slot.fence) != VK_SUCCESS)
+        {
+            markLost();
+            err() << "Failed to submit Vulkan commands" << std::endl;
+            return false;
+        }
+        slot.pending      = true;
+        m_impl->recording = false;
+        m_impl->current   = (m_impl->current + 1) % m_impl->slots.size();
     }
 
-    m_impl->recording = false;
-    for (auto& pool : m_impl->descriptorPools)
-    {
-        vk.ResetDescriptorPool(ctx.device, pool.handle, 0);
-        pool.sets = pool.buffers = pool.images = 0;
-    }
-    m_impl->currentDescriptorPool = 0;
-    m_impl->retained.clear();
-    for (auto& upload : m_impl->uploads)
-        upload.used = 0;
+    if (waitForCompletion)
+        for (auto& slot : m_impl->slots)
+            if (!m_impl->recycle(slot))
+            {
+                markLost();
+                err() << "Failed to complete Vulkan commands" << std::endl;
+                return false;
+            }
     return true;
 }
 
 void VulkanDevice::retain(std::shared_ptr<void> object)
 {
-    m_impl->retained.push_back(std::move(object));
+    if (commands())
+        m_impl->slots[m_impl->current].retained.push_back(std::move(object));
 }
 
 std::shared_ptr<VulkanBuffer> VulkanDevice::makeBuffer(VkDeviceSize bytes, VkBufferUsageFlags usage) const
@@ -783,6 +879,7 @@ void VulkanDevice::transition(VulkanImage& image, VkImageLayout layout)
 
     if (const VkCommandBuffer command = commands())
     {
+        endRenderPass();
         VulkanDeviceImpl::barrier(*context(), command, image, image.layout, layout, 0, image.levels);
         image.layout = layout;
     }
@@ -833,7 +930,8 @@ bool VulkanDevice::uploadPixels(const std::shared_ptr<VulkanImage>& image,
     region.imageOffset      = {static_cast<std::int32_t>(offset.x), static_cast<std::int32_t>(offset.y), 0};
     region.imageExtent      = {size.x, size.y, 1};
     context()->vk.CmdCopyBufferToImage(command, buffer.buffer, image->image, image->layout, 1, &region);
-    transition(*image, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
+    // Keep the transfer destination layout until the next use. A growing atlas can
+    // then copy these pixels with a direct transfer-write to transfer-read dependency.
     retain(image);
     return true;
 }
@@ -883,7 +981,7 @@ Image VulkanDevice::readImage(const std::shared_ptr<VulkanImage>& image)
     transition(*image, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL);
     retain(image);
     retain(buffer);
-    if (!flush())
+    if (!flush(true))
         return {};
 
     buffer->invalidate();
@@ -974,10 +1072,13 @@ VkSampler VulkanDevice::sampler(bool smooth, bool repeated, bool mipmapped)
 
 VulkanDevice::Upload VulkanDevice::stage(const void* data, std::size_t size)
 {
+    if (!commands())
+        return {};
+    auto&       uploads   = m_impl->slots[m_impl->current].uploads;
     const auto& limits    = context()->properties.limits;
     const auto  alignment = std::max<VkDeviceSize>(
         {VkDeviceSize{16}, limits.minUniformBufferOffsetAlignment, limits.optimalBufferCopyOffsetAlignment});
-    for (auto& block : m_impl->uploads)
+    for (auto& block : uploads)
     {
         const auto offset = (block.used + alignment - 1) & ~(alignment - 1);
         if (offset <= block.buffer->capacity && size <= block.buffer->capacity - offset)
@@ -992,7 +1093,7 @@ VulkanDevice::Upload VulkanDevice::stage(const void* data, std::size_t size)
     if (!buffer)
         return {};
     buffer->write(0, data, size);
-    m_impl->uploads.push_back({buffer, size});
+    uploads.push_back({buffer, size});
     return {buffer->buffer, 0};
 }
 
@@ -1000,17 +1101,19 @@ VkDescriptorSet VulkanDevice::allocateDescriptorSet(VkDescriptorSetLayout layout
 {
     constexpr std::uint32_t setsPerPool        = 256;
     constexpr std::uint32_t descriptorsPerType = 1024;
-    if (buffers > descriptorsPerType || images > descriptorsPerType)
+    if (buffers > descriptorsPerType || images > descriptorsPerType || !commands())
         return VK_NULL_HANDLE;
 
-    const auto& ctx = *context();
+    auto&       slot = m_impl->slots[m_impl->current];
+    const auto& ctx  = *context();
     for (;;)
     {
-        const auto index = m_impl->currentDescriptorPool;
-        if (index == m_impl->descriptorPools.size())
+        const auto index = slot.currentDescriptorPool;
+        if (index == slot.descriptorPools.size())
         {
             const std::array sizes{VkDescriptorPoolSize{VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, descriptorsPerType},
                                    VkDescriptorPoolSize{VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, descriptorsPerType},
+                                   VkDescriptorPoolSize{VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER_DYNAMIC, setsPerPool},
                                    VkDescriptorPoolSize{VK_DESCRIPTOR_TYPE_STORAGE_BUFFER, setsPerPool}};
             VkDescriptorPoolCreateInfo info{};
             info.sType         = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
@@ -1020,14 +1123,14 @@ VkDescriptorSet VulkanDevice::allocateDescriptorSet(VkDescriptorSetLayout layout
             Impl::DescriptorPool pool;
             if (ctx.vk.CreateDescriptorPool(ctx.device, &info, nullptr, &pool.handle) != VK_SUCCESS)
                 return VK_NULL_HANDLE;
-            m_impl->descriptorPools.push_back(pool);
+            slot.descriptorPools.push_back(pool);
         }
 
-        auto& pool = m_impl->descriptorPools[index];
+        auto& pool = slot.descriptorPools[index];
         if (pool.sets == setsPerPool || buffers > descriptorsPerType - pool.buffers ||
             images > descriptorsPerType - pool.images)
         {
-            ++m_impl->currentDescriptorPool;
+            ++slot.currentDescriptorPool;
             continue;
         }
 

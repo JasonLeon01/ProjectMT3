@@ -173,6 +173,10 @@ public:
     ////////////////////////////////////////////////////////////
     static std::uint64_t getActiveContextId();
 
+    // Graphics owns the contents. Context switches also switch the dispatch and VAO state.
+    [[nodiscard]] SFML_WINDOW_API static std::shared_ptr<void>* getActiveContextGraphicsData();
+    [[nodiscard]] SFML_WINDOW_API static std::shared_ptr<void>& getActiveContextRenderData();
+
     ////////////////////////////////////////////////////////////
     /// \brief Destructor
     ///

@@ -117,7 +117,9 @@ TEST_CASE("[Graphics] sf::VertexBuffer", "[.display]")
                 CHECK(!vertexBuffer.update(nullptr));
             }
 
+            const auto handle = vertexBuffer.getNativeHandle();
             CHECK(vertexBuffer.update(vertices.data()));
+            CHECK(vertexBuffer.getNativeHandle() == handle);
             CHECK(vertexBuffer.getVertexCount() == 128);
             CHECK((vertexBuffer.getNativeHandle() != 0) == hasOpenGLGraphicsBackend());
         }

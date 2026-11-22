@@ -29,12 +29,14 @@
 #include <SFML/Window/WindowSurface.hpp>
 
 #include <atomic>
+#include <mutex>
 #include <type_traits>
 
 namespace sf
 {
+class Shader;
 class Window;
-}
+} // namespace sf
 
 namespace sf::priv
 {
@@ -138,9 +140,14 @@ protected:
 class BufferResource : public rhi::Buffer
 {
 public:
-    BufferResource()                                                    = default;
-    BufferResource(const BufferResource&)                               = delete;
-    BufferResource&                    operator=(const BufferResource&) = delete;
+    BufferResource()                                 = default;
+    BufferResource(const BufferResource&)            = delete;
+    BufferResource& operator=(const BufferResource&) = delete;
+    // Return false to let VertexBuffer allocate replacement storage instead.
+    virtual bool discardAndUpload(const void*, rhi::BufferUsage)
+    {
+        return false;
+    }
     [[nodiscard]] virtual unsigned int nativeHandle() const
     {
         return 0;
@@ -150,13 +157,27 @@ public:
 class ProgramResource : public rhi::ShaderProgram
 {
 public:
-    ProgramResource()                                                    = default;
-    ProgramResource(const ProgramResource&)                              = delete;
-    ProgramResource&                   operator=(const ProgramResource&) = delete;
+    ProgramResource()                                                       = default;
+    ProgramResource(const ProgramResource&)                                 = delete;
+    ProgramResource&                      operator=(const ProgramResource&) = delete;
+    [[nodiscard]] static ProgramResource* from(rhi::ShaderProgram& program);
+    void setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) final
+    {
+        const std::scoped_lock lock(m_samplerMutex);
+        updateSampler(name, std::move(texture), current);
+        ++m_samplerRevision;
+    }
+
     [[nodiscard]] virtual unsigned int nativeHandle() const
     {
         return 0;
     }
+
+private:
+    friend class sf::Shader;
+    virtual void updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) = 0;
+    std::atomic<std::uint64_t> m_samplerRevision{1};
+    std::mutex                 m_samplerMutex;
 };
 
 class DeviceResource : public rhi::Device

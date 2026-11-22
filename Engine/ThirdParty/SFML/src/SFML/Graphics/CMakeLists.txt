@@ -162,7 +162,7 @@ if(SFML_BUILD_OPENGL_BACKEND)
         ${SRCROOT}/OpenGL/OpenGLRenderTarget.cpp
         ${SRCROOT}/OpenGL/OpenGLRenderTarget.hpp
         ${SRCROOT}/OpenGL/OpenGLResource.hpp
-        ${SRCROOT}/OpenGL/OpenGLVertexArray.cpp
+        ${SRCROOT}/OpenGL/OpenGLContextState.cpp
         ${SRCROOT}/OpenGL/OpenGLReadback.cpp
         ${SRCROOT}/OpenGL/OpenGLTimer.cpp
         ${SRCROOT}/OpenGL/OpenGLRHI.cpp

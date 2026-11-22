@@ -33,6 +33,16 @@
 
 namespace sf::priv
 {
+namespace
+{
+GLenum usageHint(rhi::BufferUsage usage)
+{
+    return usage == rhi::BufferUsage::Static    ? GLEXT_GL_STATIC_DRAW
+           : usage == rhi::BufferUsage::Dynamic ? GLEXT_GL_DYNAMIC_DRAW
+                                                : GLEXT_GL_STREAM_DRAW;
+}
+} // namespace
+
 OpenGLBuffer::~OpenGLBuffer()
 {
     const OpenGLResource::TransientContextLock lock;
@@ -48,15 +58,21 @@ bool OpenGLBuffer::create(std::size_t bytes, rhi::BufferUsage usage)
     glCheck(GLEXT_glGenBuffers(1, &m_buffer));
     if (!m_buffer)
         return false;
-    const GLenum hint = usage == rhi::BufferUsage::Static    ? GLEXT_GL_STATIC_DRAW
-                        : usage == rhi::BufferUsage::Dynamic ? GLEXT_GL_DYNAMIC_DRAW
-                                                             : GLEXT_GL_STREAM_DRAW;
     glCheck(GLEXT_glBindBuffer(GLEXT_GL_ARRAY_BUFFER, m_buffer));
-    glCheck(GLEXT_glBufferData(GLEXT_GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(bytes), nullptr, hint));
+    glCheck(GLEXT_glBufferData(GLEXT_GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(bytes), nullptr, usageHint(usage)));
     glCheck(GLEXT_glBindBuffer(GLEXT_GL_ARRAY_BUFFER, 0));
     m_size = bytes;
     return true;
 }
+bool OpenGLBuffer::discardAndUpload(const void* data, rhi::BufferUsage usage)
+{
+    const OpenGLResource::TransientContextLock lock;
+    glCheck(GLEXT_glBindBuffer(GLEXT_GL_ARRAY_BUFFER, m_buffer));
+    glCheck(GLEXT_glBufferData(GLEXT_GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(m_size), data, usageHint(usage)));
+    glCheck(GLEXT_glBindBuffer(GLEXT_GL_ARRAY_BUFFER, 0));
+    return true;
+}
+
 bool OpenGLBuffer::upload(const void* data, std::size_t bytes, std::size_t offset)
 {
     if (!data || offset > m_size || bytes > m_size - offset)

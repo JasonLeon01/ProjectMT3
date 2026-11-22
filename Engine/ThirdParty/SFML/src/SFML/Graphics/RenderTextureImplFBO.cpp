@@ -31,6 +31,7 @@
 
 #include <SFML/Window/Context.hpp>
 #include <SFML/Window/ContextSettings.hpp>
+#include <SFML/Window/GlContext.hpp>
 
 #include <SFML/System/Err.hpp>
 
@@ -51,11 +52,13 @@ struct RenderTextureImplFBO::FrameBufferObject
 
     ~FrameBufferObject()
     {
-        if (object)
+        const auto* dispatch = GlContext::getActiveContextGraphicsData();
+        if (object && Context::getActiveContextId() == contextId && dispatch && *dispatch)
             glCheck(GLEXT_glDeleteFramebuffers(1, &object));
     }
 
-    GLuint object{};
+    const std::uint64_t contextId{Context::getActiveContextId()};
+    GLuint              object{};
 };
 
 

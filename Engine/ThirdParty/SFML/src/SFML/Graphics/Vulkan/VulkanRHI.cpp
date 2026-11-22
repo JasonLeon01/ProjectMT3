@@ -53,7 +53,7 @@ bool VulkanBufferResource::upload(const void* data, std::size_t size, std::size_
     if (!data || !fits(size, offset))
         return false;
     const auto lock = device->lock();
-    if (device->isLost() || (buffer.use_count() > 1 && !device->flush()))
+    if (device->isLost() || (buffer.use_count() > 1 && !device->flush(true)))
         return false;
     if (size)
         buffer->write(offset, data, size);
@@ -65,7 +65,7 @@ bool VulkanBufferResource::read(void* data, std::size_t size, std::size_t offset
     if (!data || !fits(size, offset))
         return false;
     const auto lock = device->lock();
-    if (!device->flush())
+    if (!device->flush(true))
         return false;
     buffer->invalidate();
     if (size)
@@ -79,7 +79,7 @@ bool VulkanBufferResource::copy(const rhi::Buffer& source)
     if (!other || other->device != device || other->bytes != bytes)
         return false;
     const auto lock = device->lock();
-    if (!device->flush())
+    if (!device->flush(true))
         return false;
     if (other != this && bytes)
     {
@@ -112,6 +112,12 @@ public:
     VulkanRhi(std::shared_ptr<VulkanDevice> value, const VulkanSettings& settings) :
         NativeDeviceResource(std::move(value), GraphicsBackend::Vulkan, settings)
     {
+    }
+    ~VulkanRhi() override
+    {
+        // Retired programs can hold textures that keep the native device alive.
+        const auto lock = m_native->lock();
+        (void)m_native->flush(true);
     }
     [[nodiscard]] rhi::Capabilities capabilities() const override
     {
@@ -179,10 +185,10 @@ public:
         return surface ? std::make_unique<NativeSurface<VulkanTextureResource, VulkanWindowSurface>>(std::move(surface))
                        : nullptr;
     }
-    bool submit(bool) override
+    bool submit(bool wait) override
     {
         const auto lock = m_native->lock();
-        return m_native->flush();
+        return m_native->flush(wait);
     }
     bool loadPipelineCache(const void* data, std::size_t size) override
     {

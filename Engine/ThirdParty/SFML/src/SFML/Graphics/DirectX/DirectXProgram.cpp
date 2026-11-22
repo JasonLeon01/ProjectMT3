@@ -693,7 +693,7 @@ void DirectXProgram::setUniform(const std::string& name, ShaderUniformType type,
         err() << "HLSL uniform not found: " << name << std::endl;
 }
 
-void DirectXProgram::setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
+void DirectXProgram::updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current)
 {
     const std::lock_guard guard(m_impl->mutex);
     std::string           lookup = name;

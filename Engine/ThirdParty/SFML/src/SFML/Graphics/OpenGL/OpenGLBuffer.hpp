@@ -42,6 +42,7 @@ public:
     {
         return m_size;
     }
+    bool                       discardAndUpload(const void* data, rhi::BufferUsage usage) override;
     bool                       upload(const void* data, std::size_t bytes, std::size_t offset) override;
     bool                       copy(const rhi::Buffer& source) override;
     bool                       read(void* data, std::size_t bytes, std::size_t offset) const override;

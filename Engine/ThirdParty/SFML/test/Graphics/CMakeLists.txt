@@ -35,6 +35,9 @@ if(SFML_OS_WINDOWS)
         WindowHandleWin32.test.cpp
     )
 endif()
+if(SFML_BUILD_VULKAN_BACKEND)
+    list(APPEND GRAPHICS_SRC Vulkan.test.cpp)
+endif()
 if(SFML_BUILD_DIRECTX_BACKEND)
     list(APPEND GRAPHICS_SRC DirectX.test.cpp)
 endif()
@@ -67,6 +70,12 @@ if(SFML_RUN_DISPLAY_TESTS AND SFML_BUILD_OPENGL_BACKEND AND SFML_BUILD_METAL_BAC
     add_test(NAME sfml-graphics-opengl COMMAND test-sfml-graphics --sfml-opengl
              WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
     set_tests_properties(sfml-graphics-opengl PROPERTIES RUN_SERIAL TRUE)
+endif()
+if(SFML_RUN_DISPLAY_TESTS AND SFML_BUILD_OPENGL_BACKEND AND SFML_OS_MACOS)
+    add_test(NAME sfml-graphics-cocoa-shared-core
+             COMMAND test-sfml-graphics --sfml-gl-core "*Render resources before opening a window"
+             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+    set_tests_properties(sfml-graphics-cocoa-shared-core PROPERTIES RUN_SERIAL TRUE)
 endif()
 if(SFML_BUILD_DIRECTX_BACKEND)
     target_compile_definitions(test-sfml-graphics PRIVATE SFML_DIRECTX_TESTS)

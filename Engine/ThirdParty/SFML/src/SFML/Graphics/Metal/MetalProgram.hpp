@@ -78,7 +78,7 @@ public:
     MetalProgram& operator=(const MetalProgram&) = delete;
 
     void setUniform(const std::string& name, ShaderUniformType type, const void* values, std::size_t count) override;
-    void setSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
+    void updateSampler(const std::string& name, std::shared_ptr<rhi::Texture> texture, bool current) override;
     [[nodiscard]] Impl& impl() const;
 
 private:

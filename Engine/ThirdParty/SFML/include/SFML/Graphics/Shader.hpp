@@ -31,6 +31,7 @@
 
 #include <SFML/Graphics/Glsl.hpp>
 
+#include <atomic>
 #include <filesystem>
 #include <memory>
 #include <string>
@@ -38,6 +39,7 @@
 #include <unordered_map>
 
 #include <cstddef>
+#include <cstdint>
 
 
 namespace sf
@@ -46,6 +48,7 @@ namespace sf
 namespace rhi
 {
 class ShaderProgram;
+class Texture;
 enum class UniformType : unsigned char;
 } // namespace rhi
 namespace priv
@@ -822,8 +825,14 @@ private:
     void setUniformData(const std::string& name, rhi::UniformType type, const void* values, std::size_t count);
     [[nodiscard]] bool compile(std::string_view vertex, std::string_view geometry, std::string_view fragment);
     void               refreshSamplers() const;
+    struct SamplerBinding
+    {
+        const Texture*                           source{};
+        mutable std::atomic<const rhi::Texture*> resource{nullptr};
+        mutable std::atomic<std::uint64_t>       revision{0};
+    };
     std::shared_ptr<rhi::ShaderProgram>             m_resource;
-    std::unordered_map<std::string, const Texture*> m_samplers;
+    std::unordered_map<std::string, SamplerBinding> m_samplers;
 };
 
 } // namespace sf

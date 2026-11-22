@@ -515,7 +515,7 @@ void Shader::setUniform(const std::string& name, const Texture& texture)
 {
     if (!m_resource)
         return;
-    m_samplers[name] = &texture;
+    m_samplers[name].source = &texture;
     m_resource->setSampler(name, priv::RhiAccess::texture(texture), false);
 }
 
@@ -625,8 +625,48 @@ bool Shader::compile(std::string_view vertex, std::string_view geometry, std::st
 
 void Shader::refreshSamplers() const
 {
-    if (m_resource)
-        for (const auto& [name, texture] : m_samplers)
-            m_resource->setSampler(name, priv::RhiAccess::texture(*texture), false);
+    if (!m_resource || m_samplers.empty())
+        return;
+
+    auto* program = priv::ProgramResource::from(*m_resource);
+    if (!program)
+    {
+        // A caller-supplied RHI program can change its bindings independently.
+        for (const auto& [name, binding] : m_samplers)
+            m_resource->setSampler(name, priv::RhiAccess::texture(*binding.source), false);
+        return;
+    }
+
+    const auto matches = [](const SamplerBinding& binding, std::uint64_t revision)
+    {
+        return binding.revision.load(std::memory_order_acquire) == revision &&
+               binding.resource.load(std::memory_order_relaxed) == priv::RhiAccess::texture(*binding.source).get();
+    };
+    const auto current = [&](std::uint64_t revision)
+    {
+        return std::all_of(m_samplers.begin(),
+                           m_samplers.end(),
+                           [&](const auto& entry) { return matches(entry.second, revision); });
+    };
+    if (current(program->m_samplerRevision.load(std::memory_order_acquire)))
+        return;
+
+    // Serialize only changes. Another shader wrapper (or a direct RHI caller)
+    // can change the same program, and Texture::swap/resize can replace a resource.
+    const std::scoped_lock lock(program->m_samplerMutex);
+    const auto             revision = program->m_samplerRevision.load(std::memory_order_relaxed);
+    if (current(revision))
+        return;
+    for (const auto& [name, binding] : m_samplers)
+    {
+        if (!matches(binding, revision))
+        {
+            const auto& resource = priv::RhiAccess::texture(*binding.source);
+            program->updateSampler(name, resource, false);
+            binding.resource.store(resource.get(), std::memory_order_relaxed);
+        }
+        binding.revision.store(revision + 1, std::memory_order_release);
+    }
+    program->m_samplerRevision.store(revision + 1, std::memory_order_release);
 }
 } // namespace sf

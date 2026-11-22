@@ -95,7 +95,7 @@ struct VulkanWindowSurface::Impl
         {
             const auto& vk = context->vk;
             if (presentQueue)
-                vk.QueueWaitIdle(presentQueue);
+                vk.DeviceWaitIdle(context->device);
             for (const auto& frame : frames)
             {
                 if (frame.ready)
@@ -105,8 +105,6 @@ struct VulkanWindowSurface::Impl
                 if (frame.view)
                     vk.DestroyImageView(context->device, frame.view, nullptr);
             }
-            if (acquired)
-                vk.DestroySemaphore(context->device, acquired, nullptr);
             if (pass)
                 vk.DestroyRenderPass(context->device, pass, nullptr);
             if (handle)
@@ -117,7 +115,6 @@ struct VulkanWindowSurface::Impl
         VkQueue                        presentQueue{};
         VkSwapchainKHR                 handle{};
         VkRenderPass                   pass{};
-        VkSemaphore                    acquired{};
         VkFormat                       format{VK_FORMAT_UNDEFINED};
         VkExtent2D                     extent{};
         std::vector<Frame>             frames;
@@ -359,8 +356,6 @@ bool VulkanWindowSurface::createSwapchain()
 
     VkSemaphoreCreateInfo semaphore{};
     semaphore.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-    if (vk.CreateSemaphore(ctx.device, &semaphore, nullptr, &swapchain->acquired) != VK_SUCCESS)
-        return false;
 
     swapchain->frames.resize(images.size());
     for (std::size_t index = 0; index < images.size(); ++index)
@@ -467,13 +462,13 @@ void VulkanWindowSurface::display()
 #endif
     if (device.isLost() || !state.handle || !state.size.x || !state.size.y)
     {
-        (void)device.flush();
+        (void)device.flush(false);
         return;
     }
 
     if ((!state.surface && !createSurface()) || (state.dirty && !createSwapchain()))
     {
-        (void)device.flush();
+        (void)device.flush(false);
         return;
     }
 
@@ -508,10 +503,16 @@ void VulkanWindowSurface::display()
 
     const VkSwapchainKHR handle = swapchain.handle;
     std::uint32_t        index{};
-    const auto acquire = vk.AcquireNextImageKHR(ctx.device, handle, 50'000'000, swapchain.acquired, VK_NULL_HANDLE, &index);
+    const VkSemaphore    acquired = device.acquireSemaphore();
+    const auto acquire = vk.AcquireNextImageKHR(ctx.device, handle, 50'000'000, acquired, VK_NULL_HANDLE, &index);
     if (acquire != VK_SUCCESS && acquire != VK_SUBOPTIMAL_KHR)
     {
-        (void)device.flush();
+        if (acquire == VK_ERROR_DEVICE_LOST)
+        {
+            device.markLost();
+            return;
+        }
+        (void)device.flush(false);
         if (acquire == VK_ERROR_SURFACE_LOST_KHR)
             destroySurface();
         else if (acquire == VK_ERROR_OUT_OF_DATE_KHR)
@@ -525,7 +526,8 @@ void VulkanWindowSurface::display()
     pass.renderPass        = swapchain.pass;
     pass.framebuffer       = frame.framebuffer;
     pass.renderArea.extent = swapchain.extent;
-    vk.CmdBeginRenderPass(command, &pass, VK_SUBPASS_CONTENTS_INLINE);
+    device.endRenderPass();
+    device.beginRenderPass(pass);
     program->bind(command, pipeline, descriptors);
     const VkViewport
         viewport{0.f, 0.f, static_cast<float>(swapchain.extent.width), static_cast<float>(swapchain.extent.height), 0.f, 1.f};
@@ -537,8 +539,7 @@ void VulkanWindowSurface::display()
     vk.CmdSetStencilReference(command, VK_STENCIL_FRONT_AND_BACK, 0);
     vk.CmdBindVertexBuffers(command, 0, 1, &upload.buffer, &upload.offset);
     vk.CmdDraw(command, static_cast<std::uint32_t>(quad.size()), 1, 0, 0);
-    vk.CmdEndRenderPass(command);
-    if (!device.flush(swapchain.acquired, frame.ready))
+    if (!device.flush(false, acquired, frame.ready))
         return;
 
     VkPresentInfoKHR present{};
@@ -549,7 +550,9 @@ void VulkanWindowSurface::display()
     present.pSwapchains        = &handle;
     present.pImageIndices      = &index;
     const auto result          = vk.QueuePresentKHR(swapchain.presentQueue, &present);
-    if (result == VK_ERROR_SURFACE_LOST_KHR)
+    if (result == VK_ERROR_DEVICE_LOST)
+        device.markLost();
+    else if (result == VK_ERROR_SURFACE_LOST_KHR)
         destroySurface();
     else if (result == VK_ERROR_OUT_OF_DATE_KHR || result == VK_SUBOPTIMAL_KHR || acquire == VK_SUBOPTIMAL_KHR)
         state.dirty = true;
