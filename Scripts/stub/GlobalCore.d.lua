@@ -1629,6 +1629,10 @@ function TextureLoadRequest:getStatus() end
 --- raise an error; failed requests rethrow the loading error.
 ---@return sf.Texture
 function TextureLoadRequest:getTexture() end
+--- Finish loading and uploading this request synchronously. Failed and
+--- cancelled requests raise their errors.
+---@return sf.Texture
+function TextureLoadRequest:resolve() end
 --- Change the priority of this pending subscription. Larger values run
 --- first.
 ---@param priority integer

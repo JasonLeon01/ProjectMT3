@@ -32,31 +32,22 @@ const targets = [
   };
 });
 
-function synchronize({ project, upstream, eventName, now = Date.now() }) {
-  if (!['schedule', 'workflow_dispatch'].includes(eventName)) throw new Error(`Unsupported event: ${eventName}`);
-  if (!Number.isFinite(now)) throw new Error('Invalid sync start time.');
+function synchronize({ project, upstream }) {
   const upstreamSha = execFileSync('git', ['-C', upstream, 'rev-parse', '--verify', 'refs/heads/main^{commit}'])
     .toString().trim();
-  if (eventName === 'schedule' && !targets.some(({ sync }) => sync.hasRecentChanges(upstream, upstreamSha, now))) {
-    return { upstreamSha, reconcilePr: false, results: [] };
-  }
-
-  // Once any target activates the schedule, rebuild all cumulative diffs so
-  // updating the shared PR cannot drop older pending changes from other targets.
+  // Schedules can be delayed. Rebuild the cumulative PR from the merged
+  // baselines on every run, including when upstream has reverted a pending diff.
   const results = targets.map(({ stateKey, targetRoot, sync }) => ({
     stateKey, targetRoot, ...sync.synchronize({ project, upstream, upstreamSha }),
   }));
-  return { upstreamSha, reconcilePr: true, results };
+  return { upstreamSha, results };
 }
 
-async function run({ core, context }) {
+async function run({ core }) {
   const result = synchronize({
     project: process.env.GITHUB_WORKSPACE,
     upstream: process.env.LUDORK_SYNC_REPOSITORY,
-    eventName: context.eventName,
-    now: Number(process.env.SYNC_STARTED_AT) * 1000,
   });
-  core.setOutput('reconcile_pr', String(result.reconcilePr));
   core.setOutput('upstream_sha', result.upstreamSha);
   core.summary.addHeading('Ludork Engine, Application, Global, Internal and Enums sync (including Lua stubs)');
   for (const target of result.results) {
@@ -69,7 +60,6 @@ async function run({ core, context }) {
       ['Decision', target.reason],
     ]);
   }
-  if (!result.reconcilePr) core.summary.addRaw('No effective Engine, Application, Global, Internal, Enums or configured Lua stub commits in the last four hours.');
   await core.summary.write();
 }
 

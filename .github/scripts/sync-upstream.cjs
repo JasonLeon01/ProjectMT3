@@ -5,8 +5,6 @@ const os = require('node:os');
 const path = require('node:path');
 const { execFileSync, spawnSync } = require('node:child_process');
 
-const fourHours = 4 * 60 * 60;
-
 function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirectories = [], excludedFiles = [], allowMissingRoot = false }) {
   function git(directory, ...args) {
     return execFileSync('git', ['-C', directory, ...args], { maxBuffer: 128 * 1024 * 1024 });
@@ -84,26 +82,6 @@ function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirec
     } finally {
       fs.rmSync(directory, { recursive: true, force: true });
     }
-  }
-
-  function hasRecentChanges(upstream, sha, now) {
-    const cutoff = Math.floor(now / 1000) - fourHours;
-    const end = Math.floor(now / 1000);
-    // Do not use --since: commit dates need not be monotonic. Inspect the full
-    // first-parent chain and compare merges against their first parent as well.
-    const history = git(upstream, 'log', '--first-parent', '--format=%H %ct %P', sha).toString().trim();
-    for (const line of history.split('\n')) {
-      const [commit, timestamp, parent] = line.split(' ');
-      if (Number(timestamp) < cutoff || Number(timestamp) > end) continue;
-      const args = parent
-        ? ['diff', '--name-only', '--no-renames', '-z', parent, commit]
-        : ['diff-tree', '--root', '--no-commit-id', '--name-only', '-r', '-z', commit];
-      const names = git(upstream, ...args, '--', `${sourceRoot}/`).toString().split('\0');
-      if (names.some(name => name.startsWith(`${sourceRoot}/`) && included(name.slice(sourceRoot.length + 1)))) {
-        return true;
-      }
-    }
-    return false;
   }
 
   function checkedPath(project, name) {
@@ -209,14 +187,11 @@ function createSync({ sourceRoot, targetRoot, statePath, stateKey, excludedDirec
     }
     return {
       ...result, changedFiles: changes.length, shouldUpdatePr,
-      // Run PR reconciliation even with no diff: an older pending PR may now be
-      // obsolete because upstream reverted its changes or the base caught up.
-      reconcilePr: true,
       reason: shouldUpdatePr ? `Upstream ${targetRoot} changes ready for PR.` : 'No effective file differences.',
     };
   }
 
-  return { synchronize, hasRecentChanges };
+  return { synchronize };
 }
 
 module.exports = { createSync };

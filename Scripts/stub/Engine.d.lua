@@ -84,6 +84,7 @@
 ---@field AnimationSegment Engine.AnimationSegment
 ---@field AnimationKeyFrame Engine.AnimationKeyFrame
 ---@field AnimationTimeTag Engine.AnimationTimeTag
+---@field GraphicsCachePlan Engine.GraphicsCachePlan
 ---@field MapFogSettings Engine.MapFogSettings
 ---@field MaterialCacheRequest Engine.MaterialCacheRequest
 ---@field RectBase Engine.RectBase
@@ -227,6 +228,7 @@
 ---@field warnOnce fun(key: string, message: string): nil
 ---@field getUserDataPath fun(appNameOverride?: string|nil): string
 ---@field prepareMaterialCache fun(): Engine.MaterialCacheRequest
+---@field planGraphicsCaches fun(): Engine.GraphicsCachePlan
 ---@field prepareShaderCache fun(additionalPrograms?: string[][]): Engine.ShaderCacheRequest
 ---@field getSavePath fun(appNameOverride?: string|nil): string
 ---@field getMainConfigPath fun(appNameOverride?: string|nil): string
@@ -466,6 +468,11 @@ function Engine.getUserDataPath(appNameOverride) end
 --- Prepare generated material programs in the current application's user data.
 ---@return Engine.MaterialCacheRequest
 function Engine.prepareMaterialCache() end
+
+--- Plan material export and shader compilation together before displaying
+--- startup progress.
+---@return Engine.GraphicsCachePlan
+function Engine.planGraphicsCaches() end
 
 --- Translate and prepare all game shader programs after material generation.
 ---@param additionalPrograms? string[][]
@@ -1903,6 +1910,33 @@ function AnimationTimeTag.new(values) end
 ---@param values table
 function AnimationTimeTag.init(self, values) end
 Engine.AnimationTimeTag = AnimationTimeTag
+
+---@class Engine.GraphicsCachePlan
+local GraphicsCachePlan = {}
+--- Return planning, planned, materials, materialsReady, shaders, ready,
+--- failed or cancelled.
+---@return string
+function GraphicsCachePlan:getStatus() end
+--- Report whether the planned material cache must be exported.
+---@return boolean
+function GraphicsCachePlan:needsMaterialExport() end
+--- Report whether any planned shader requires translation or compilation.
+---@return boolean
+function GraphicsCachePlan:needsShaderCompilation() end
+--- Publish the planned material outputs when the request is planned.
+---@return nil
+function GraphicsCachePlan:startMaterials() end
+--- Restore or compile the planned shader programs after materials are
+--- ready.
+---@return nil
+function GraphicsCachePlan:startShaders() end
+---@return number
+function GraphicsCachePlan:getProgress() end
+---@return nil
+function GraphicsCachePlan:getResult() end
+---@return nil
+function GraphicsCachePlan:cancel() end
+Engine.GraphicsCachePlan = GraphicsCachePlan
 
 ---@class Engine.MapFogSettings
 ---@field enabled boolean
