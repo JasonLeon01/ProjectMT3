@@ -19,10 +19,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
-      - name: Record time window
-        shell: bash
-        run: echo "SYNC_STARTED_AT=$(date +%s)" >> "$GITHUB_ENV"
-
       - uses: actions/checkout@v7
         with:
           # Always rebuild the cumulative PR from the merged baseline.
@@ -43,10 +39,9 @@ jobs:
         with:
           script: |
             const sync = require('./.github/scripts/sync-ludork.cjs');
-            await sync.run({ core, context });
+            await sync.run({ core });
 
       - name: Create or update sync PR
-        if: steps.sync.outputs.reconcile_pr == 'true'
         uses: peter-evans/create-pull-request@v8
         with:
           token: ${{ github.token }}

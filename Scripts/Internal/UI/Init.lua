@@ -13,7 +13,10 @@ function View:init(instance)
         Background = assert(self.instance:requireControl("Background")),
         OperationText = assert(self.instance:requireControl("OperationText")),
         ProgressBar = assert(self.instance:requireControl("ProgressBar")),
-        Root = assert(self.instance:requireControl("Root"))
+        Root = assert(self.instance:requireControl("Root")),
+        Splash = assert(self.instance:requireControl("Splash")),
+        SplashBackground = assert(self.instance:requireControl("SplashBackground")),
+        SplashImage = assert(self.instance:requireControl("SplashImage"))
     }
     ---@cast controls Internal.UIBase.GeneratedControls.Init
     self.controls = controls
