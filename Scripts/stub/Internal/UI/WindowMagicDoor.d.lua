@@ -9,6 +9,8 @@
 ---@field WindowFrame Engine.Window
 
 ---@class Internal.UIBase.GeneratedAssets.WindowMagicDoor
+---@field WindowChrome    Internal.UI.Parts.Shared.WindowChrome
+---@field WindowPauseMark Internal.UI.Parts.Shared.WindowPauseMark
 
 ---@class Internal.UI.WindowMagicDoor: Internal.UIBase.UiView
 ---@field root     Engine.Canvas

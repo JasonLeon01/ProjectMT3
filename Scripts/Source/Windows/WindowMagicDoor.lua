@@ -5,6 +5,7 @@ local Item = require("Enums.GeneralData.Item")
 local GameSystem = require("Source.System")
 local Ui = require("Internal.UIBase.Ui")
 local View = require("Internal.UI.WindowMagicDoor")
+local WindowBase = require("Internal.UIBase.WindowBase")
 
 local Input = Engine.Input
 local AudioManager = GlobalCore.AudioManager
@@ -13,7 +14,7 @@ local ITEM_ID = Item.SDoor
 ---@class Source.Windows.WindowMagicDoor.Controller
 local Controller = {}
 
-Controller.windowOptions = { hidden = true, focusable = true }
+Controller.windowOptions = { hidden = true, focusable = true, returnButton = true, content = "Root" }
 
 function Controller:init(player, onClose)
     self._player = player
@@ -46,22 +47,84 @@ function Controller:close()
     self._onClose()
 end
 
+function Controller:onTick(deltaTime)
+    WindowBase.onTick(self.host, deltaTime)
+    if not self.host:getVisible() or not self.host:getActive() or Input.isTouchBlocked() then
+        return
+    end
+    local tapPosition = Input.getTouchTapPosition()
+    if tapPosition == nil then
+        return
+    end
+    local position = Engine.ToVector2f(tapPosition)
+    if not sf.FloatRect.contains(self.host:getAbsoluteBounds(), position) then
+        return
+    end
+    if self:_isReturnButtonHit(position) then
+        return
+    end
+    Input.isTouchTap(true)
+    Input.isTouchTriggered(true)
+    self:confirm()
+end
+
 function Controller:onKeyDown(_kwargs)
     if not self.host:getVisible() then
         return
     end
     if Input.isActionTriggered(Input.getCancelKeys(), true) then
-        AudioManager.playSound(GameSystem.GetCancelSE())
-        self:close()
+        self:onReturn()
     elseif Input.isActionTriggered(Input.getConfirmKeys(), true) then
-        self.host:setActive(false)
-        if self._player:hasItem(ITEM_ID) then
-            AudioManager.playSound(GameSystem.GetDecisionSE())
-            local result = self._player:activateItem(ITEM_ID)
-            assert(result.ok, "Item Ability failed: " .. tostring(result.code))
-        end
-        self:close()
+        self:confirm()
     end
 end
 
-return Ui.DefineWindow(View, Controller)
+function Controller:onMouseButtonDown(kwargs)
+    if not self.host:getVisible() then
+        return false
+    end
+    if kwargs.button == sf.Mouse.Button.Right then
+        self:onReturn()
+        return true
+    end
+    if kwargs.button == sf.Mouse.Button.Left then
+        local position = kwargs.position
+        if position == nil then
+            position = Engine.ToVector2f(Input.getMousePosition())
+        end
+        if self:_isReturnButtonHit(position) then
+            return false
+        end
+        self:confirm()
+        return true
+    end
+    return false
+end
+
+function Controller:onReturn()
+    AudioManager.playSound(GameSystem.GetCancelSE())
+    self:close()
+end
+
+function Controller:confirm()
+    if not self.host:getVisible() then
+        return
+    end
+    self.host:setActive(false)
+    if self._player:hasItem(ITEM_ID) then
+        AudioManager.playSound(GameSystem.GetDecisionSE())
+        local result = self._player:activateItem(ITEM_ID)
+        assert(result.ok, "Item Ability failed: " .. tostring(result.code))
+    end
+    self:close()
+end
+
+function Controller:_isReturnButtonHit(position)
+    if not self.host:isReturnButtonEnabled() then
+        return false
+    end
+    local returnButton = self.ui.assets.WindowChrome.controls.ReturnButton
+    return sf.FloatRect.contains(returnButton:getAbsoluteBounds(), position)
+end
+
+return Ui.DefineWindow(View, Controller, WindowBase)

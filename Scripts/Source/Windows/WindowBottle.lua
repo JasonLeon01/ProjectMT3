@@ -16,7 +16,7 @@ local ITEM_IDS = { Item.Bottle150, Item.Bottle400 }
 ---@class Source.Windows.WindowBottle.Controller
 local Controller = {}
 
-Controller.windowOptions = { hidden = true, list = "BottleList" }
+Controller.windowOptions = { hidden = true, returnButton = true, list = "BottleList" }
 
 function Controller:init(player, onClose)
     self._player = player

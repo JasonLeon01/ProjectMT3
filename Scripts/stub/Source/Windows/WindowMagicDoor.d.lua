@@ -7,6 +7,8 @@
 ---@field _onClose fun()
 local Controller = {}
 
+Controller.windowOptions = {}
+
 ---@param player  Source.MapActors.Player.Player
 ---@param onClose fun()
 function Controller:init(player, onClose) end
@@ -19,5 +21,20 @@ function Controller:open(mapRect) end
 
 function Controller:close() end
 
+---@param deltaTime number
+function Controller:onTick(deltaTime) end
+
 ---@param kwargs Engine.UiInputEventArguments
 function Controller:onKeyDown(kwargs) end
+
+---@param kwargs Engine.UiInputEventArguments
+---@return boolean
+function Controller:onMouseButtonDown(kwargs) end
+
+function Controller:onReturn() end
+
+function Controller:confirm() end
+
+---@param position sf.Vector2f
+---@return boolean
+function Controller:_isReturnButtonHit(position) end
