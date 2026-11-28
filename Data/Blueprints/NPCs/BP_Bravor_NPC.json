@@ -476,7 +476,7 @@
           {
             "nodeFunction": "GlobalFunctions.Utils.AddPlayerByClass",
             "params": [
-              "Data.Blueprints.Actors.BP_Actor_Braver",
+              "Data.Blueprints.Players.BP_Bravor",
               "MT3_025.json",
               [
                 5,
