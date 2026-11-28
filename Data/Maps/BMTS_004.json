@@ -1062,6 +1062,38 @@
           1,
           7
         ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_10_10",
+        "position": [
+          10,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Items.BP_Item_Key_Y",
+        "tag": "Items_BP_Item_Key_Y_default_9_10",
+        "position": [
+          9,
+          10
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_2_2",
+        "position": [
+          2,
+          2
+        ]
+      },
+      {
+        "bp": "Data.Blueprints.Consumables.BP_Bottle_150",
+        "tag": "Consumables_BP_Bottle_150_default_3_1",
+        "position": [
+          3,
+          1
+        ]
       }
     ]
   },
